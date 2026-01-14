@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des projets - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-lily-dark mb-2">Gestion des projets</h1>
+                <p class="text-gray-600">{{ projects.paginator.count }} projet{{ projects.paginator.count|pluralize }} au total</p>
+            </div>
+            <a href="{% url 'accounts:admin_dashboard' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                Retour au dashboard
+            </a>
+        </div>
+
+        <!-- Filtres -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <form method="get" class="flex gap-4 items-end">
+                <div class="flex-1">
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                        Filtrer par statut
+                    </label>
+                    <select name="status" id="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                        <option value="">Tous les statuts</option>
+                        <option value="draft" {% if selected_status == 'draft' %}selected{% endif %}>Brouillon</option>
+                        <option value="published" {% if selected_status == 'published' %}selected{% endif %}>Publié</option>
+                        <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>En cours</option>
+                        <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>Terminé</option>
+                        <option value="cancelled" {% if selected_status == 'cancelled' %}selected{% endif %}>Annulé</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-lily-purple text-white px-6 py-2 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    Filtrer
+                </button>
+                {% if selected_status %}
+                    <a href="{% url 'accounts:admin_project_list' %}" class="px-6 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Réinitialiser
+                    </a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Liste des projets -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projet</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date événement</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Budget</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for project in projects %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-gray-900">{{ project.title }}</div>
+                            <div class="text-sm text-gray-500">{{ project.city }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ project.client.get_full_name|default:project.client.username }}</div>
+                            <div class="text-sm text-gray-500">{{ project.client.email }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ project.event_type.name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            {{ project.event_date|date:"d/m/Y" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            {{ project.budget_min|floatformat:0 }} FCFA
+                            {% if project.budget_max %}
+                                <br>- {{ project.budget_max|floatformat:0 }} FCFA
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs rounded-full
+                                {% if project.status == 'published' %}bg-green-100 text-green-700
+                                {% elif project.status == 'in_progress' %}bg-blue-100 text-blue-700
+                                {% elif project.status == 'completed' %}bg-gray-100 text-gray-700
+                                {% elif project.status == 'cancelled' %}bg-red-100 text-red-700
+                                {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                {% if project.status == 'draft' %}Brouillon
+                                {% elif project.status == 'published' %}Publié
+                                {% elif project.status == 'in_progress' %}En cours
+                                {% elif project.status == 'completed' %}Terminé
+                                {% elif project.status == 'cancelled' %}Annulé
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <a href="{% url 'accounts:admin_project_detail' project.id %}" class="text-lily-purple hover:text-lily-gold">
+                                Voir détails
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                            Aucun projet trouvé
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if projects.has_other_pages %}
+        <div class="mt-6 flex justify-center">
+            <nav class="flex gap-2">
+                {% if projects.has_previous %}
+                    <a href="?page={{ projects.previous_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" 
+                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Précédent
+                    </a>
+                {% endif %}
+
+                <span class="px-4 py-2 text-gray-700">
+                    Page {{ projects.number }} sur {{ projects.paginator.num_pages }}
+                </span>
+
+                {% if projects.has_next %}
+                    <a href="?page={{ projects.next_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" 
+                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Suivant
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

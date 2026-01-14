@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+
+{% block title %}À propos - LysAngels{% endblock %}
+
+{% block meta_description %}LysAngels est la plateforme événementielle de référence au Togo. Notre mission : connecter les particuliers et entreprises avec les meilleurs prestataires pour des événements inoubliables.{% endblock %}
+
+{% block meta_keywords %}LysAngels, à propos, mission, plateforme événementielle Togo, qui sommes-nous{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero avec personnalité */
+    .about-hero {
+        background: linear-gradient(to bottom right, #1A1A1A, #2D1B3D, #3D2554);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Éléments flottants animés */
+    .floating-icon {
+        position: absolute;
+        animation: float 6s ease-in-out infinite;
+        opacity: 0.15;
+        filter: blur(1px);
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .floating-icon:nth-child(2) {
+        animation-delay: 1s;
+        animation-duration: 7s;
+    }
+
+    .floating-icon:nth-child(3) {
+        animation-delay: 2s;
+        animation-duration: 8s;
+    }
+
+    /* Shimmer effect sur le titre */
+    @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+
+    .shimmer-text {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(255, 255, 255, 1) 50%,
+            rgba(255, 255, 255, 0.9) 100%
+        );
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+    }
+
+    /* Badge animé */
+    @keyframes badge-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+        50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    }
+
+    .badge-animated {
+        animation: badge-pulse 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="about-hero py-20 md:py-24 relative">
+    <!-- Decorative animated elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-96 h-96 bg-lily-gold/10 rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
+        <div class="absolute w-80 h-80 bg-lily-rose/10 rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute w-64 h-64 bg-lily-purple/10 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Icônes flottantes décoratives -->
+    <div class="floating-icon" style="top: 20%; left: 10%; font-size: 3rem;">💡</div>
+    <div class="floating-icon" style="top: 60%; right: 15%; font-size: 2.5rem;">❤️</div>
+    <div class="floating-icon" style="top: 40%; right: 8%; font-size: 2rem;">🎉</div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+            <!-- Badge animé -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6 badge-animated">
+                <svg class="w-4 h-4 text-lily-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                <span class="text-white text-sm font-medium">Qui sommes-nous ?</span>
+            </div>
+
+            <!-- Titre principal avec effet shimmer -->
+            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span class="shimmer-text">L'événementiel</span><br>
+                <span class="text-gradient-gold">Réinventé</span>
+            </h1>
+
+            <!-- Description enrichie -->
+            <p class="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
+                La plateforme premium qui connecte vos rêves événementiels aux meilleurs professionnels du Togo.
+                <span class="text-lily-gold font-medium">Excellence et confiance</span> à chaque étape.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="bg-white py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Notre Histoire -->
+        <div class="mb-20 md:mb-32">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Notre histoire
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Une vision simple pour transformer l'événementiel au Togo
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <!-- La genèse -->
+                <div class="scroll-reveal group">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">La genèse</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    LysAngels est née d'une vision simple : <strong class="text-lily-purple">faciliter la mise en relation</strong> entre clients exigeants
+                                    et prestataires d'exception au Togo. Nous croyons que chaque événement mérite d'être <strong class="text-lily-purple">unique
+                                    et inoubliable</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notre mission -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Notre mission</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Permettre à chacun de trouver les <strong class="text-lily-gold">meilleurs prestataires</strong> pour ses événements,
+                                    qu'il s'agisse de mariages, anniversaires, événements d'entreprise ou toute autre célébration.
+                                    <strong class="text-lily-gold">Nous rendons l'excellence accessible</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notre vision -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-dark to-lily-purple rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Notre vision</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Devenir <strong class="text-purple-dark">la référence incontournable</strong> de l'événementiel au Togo en créant un écosystème
+                                    où <strong class="text-purple-dark">qualité, transparence et confiance</strong> sont au cœur de chaque interaction.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notre engagement -->
+                <div class="scroll-reveal group" style="animation-delay: 0.3s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-red-400 to-red-500 rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Notre engagement</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    <strong class="text-red-500">Sélectionner rigoureusement</strong> nos prestataires et offrir
+                                    une <strong class="text-red-500">expérience utilisateur exceptionnelle</strong> à chaque client, du premier contact
+                                    jusqu'à la réalisation de l'événement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nos Valeurs -->
+        <div class="mb-20 md:mb-32">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Nos valeurs
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Les principes qui guident chacune de nos actions
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Qualité -->
+                <div class="scroll-reveal group">
+                    <div class="bg-gradient-to-br from-lily-purple/5 to-lily-purple/10 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-lily-purple/20">
+                        <div class="w-16 h-16 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Qualité garantie</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Tous nos prestataires sont soigneusement sélectionnés pour leur professionnalisme
+                            et leur expertise reconnue dans le domaine événementiel.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Rapidité -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-gradient-to-br from-lily-gold/5 to-lily-gold/10 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-lily-gold/20">
+                        <div class="w-16 h-16 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Rapidité</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Recevez des propositions personnalisées en quelques heures et trouvez
+                            rapidement les prestataires parfaits pour votre événement.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Transparence -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-gradient-to-br from-lily-rose/20 to-lily-rose/30 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-lily-rose/40">
+                        <div class="w-16 h-16 bg-gradient-to-br from-lily-dark to-gray-800 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Transparence</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Des devis clairs et détaillés pour une décision éclairée. Aucun frais
+                            caché, seulement de la confiance et de la clarté.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pourquoi nous choisir -->
+        <div class="mb-16">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Pourquoi choisir LysAngels ?
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Des avantages concrets pour une expérience événementielle exceptionnelle
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Avantage 1 -->
+                <div class="scroll-reveal group">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-lily-dark mb-3">Large choix de prestataires</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Accédez à un réseau complet de professionnels qualifiés couvrant tous les services
+                                    événementiels dont vous avez besoin.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avantage 2 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-lily-dark mb-3">Sécurité et confiance</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Tous les échanges sont sécurisés et nous vérifions la fiabilité de chaque
+                                    prestataire avant son inscription.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avantage 3 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-lily-dark mb-3">Support dédié</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Notre équipe est à votre écoute pour vous accompagner tout au long de
+                                    l'organisation de votre événement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avantage 4 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.3s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center mr-5 group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-lily-dark mb-3">Comparaison facilitée</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Comparez facilement les offres, les prix et les services pour faire le
+                                    meilleur choix selon vos besoins et votre budget.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative overflow-hidden bg-gradient-to-r from-lily-dark via-lily-purple to-purple-dark py-16 md:py-24">
+    <!-- Decorative elements -->
+    <div class="absolute inset-0 overflow-hidden opacity-10">
+        <div class="absolute w-96 h-96 bg-white rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
+        <div class="absolute w-80 h-80 bg-lily-gold rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-reveal">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            Prêt à organiser votre événement ?
+        </h2>
+        <p class="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+            Rejoignez des centaines de clients satisfaits qui ont fait confiance à LysAngels
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'vendors:vendor_list' %}"
+               class="bg-white text-lily-purple px-8 py-4 rounded-2xl font-semibold hover:bg-lily-cream transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1">
+                Découvrir les prestataires
+            </a>
+            <a href="{% url 'accounts:register' %}"
+               class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-lily-purple transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                Créer un compte
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

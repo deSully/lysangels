@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Mode Hors Ligne - LysAngels{% endblock %}
+{% block meta_description %}Vous êtes actuellement hors ligne. LysAngels nécessite une connexion Internet pour fonctionner pleinement.{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-lily-cream px-4">
+    <div class="max-w-md w-full text-center">
+        <!-- Icon offline -->
+        <div class="mb-8">
+            <svg class="mx-auto h-24 w-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"/>
+            </svg>
+        </div>
+
+        <!-- Message -->
+        <h1 class="text-3xl md:text-4xl font-bold text-lily-dark mb-4">
+            Vous êtes hors ligne
+        </h1>
+        <p class="text-gray-600 text-lg mb-8">
+            Il semble que vous n'ayez pas de connexion Internet. Certaines fonctionnalités nécessitent une connexion active.
+        </p>
+
+        <!-- Actions -->
+        <div class="space-y-4">
+            <button 
+                onclick="location.reload()" 
+                class="w-full bg-lily-purple text-white px-8 py-4 rounded-xl font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg">
+                🔄 Réessayer
+            </button>
+            
+            <a 
+                href="/" 
+                class="block w-full bg-white text-lily-dark px-8 py-4 rounded-xl font-medium border-2 border-gray-200 hover:bg-lily-cream transition-all duration-200">
+                🏠 Retour à l'accueil
+            </a>
+        </div>
+
+        <!-- Info PWA -->
+        <div class="mt-12 p-6 bg-white rounded-xl border-2 border-lily-purple/20">
+            <p class="text-sm text-gray-600">
+                💡 <strong>Astuce :</strong> Installez LysAngels sur votre appareil pour un accès plus rapide et une meilleure expérience hors ligne.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Vérifier la connexion toutes les 5 secondes
+    setInterval(() => {
+        if (navigator.onLine) {
+            location.reload();
+        }
+    }, 5000);
+    
+    // Écouter le retour de connexion
+    window.addEventListener('online', () => {
+        location.reload();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Supprimer un type d'événement - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <div class="text-center mb-6">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                    <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Confirmer la suppression</h3>
+            </div>
+
+            <p class="text-gray-600 text-center mb-6">
+                Êtes-vous sûr de vouloir supprimer le type d'événement "<strong>{{ event_type.name }}</strong>" ?
+                Cette action est irréversible.
+            </p>
+
+            <form method="post" class="flex gap-4">
+                {% csrf_token %}
+                <a href="{% url 'accounts:admin_event_type_list' %}"
+                   class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium text-center hover:border-lily-purple hover:text-lily-purple transition">
+                    Annuler
+                </a>
+                <button type="submit"
+                        class="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition">
+                    Supprimer
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

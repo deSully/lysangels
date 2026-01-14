@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes projets - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Lien retour -->
+        <div class="mb-4">
+            <a href="{% url 'accounts:dashboard' %}" class="inline-flex items-center text-sm text-lily-purple hover:text-purple-dark transition-colors">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Retour au tableau de bord
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-lily-dark">Mes projets</h1>
+                <p class="text-gray-600 mt-2">Gérez tous vos projets événementiels</p>
+            </div>
+            <a href="{% url 'projects:project_create' %}"
+               class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                + Nouveau projet
+            </a>
+        </div>
+
+        <!-- Projets -->
+        {% if projects %}
+            <div class="grid grid-cols-1 gap-6">
+                {% for project in projects %}
+                    <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-base font-medium text-lily-dark mb-2">{{ project.title }}</h3>
+                                <div class="flex flex-wrap gap-3 text-xs text-gray-600">
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        {{ project.event_date|date:"d F Y" }}
+                                    </span>
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        </svg>
+                                        {{ project.city }}
+                                    </span>
+                                    <span class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                        </svg>
+                                        {{ project.budget_min|floatformat:0 }} FCFA
+                                        {% if project.budget_max %}- {{ project.budget_max|floatformat:0 }} FCFA{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <span class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap
+                                {% if project.status == 'published' %}bg-green-100 text-green-800
+                                {% elif project.status == 'in_progress' %}bg-blue-100 text-blue-800
+                                {% elif project.status == 'completed' %}bg-purple-100 text-purple-800
+                                {% elif project.status == 'cancelled' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {{ project.get_status_display }}
+                            </span>
+                        </div>
+
+                        <p class="text-gray-600 mb-4">{{ project.description|truncatewords:30 }}</p>
+
+                        <!-- Services -->
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            {% for service in project.services_needed.all %}
+                                <span class="bg-lily-purple bg-opacity-10 text-lily-purple text-xs px-3 py-1 rounded-full">
+                                    {{ service.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex space-x-3">
+                            <a href="{% url 'projects:project_detail' project.id %}"
+                               class="text-lily-purple hover:text-lily-gold font-medium text-xs">
+                                Voir détails
+                            </a>
+                            <a href="{% url 'projects:project_edit' project.id %}"
+                               class="text-gray-600 hover:text-lily-purple font-medium text-xs">
+                                Modifier
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white rounded-xl p-12 text-center">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <p class="text-gray-500 mb-4">Vous n'avez pas encore de projet</p>
+                <a href="{% url 'projects:project_create' %}"
+                   class="inline-block bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    Créer mon premier projet
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

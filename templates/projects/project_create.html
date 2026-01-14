@@ -1,0 +1,647 @@
+{% extends 'base.html' %}
+
+{% block title %}Créer un projet - LysAngels{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Stepper Styles */
+    .stepper-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+    }
+
+    .stepper-item:not(:last-child):before {
+        content: '';
+        position: absolute;
+        top: 2rem;
+        left: 50%;
+        right: -50%;
+        height: 2px;
+        background: var(--color-gray-300);
+        z-index: 0;
+        transition: all var(--transition-base);
+    }
+
+    .stepper-item.completed:not(:last-child):before {
+        background: var(--color-lily-purple);
+    }
+
+    .stepper-number {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 3px solid var(--color-gray-300);
+        font-weight: 600;
+        font-size: 1.25rem;
+        transition: all var(--transition-base);
+        position: relative;
+        z-index: 1;
+    }
+
+    .stepper-item.active .stepper-number {
+        border-color: var(--color-lily-purple);
+        background: var(--color-lily-purple);
+        color: white;
+        transform: scale(1.1);
+        box-shadow: var(--shadow-purple);
+    }
+
+    .stepper-item.completed .stepper-number {
+        border-color: var(--color-lily-purple);
+        background: var(--color-lily-purple);
+        color: white;
+    }
+
+    .step-content {
+        display: none;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .step-content.active {
+        display: block;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-5px);
+        }
+        20%, 40%, 60%, 80% {
+            transform: translateX(5px);
+        }
+    }
+
+    /* Form field with icon */
+    .form-field-with-icon {
+        position: relative;
+    }
+
+    .form-field-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-gray-400);
+        pointer-events: none;
+    }
+
+    .form-field-with-icon input,
+    .form-field-with-icon select,
+    .form-field-with-icon textarea {
+        padding-left: 3rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8 sm:py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in-up">
+            <h1 class="font-display text-4xl sm:text-5xl font-bold text-lily-dark mb-4">
+                Créer votre projet
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Décrivez votre événement en quelques étapes pour recevoir des propositions personnalisées
+            </p>
+        </div>
+
+        <!-- Stepper -->
+        <div class="mb-12">
+            <div class="flex items-start justify-between mb-8 relative">
+                <div class="stepper-item active" data-step="1">
+                    <div class="stepper-number">
+                        <span class="step-num">1</span>
+                        <svg class="w-6 h-6 hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-3">
+                        <div class="font-semibold text-sm text-lily-dark">Informations</div>
+                        <div class="text-xs text-gray-500 mt-1">Basiques</div>
+                    </div>
+                </div>
+
+                <div class="stepper-item" data-step="2">
+                    <div class="stepper-number">
+                        <span class="step-num">2</span>
+                        <svg class="w-6 h-6 hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-3">
+                        <div class="font-semibold text-sm text-gray-400">Détails</div>
+                        <div class="text-xs text-gray-500 mt-1">Date & Lieu</div>
+                    </div>
+                </div>
+
+                <div class="stepper-item" data-step="3">
+                    <div class="stepper-number">
+                        <span class="step-num">3</span>
+                        <svg class="w-6 h-6 hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-3">
+                        <div class="font-semibold text-sm text-gray-400">Budget</div>
+                        <div class="text-xs text-gray-500 mt-1">& Services</div>
+                    </div>
+                </div>
+
+                <div class="stepper-item" data-step="4">
+                    <div class="stepper-number">
+                        <span class="step-num">4</span>
+                        <svg class="w-6 h-6 hidden checkmark-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="text-center mt-3">
+                        <div class="font-semibold text-sm text-gray-400">Description</div>
+                        <div class="text-xs text-gray-500 mt-1">Complète</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-8 sm:p-12">
+                <!-- Messages d'erreur globaux -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="{% if message.tags == 'error' %}bg-red-50 border-l-4 border-red-500 text-red-700{% elif message.tags == 'success' %}bg-green-50 border-l-4 border-green-500 text-green-700{% else %}bg-blue-50 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 rounded-lg mb-6 animate-fade-in-up">
+                            <div class="flex">
+                                <svg class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-sm font-medium">{{ message }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Formulaire Multi-Step -->
+                <form method="post" id="projectForm" class="space-y-8" novalidate>
+                    {% csrf_token %}
+
+                    <!-- ÉTAPE 1: Informations Basiques -->
+                    <div class="step-content active" data-step="1">
+                        <h2 class="text-2xl font-bold text-lily-dark mb-6 flex items-center gap-3">
+                            <div class="w-1 h-8 bg-gradient-to-b from-lily-purple to-lily-gold rounded-full"></div>
+                            Informations basiques
+                        </h2>
+
+                        <div class="space-y-6">
+                            <!-- Titre -->
+                            <div>
+                                <label for="title" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Titre du projet <span class="text-red-500">*</span>
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" name="title" id="title" required
+                                           value="{{ request.POST.title|default:'' }}"
+                                           placeholder="Ex: Mariage de Marie et Jean"
+                                           class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition
+                                                  {% if form.title.errors %}border-red-500 focus:ring-red-500 bg-red-50{% else %}border-gray-300 focus:ring-lily-purple{% endif %}">
+                                </div>
+                                {% if form.title.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ form.title.errors|first }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Type d'événement -->
+                            <div>
+                                <label for="event_type" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Type d'événement <span class="text-red-500">*</span>
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+                                        </svg>
+                                    </div>
+                                    <select name="event_type" id="event_type" required
+                                            class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition
+                                                   {% if form.event_type.errors %}border-red-500 focus:ring-red-500 bg-red-50{% else %}border-gray-300 focus:ring-lily-purple{% endif %}">
+                                        <option value="">Choisir un type</option>
+                                        {% for event in event_types %}
+                                            <option value="{{ event.id }}" {% if request.POST.event_type|stringformat:"s" == event.id|stringformat:"s" %}selected{% endif %}>{{ event.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                {% if form.event_type.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ form.event_type.errors|first }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Ville -->
+                            <div>
+                                <label for="city" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Ville <span class="text-red-500">*</span>
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" name="city" id="city" required
+                                           value="{{ request.POST.city|default:'' }}"
+                                           placeholder="Ex: Lomé"
+                                           class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition
+                                                  {% if form.city.errors %}border-red-500 focus:ring-red-500 bg-red-50{% else %}border-gray-300 focus:ring-lily-purple{% endif %}">
+                                </div>
+                                {% if form.city.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ form.city.errors|first }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ÉTAPE 2: Détails Date & Lieu -->
+                    <div class="step-content" data-step="2">
+                        <h2 class="text-2xl font-bold text-lily-dark mb-6 flex items-center gap-3">
+                            <div class="w-1 h-8 bg-gradient-to-b from-lily-purple to-lily-gold rounded-full"></div>
+                            Détails de l'événement
+                        </h2>
+
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Date -->
+                                <div>
+                                    <label for="event_date" class="block text-sm font-semibold text-lily-dark mb-2">
+                                        Date de l'événement <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="form-field-with-icon">
+                                        <div class="form-field-icon">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </div>
+                                        <input type="date" name="event_date" id="event_date" required
+                                               value="{{ request.POST.event_date|default:'' }}"
+                                               class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition
+                                                      {% if form.event_date.errors %}border-red-500 focus:ring-red-500 bg-red-50{% else %}border-gray-300 focus:ring-lily-purple{% endif %}">
+                                    </div>
+                                    {% if form.event_date.errors %}
+                                        <p class="mt-2 text-sm text-red-600">{{ form.event_date.errors|first }}</p>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Heure -->
+                                <div>
+                                    <label for="event_time" class="block text-sm font-semibold text-lily-dark mb-2">
+                                        Heure (optionnel)
+                                    </label>
+                                    <div class="form-field-with-icon">
+                                        <div class="form-field-icon">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <input type="time" name="event_time" id="event_time"
+                                               value="{{ request.POST.event_time|default:'' }}"
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lieu précis -->
+                            <div>
+                                <label for="location" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Lieu précis (optionnel)
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="text" name="location" id="location"
+                                           value="{{ request.POST.location|default:'' }}"
+                                           placeholder="Ex: Hôtel Sarakawa, Salle des fêtes..."
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                                </div>
+                            </div>
+
+                            <!-- Nombre d'invités -->
+                            <div>
+                                <label for="guest_count" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Nombre d'invités estimé (optionnel)
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <input type="number" name="guest_count" id="guest_count" min="1"
+                                           value="{{ request.POST.guest_count|default:'' }}"
+                                           placeholder="Ex: 150"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ÉTAPE 3: Budget & Services -->
+                    <div class="step-content" data-step="3">
+                        <h2 class="text-2xl font-bold text-lily-dark mb-6 flex items-center gap-3">
+                            <div class="w-1 h-8 bg-gradient-to-b from-lily-purple to-lily-gold rounded-full"></div>
+                            Budget et services
+                        </h2>
+
+                        <div class="space-y-6">
+                            <!-- Budget -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="budget_min" class="block text-sm font-semibold text-lily-dark mb-2">
+                                        Budget minimum (FCFA) <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="form-field-with-icon">
+                                        <div class="form-field-icon">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <input type="number" name="budget_min" id="budget_min" required min="0"
+                                               value="{{ request.POST.budget_min|default:'' }}"
+                                               placeholder="Ex: 500000"
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="budget_max" class="block text-sm font-semibold text-lily-dark mb-2">
+                                        Budget maximum (FCFA) - optionnel
+                                    </label>
+                                    <div class="form-field-with-icon">
+                                        <div class="form-field-icon">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <input type="number" name="budget_max" id="budget_max" min="0"
+                                               value="{{ request.POST.budget_max|default:'' }}"
+                                               placeholder="Ex: 2000000"
+                                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Services recherchés -->
+                            <div>
+                                <label class="block text-sm font-semibold text-lily-dark mb-4">
+                                    Services recherchés <span class="text-red-500">*</span>
+                                </label>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    {% for service in service_types %}
+                                        <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-lily-purple hover:bg-lily-purple/5 cursor-pointer transition group">
+                                            <input type="checkbox" name="services_needed" value="{{ service.id }}"
+                                                   class="h-5 w-5 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                                            <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-lily-purple">{{ service.name }}</span>
+                                            <div class="absolute top-0 right-0 w-6 h-6 bg-lily-purple text-white rounded-bl-xl rounded-tr-xl hidden group-has-[:checked]:flex items-center justify-center">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ÉTAPE 4: Description -->
+                    <div class="step-content" data-step="4">
+                        <h2 class="text-2xl font-bold text-lily-dark mb-6 flex items-center gap-3">
+                            <div class="w-1 h-8 bg-gradient-to-b from-lily-purple to-lily-gold rounded-full"></div>
+                            Description complète
+                        </h2>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label for="description" class="block text-sm font-semibold text-lily-dark mb-2">
+                                    Décrivez votre événement en détail <span class="text-red-500">*</span>
+                                </label>
+                                <div class="form-field-with-icon">
+                                    <div class="form-field-icon" style="top: 1.25rem;">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                    <textarea name="description" id="description" rows="8" required
+                                              placeholder="Décrivez votre événement, vos attentes, vos préférences, le style recherché..."
+                                              class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent transition resize-none
+                                                     {% if form.description.errors %}border-red-500 focus:ring-red-500 bg-red-50{% else %}border-gray-300 focus:ring-lily-purple{% endif %}">{{ request.POST.description|default:'' }}</textarea>
+                                </div>
+                                {% if form.description.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ form.description.errors|first }}</p>
+                                {% else %}
+                                    <p class="text-sm text-gray-500 mt-2 flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Plus vous êtes précis, meilleures seront les propositions (minimum 20 caractères)
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex items-center justify-between pt-8 border-t border-gray-200 min-h-[60px]">
+                        <button type="button" id="prevBtn" class="btn btn-secondary flex-shrink-0" style="display: none;">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Précédent
+                        </button>
+
+                        <div class="flex-1"></div>
+
+                        <div class="flex gap-4 flex-shrink-0">
+                            <a href="{% url 'accounts:dashboard' %}" class="btn btn-ghost">
+                                Annuler
+                            </a>
+                            <button type="button" id="nextBtn" class="btn btn-primary" style="transform: none !important;">
+                                Suivant
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <button type="submit" id="submitBtn" class="btn btn-accent" style="display: none;">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Créer le projet
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentStep = 1;
+const totalSteps = 4;
+
+function showStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.step-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // Show current step
+    document.querySelector(`.step-content[data-step="${step}"]`).classList.add('active');
+
+    // Update stepper
+    document.querySelectorAll('.stepper-item').forEach((item, index) => {
+        const stepNum = index + 1;
+        const stepNumSpan = item.querySelector('.step-num');
+        const checkmarkIcon = item.querySelector('.checkmark-icon');
+        const label = item.querySelector('.font-semibold');
+
+        if (stepNum < step) {
+            item.classList.add('completed');
+            item.classList.remove('active');
+            stepNumSpan.classList.add('hidden');
+            checkmarkIcon.classList.remove('hidden');
+            label.classList.remove('text-gray-400');
+            label.classList.add('text-lily-dark');
+        } else if (stepNum === step) {
+            item.classList.add('active');
+            item.classList.remove('completed');
+            stepNumSpan.classList.remove('hidden');
+            checkmarkIcon.classList.add('hidden');
+            label.classList.remove('text-gray-400');
+            label.classList.add('text-lily-dark');
+        } else {
+            item.classList.remove('active', 'completed');
+            stepNumSpan.classList.remove('hidden');
+            checkmarkIcon.classList.add('hidden');
+            label.classList.add('text-gray-400');
+            label.classList.remove('text-lily-dark');
+        }
+    });
+
+    // Update buttons
+    document.getElementById('prevBtn').style.display = step === 1 ? 'none' : 'flex';
+    document.getElementById('nextBtn').style.display = step === totalSteps ? 'none' : 'flex';
+    document.getElementById('submitBtn').style.display = step === totalSteps ? 'flex' : 'none';
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function validateStep(step) {
+    const stepContent = document.querySelector(`.step-content[data-step="${step}"]`);
+    const requiredFields = stepContent.querySelectorAll('[required]');
+    let isValid = true;
+    let firstInvalidField = null;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('border-red-500', 'bg-red-50');
+            field.classList.remove('border-gray-300');
+            if (!firstInvalidField) {
+                firstInvalidField = field;
+            }
+        } else {
+            field.classList.remove('border-red-500', 'bg-red-50');
+            field.classList.add('border-gray-300');
+        }
+    });
+
+    // Special validation for step 3 (at least one service)
+    if (step === 3) {
+        const checkedServices = stepContent.querySelectorAll('input[name="services_needed"]:checked');
+        if (checkedServices.length === 0) {
+            isValid = false;
+            // Scroll to services section instead of showing alert
+            const servicesSection = stepContent.querySelector('label');
+            if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    }
+
+    // Scroll to first invalid field if validation failed
+    if (!isValid && firstInvalidField) {
+        firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Add a subtle shake animation
+        firstInvalidField.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+            firstInvalidField.style.animation = '';
+        }, 500);
+    }
+
+    return isValid;
+}
+
+// Event listeners
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (validateStep(currentStep)) {
+        currentStep++;
+        showStep(currentStep);
+    }
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+    currentStep--;
+    showStep(currentStep);
+});
+
+// Initialize
+showStep(currentStep);
+
+// Real-time validation feedback
+document.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+    field.addEventListener('blur', () => {
+        if (field.value.trim()) {
+            field.classList.remove('border-red-500', 'bg-red-50');
+            field.classList.add('border-gray-300');
+        }
+    });
+
+    field.addEventListener('input', () => {
+        if (field.value.trim()) {
+            field.classList.remove('border-red-500', 'bg-red-50');
+            field.classList.add('border-gray-300');
+        }
+    });
+});
+</script>
+{% endblock %}

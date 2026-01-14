@@ -1,0 +1,693 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>{% block title %}LysAngels - Plateforme Événementielle Premium{% endblock %}</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}LysAngels - La plateforme premium pour trouver les meilleurs prestataires événementiels. Mariages, événements corporate, célébrations.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}événementiel, prestataires, mariage, DJ, photographe, traiteur, décoration, Abidjan, Côte d'Ivoire{% endblock %}">
+    <meta name="author" content="LysAngels">
+    <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}LysAngels - Plateforme Événementielle Premium{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Trouvez les meilleurs prestataires pour vos événements. Plus de 250 professionnels qualifiés à votre service.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-image.jpg' %}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LysAngels">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{% block twitter_title %}LysAngels - Plateforme Événementielle Premium{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Trouvez les meilleurs prestataires pour vos événements.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-image.jpg' %}{% endblock %}">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="LysAngels">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LysAngels">
+    <meta name="theme-color" content="#8B5CF6">
+    <meta name="msapplication-TileColor" content="#8B5CF6">
+    <meta name="msapplication-navbutton-color" content="#8B5CF6">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <!-- Additional SEO -->
+    <meta name="language" content="French">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuration Tailwind personnalisée -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lily-white': '#FFFFFF',
+                        'lily-cream': '#FDFCFB',
+                        'lily-gold': '#D4AF37',
+                        'lily-rose': '#F4EDE4',
+                        'lily-dark': '#1A1A1A',
+                        'lily-purple': '#8B5CF6',
+                        'lily-green': '#B8C5B0',
+                        'purple-dark': '#7C3AED',
+                        'purple-light': '#A78BFA',
+                        'gold-light': '#E5C158',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        'display': ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    fontSize: {
+                        'xs': ['0.75rem', { lineHeight: '1.5' }],
+                        'sm': ['0.875rem', { lineHeight: '1.5' }],
+                        'base': ['0.9375rem', { lineHeight: '1.6' }],
+                        'lg': ['1rem', { lineHeight: '1.6' }],
+                        'xl': ['1.125rem', { lineHeight: '1.5' }],
+                        '2xl': ['1.25rem', { lineHeight: '1.4' }],
+                        '3xl': ['1.5rem', { lineHeight: '1.3' }],
+                        '4xl': ['2rem', { lineHeight: '1.2' }],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker enregistré:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('❌ Erreur Service Worker:', error);
+                    });
+            });
+        }
+        
+        // Détecter si l'app est installée
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window.deferredPrompt = e;
+            // Afficher un bouton d'installation personnalisé si souhaité
+            console.log('💡 PWA peut être installée');
+        });
+        
+        // Notification d'installation réussie
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 PWA installée avec succès!');
+            window.deferredPrompt = null;
+        });
+    </script>
+
+    <!-- Google Fonts - Inter + Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="{% static 'css/design-system.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
+
+    <!-- CSS Global pour forcer Inter partout -->
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        }
+
+        /* Hiérarchie typographique premium - Style Inter */
+        body {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            font-weight: 400; /* Regular par défaut pour meilleure lisibilité */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.011em; /* Ajustement optique Inter */
+        }
+
+        /* Titres principaux - Bold (700) ou SemiBold (600) */
+        h1 {
+            font-weight: 700;
+            letter-spacing: -0.022em;
+        }
+        
+        h2 {
+            font-weight: 600;
+            letter-spacing: -0.019em;
+        }
+
+        /* Sous-titres - SemiBold (600) */
+        h3, h4, h5, h6 {
+            font-weight: 600;
+            letter-spacing: -0.014em;
+        }
+
+        /* Labels et boutons - Medium (500) */
+        label, button, .btn, a.btn {
+            font-weight: 500;
+            letter-spacing: -0.006em;
+        }
+
+        /* Texte courant - Regular (400) */
+        p, span:not(.font-medium):not(.font-semibold):not(.font-bold), div {
+            font-weight: 400;
+        }
+
+        /* Texte important - SemiBold (600) */
+        strong, b {
+            font-weight: 600;
+        }
+
+        /* Classes utilitaires Inter */
+        .font-bold { font-weight: 700 !important; letter-spacing: -0.022em; }
+        .font-semibold { font-weight: 600 !important; letter-spacing: -0.019em; }
+        .font-medium { font-weight: 500 !important; letter-spacing: -0.011em; }
+        .font-normal { font-weight: 400 !important; }
+        .font-light { font-weight: 400 !important; } /* Inter Regular au lieu de Light pour meilleure lisibilité */
+
+        /* Cartes moins agressives - style Airbnb */
+        .card-subtle {
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .card-subtle:hover {
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Réduire les ombres par défaut */
+        .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .shadow-md {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06) !important;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .shadow-xl {
+            box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .shadow-2xl {
+            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.12) !important;
+        }
+
+        /* Navigation active state */
+        .nav-link {
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        .nav-link-active {
+            color: var(--color-lily-purple) !important;
+            font-weight: 600;
+        }
+
+        .nav-link-active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-lily-purple), var(--color-lily-gold));
+            border-radius: 2px;
+            animation: navUnderline 0.3s ease-out;
+        }
+
+        @keyframes navUnderline {
+            from {
+                transform: scaleX(0);
+            }
+            to {
+                transform: scaleX(1);
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="h-full bg-lily-white text-lily-dark">
+    <!-- Pull to Refresh Indicator -->
+    <div id="pull-refresh-indicator" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center bg-lily-purple text-white py-2 opacity-0 transition-all duration-200" style="transform: translateY(-100%);">
+        <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm font-medium">Actualiser...</span>
+    </div>
+    
+    <!-- Online/Offline Status Indicator -->
+    <div id="online-status" class="hidden"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <a href="{% url 'core:home' %}" class="flex items-center gap-2">
+                        <span class="text-2xl">🎭</span>
+                        <span class="font-display text-xl font-semibold text-lily-dark">LysAngels</span>
+                    </a>
+                </div>
+
+                <!-- Navigation principale -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="{% url 'vendors:vendor_list' %}" class="nav-link {% if request.resolver_match.url_name == 'vendor_list' or request.resolver_match.url_name == 'vendor_detail' %}nav-link-active{% endif %}">
+                        Prestataires
+                    </a>
+                    <a href="{% url 'core:how_it_works' %}" class="nav-link {% if request.resolver_match.url_name == 'how_it_works' %}nav-link-active{% endif %}">
+                        Comment ça marche
+                    </a>
+                    <a href="{% url 'core:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}nav-link-active{% endif %}">
+                        À propos
+                    </a>
+
+                    {% if user.is_authenticated %}
+                        <!-- Badge Notifications avec compteur -->
+                        <div class="relative">
+                            <button id="notifications-btn" class="relative hover:text-lily-purple transition {% if 'notifications' in request.path %}text-lily-purple font-semibold{% else %}text-gray-700{% endif %}">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                {% if unread_notifications_count > 0 %}
+                                    <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full min-w-[18px]">
+                                        {{ unread_notifications_count }}
+                                    </span>
+                                {% endif %}
+                            </button>
+                            
+                            <!-- Dropdown Notifications -->
+                            <div id="notifications-dropdown" class="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl py-2 hidden z-50 max-h-[500px] overflow-y-auto">
+                                <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                                    <h3 class="font-medium text-lily-dark">Notifications</h3>
+                                    {% if unread_notifications_count > 0 %}
+                                        <button onclick="markAllAsRead()" class="text-xs text-lily-purple hover:text-lily-dark transition">
+                                            Tout marquer comme lu
+                                        </button>
+                                    {% endif %}
+                                </div>
+                                <div id="notifications-list">
+                                    <!-- Rempli dynamiquement ou depuis le contexte -->
+                                    <div class="px-4 py-8 text-center text-gray-500 text-sm">
+                                        Chargement...
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 border-t border-gray-200 text-center">
+                                    <a href="{% url 'core:notifications_list' %}" class="text-xs text-lily-purple hover:text-lily-dark transition font-medium">
+                                        Voir toutes les notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Badge Messages avec compteur -->
+                        <a href="{% url 'messaging:conversation_list' %}" class="relative hover:text-lily-purple transition {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple font-semibold{% else %}text-gray-700{% endif %}">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            {% if unread_messages_count > 0 %}
+                                <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full min-w-[18px]">
+                                    {{ unread_messages_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+
+                        {% if user.is_provider %}
+                            <a href="{% url 'vendors:dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}nav-link-active{% endif %}">
+                                Mon espace
+                            </a>
+                        {% elif user.is_susy_admin %}
+                            <a href="{% url 'accounts:admin_dashboard' %}" class="nav-link {% if 'admin' in request.path %}nav-link-active{% endif %}">
+                                Administration
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:dashboard' %}" class="nav-link {% if 'dashboard' in request.path or 'profile' in request.path %}nav-link-active{% endif %}">
+                                Mon espace
+                            </a>
+                            <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
+                                Créer un projet
+                            </a>
+                        {% endif %}
+
+                        <div class="relative">
+                            <button id="user-menu-btn" class="flex items-center space-x-2 text-sm text-gray-700 hover:text-lily-purple transition font-medium">
+                                <span>{{ user.get_full_name|default:user.username }}</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50">
+                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-lily-cream">
+                                    Mon profil
+                                </a>
+                                {% if user.is_provider %}
+                                    <a href="{% url 'vendors:profile_edit' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-lily-cream">
+                                        Modifier mon profil
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'messaging:conversation_list' %}" class="block px-4 py-2 text-sm {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:bg-lily-cream">
+                                    Messages
+                                </a>
+                                <hr class="my-2">
+                                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-lily-cream">
+                                    Déconnexion
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="nav-link">
+                            Connexion
+                        </a>
+                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">
+                            Inscription
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Menu mobile -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu mobile complet -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t shadow-lg">
+            <div class="px-4 py-3 space-y-1">
+                <!-- Navigation principale -->
+                <a href="{% url 'vendors:vendor_list' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'vendor_list' or request.resolver_match.url_name == 'vendor_detail' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                    🔍 Prestataires
+                </a>
+                <a href="{% url 'core:how_it_works' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'how_it_works' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                    ❓ Comment ça marche
+                </a>
+                <a href="{% url 'core:about' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'about' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                    ℹ️ À propos
+                </a>
+
+                {% if user.is_authenticated %}
+                    <div class="border-t pt-2 mt-2">
+                        <!-- Notifications mobile -->
+                        <a href="{% url 'core:notifications_list' %}" class="flex items-center justify-between py-3 px-2 text-base {% if 'notifications' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                            <span>🔔 Notifications</span>
+                            {% if unread_notifications_count > 0 %}
+                                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium min-w-[24px] text-center">
+                                    {{ unread_notifications_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+
+                        <!-- Messages mobile -->
+                        <a href="{% url 'messaging:conversation_list' %}" class="flex items-center justify-between py-3 px-2 text-base {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                            <span>💬 Messages</span>
+                            {% if unread_messages_count > 0 %}
+                                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium min-w-[24px] text-center">
+                                    {{ unread_messages_count }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </div>
+
+                    <div class="border-t pt-2 mt-2">
+                        <!-- Espaces selon type utilisateur -->
+                        {% if user.is_provider %}
+                            <a href="{% url 'vendors:dashboard' %}" class="block py-3 px-2 text-base {% if 'dashboard' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                                📊 Mon espace prestataire
+                            </a>
+                            <a href="{% url 'vendors:profile_edit' %}" class="block py-3 px-2 text-base {% if 'profile_edit' in request.path or 'profile/edit' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                                ✏️ Modifier mon profil
+                            </a>
+                        {% elif user.is_susy_admin %}
+                            <a href="{% url 'accounts:admin_dashboard' %}" class="block py-3 px-2 text-base {% if 'admin' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                                👑 Administration
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:dashboard' %}" class="block py-3 px-2 text-base {% if 'dashboard' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                                📊 Mon espace
+                            </a>
+                            <a href="{% url 'projects:project_create' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
+                                ➕ Créer un projet
+                            </a>
+                        {% endif %}
+
+                        <a href="{% url 'accounts:profile' %}" class="block py-3 px-2 text-base {% if 'profile' in request.path and 'profile_edit' not in request.path and 'profile/edit' not in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                            👤 Mon profil
+                        </a>
+                    </div>
+
+                    <div class="border-t pt-2 mt-2">
+                        <a href="{% url 'accounts:logout' %}" class="block py-3 px-2 text-base text-red-600 hover:bg-red-50 rounded-lg transition font-medium">
+                            🚪 Déconnexion
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="border-t pt-2 mt-2">
+                        <a href="{% url 'accounts:login' %}" class="block py-3 px-2 text-base text-gray-700 hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                            🔑 Connexion
+                        </a>
+                        <a href="{% url 'accounts:register' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
+                            ✨ Inscription
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages Flash -->
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            {% for message in messages %}
+                <div class="rounded-lg p-4 mb-4 flex items-start justify-between {% if message.tags == 'error' %}bg-red-50 text-red-800{% elif message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800{% else %}bg-blue-50 text-blue-800{% endif %}" role="alert">
+                    <p class="flex-1 font-light">{{ message }}</p>
+                    <button onclick="this.parentElement.remove()" class="ml-4 flex-shrink-0 text-current opacity-50 hover:opacity-100 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Contenu principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-lily-dark text-white mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- À propos -->
+                <div>
+                    <h3 class="text-base font-bold mb-4">LysAngels</h3>
+                    <p class="text-gray-400 text-xs">
+                        La plateforme premium qui met en relation clients et prestataires événementiels à Lomé et au Togo.
+                    </p>
+                </div>
+
+                <!-- Liens rapides -->
+                <div>
+                    <h4 class="font-medium mb-4 text-sm">Liens rapides</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="{% url 'vendors:vendor_list' %}" class="hover:text-lily-gold transition">Prestataires</a></li>
+                        <li><a href="{% url 'core:how_it_works' %}" class="hover:text-lily-gold transition">Comment ça marche</a></li>
+                        <li><a href="{% url 'core:about' %}" class="hover:text-lily-gold transition">À propos</a></li>
+                        <li><a href="{% url 'core:contact' %}" class="hover:text-lily-gold transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Pour les prestataires -->
+                <div>
+                    <h4 class="font-medium mb-4 text-sm">Prestataires</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="{% url 'accounts:register' %}" class="hover:text-lily-gold transition">Devenir prestataire</a></li>
+                        {% if user.is_provider %}
+                            <li><a href="{% url 'vendors:dashboard' %}" class="hover:text-lily-gold transition">Mon tableau de bord</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-medium mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-lily-gold" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                            </svg>
+                            contact@lysangels.tg
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-lily-gold" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                            </svg>
+                            +228 XX XX XX XX
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-lily-gold" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Lomé, Togo 🇹🇬
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 space-y-4 md:space-y-0">
+                    <p>&copy; 2025 LysAngels. Tous droits réservés.</p>
+                    <div class="flex space-x-6">
+                        <a href="{% url 'core:terms' %}" class="hover:text-lily-gold transition">CGU</a>
+                        <a href="{% url 'core:privacy' %}" class="hover:text-lily-gold transition">Confidentialité</a>
+                        <a href="{% url 'core:legal' %}" class="hover:text-lily-gold transition">Mentions légales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Menu mobile toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Menu utilisateur dropdown
+        const userMenuBtn = document.getElementById('user-menu-btn');
+        const userMenu = document.getElementById('user-menu');
+
+        if (userMenuBtn && userMenu) {
+            // Toggle menu on click
+            userMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+
+            // Prevent menu from closing when clicking inside it
+            userMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+
+        // Notifications dropdown
+        const notificationsBtn = document.getElementById('notifications-btn');
+        const notificationsDropdown = document.getElementById('notifications-dropdown');
+
+        if (notificationsBtn && notificationsDropdown) {
+            notificationsBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                notificationsDropdown.classList.toggle('hidden');
+                
+                // Charger les notifications au premier clic
+                if (!notificationsDropdown.dataset.loaded) {
+                    await loadNotifications();
+                    notificationsDropdown.dataset.loaded = 'true';
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+                    notificationsDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        async function loadNotifications() {
+            try {
+                const response = await fetch('{% url "core:notifications_list" %}');
+                const html = await response.text();
+                
+                // Extraire seulement la liste des notifications
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const notificationItems = doc.querySelectorAll('.notification-item');
+                
+                const notificationsList = document.getElementById('notifications-list');
+                
+                if (notificationItems.length === 0) {
+                    notificationsList.innerHTML = '<div class="px-4 py-8 text-center text-gray-500 text-sm">Aucune notification</div>';
+                } else {
+                    notificationsList.innerHTML = '';
+                    notificationItems.forEach((item, index) => {
+                        if (index < 5) {  // Afficher max 5 notifications dans le dropdown
+                            notificationsList.appendChild(item.cloneNode(true));
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur chargement notifications:', error);
+                document.getElementById('notifications-list').innerHTML = '<div class="px-4 py-8 text-center text-gray-500 text-sm">Erreur de chargement</div>';
+            }
+        }
+
+        async function markAllAsRead() {
+            try {
+                const response = await fetch('{% url "core:mark_all_notifications_read" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                });
+
+                if (response.ok) {
+                    location.reload();
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+    </script>
+    
+    <!-- Mobile UX Enhancements -->
+    {% load static %}
+    <script src="{% static 'js/mobile-ux.js' %}" defer></script>
+
+    <!-- Micro-interactions & Animations -->
+    <script src="{% static 'js/interactions.js' %}" defer></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

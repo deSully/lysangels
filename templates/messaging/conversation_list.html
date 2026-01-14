@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes conversations - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            {% if user.vendor_profile %}
+            <a href="{% url 'vendors:dashboard' %}"
+               class="inline-flex items-center text-lily-purple hover:text-lily-dark transition font-medium">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour au tableau de bord
+            </a>
+            {% else %}
+            <a href="{% url 'accounts:dashboard' %}"
+               class="inline-flex items-center text-lily-purple hover:text-lily-dark transition font-medium">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour au tableau de bord
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-light text-lily-dark mb-2">
+                Mes conversations
+            </h1>
+            <p class="text-gray-600">
+                Échangez avec {% if user.is_provider %}vos clients{% else %}les prestataires{% endif %}
+            </p>
+        </div>
+
+        {% if conversations_data %}
+            <div class="grid grid-cols-1 gap-4">
+                {% for data in conversations_data %}
+                    {% with conversation=data.conversation unread_count=data.unread_count %}
+                    <a href="{% url 'messaging:conversation_detail' conversation.pk %}"
+                       class="bg-white rounded-xl shadow-sm hover:shadow-md transition p-6 block">
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-start flex-1">
+                                <!-- Avatar -->
+                                <div class="mr-4 flex-shrink-0">
+                                    {% if user.is_provider %}
+                                        <!-- Avatar du client -->
+                                        {% if conversation.client.profile_image %}
+                                            <img src="{{ conversation.client.profile_image.url }}"
+                                                 alt="{{ conversation.client.get_full_name }}"
+                                                 class="w-14 h-14 rounded-full object-cover">
+                                        {% else %}
+                                            <div class="w-14 h-14 rounded-full bg-lily-purple flex items-center justify-center text-white font-medium text-lg">
+                                                {{ conversation.client.first_name|first }}{{ conversation.client.last_name|first }}
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <!-- Logo du prestataire -->
+                                        {% if conversation.vendor.logo %}
+                                            <img src="{{ conversation.vendor.logo.url }}"
+                                                 alt="{{ conversation.vendor.business_name }}"
+                                                 class="w-14 h-14 rounded-lg object-cover">
+                                        {% else %}
+                                            <div class="w-14 h-14 rounded-lg bg-lily-purple flex items-center justify-center text-white text-xl">
+                                                {{ conversation.vendor.business_name|first }}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <!-- Contenu -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h3 class="font-medium text-gray-900 text-lg">
+                                            {% if user.is_provider %}
+                                                {{ conversation.client.get_full_name }}
+                                            {% else %}
+                                                {{ conversation.vendor.business_name }}
+                                            {% endif %}
+                                        </h3>
+                                    </div>
+
+                                    <!-- Projet concerné -->
+                                    <p class="text-sm text-gray-600 mb-2">
+                                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        {{ conversation.proposal_request.project.title }}
+                                    </p>
+
+                                    <!-- Dernier message -->
+                                    {% with last_message=conversation.messages.last %}
+                                    {% if last_message %}
+                                        <p class="text-sm text-gray-600 truncate">
+                                            {% if last_message.sender == user %}
+                                                <span class="font-medium">Vous :</span>
+                                            {% endif %}
+                                            {{ last_message.content|truncatewords:15 }}
+                                        </p>
+                                    {% else %}
+                                        <p class="text-sm text-gray-400 italic">Aucun message</p>
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <!-- Date et indicateur -->
+                            <div class="ml-4 text-right flex-shrink-0">
+                                {% with last_message=conversation.messages.last %}
+                                <p class="text-xs text-gray-500 mb-2">
+                                    {% if last_message %}
+                                        {{ last_message.created_at|date:"d/m/Y" }}
+                                        <br>
+                                        {{ last_message.created_at|time:"H:i" }}
+                                    {% else %}
+                                        {{ conversation.created_at|date:"d/m/Y" }}
+                                    {% endif %}
+                                </p>
+                                
+                                <!-- Badge messages non lus -->
+                                {% if unread_count > 0 %}
+                                    <span class="inline-flex items-center justify-center w-6 h-6 bg-lily-purple text-white text-xs font-medium rounded-full">
+                                        {{ unread_count }}
+                                    </span>
+                                {% endif %}
+                                {% endwith %}
+                                <div class="mt-2">
+                                    <svg class="w-5 h-5 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <!-- Aucune conversation -->
+            <div class="bg-white rounded-xl shadow-sm p-12 text-center">
+                <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                <h3 class="text-xl font-medium text-gray-900 mb-2">
+                    Aucune conversation pour le moment
+                </h3>
+                <p class="text-gray-600 mb-6">
+                    {% if user.is_provider %}
+                        Les conversations démarrent automatiquement lorsqu'un client vous envoie une demande de devis
+                    {% else %}
+                        Les conversations démarrent lorsque vous envoyez une demande de devis à un prestataire
+                    {% endif %}
+                </p>
+                <a href="{% if user.is_provider %}{% url 'vendors:dashboard' %}{% else %}{% url 'vendors:vendor_list' %}{% endif %}"
+                   class="inline-flex items-center bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    {% if user.is_provider %}
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Voir mes demandes
+                    {% else %}
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Explorer les prestataires
+                    {% endif %}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

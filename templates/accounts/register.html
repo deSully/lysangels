@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-lily-cream py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-lily-dark">Inscription</h2>
+                <p class="mt-2 text-gray-600">Créez votre compte LysAngels</p>
+            </div>
+
+            <!-- Messages -->
+            {% include 'components/messages.html' %}
+
+            <!-- Choix du type -->
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <button type="button" onclick="selectUserType('client')" id="btn-client"
+                        class="user-type-btn border-2 border-lily-purple bg-lily-purple text-white p-4 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    🎉 Je suis un client
+                </button>
+                <button type="button" onclick="selectUserType('provider')" id="btn-provider"
+                        class="user-type-btn border-2 border-gray-300 bg-white text-gray-700 p-4 rounded-lg font-medium hover:border-lily-purple transition">
+                    💼 Je suis un prestataire
+                </button>
+            </div>
+
+            <!-- Message informatif pour prestataires -->
+            <div id="provider_notice" class="hidden mb-6 bg-lily-purple bg-opacity-10 border border-lily-purple rounded-lg p-4">
+                <p class="text-sm text-lily-dark">
+                    <strong>ℹ️ Information importante :</strong> Votre compte prestataire sera vérifié par notre équipe avant activation. Vous recevrez une notification par email une fois validé.
+                </p>
+            </div>
+
+            <!-- Formulaire -->
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <input type="hidden" name="user_type" id="user_type" value="client">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Prénom *
+                        </label>
+                        <input type="text" name="first_name" id="first_name" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Nom *
+                        </label>
+                        <input type="text" name="last_name" id="last_name" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div id="business_name_field" class="hidden">
+                    <label for="business_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom de l'entreprise
+                    </label>
+                    <input type="text" name="business_name" id="business_name"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom d'utilisateur *
+                    </label>
+                    <input type="text" name="username" id="username" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email *
+                    </label>
+                    <input type="email" name="email" id="email" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Téléphone
+                        </label>
+                        <input type="tel" name="phone" id="phone"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                            Ville
+                        </label>
+                        <input type="text" name="city" id="city"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                            Mot de passe *
+                        </label>
+                        <input type="password" name="password" id="password" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="password_confirm" class="block text-sm font-medium text-gray-700 mb-2">
+                            Confirmer le mot de passe *
+                        </label>
+                        <input type="password" name="password_confirm" id="password_confirm" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <!-- Conditions générales d'utilisation -->
+                <div class="border-2 border-gray-200 rounded-lg p-4">
+                    <h3 class="font-medium text-gray-900 mb-2">Conditions générales d'utilisation</h3>
+                    {% if active_terms %}
+                        <div class="bg-gray-50 rounded-lg p-4 max-h-60 overflow-y-auto text-sm text-gray-700 mb-3">
+                            <div class="prose prose-sm max-w-none">
+                                {{ active_terms.content|linebreaks }}
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" id="accept_terms" name="accept_terms" required
+                                   class="h-4 w-4 mt-1 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                            <label for="accept_terms" class="ml-2 block text-sm text-gray-700">
+                                J'ai lu et j'accepte les <a href="{% url 'core:terms' %}" target="_blank" class="text-lily-purple hover:text-lily-gold font-medium">conditions générales d'utilisation</a> (v{{ active_terms.version }}) *
+                            </label>
+                        </div>
+                    {% else %}
+                        <p class="text-sm text-gray-600">Les conditions générales d'utilisation ne sont pas disponibles pour le moment.</p>
+                    {% endif %}
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-lily-purple text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition transform hover:scale-105">
+                    S'inscrire
+                </button>
+            </form>
+
+            <!-- Lien connexion -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    Vous avez déjà un compte ?
+                    <a href="{% url 'accounts:login' %}" class="text-lily-purple font-medium hover:text-lily-gold">
+                        Se connecter
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectUserType(type) {
+        const userTypeInput = document.getElementById('user_type');
+        const btnClient = document.getElementById('btn-client');
+        const btnProvider = document.getElementById('btn-provider');
+        const businessNameField = document.getElementById('business_name_field');
+        const providerNotice = document.getElementById('provider_notice');
+
+        userTypeInput.value = type;
+
+        if (type === 'client') {
+            btnClient.className = 'user-type-btn border-2 border-lily-purple bg-lily-purple text-white p-4 rounded-lg font-medium hover:bg-opacity-90 transition';
+            btnProvider.className = 'user-type-btn border-2 border-gray-300 bg-white text-gray-700 p-4 rounded-lg font-medium hover:border-lily-purple transition';
+            businessNameField.classList.add('hidden');
+            providerNotice.classList.add('hidden');
+        } else {
+            btnClient.className = 'user-type-btn border-2 border-gray-300 bg-white text-gray-700 p-4 rounded-lg font-medium hover:border-lily-purple transition';
+            btnProvider.className = 'user-type-btn border-2 border-lily-purple bg-lily-purple text-white p-4 rounded-lg font-medium hover:bg-opacity-90 transition';
+            businessNameField.classList.remove('hidden');
+            providerNotice.classList.remove('hidden');
+        }
+    }
+
+    // Initialiser avec la valeur de l'URL si présente
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam === 'provider') {
+        selectUserType('provider');
+    }
+</script>
+{% endblock %}

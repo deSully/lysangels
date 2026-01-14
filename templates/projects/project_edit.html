@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Modifier - {{ project.title }} - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-lily-dark mb-2">Modifier le projet</h1>
+                <p class="text-gray-600">{{ project.title }}</p>
+            </div>
+
+            <!-- Formulaire -->
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Titre du projet -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                        Titre du projet *
+                    </label>
+                    <input type="text" name="title" id="title" value="{{ project.title }}" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <!-- Type d'événement et ville -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="event_type" class="block text-sm font-medium text-gray-700 mb-2">
+                            Type d'événement *
+                        </label>
+                        <select name="event_type" id="event_type" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                            {% for event in event_types %}
+                                <option value="{{ event.id }}" {% if event.id == project.event_type.id %}selected{% endif %}>
+                                    {{ event.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                            Ville *
+                        </label>
+                        <input type="text" name="city" id="city" value="{{ project.city }}" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <!-- Date et heure -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="event_date" class="block text-sm font-medium text-gray-700 mb-2">
+                            Date de l'événement *
+                        </label>
+                        <input type="date" name="event_date" id="event_date" value="{{ project.event_date|date:'Y-m-d' }}" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="event_time" class="block text-sm font-medium text-gray-700 mb-2">
+                            Heure (optionnel)
+                        </label>
+                        <input type="time" name="event_time" id="event_time" value="{% if project.event_time %}{{ project.event_time|time:'H:i' }}{% endif %}"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <!-- Lieu précis -->
+                <div>
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
+                        Lieu précis (optionnel)
+                    </label>
+                    <input type="text" name="location" id="location" value="{{ project.location }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <!-- Nombre d'invités -->
+                <div>
+                    <label for="guest_count" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nombre d'invités estimé (optionnel)
+                    </label>
+                    <input type="number" name="guest_count" id="guest_count" min="1" value="{{ project.guest_count }}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <!-- Budget -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="budget_min" class="block text-sm font-medium text-gray-700 mb-2">
+                            Budget minimum (FCFA) *
+                        </label>
+                        <input type="number" name="budget_min" id="budget_min" value="{{ project.budget_min }}" required min="0"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="budget_max" class="block text-sm font-medium text-gray-700 mb-2">
+                            Budget maximum (FCFA) - optionnel
+                        </label>
+                        <input type="number" name="budget_max" id="budget_max" value="{{ project.budget_max }}" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <!-- Services recherchés -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Services recherchés *
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {% for service in service_types %}
+                            <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 cursor-pointer transition">
+                                <input type="checkbox" name="services_needed" value="{{ service.id }}"
+                                       {% if service in project.services_needed.all %}checked{% endif %}
+                                       class="h-4 w-4 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                                <span class="ml-2 text-sm text-gray-700">{{ service.name }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                        Description détaillée de votre événement *
+                    </label>
+                    <textarea name="description" id="description" rows="6" required
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">{{ project.description }}</textarea>
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex space-x-4 pt-4">
+                    <button type="submit"
+                            class="flex-1 bg-lily-purple text-white px-8 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        Enregistrer les modifications
+                    </button>
+                    <a href="{% url 'projects:project_detail' project.id %}"
+                       class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Prestataire - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-light text-lily-dark">
+                Tableau de bord - {{ vendor_profile.business_name }}
+            </h1>
+            <p class="text-gray-600 mt-2">Gérez vos demandes et propositions</p>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <a href="{% url 'vendors:profile_edit' %}" class="bg-lily-purple text-white p-6 rounded-xl hover:bg-opacity-90 transition transform hover:scale-105">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg mb-1">Mon profil</h3>
+                        <p class="text-sm opacity-90">Modifier mes informations</p>
+                    </div>
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="{% url 'vendors:portfolio_manage' %}" class="bg-white p-6 rounded-xl hover:shadow-lg transition border-2 border-lily-gold">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg mb-1 text-lily-dark">Mon portfolio</h3>
+                        <p class="text-sm text-lily-purple">Gérer mes images</p>
+                    </div>
+                    <svg class="w-8 h-8 text-lily-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="{% url 'proposals:request_list' %}" class="bg-white p-6 rounded-xl hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg mb-1 text-lily-dark">Demandes reçues</h3>
+                        <p class="text-sm text-gray-600">{{ recent_requests|length }} demande{{ recent_requests|length|pluralize }}</p>
+                    </div>
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="{% url 'messaging:conversation_list' %}" class="bg-white p-6 rounded-xl hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg mb-1 text-lily-dark">Messages</h3>
+                        <p class="text-sm text-gray-600">Voir mes conversations</p>
+                    </div>
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                </div>
+            </a>
+        </div>
+
+        <!-- Demandes récentes -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-medium text-lily-dark mb-4">Demandes de devis récentes</h2>
+
+            {% if recent_requests %}
+                <div class="space-y-4">
+                    {% for request in recent_requests %}
+                        <a href="{% url 'proposals:request_detail' request.id %}"
+                           class="block border border-gray-200 rounded-lg p-4 hover:border-lily-purple hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex-1">
+                                    <h3 class="font-medium text-lily-dark">{{ request.project.title }}</h3>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        {{ request.project.event_type.name }} • {{ request.project.city }} • {{ request.project.event_date|date:"d/m/Y" }}
+                                    </p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+                                    {% if request.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif request.status == 'viewed' %}bg-blue-100 text-blue-800
+                                    {% elif request.status == 'responded' %}bg-green-100 text-green-800
+                                    {% else %}bg-red-100 text-red-800{% endif %}">
+                                    {{ request.get_status_display }}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600">Budget: {{ request.project.budget_min|floatformat:0 }} FCFA
+                                {% if request.project.budget_max %}- {{ request.project.budget_max|floatformat:0 }} FCFA{% endif %}
+                            </p>
+                        </a>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-4 text-center">
+                    <a href="{% url 'proposals:request_list' %}" class="text-lily-purple hover:text-lily-gold font-medium">
+                        Voir toutes les demandes →
+                    </a>
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                    </svg>
+                    <p class="text-gray-500 mb-4">Aucune demande de devis pour le moment</p>
+                    <p class="text-sm text-gray-400">Les clients vous contacteront quand ils seront intéressés par vos services</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

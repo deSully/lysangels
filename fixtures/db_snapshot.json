@@ -1,0 +1,5670 @@
+[
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$EInADseCVv4Ku8uVkqe1qw$WrR8qUCcAYcYzwt/fHqSugcbMtEMzw57+seL0IpNqms=",
+    "last_login": "2026-01-11T23:05:15.099Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "System",
+    "email": "admin@eventsusy.tg",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:22.274Z",
+    "user_type": "admin",
+    "phone": "",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:22.416Z",
+    "updated_at": "2026-01-11T23:01:22.416Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$yQrwfUekj4DrJOHKzLShsP$NankMA6dDWu9si5yr2RjgAS95HMCi+QYbtVpbgDBnbM=",
+    "last_login": "2026-01-13T09:02:50.979Z",
+    "is_superuser": false,
+    "username": "admin_test",
+    "first_name": "Admin",
+    "last_name": "Test",
+    "email": "admin_test@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:22.421Z",
+    "user_type": "admin",
+    "phone": "+228 90 00 00 01",
+    "city": "Lomé",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:22.562Z",
+    "updated_at": "2026-01-11T23:01:22.562Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$RL9WAzOqnMhsSqfaz7Wr1d$vDLW63E+Wy9mSrN2FfJVaUF2ZD+xQWXmcB2RsKJpmqQ=",
+    "last_login": "2026-01-12T18:55:26.483Z",
+    "is_superuser": false,
+    "username": "client_test",
+    "first_name": "Marie",
+    "last_name": "Dupont",
+    "email": "client@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:22.564Z",
+    "user_type": "client",
+    "phone": "+228 90 00 00 02",
+    "city": "Lomé",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:22.705Z",
+    "updated_at": "2026-01-11T23:01:22.705Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$tQw1j3adeOj2BZh5u415I9$yJSIBd7REDvzpbhZulkfVlMRqdKQ7sA/MRN2Rb55Fdw=",
+    "last_login": "2026-01-13T09:02:03.843Z",
+    "is_superuser": false,
+    "username": "provider_test",
+    "first_name": "Jean",
+    "last_name": "Martin",
+    "email": "provider@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:22.708Z",
+    "user_type": "provider",
+    "phone": "+228 90 00 00 03",
+    "city": "Lomé",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:22.848Z",
+    "updated_at": "2026-01-11T23:01:22.848Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$FxZ7MooZQNEH33xwU8eXfz$DsdLZ1TnGZKYdDzDp7DI4yEu3NayYYciCG68+QBFpss=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_1_kofi",
+    "first_name": "Kofi",
+    "last_name": "Appiah",
+    "email": "vendor_1_kofi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:22.859Z",
+    "user_type": "provider",
+    "phone": "+228 90 89 42 19",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.000Z",
+    "updated_at": "2026-01-11T23:01:23.000Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$KXuKMaE0ZNqJt5FIudcUW2$0NEgHzu9xSVthys+20QbJJyKw1e4T8MQWeulzhVsqDA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_2_ama",
+    "first_name": "Ama",
+    "last_name": "Koffi",
+    "email": "vendor_2_ama@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.008Z",
+    "user_type": "provider",
+    "phone": "+228 90 27 94 78",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.148Z",
+    "updated_at": "2026-01-11T23:01:23.148Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$sJTvZMUtlf2iEFLn0icdld$wHtS0L1XvWYSxLHBFIA0/BRlznZtCdNknsBsWoG1NjM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_3_yao",
+    "first_name": "Yao",
+    "last_name": "Kouma",
+    "email": "vendor_3_yao@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.157Z",
+    "user_type": "provider",
+    "phone": "+228 90 38 87 12",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.297Z",
+    "updated_at": "2026-01-11T23:01:23.297Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$ZfnVRW3Ed8uLdvCSAr6D3g$KEvv/hssKSDnYRzCcGLOcvxUyldkrimqLnoNQLaLyPQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_4_akosua",
+    "first_name": "Akosua",
+    "last_name": "Attipoe",
+    "email": "vendor_4_akosua@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.304Z",
+    "user_type": "provider",
+    "phone": "+228 90 48 81 39",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.444Z",
+    "updated_at": "2026-01-11T23:01:23.444Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$wPzjzcfxW7fmcxf3BvRanP$u7FYJfCyksMHp1aiSFAdM2G13Br5NmmGQwV4It+jKuw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_5_kwame",
+    "first_name": "Kwame",
+    "last_name": "Ahiavor",
+    "email": "vendor_5_kwame@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.452Z",
+    "user_type": "provider",
+    "phone": "+228 90 99 82 92",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.593Z",
+    "updated_at": "2026-01-11T23:01:23.593Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$0oWnWiGoVW7inrlxtYgNNO$mb3QNP38nu1ppeippjKSDn9D7ECfOLGjM1hDSBhZtok=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_6_abla",
+    "first_name": "Abla",
+    "last_name": "Kpakpo",
+    "email": "vendor_6_abla@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.600Z",
+    "user_type": "provider",
+    "phone": "+228 90 18 56 48",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.742Z",
+    "updated_at": "2026-01-11T23:01:23.742Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Pt47GRhB1MYQITqOROWutp$jJGD1eJHdpb/5Vrc2NQ53eKOi5E1NJn0jTlh8a1mWMY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_7_koffi",
+    "first_name": "Koffi",
+    "last_name": "Mensah",
+    "email": "vendor_7_koffi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.749Z",
+    "user_type": "provider",
+    "phone": "+228 90 61 32 63",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:23.906Z",
+    "updated_at": "2026-01-11T23:01:23.906Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$7Ae872lhdsNNzih0jHQSZF$JVuP5UryBQR/b9QaBshkM6y+wrJe+uuX8RYRRo2ZJZs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_8_edem",
+    "first_name": "Edem",
+    "last_name": "Koffi",
+    "email": "vendor_8_edem@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:23.916Z",
+    "user_type": "provider",
+    "phone": "+228 90 73 98 80",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.056Z",
+    "updated_at": "2026-01-11T23:01:24.056Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Zh9c9OWBbM98zktZXJhT4w$aEpMmv0Kg5AFV1f6In+4buwij0La0TCvX2PpoyxyEUA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_9_sena",
+    "first_name": "Sena",
+    "last_name": "Tetteh",
+    "email": "vendor_9_sena@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.066Z",
+    "user_type": "provider",
+    "phone": "+228 90 44 47 63",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.221Z",
+    "updated_at": "2026-01-11T23:01:24.221Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$VAawKJSAjNNH5GDbkwiGZw$ABv/biYac0QjUGJ6swDGCMChahy7A74sZHNBykiCRP4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_10_dela",
+    "first_name": "Dela",
+    "last_name": "Agbodza",
+    "email": "vendor_10_dela@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.228Z",
+    "user_type": "provider",
+    "phone": "+228 90 34 52 65",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.369Z",
+    "updated_at": "2026-01-11T23:01:24.369Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$MvKVNdOZfQHmfull26F0Je$Vgo/dPduo0XfX7MmiTB7NBqm7r3o9lDH3vCSvsrXYYA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_11_mawuli",
+    "first_name": "Mawuli",
+    "last_name": "Koffi",
+    "email": "vendor_11_mawuli@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.384Z",
+    "user_type": "provider",
+    "phone": "+228 90 39 67 62",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.524Z",
+    "updated_at": "2026-01-11T23:01:24.524Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$d15LJrjWtGr8yJZeEfjrV9$tkzirLGvt+DyzgaD1Ztp1uw5e7Cq4S6NJktSaovYDxw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_12_afi",
+    "first_name": "Afi",
+    "last_name": "Ahiavor",
+    "email": "vendor_12_afi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.532Z",
+    "user_type": "provider",
+    "phone": "+228 90 28 70 32",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.673Z",
+    "updated_at": "2026-01-11T23:01:24.673Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$bVg5YK3Oh5XQXsTYNTnW8k$AwDbNuPTixnbosTZM3Y6pkc3G8LFKgQ19BkGj0UV0O0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_13_koku",
+    "first_name": "Koku",
+    "last_name": "Kouma",
+    "email": "vendor_13_koku@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.681Z",
+    "user_type": "provider",
+    "phone": "+228 90 25 79 48",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.821Z",
+    "updated_at": "2026-01-11T23:01:24.821Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Xa4jkXI6iRWd9hLpz2sVGt$D45GMM9TCJ43Lis1rNjeDMHivDiqq2i8WcEGWrOEjq4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_14_ami",
+    "first_name": "Ami",
+    "last_name": "Appiah",
+    "email": "vendor_14_ami@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.845Z",
+    "user_type": "provider",
+    "phone": "+228 90 74 58 58",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:24.986Z",
+    "updated_at": "2026-01-11T23:01:24.986Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$NfWDZUo7LF9ws2TM2gLNmv$2XGQOBL89Jzmqb9uirm1RS73hgSur1i0BuAfITehgVc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_15_kossi",
+    "first_name": "Kossi",
+    "last_name": "Deku",
+    "email": "vendor_15_kossi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:24.993Z",
+    "user_type": "provider",
+    "phone": "+228 90 36 43 14",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.134Z",
+    "updated_at": "2026-01-11T23:01:25.134Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$u4vKkSRBtdBnfaVBcoZkhi$+0jIjZDdW4f3S939eQY+ZLCg2G5TNaxtIaqMVkNZ2zQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_16_adjoa",
+    "first_name": "Adjoa",
+    "last_name": "Addo",
+    "email": "vendor_16_adjoa@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.140Z",
+    "user_type": "provider",
+    "phone": "+228 90 72 74 49",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.280Z",
+    "updated_at": "2026-01-11T23:01:25.280Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$dCC5qjJeZ9Sw4ZnRgIlw3q$7ywVHkmKsosm+GzU+wEH9rSWahhJAMorgbzWzT2pA+E=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_17_kodjo",
+    "first_name": "Kodjo",
+    "last_name": "Amegashie",
+    "email": "vendor_17_kodjo@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.293Z",
+    "user_type": "provider",
+    "phone": "+228 90 67 62 66",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.433Z",
+    "updated_at": "2026-01-11T23:01:25.433Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$0gruzrcPMFU0UfY8Ltirwl$Zgh2X+J9Y/asyCmo+NU14zatme2W+NNEMCQjqzStk40=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_18_akua",
+    "first_name": "Akua",
+    "last_name": "Appiah",
+    "email": "vendor_18_akua@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.445Z",
+    "user_type": "provider",
+    "phone": "+228 90 28 70 58",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.585Z",
+    "updated_at": "2026-01-11T23:01:25.585Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$kB3X3S5W74osDBDCdGIxFn$0D3sBGK9d3jsjzrPkEtZnwwvnM8H3VYatHsk7hrHGI8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_19_kwasi",
+    "first_name": "Kwasi",
+    "last_name": "Appiah",
+    "email": "vendor_19_kwasi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.606Z",
+    "user_type": "provider",
+    "phone": "+228 90 98 83 36",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.746Z",
+    "updated_at": "2026-01-11T23:01:25.746Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Yo22JKuhUB8lSf0gJfo9Y2$jisLhjitWaBnYJ53zIJuqdGdPg/Sj42xjiA5m5LsTSU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_20_afua",
+    "first_name": "Afua",
+    "last_name": "Asante",
+    "email": "vendor_20_afua@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.755Z",
+    "user_type": "provider",
+    "phone": "+228 90 36 26 17",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:25.895Z",
+    "updated_at": "2026-01-11T23:01:25.895Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$niBZSJiuAEeK4p3vnSjZD0$O5p270J35bk7xS69y0m47M2e56rt6j6hiylRKWOSBIg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_21_kwabena",
+    "first_name": "Kwabena",
+    "last_name": "Kpodo",
+    "email": "vendor_21_kwabena@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:25.902Z",
+    "user_type": "provider",
+    "phone": "+228 90 86 31 42",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.043Z",
+    "updated_at": "2026-01-11T23:01:26.043Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$tMRu2NdhVM3DNJcdJyKE2X$JIDbZqal+cvaAWZp1V+SSkHsjbKpr0xZr1fndf/HzmM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_22_adwoa",
+    "first_name": "Adwoa",
+    "last_name": "Addo",
+    "email": "vendor_22_adwoa@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.054Z",
+    "user_type": "provider",
+    "phone": "+228 90 94 87 34",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.194Z",
+    "updated_at": "2026-01-11T23:01:26.194Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$YCON0NBogLpkKJQ1b1rKZC$21Pwe6ExOfMYNvk/84onwZUpkZXMI657vTFHbyYzNH8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_23_kwaku",
+    "first_name": "Kwaku",
+    "last_name": "Akoto",
+    "email": "vendor_23_kwaku@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.201Z",
+    "user_type": "provider",
+    "phone": "+228 90 50 50 15",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.341Z",
+    "updated_at": "2026-01-11T23:01:26.341Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$gb1PV0OO0Xf8ce3QAIh6ZC$HQRLPwPM4Nw4W5i5f+ZeBPwVXL7Jjo+pQULthMXuX4Q=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_24_afia",
+    "first_name": "Afia",
+    "last_name": "Asante",
+    "email": "vendor_24_afia@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.348Z",
+    "user_type": "provider",
+    "phone": "+228 90 47 42 20",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.489Z",
+    "updated_at": "2026-01-11T23:01:26.489Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Do14bcytVfHwoN1mRnoheh$RotZkI0bnrY3tuknNwqtJVp+AIQ6FsDLfR5ConWCWKg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_25_yaw",
+    "first_name": "Yaw",
+    "last_name": "Akoto",
+    "email": "vendor_25_yaw@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.497Z",
+    "user_type": "provider",
+    "phone": "+228 90 75 50 59",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.637Z",
+    "updated_at": "2026-01-11T23:01:26.637Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$fhrn55vh7Xz39zQELQBa0z$tj5AcGBtsSKEXtyJ9nqhf3boxCUscqeOyQVDY1uiris=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_26_esi",
+    "first_name": "Esi",
+    "last_name": "Tetteh",
+    "email": "vendor_26_esi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.645Z",
+    "user_type": "provider",
+    "phone": "+228 90 42 12 80",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.786Z",
+    "updated_at": "2026-01-11T23:01:26.786Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$DYJob37c3hgILkthjtaAgK$OghezMuYqy8cZbrzcMUXlkkK4p4L9XbzYoGCegr3mN0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_27_fiifi",
+    "first_name": "Fiifi",
+    "last_name": "Mensah",
+    "email": "vendor_27_fiifi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.804Z",
+    "user_type": "provider",
+    "phone": "+228 90 47 28 40",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:26.946Z",
+    "updated_at": "2026-01-11T23:01:26.946Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$gglLUmNjsr4oEJzLK50Rhk$mZGUcN28wfC3UeMysobY3dhHPorBLdQAy20T0Ut6+Ws=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_28_efua",
+    "first_name": "Efua",
+    "last_name": "Kouma",
+    "email": "vendor_28_efua@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:26.954Z",
+    "user_type": "provider",
+    "phone": "+228 90 62 15 43",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.094Z",
+    "updated_at": "2026-01-11T23:01:27.094Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$DYqhl8HyQOYqnxiXt20ywL$qNdMkye7avXq3XwQV+dTIvxujz+za/VcRwGH9USbhvA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_29_kobi",
+    "first_name": "Kobi",
+    "last_name": "Asante",
+    "email": "vendor_29_kobi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.102Z",
+    "user_type": "provider",
+    "phone": "+228 90 34 89 82",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.243Z",
+    "updated_at": "2026-01-11T23:01:27.243Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Gjnw0kmR9RsXbD9qzCpeNT$s+1rQpEL+omnuZS6WbE1d4CCD3/zB8+ntCJJzaXtBFQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_30_araba",
+    "first_name": "Araba",
+    "last_name": "Asante",
+    "email": "vendor_30_araba@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.253Z",
+    "user_type": "provider",
+    "phone": "+228 90 36 79 20",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.393Z",
+    "updated_at": "2026-01-11T23:01:27.393Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$elhsTwn8U88OKty42EmI4B$6z4GYLIN2NaGLIJaIo70x28kjJ9tA8zvocqgSjxKIRI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_31_kwamina",
+    "first_name": "Kwamina",
+    "last_name": "Kpakpo",
+    "email": "vendor_31_kwamina@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.401Z",
+    "user_type": "provider",
+    "phone": "+228 90 83 55 13",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.541Z",
+    "updated_at": "2026-01-11T23:01:27.541Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$2tbD3OfHImpIfahbpaCNFI$inc5rwUElLjl2mcEYzCT6fp2WtfiK+x2AlrY6XdfWsk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_32_aba",
+    "first_name": "Aba",
+    "last_name": "Annan",
+    "email": "vendor_32_aba@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.557Z",
+    "user_type": "provider",
+    "phone": "+228 90 42 43 62",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.697Z",
+    "updated_at": "2026-01-11T23:01:27.697Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$VjayQQvQ01kQbRHzrhoJ4e$mp0HtUXPHPYCtJF7xavGXZDrhdFpUCp/oTZPMh6CxgY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_33_ebo",
+    "first_name": "Ebo",
+    "last_name": "Deku",
+    "email": "vendor_33_ebo@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.707Z",
+    "user_type": "provider",
+    "phone": "+228 90 79 81 27",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.847Z",
+    "updated_at": "2026-01-11T23:01:27.847Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$5Ru0SSDcOoZYlE59d3Dbge$G+WB/JHCQyTa1IQAzOnSQbUl8cwTjLMwDTMtaIXJfxY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_34_akuba",
+    "first_name": "Akuba",
+    "last_name": "Agbodza",
+    "email": "vendor_34_akuba@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:27.855Z",
+    "user_type": "provider",
+    "phone": "+228 90 35 49 67",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:27.995Z",
+    "updated_at": "2026-01-11T23:01:27.995Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$FE1b7HWvGxnEckCgOcv02Z$NOYJpmNWagnKZMUVqAeNIoCronWLoWyRkHNJdVZh8XM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_35_kwesi",
+    "first_name": "Kwesi",
+    "last_name": "Deku",
+    "email": "vendor_35_kwesi@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.015Z",
+    "user_type": "provider",
+    "phone": "+228 90 61 72 87",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.156Z",
+    "updated_at": "2026-01-11T23:01:28.156Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$qtij4cqchJYl4CLWlvNqdv$vruqJewJurG4h+CI9r90whZ6XoEaqFHzmCYHAIL0nVk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_36_ekua",
+    "first_name": "Ekua",
+    "last_name": "Tetteh",
+    "email": "vendor_36_ekua@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.164Z",
+    "user_type": "provider",
+    "phone": "+228 90 77 60 18",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.304Z",
+    "updated_at": "2026-01-11T23:01:28.304Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$0TdSZeNULv6NEVlT3UfzMd$D9mLrmIMWfZX2uJT2OZKEteoE5f9wSz1wv47O6i3/Us=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_37_kobina",
+    "first_name": "Kobina",
+    "last_name": "Asante",
+    "email": "vendor_37_kobina@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.312Z",
+    "user_type": "provider",
+    "phone": "+228 90 44 92 19",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.452Z",
+    "updated_at": "2026-01-11T23:01:28.452Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$LVBoLkpqlBFB2IpSdHmMH2$BGX1s5HuEgRN1LimktmYMbCza//zcnwOL/5Axpx3X1E=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_38_amba",
+    "first_name": "Amba",
+    "last_name": "Dzogbede",
+    "email": "vendor_38_amba@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.461Z",
+    "user_type": "provider",
+    "phone": "+228 90 30 17 73",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.601Z",
+    "updated_at": "2026-01-11T23:01:28.601Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$2N0cy36mdtUIOUigOVoamX$vsj8TcoUhKfR0kfFHYlPlkSxX/6lSimPDGoY7t31Rlc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_39_komla",
+    "first_name": "Komla",
+    "last_name": "Kpodo",
+    "email": "vendor_39_komla@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.610Z",
+    "user_type": "provider",
+    "phone": "+228 90 13 65 50",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.751Z",
+    "updated_at": "2026-01-11T23:01:28.751Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$nyquBmDBsux2Az7wA3oj5w$ZJBlWI/CApIbNhLEuWAda2SuFTHCTbyVC9Y/g+NsolY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_40_ayawa",
+    "first_name": "Ayawa",
+    "last_name": "Nyaku",
+    "email": "vendor_40_ayawa@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.763Z",
+    "user_type": "provider",
+    "phone": "+228 90 37 72 53",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:28.904Z",
+    "updated_at": "2026-01-11T23:01:28.904Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$vEUSSX46U83MNfgKmpgKwQ$RlU7Ks0ZxiqzKSuZLHlXAGnhwKQmn/uO7ggYLy1KJVI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_41_mensah",
+    "first_name": "Mensah",
+    "last_name": "Dzogbede",
+    "email": "vendor_41_mensah@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:28.913Z",
+    "user_type": "provider",
+    "phone": "+228 90 29 74 72",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.053Z",
+    "updated_at": "2026-01-11T23:01:29.053Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$jWVU83lQINUBZKUP7bMEYH$Xo/VzQplwMkG384xI7XroVhdQ1o/4KYND5vxDBF8CzQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_42_ekuwa",
+    "first_name": "Ekuwa",
+    "last_name": "Koffi",
+    "email": "vendor_42_ekuwa@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.060Z",
+    "user_type": "provider",
+    "phone": "+228 90 78 55 88",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.200Z",
+    "updated_at": "2026-01-11T23:01:29.200Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$HGGJcXziSYzpYhaCeR4sDI$vDAfTXfswg5uSM9Hdc/pgSa0BvxrTqsMU53dnXDYXa4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_43_kwadwo",
+    "first_name": "Kwadwo",
+    "last_name": "Koffi",
+    "email": "vendor_43_kwadwo@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.206Z",
+    "user_type": "provider",
+    "phone": "+228 90 38 13 48",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.346Z",
+    "updated_at": "2026-01-11T23:01:29.346Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$EbHRl0gYiU1L2tZoAmsa8O$vh7+SJZdFNKdN6ALM9y4yrEarni5Jcm7xFjaUxMLksM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_44_abena",
+    "first_name": "Abena",
+    "last_name": "Boateng",
+    "email": "vendor_44_abena@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.361Z",
+    "user_type": "provider",
+    "phone": "+228 90 39 85 41",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.501Z",
+    "updated_at": "2026-01-11T23:01:29.501Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$NF1APnz057ASrVuKTjhAFU$FanOtbqYyYvwnlto4MASSaUND3Py2QP2tbF5afq4Bx4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_45_kwaw",
+    "first_name": "Kwaw",
+    "last_name": "Akoto",
+    "email": "vendor_45_kwaw@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.511Z",
+    "user_type": "provider",
+    "phone": "+228 90 80 77 55",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.652Z",
+    "updated_at": "2026-01-11T23:01:29.652Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$OjXmW1tcs6xWBIErlaw3ZS$d9/TpPyjKSI18nXl4qAPBPR5J0XHfiXHeiERunp5ROA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_46_adoma",
+    "first_name": "Adoma",
+    "last_name": "Mensah",
+    "email": "vendor_46_adoma@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.659Z",
+    "user_type": "provider",
+    "phone": "+228 90 52 31 75",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.799Z",
+    "updated_at": "2026-01-11T23:01:29.799Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$IDQwxEeuwVi3aLoFQNGvR1$5xj34KsL0kdfKYZyybUnyZiRZdEb0Nh0xNwFF3nyuvQ=",
+    "last_login": "2026-01-12T18:53:44.257Z",
+    "is_superuser": false,
+    "username": "vendor_47_poku",
+    "first_name": "Poku",
+    "last_name": "Kpakpo",
+    "email": "vendor_47_poku@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.807Z",
+    "user_type": "provider",
+    "phone": "+228 90 84 48 25",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:29.948Z",
+    "updated_at": "2026-01-11T23:01:29.948Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$L6yP68fjJ9wBKZiXY0Mv6z$4wD3I6z5bvgW6vQF9gy3p+ePOwCTCn8DVk8RxJi1MoY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_48_efie",
+    "first_name": "Efie",
+    "last_name": "Kouma",
+    "email": "vendor_48_efie@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:29.957Z",
+    "user_type": "provider",
+    "phone": "+228 90 99 60 83",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:30.098Z",
+    "updated_at": "2026-01-11T23:01:30.098Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$sPb3DhHOjzsbRYHTA1JRMN$l7f3O5CIZHbJOTWHJGlGDR80pQxIvURwb6GmMEzIWiA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_49_nii",
+    "first_name": "Nii",
+    "last_name": "Agbodza",
+    "email": "vendor_49_nii@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:30.106Z",
+    "user_type": "provider",
+    "phone": "+228 90 67 19 52",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:30.246Z",
+    "updated_at": "2026-01-11T23:01:30.246Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$UYnbNvqFrwJWWJ2NWS0lqG$szld19AthSqn7PL+Wn3Nju54NGLZrIZkjiYW7ufB8oY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendor_50_akos",
+    "first_name": "Akos",
+    "last_name": "Koffi",
+    "email": "vendor_50_akos@eventsusy.tg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-11T23:01:30.268Z",
+    "user_type": "provider",
+    "phone": "+228 90 57 35 51",
+    "city": "",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-11T23:01:30.410Z",
+    "updated_at": "2026-01-12T00:43:34.548Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$X1gNU1FydoFwT6fhLPIL5q$ueV67PLt8vc0BqEsquC1MSEa9yG1Q1UXamVVjLWpNMY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "client2_test",
+    "first_name": "Paul",
+    "last_name": "Martin",
+    "email": "client2@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-13T00:28:06.152Z",
+    "user_type": "client",
+    "phone": "+228 90 00 00 03",
+    "city": "Lomé",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-13T00:28:06.296Z",
+    "updated_at": "2026-01-13T00:28:06.296Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$wO8J7YCdFSEHQJQd4ZHj4l$VJui61dPy0QibwfcRNKwC4V5RB7CCfXhheWQaXhtvkM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "client3_test",
+    "first_name": "Ama",
+    "last_name": "Koffi",
+    "email": "client3@test.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-13T00:28:06.299Z",
+    "user_type": "client",
+    "phone": "+228 90 00 00 04",
+    "city": "Lomé",
+    "profile_image": "",
+    "is_verified": false,
+    "created_at": "2026-01-13T00:28:06.442Z",
+    "updated_at": "2026-01-13T00:28:06.442Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "vendors.subscriptiontier",
+  "pk": 1,
+  "fields": {
+    "name": "Gratuit",
+    "slug": "free",
+    "price_monthly": "0.00",
+    "display_priority": 2,
+    "is_visible_in_list": false,
+    "description": "Profil basique invisible dans les listes publiques. Visible uniquement lors de recherches spécifiques.",
+    "max_images": 3,
+    "created_at": "2026-01-12T00:42:01.293Z",
+    "updated_at": "2026-01-13T00:29:14.060Z"
+  }
+},
+{
+  "model": "vendors.subscriptiontier",
+  "pk": 2,
+  "fields": {
+    "name": "Standard",
+    "slug": "standard",
+    "price_monthly": "5000.00",
+    "display_priority": 1,
+    "is_visible_in_list": true,
+    "description": "Visible dans les listes publiques. Jusqu'à 10 photos. Peut répondre aux demandes de devis.",
+    "max_images": 10,
+    "created_at": "2026-01-12T00:42:01.297Z",
+    "updated_at": "2026-01-13T00:29:14.065Z"
+  }
+},
+{
+  "model": "vendors.subscriptiontier",
+  "pk": 3,
+  "fields": {
+    "name": "Premium",
+    "slug": "premium",
+    "price_monthly": "15000.00",
+    "display_priority": 0,
+    "is_visible_in_list": true,
+    "description": "Priorité d'affichage maximale. Photos illimitées. Badge Premium. Statistiques avancées.",
+    "max_images": 999,
+    "created_at": "2026-01-12T00:42:01.299Z",
+    "updated_at": "2026-01-13T00:29:14.071Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 1,
+  "fields": {
+    "name": "Salle de réception",
+    "description": "",
+    "icon": "building",
+    "created_at": "2026-01-11T23:01:22.219Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 2,
+  "fields": {
+    "name": "Traiteur",
+    "description": "",
+    "icon": "utensils",
+    "created_at": "2026-01-11T23:01:22.223Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 3,
+  "fields": {
+    "name": "Décoration",
+    "description": "",
+    "icon": "palette",
+    "created_at": "2026-01-11T23:01:22.227Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 4,
+  "fields": {
+    "name": "Photographe",
+    "description": "",
+    "icon": "camera",
+    "created_at": "2026-01-11T23:01:22.229Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 5,
+  "fields": {
+    "name": "Vidéaste",
+    "description": "",
+    "icon": "video",
+    "created_at": "2026-01-11T23:01:22.234Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 6,
+  "fields": {
+    "name": "DJ / Musique",
+    "description": "",
+    "icon": "music",
+    "created_at": "2026-01-11T23:01:22.236Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 7,
+  "fields": {
+    "name": "Animation",
+    "description": "",
+    "icon": "gamepad",
+    "created_at": "2026-01-11T23:01:22.240Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 8,
+  "fields": {
+    "name": "Maquillage / Coiffure",
+    "description": "",
+    "icon": "scissors",
+    "created_at": "2026-01-11T23:01:22.246Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 9,
+  "fields": {
+    "name": "Pâtisserie",
+    "description": "",
+    "icon": "cake",
+    "created_at": "2026-01-11T23:01:22.249Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 10,
+  "fields": {
+    "name": "Location matériel",
+    "description": "",
+    "icon": "boxes",
+    "created_at": "2026-01-11T23:01:22.251Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 11,
+  "fields": {
+    "name": "Transport",
+    "description": "",
+    "icon": "car",
+    "created_at": "2026-01-11T23:01:22.254Z"
+  }
+},
+{
+  "model": "vendors.servicetype",
+  "pk": 12,
+  "fields": {
+    "name": "Fleuriste",
+    "description": "",
+    "icon": "flower",
+    "created_at": "2026-01-11T23:01:22.255Z"
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "provider_test"
+    ],
+    "business_name": "Wizo photo",
+    "logo": "vendors/logos/me_ux73Kp2.jpeg",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste en photographie et vidéographie pour vos événements. Plus de 10 ans d'expérience.",
+    "address": "123 Avenue de la République",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 9,
+    "website": "",
+    "whatsapp": "+228 90 00 00 03",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "500000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:22.853Z",
+    "updated_at": "2026-01-12T01:49:19.466Z",
+    "service_types": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "vendor_1_kofi"
+    ],
+    "business_name": "Location matériel Kofi Appiah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Location de matériel événementiel: chaises, tables, tentes, etc.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 26,
+    "website": "",
+    "whatsapp": "+228 90 89 42 19",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:23.005Z",
+    "updated_at": "2026-01-12T00:47:40.816Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "vendor_2_ama"
+    ],
+    "business_name": "Salle de réception Ama Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 52,
+    "website": "",
+    "whatsapp": "+228 90 27 94 78",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:23.152Z",
+    "updated_at": "2026-01-12T00:47:40.814Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "vendor_3_yao"
+    ],
+    "business_name": "Pâtisserie Yao Kouma",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste en pâtisserie française et desserts personnalisés.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 7,
+    "quartier": 48,
+    "website": "",
+    "whatsapp": "+228 90 38 87 12",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:23.300Z",
+    "updated_at": "2026-01-12T00:47:40.727Z",
+    "service_types": [
+      9
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "vendor_4_akosua"
+    ],
+    "business_name": "Photographe Akosua Attipoe",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste de la photographie artistique pour vos moments précieux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 10,
+    "website": "",
+    "whatsapp": "+228 90 48 81 39",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:23.448Z",
+    "updated_at": "2026-01-12T00:47:40.812Z",
+    "service_types": [
+      4
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "vendor_5_kwame"
+    ],
+    "business_name": "DJ / Musique Kwame Ahiavor",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en ambiance musicale adaptée à chaque type d'événement.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 30,
+    "website": "",
+    "whatsapp": "+228 90 99 82 92",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "25000.00",
+    "max_budget": "150000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:23.597Z",
+    "updated_at": "2026-01-12T00:47:40.811Z",
+    "service_types": [
+      6,
+      4
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "vendor_6_abla"
+    ],
+    "business_name": "Location matériel Abla Kpakpo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Location de matériel événementiel: chaises, tables, tentes, etc.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 40,
+    "website": "",
+    "whatsapp": "+228 90 18 56 48",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:23.744Z",
+    "updated_at": "2026-01-12T00:47:40.725Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "vendor_7_koffi"
+    ],
+    "business_name": "Transport Koffi Mensah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de transport VIP pour mariages et événements spéciaux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 5,
+    "website": "",
+    "whatsapp": "+228 90 61 32 63",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:23.910Z",
+    "updated_at": "2026-01-12T00:47:40.810Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "vendor_8_edem"
+    ],
+    "business_name": "Vidéaste Edem Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Production vidéo professionnelle pour tous types d'événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 12,
+    "website": "",
+    "whatsapp": "+228 90 73 98 80",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.061Z",
+    "updated_at": "2026-01-12T00:47:40.808Z",
+    "service_types": [
+      10,
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "vendor_9_sena"
+    ],
+    "business_name": "Transport Sena Tetteh",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de transport VIP pour mariages et événements spéciaux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 2,
+    "quartier": 21,
+    "website": "",
+    "whatsapp": "+228 90 44 47 63",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.223Z",
+    "updated_at": "2026-01-12T00:47:40.806Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "vendor_10_dela"
+    ],
+    "business_name": "DJ / Musique Dela Agbodza",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en ambiance musicale adaptée à chaque type d'événement.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 8,
+    "website": "",
+    "whatsapp": "+228 90 34 52 65",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "25000.00",
+    "max_budget": "150000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.374Z",
+    "updated_at": "2026-01-12T00:47:40.805Z",
+    "service_types": [
+      6
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "vendor_11_mawuli"
+    ],
+    "business_name": "Salle de réception Mawuli Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 39,
+    "website": "",
+    "whatsapp": "+228 90 39 67 62",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.527Z",
+    "updated_at": "2026-01-12T00:47:40.804Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "vendor_12_afi"
+    ],
+    "business_name": "Vidéaste Afi Ahiavor",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Production vidéo professionnelle pour tous types d'événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 10,
+    "website": "",
+    "whatsapp": "+228 90 28 70 32",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.677Z",
+    "updated_at": "2026-01-12T00:47:40.802Z",
+    "service_types": [
+      10,
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "vendor_13_koku"
+    ],
+    "business_name": "Photographe Koku Kouma",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Photographe professionnel avec 8 ans d'expérience dans les événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 51,
+    "website": "",
+    "whatsapp": "+228 90 25 79 48",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.826Z",
+    "updated_at": "2026-01-12T00:47:40.800Z",
+    "service_types": [
+      4,
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "vendor_14_ami"
+    ],
+    "business_name": "Vidéaste Ami Appiah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Production vidéo professionnelle pour tous types d'événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 29,
+    "website": "",
+    "whatsapp": "+228 90 74 58 58",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:24.990Z",
+    "updated_at": "2026-01-12T00:47:40.799Z",
+    "service_types": [
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 16,
+  "fields": {
+    "user": [
+      "vendor_15_kossi"
+    ],
+    "business_name": "Maquillage / Coiffure Kossi Deku",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service beauté complet pour la mariée et ses demoiselles d'honneur.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 55,
+    "website": "",
+    "whatsapp": "+228 90 36 43 14",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "10000.00",
+    "max_budget": "80000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.137Z",
+    "updated_at": "2026-01-12T00:47:40.797Z",
+    "service_types": [
+      8
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 17,
+  "fields": {
+    "user": [
+      "vendor_16_adjoa"
+    ],
+    "business_name": "Pâtisserie Adjoa Addo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste en pâtisserie française et desserts personnalisés.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 51,
+    "website": "",
+    "whatsapp": "+228 90 72 74 49",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.285Z",
+    "updated_at": "2026-01-12T00:47:40.796Z",
+    "service_types": [
+      9
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 18,
+  "fields": {
+    "user": [
+      "vendor_17_kodjo"
+    ],
+    "business_name": "Location matériel Kodjo Amegashie",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Large choix d'équipements pour réussir vos événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 58,
+    "website": "",
+    "whatsapp": "+228 90 67 62 66",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.438Z",
+    "updated_at": "2026-01-12T00:47:40.794Z",
+    "service_types": [
+      10,
+      8
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 19,
+  "fields": {
+    "user": [
+      "vendor_18_akua"
+    ],
+    "business_name": "DJ / Musique Akua Appiah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en ambiance musicale adaptée à chaque type d'événement.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 38,
+    "website": "",
+    "whatsapp": "+228 90 28 70 58",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "25000.00",
+    "max_budget": "150000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.589Z",
+    "updated_at": "2026-01-12T00:47:40.793Z",
+    "service_types": [
+      6,
+      4
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 20,
+  "fields": {
+    "user": [
+      "vendor_19_kwasi"
+    ],
+    "business_name": "Salle de réception Kwasi Appiah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Salle polyvalente avec équipements audiovisuels inclus.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 29,
+    "website": "",
+    "whatsapp": "+228 90 98 83 36",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.750Z",
+    "updated_at": "2026-01-12T00:47:40.792Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 21,
+  "fields": {
+    "user": [
+      "vendor_20_afua"
+    ],
+    "business_name": "Animation Afua Asante",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Animation pour enfants et adultes avec jeux et activités.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 7,
+    "quartier": 47,
+    "website": "",
+    "whatsapp": "+228 90 36 26 17",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "100000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:25.897Z",
+    "updated_at": "2026-01-12T00:47:40.790Z",
+    "service_types": [
+      7,
+      2
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 22,
+  "fields": {
+    "user": [
+      "vendor_21_kwabena"
+    ],
+    "business_name": "Traiteur Kwabena Kpodo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service traiteur haut de gamme avec cuisine locale et internationale.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 57,
+    "website": "",
+    "whatsapp": "+228 90 86 31 42",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "1000000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.048Z",
+    "updated_at": "2026-01-12T00:47:40.789Z",
+    "service_types": [
+      2
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 23,
+  "fields": {
+    "user": [
+      "vendor_22_adwoa"
+    ],
+    "business_name": "Fleuriste Adwoa Addo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Créations florales sur mesure pour des événements élégants.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 38,
+    "website": "",
+    "whatsapp": "+228 90 94 87 34",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "150000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.197Z",
+    "updated_at": "2026-01-12T00:47:40.787Z",
+    "service_types": [
+      12
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 24,
+  "fields": {
+    "user": [
+      "vendor_23_kwaku"
+    ],
+    "business_name": "Animation Kwaku Akoto",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Animateur professionnel pour des événements dynamiques et joyeux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 4,
+    "quartier": 34,
+    "website": "",
+    "whatsapp": "+228 90 50 50 15",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "100000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.345Z",
+    "updated_at": "2026-01-12T00:47:40.783Z",
+    "service_types": [
+      7
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 25,
+  "fields": {
+    "user": [
+      "vendor_24_afia"
+    ],
+    "business_name": "Salle de réception Afia Asante",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 7,
+    "quartier": 50,
+    "website": "",
+    "whatsapp": "+228 90 47 42 20",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.493Z",
+    "updated_at": "2026-01-12T00:47:40.781Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 26,
+  "fields": {
+    "user": [
+      "vendor_25_yaw"
+    ],
+    "business_name": "Traiteur Yaw Akoto",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Traiteur spécialisé dans les grands événements et réceptions.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 2,
+    "quartier": 22,
+    "website": "",
+    "whatsapp": "+228 90 75 50 59",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "1000000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.640Z",
+    "updated_at": "2026-01-12T00:47:40.778Z",
+    "service_types": [
+      12,
+      2
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 27,
+  "fields": {
+    "user": [
+      "vendor_26_esi"
+    ],
+    "business_name": "Salle de réception Esi Tetteh",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 53,
+    "website": "",
+    "whatsapp": "+228 90 42 12 80",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.791Z",
+    "updated_at": "2026-01-12T00:47:40.777Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 28,
+  "fields": {
+    "user": [
+      "vendor_27_fiifi"
+    ],
+    "business_name": "Pâtisserie Fiifi Mensah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Pâtissier créatif pour des gâteaux de mariage spectaculaires.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 2,
+    "quartier": 21,
+    "website": "",
+    "whatsapp": "+228 90 47 28 40",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:26.950Z",
+    "updated_at": "2026-01-12T00:47:40.775Z",
+    "service_types": [
+      9
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 29,
+  "fields": {
+    "user": [
+      "vendor_28_efua"
+    ],
+    "business_name": "Location matériel Efua Kouma",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Large choix d'équipements pour réussir vos événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 56,
+    "website": "",
+    "whatsapp": "+228 90 62 15 43",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.097Z",
+    "updated_at": "2026-01-12T00:47:40.774Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 30,
+  "fields": {
+    "user": [
+      "vendor_29_kobi"
+    ],
+    "business_name": "Animation Kobi Asante",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Animateur professionnel pour des événements dynamiques et joyeux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 12,
+    "website": "",
+    "whatsapp": "+228 90 34 89 82",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "100000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.246Z",
+    "updated_at": "2026-01-12T00:47:40.772Z",
+    "service_types": [
+      7
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 31,
+  "fields": {
+    "user": [
+      "vendor_30_araba"
+    ],
+    "business_name": "Salle de réception Araba Asante",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Magnifique salle de réception pouvant accueillir jusqu'à 500 personnes.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 57,
+    "website": "",
+    "whatsapp": "+228 90 36 79 20",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.396Z",
+    "updated_at": "2026-01-12T00:47:40.771Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 32,
+  "fields": {
+    "user": [
+      "vendor_31_kwamina"
+    ],
+    "business_name": "Photographe Kwamina Kpakpo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste de la photographie artistique pour vos moments précieux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 4,
+    "quartier": 34,
+    "website": "",
+    "whatsapp": "+228 90 83 55 13",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.544Z",
+    "updated_at": "2026-01-12T00:47:40.769Z",
+    "service_types": [
+      4
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 33,
+  "fields": {
+    "user": [
+      "vendor_32_aba"
+    ],
+    "business_name": "Décoration Aba Annan",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en décoration florale et mise en scène d'événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 26,
+    "website": "",
+    "whatsapp": "+228 90 42 43 62",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "500000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.701Z",
+    "updated_at": "2026-01-12T00:47:40.768Z",
+    "service_types": [
+      3
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 34,
+  "fields": {
+    "user": [
+      "vendor_33_ebo"
+    ],
+    "business_name": "Transport Ebo Deku",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de transport VIP pour mariages et événements spéciaux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 53,
+    "website": "",
+    "whatsapp": "+228 90 79 81 27",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:27.851Z",
+    "updated_at": "2026-01-12T00:47:40.766Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 35,
+  "fields": {
+    "user": [
+      "vendor_34_akuba"
+    ],
+    "business_name": "Salle de réception Akuba Agbodza",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 11,
+    "website": "",
+    "whatsapp": "+228 90 35 49 67",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.000Z",
+    "updated_at": "2026-01-12T00:47:40.764Z",
+    "service_types": [
+      8,
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 36,
+  "fields": {
+    "user": [
+      "vendor_35_kwesi"
+    ],
+    "business_name": "Transport Kwesi Deku",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de transport VIP pour mariages et événements spéciaux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 7,
+    "quartier": 49,
+    "website": "",
+    "whatsapp": "+228 90 61 72 87",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:28.159Z",
+    "updated_at": "2026-01-12T00:47:40.722Z",
+    "service_types": [
+      6,
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 37,
+  "fields": {
+    "user": [
+      "vendor_36_ekua"
+    ],
+    "business_name": "Location matériel Ekua Tetteh",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de location avec livraison et installation incluses.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 10,
+    "website": "",
+    "whatsapp": "+228 90 77 60 18",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.307Z",
+    "updated_at": "2026-01-12T00:47:40.763Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 38,
+  "fields": {
+    "user": [
+      "vendor_37_kobina"
+    ],
+    "business_name": "Location matériel Kobina Asante",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Large choix d'équipements pour réussir vos événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 2,
+    "quartier": 21,
+    "website": "",
+    "whatsapp": "+228 90 44 92 19",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.457Z",
+    "updated_at": "2026-01-12T00:47:40.762Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 39,
+  "fields": {
+    "user": [
+      "vendor_38_amba"
+    ],
+    "business_name": "Animation Amba Dzogbede",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Animateur professionnel pour des événements dynamiques et joyeux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 4,
+    "quartier": 34,
+    "website": "",
+    "whatsapp": "+228 90 30 17 73",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "100000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.604Z",
+    "updated_at": "2026-01-12T00:47:40.760Z",
+    "service_types": [
+      7
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 40,
+  "fields": {
+    "user": [
+      "vendor_39_komla"
+    ],
+    "business_name": "Salle de réception Komla Kpodo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Espace moderne et climatisé pour vos événements professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 1,
+    "quartier": 12,
+    "website": "",
+    "whatsapp": "+228 90 13 65 50",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "800000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.756Z",
+    "updated_at": "2026-01-12T00:47:40.757Z",
+    "service_types": [
+      1
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 41,
+  "fields": {
+    "user": [
+      "vendor_40_ayawa"
+    ],
+    "business_name": "Vidéaste Ayawa Nyaku",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en montage et post-production pour des vidéos inoubliables.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 38,
+    "website": "",
+    "whatsapp": "+228 90 37 72 53",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:28.908Z",
+    "updated_at": "2026-01-12T00:47:40.754Z",
+    "service_types": [
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 42,
+  "fields": {
+    "user": [
+      "vendor_41_mensah"
+    ],
+    "business_name": "Vidéaste Mensah Dzogbede",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en montage et post-production pour des vidéos inoubliables.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 25,
+    "website": "",
+    "whatsapp": "+228 90 29 74 72",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:29.056Z",
+    "updated_at": "2026-01-12T00:47:40.720Z",
+    "service_types": [
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 43,
+  "fields": {
+    "user": [
+      "vendor_42_ekuwa"
+    ],
+    "business_name": "Vidéaste Ekuwa Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Production vidéo professionnelle pour tous types d'événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 5,
+    "quartier": 39,
+    "website": "",
+    "whatsapp": "+228 90 78 55 88",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "50000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:29.202Z",
+    "updated_at": "2026-01-12T00:47:40.750Z",
+    "service_types": [
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 44,
+  "fields": {
+    "user": [
+      "vendor_43_kwadwo"
+    ],
+    "business_name": "Location matériel Kwadwo Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service de location avec livraison et installation incluses.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 54,
+    "website": "",
+    "whatsapp": "+228 90 38 13 48",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "300000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:29.349Z",
+    "updated_at": "2026-01-12T00:47:40.748Z",
+    "service_types": [
+      10
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 45,
+  "fields": {
+    "user": [
+      "vendor_44_abena"
+    ],
+    "business_name": "Photographe Abena Boateng",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Photographe professionnel avec 8 ans d'expérience dans les événements.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 6,
+    "quartier": 44,
+    "website": "",
+    "whatsapp": "+228 90 39 85 41",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "30000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:29.507Z",
+    "updated_at": "2026-01-12T00:47:40.741Z",
+    "service_types": [
+      4
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 46,
+  "fields": {
+    "user": [
+      "vendor_45_kwaw"
+    ],
+    "business_name": "Transport Kwaw Akoto",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Transport de groupes pour séminaires et événements d'entreprise.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 2,
+    "quartier": 22,
+    "website": "",
+    "whatsapp": "+228 90 80 77 55",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:29.655Z",
+    "updated_at": "2026-01-12T00:47:40.738Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 47,
+  "fields": {
+    "user": [
+      "vendor_46_adoma"
+    ],
+    "business_name": "Transport Adoma Mensah",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Flotte de véhicules de luxe avec chauffeurs professionnels.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 8,
+    "quartier": 54,
+    "website": "",
+    "whatsapp": "+228 90 52 31 75",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-01-11T23:01:29.804Z",
+    "updated_at": "2026-01-12T00:47:40.718Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 48,
+  "fields": {
+    "user": [
+      "vendor_47_poku"
+    ],
+    "business_name": "Animation Poku Kpakpo",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Expert en animation d'événements corporatifs et team building.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 57,
+    "website": "",
+    "whatsapp": "+228 90 84 48 25",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "20000.00",
+    "max_budget": "100000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:29.951Z",
+    "updated_at": "2026-01-12T00:47:40.736Z",
+    "service_types": [
+      7
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 49,
+  "fields": {
+    "user": [
+      "vendor_48_efie"
+    ],
+    "business_name": "Transport Efie Kouma",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Transport de groupes pour séminaires et événements d'entreprise.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 7,
+    "quartier": 49,
+    "website": "",
+    "whatsapp": "+228 90 99 60 83",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "40000.00",
+    "max_budget": "200000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:30.103Z",
+    "updated_at": "2026-01-12T00:47:40.734Z",
+    "service_types": [
+      11
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 50,
+  "fields": {
+    "user": [
+      "vendor_49_nii"
+    ],
+    "business_name": "Traiteur Nii Agbodza",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Service traiteur haut de gamme avec cuisine locale et internationale.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 3,
+    "quartier": 24,
+    "website": "",
+    "whatsapp": "+228 90 67 19 52",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": "100000.00",
+    "max_budget": "1000000.00",
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:30.251Z",
+    "updated_at": "2026-01-12T00:47:40.733Z",
+    "service_types": [
+      2
+    ]
+  }
+},
+{
+  "model": "vendors.vendorprofile",
+  "pk": 51,
+  "fields": {
+    "user": [
+      "vendor_50_akos"
+    ],
+    "business_name": "Photographe Akos Koffi",
+    "logo": "",
+    "subscription_tier": 2,
+    "subscription_expires_at": "2027-01-12T00:47:40.716Z",
+    "description": "Spécialiste de la photographie artistique pour vos moments précieux.",
+    "address": "",
+    "google_maps_link": "",
+    "city": 9,
+    "quartier": 58,
+    "website": "",
+    "whatsapp": "+228 90 57 35 51",
+    "facebook": "",
+    "instagram": "",
+    "min_budget": null,
+    "max_budget": null,
+    "rating": "0.00",
+    "review_count": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-01-11T23:01:30.413Z",
+    "updated_at": "2026-01-12T00:47:40.731Z",
+    "service_types": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 4,
+  "fields": {
+    "vendor": 47,
+    "image": "vendors/47_image_2_Dv6mO3m.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:20.822Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 5,
+  "fields": {
+    "vendor": 47,
+    "image": "vendors/47_image_3_sMTZJGF.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:20.911Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 6,
+  "fields": {
+    "vendor": 42,
+    "image": "vendors/42_image_1_NUWKlZf.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:20.987Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 7,
+  "fields": {
+    "vendor": 42,
+    "image": "vendors/42_image_2_0mxym2a.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:21.076Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 8,
+  "fields": {
+    "vendor": 42,
+    "image": "vendors/42_image_3_DxUwe8n.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:21.167Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 9,
+  "fields": {
+    "vendor": 36,
+    "image": "vendors/36_image_2_RhHUVXa.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:21.798Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 10,
+  "fields": {
+    "vendor": 36,
+    "image": "vendors/36_image_3_iPm4WS9.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:21.867Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 11,
+  "fields": {
+    "vendor": 7,
+    "image": "vendors/7_image_1_U9eKVPC.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:21.942Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 12,
+  "fields": {
+    "vendor": 7,
+    "image": "vendors/7_image_2_l1WQGaA.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.007Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 13,
+  "fields": {
+    "vendor": 7,
+    "image": "vendors/7_image_3_YcSjseH.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.100Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 14,
+  "fields": {
+    "vendor": 4,
+    "image": "vendors/4_image_1_KBZpgoU.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.188Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 15,
+  "fields": {
+    "vendor": 4,
+    "image": "vendors/4_image_2_wqTn4Rl.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.264Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 16,
+  "fields": {
+    "vendor": 4,
+    "image": "vendors/4_image_3_6lcgRKC.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.334Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 17,
+  "fields": {
+    "vendor": 1,
+    "image": "vendors/1_image_1_K7zhzrk.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.397Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 18,
+  "fields": {
+    "vendor": 1,
+    "image": "vendors/1_image_2_MO4vHiB.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.483Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 19,
+  "fields": {
+    "vendor": 1,
+    "image": "vendors/1_image_3_LZ05ODg.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.573Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 20,
+  "fields": {
+    "vendor": 51,
+    "image": "vendors/51_image_1_ILQIWDr.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.640Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 21,
+  "fields": {
+    "vendor": 51,
+    "image": "vendors/51_image_2_HloPtgZ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.720Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 22,
+  "fields": {
+    "vendor": 51,
+    "image": "vendors/51_image_3_GCr276b.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.780Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 23,
+  "fields": {
+    "vendor": 50,
+    "image": "vendors/50_image_1_FQ8tm39.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.891Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 24,
+  "fields": {
+    "vendor": 50,
+    "image": "vendors/50_image_2_ZLayFLo.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:22.973Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 25,
+  "fields": {
+    "vendor": 50,
+    "image": "vendors/50_image_3_zPNXSpQ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.042Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 26,
+  "fields": {
+    "vendor": 49,
+    "image": "vendors/49_image_2_8dbig8S.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.159Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 27,
+  "fields": {
+    "vendor": 49,
+    "image": "vendors/49_image_3_nngBry1.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.233Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 28,
+  "fields": {
+    "vendor": 48,
+    "image": "vendors/48_image_1_EJXIOk1.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.319Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 29,
+  "fields": {
+    "vendor": 48,
+    "image": "vendors/48_image_2_3Nxd5Vw.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.383Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 30,
+  "fields": {
+    "vendor": 48,
+    "image": "vendors/48_image_3_RxJtB5u.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.468Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 31,
+  "fields": {
+    "vendor": 46,
+    "image": "vendors/46_image_2_AhQoZZS.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.587Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 32,
+  "fields": {
+    "vendor": 46,
+    "image": "vendors/46_image_3_UozfeQv.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.675Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 33,
+  "fields": {
+    "vendor": 45,
+    "image": "vendors/45_image_1_pRVA7Rs.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.751Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 34,
+  "fields": {
+    "vendor": 45,
+    "image": "vendors/45_image_2_8zJ757d.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.825Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 35,
+  "fields": {
+    "vendor": 45,
+    "image": "vendors/45_image_3_eSEDczb.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.897Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 36,
+  "fields": {
+    "vendor": 44,
+    "image": "vendors/44_image_1_vaYBdHU.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:23.988Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 37,
+  "fields": {
+    "vendor": 44,
+    "image": "vendors/44_image_2_dAVleHt.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.061Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 38,
+  "fields": {
+    "vendor": 44,
+    "image": "vendors/44_image_3_RY2TbFO.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.155Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 39,
+  "fields": {
+    "vendor": 43,
+    "image": "vendors/43_image_1_C3DfmL5.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.254Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 40,
+  "fields": {
+    "vendor": 43,
+    "image": "vendors/43_image_2_gajshFW.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.327Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 41,
+  "fields": {
+    "vendor": 43,
+    "image": "vendors/43_image_3_Izp0fOc.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.391Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 42,
+  "fields": {
+    "vendor": 41,
+    "image": "vendors/41_image_1_Y7DzcU1.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.523Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 43,
+  "fields": {
+    "vendor": 41,
+    "image": "vendors/41_image_2_8bE5VSJ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.606Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 44,
+  "fields": {
+    "vendor": 41,
+    "image": "vendors/41_image_3_YklxbIG.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.678Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 45,
+  "fields": {
+    "vendor": 40,
+    "image": "vendors/40_image_1_yVCTALZ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.780Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 46,
+  "fields": {
+    "vendor": 40,
+    "image": "vendors/40_image_2_6wQcCQI.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:24.859Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 47,
+  "fields": {
+    "vendor": 39,
+    "image": "vendors/39_image_1_BnGQxFn.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.547Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 48,
+  "fields": {
+    "vendor": 39,
+    "image": "vendors/39_image_2_A2x1quU.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.629Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 49,
+  "fields": {
+    "vendor": 39,
+    "image": "vendors/39_image_3_1xSSPrQ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.704Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 50,
+  "fields": {
+    "vendor": 38,
+    "image": "vendors/38_image_1_zNPPRFq.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.786Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 51,
+  "fields": {
+    "vendor": 38,
+    "image": "vendors/38_image_2_zl36H4u.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.869Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 52,
+  "fields": {
+    "vendor": 38,
+    "image": "vendors/38_image_3_P2bUF7n.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:25.959Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 53,
+  "fields": {
+    "vendor": 37,
+    "image": "vendors/37_image_1_SJqn3I5.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.036Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 54,
+  "fields": {
+    "vendor": 37,
+    "image": "vendors/37_image_2_FGwBmhD.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.120Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 55,
+  "fields": {
+    "vendor": 37,
+    "image": "vendors/37_image_3_Hf3wH3G.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.210Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 56,
+  "fields": {
+    "vendor": 35,
+    "image": "vendors/35_image_1_PNfASsx.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.271Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 57,
+  "fields": {
+    "vendor": 35,
+    "image": "vendors/35_image_2_jPhKbYb.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.343Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 58,
+  "fields": {
+    "vendor": 35,
+    "image": "vendors/35_image_3_SyjW6co.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.443Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 59,
+  "fields": {
+    "vendor": 34,
+    "image": "vendors/34_image_2_TXnb39A.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.544Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 60,
+  "fields": {
+    "vendor": 34,
+    "image": "vendors/34_image_3_7Br331O.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.607Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 61,
+  "fields": {
+    "vendor": 33,
+    "image": "vendors/33_image_1_D0KXkkW.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.680Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 62,
+  "fields": {
+    "vendor": 33,
+    "image": "vendors/33_image_2_UmbFcJ8.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.752Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 63,
+  "fields": {
+    "vendor": 33,
+    "image": "vendors/33_image_3_rWfpx8y.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.830Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 64,
+  "fields": {
+    "vendor": 32,
+    "image": "vendors/32_image_1_eosJ88E.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.901Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 65,
+  "fields": {
+    "vendor": 32,
+    "image": "vendors/32_image_2_DRVAGmN.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:26.986Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 66,
+  "fields": {
+    "vendor": 32,
+    "image": "vendors/32_image_3_aHcJQ1P.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.055Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 67,
+  "fields": {
+    "vendor": 31,
+    "image": "vendors/31_image_1_7yYMDGZ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.139Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 68,
+  "fields": {
+    "vendor": 31,
+    "image": "vendors/31_image_2_8jQdnv5.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.243Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 69,
+  "fields": {
+    "vendor": 30,
+    "image": "vendors/30_image_1_gAPTbH4.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.376Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 70,
+  "fields": {
+    "vendor": 30,
+    "image": "vendors/30_image_2_MhHBCRK.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.449Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 71,
+  "fields": {
+    "vendor": 30,
+    "image": "vendors/30_image_3_63FYo9c.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.530Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 72,
+  "fields": {
+    "vendor": 29,
+    "image": "vendors/29_image_1_8XG0XGV.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.613Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 73,
+  "fields": {
+    "vendor": 29,
+    "image": "vendors/29_image_2_2mViTYj.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.693Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 74,
+  "fields": {
+    "vendor": 29,
+    "image": "vendors/29_image_3_LNMuK62.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.818Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 75,
+  "fields": {
+    "vendor": 28,
+    "image": "vendors/28_image_1_guNRaE5.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.895Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 76,
+  "fields": {
+    "vendor": 28,
+    "image": "vendors/28_image_2_7tFG53Q.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:27.957Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 77,
+  "fields": {
+    "vendor": 28,
+    "image": "vendors/28_image_3_qKtaW2z.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.027Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 78,
+  "fields": {
+    "vendor": 27,
+    "image": "vendors/27_image_1_zaDWCtg.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.105Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 79,
+  "fields": {
+    "vendor": 27,
+    "image": "vendors/27_image_2_TgxCcXp.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.195Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 80,
+  "fields": {
+    "vendor": 26,
+    "image": "vendors/26_image_1_kooR4ra.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.321Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 81,
+  "fields": {
+    "vendor": 26,
+    "image": "vendors/26_image_2_SMf17sN.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.416Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 82,
+  "fields": {
+    "vendor": 26,
+    "image": "vendors/26_image_3_CxPvzPB.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.496Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 83,
+  "fields": {
+    "vendor": 25,
+    "image": "vendors/25_image_1_GmFiZEk.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.578Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 84,
+  "fields": {
+    "vendor": 25,
+    "image": "vendors/25_image_2_dHlXSQm.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.656Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 85,
+  "fields": {
+    "vendor": 24,
+    "image": "vendors/24_image_1_kbC5xaA.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.788Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 86,
+  "fields": {
+    "vendor": 24,
+    "image": "vendors/24_image_2_8rPc0Ai.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.864Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 87,
+  "fields": {
+    "vendor": 24,
+    "image": "vendors/24_image_3_s5KXI2E.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:28.964Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 88,
+  "fields": {
+    "vendor": 23,
+    "image": "vendors/23_image_1_84t7zEr.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.041Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 89,
+  "fields": {
+    "vendor": 23,
+    "image": "vendors/23_image_2_W3JRwPg.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.141Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 90,
+  "fields": {
+    "vendor": 23,
+    "image": "vendors/23_image_3_Aftu65K.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.239Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 91,
+  "fields": {
+    "vendor": 22,
+    "image": "vendors/22_image_1_16Yljej.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.315Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 92,
+  "fields": {
+    "vendor": 22,
+    "image": "vendors/22_image_2_f7HzVTG.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.396Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 93,
+  "fields": {
+    "vendor": 22,
+    "image": "vendors/22_image_3_VlTaTRh.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.481Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 94,
+  "fields": {
+    "vendor": 21,
+    "image": "vendors/21_image_1_XiNLU2I.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.566Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 95,
+  "fields": {
+    "vendor": 21,
+    "image": "vendors/21_image_2_QXOQZZE.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.661Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 96,
+  "fields": {
+    "vendor": 21,
+    "image": "vendors/21_image_3_8uy7UPD.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.735Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 97,
+  "fields": {
+    "vendor": 20,
+    "image": "vendors/20_image_1_Az2w1Jv.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.813Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 98,
+  "fields": {
+    "vendor": 20,
+    "image": "vendors/20_image_2_PkMTAeb.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:29.891Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 99,
+  "fields": {
+    "vendor": 19,
+    "image": "vendors/19_image_2_Dmlyzk8.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.077Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 100,
+  "fields": {
+    "vendor": 19,
+    "image": "vendors/19_image_3_K7eYIED.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.157Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 101,
+  "fields": {
+    "vendor": 18,
+    "image": "vendors/18_image_1_tCjYAss.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.229Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 102,
+  "fields": {
+    "vendor": 18,
+    "image": "vendors/18_image_2_4Jzyq39.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.339Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 103,
+  "fields": {
+    "vendor": 18,
+    "image": "vendors/18_image_3_xYoa6ge.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.442Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 104,
+  "fields": {
+    "vendor": 17,
+    "image": "vendors/17_image_1_97xti3f.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.516Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 105,
+  "fields": {
+    "vendor": 17,
+    "image": "vendors/17_image_2_xDVI3P2.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.595Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 106,
+  "fields": {
+    "vendor": 17,
+    "image": "vendors/17_image_3_Bhg9ohb.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.692Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 107,
+  "fields": {
+    "vendor": 16,
+    "image": "vendors/16_image_1_SAmYgZi.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.761Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 108,
+  "fields": {
+    "vendor": 16,
+    "image": "vendors/16_image_2_uynd7P5.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.844Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 109,
+  "fields": {
+    "vendor": 16,
+    "image": "vendors/16_image_3_d2yk6Q6.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:30.944Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 110,
+  "fields": {
+    "vendor": 15,
+    "image": "vendors/15_image_1_EB0JKjw.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.013Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 111,
+  "fields": {
+    "vendor": 15,
+    "image": "vendors/15_image_2_5kssu2N.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.072Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 112,
+  "fields": {
+    "vendor": 15,
+    "image": "vendors/15_image_3_klfX3XU.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.163Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 113,
+  "fields": {
+    "vendor": 14,
+    "image": "vendors/14_image_1_b6nR51g.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.228Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 114,
+  "fields": {
+    "vendor": 14,
+    "image": "vendors/14_image_2_YnFZ1tC.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.285Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 115,
+  "fields": {
+    "vendor": 14,
+    "image": "vendors/14_image_3_9g2C4MY.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.353Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 116,
+  "fields": {
+    "vendor": 13,
+    "image": "vendors/13_image_1_XxomEaQ.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.437Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 117,
+  "fields": {
+    "vendor": 13,
+    "image": "vendors/13_image_2_NbPG4LT.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.510Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 118,
+  "fields": {
+    "vendor": 13,
+    "image": "vendors/13_image_3_aPx01PS.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.595Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 119,
+  "fields": {
+    "vendor": 12,
+    "image": "vendors/12_image_1_syb0Z8R.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.669Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 120,
+  "fields": {
+    "vendor": 12,
+    "image": "vendors/12_image_2_XN5qeIK.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.740Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 121,
+  "fields": {
+    "vendor": 11,
+    "image": "vendors/11_image_2_QJTOl6U.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.898Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 122,
+  "fields": {
+    "vendor": 11,
+    "image": "vendors/11_image_3_PZ5QD1n.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:31.967Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 123,
+  "fields": {
+    "vendor": 10,
+    "image": "vendors/10_image_2_VY4iVRA.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.080Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 124,
+  "fields": {
+    "vendor": 10,
+    "image": "vendors/10_image_3_8pzelrg.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.160Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 125,
+  "fields": {
+    "vendor": 9,
+    "image": "vendors/9_image_1_6IkGlM7.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.264Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 126,
+  "fields": {
+    "vendor": 9,
+    "image": "vendors/9_image_2_g8Sq6OB.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.326Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 127,
+  "fields": {
+    "vendor": 9,
+    "image": "vendors/9_image_3_tLE7gF7.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.408Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 128,
+  "fields": {
+    "vendor": 8,
+    "image": "vendors/8_image_2_ZNkzJiq.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.529Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 129,
+  "fields": {
+    "vendor": 8,
+    "image": "vendors/8_image_3_ftnBP5X.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.599Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 130,
+  "fields": {
+    "vendor": 6,
+    "image": "vendors/6_image_2_rZsYKsP.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.727Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 131,
+  "fields": {
+    "vendor": 6,
+    "image": "vendors/6_image_3_hp7v0Jy.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.804Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 132,
+  "fields": {
+    "vendor": 5,
+    "image": "vendors/5_image_1_iGYiFKF.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.869Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 133,
+  "fields": {
+    "vendor": 5,
+    "image": "vendors/5_image_2_nG9pyj8.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:32.947Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 134,
+  "fields": {
+    "vendor": 5,
+    "image": "vendors/5_image_3_PVGAL7W.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.009Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 135,
+  "fields": {
+    "vendor": 3,
+    "image": "vendors/3_image_1_V7dpBOL.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.085Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 136,
+  "fields": {
+    "vendor": 3,
+    "image": "vendors/3_image_2_l4yAF0U.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.169Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 137,
+  "fields": {
+    "vendor": 2,
+    "image": "vendors/2_image_1_5NDmp4B.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.309Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 138,
+  "fields": {
+    "vendor": 2,
+    "image": "vendors/2_image_2_m0m9MxB.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.399Z"
+  }
+},
+{
+  "model": "vendors.vendorimage",
+  "pk": 139,
+  "fields": {
+    "vendor": 2,
+    "image": "vendors/2_image_3_evexbdC.jpg",
+    "caption": "",
+    "is_cover": false,
+    "created_at": "2026-01-12T18:01:33.491Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 1,
+  "fields": {
+    "name": "Mariage",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.257Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 2,
+  "fields": {
+    "name": "Anniversaire",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.258Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 3,
+  "fields": {
+    "name": "Baptême",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.261Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 4,
+  "fields": {
+    "name": "Fiançailles",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.262Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 5,
+  "fields": {
+    "name": "Conférence",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.264Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 6,
+  "fields": {
+    "name": "Séminaire",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.265Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 7,
+  "fields": {
+    "name": "Gala",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.268Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 8,
+  "fields": {
+    "name": "Lancement de produit",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.269Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 9,
+  "fields": {
+    "name": "Retraite",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.271Z"
+  }
+},
+{
+  "model": "projects.eventtype",
+  "pk": 10,
+  "fields": {
+    "name": "Autre",
+    "description": "",
+    "icon": "",
+    "created_at": "2026-01-11T23:01:22.272Z"
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 1,
+  "fields": {
+    "client": [
+      "client_test"
+    ],
+    "title": "Mariage réligieux",
+    "event_type": 1,
+    "description": "La diversité de nos opinions ne vient pas de ce que les uns sont plus raisonnables que les autres.",
+    "event_date": "2026-01-16",
+    "event_time": null,
+    "city": "Lomé",
+    "location": "",
+    "guest_count": 200,
+    "budget_min": "500000.00",
+    "budget_max": "999995.00",
+    "status": "published",
+    "created_at": "2026-01-12T02:07:25.726Z",
+    "updated_at": "2026-01-12T02:07:25.726Z",
+    "services_needed": [
+      10,
+      8,
+      9,
+      1,
+      11,
+      5
+    ]
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 2,
+  "fields": {
+    "client": [
+      "client2_test"
+    ],
+    "title": "Mariage de Marie & Jean",
+    "event_type": 1,
+    "description": "Nous organisons notre mariage traditionnel et civil. Recherchons traiteur, photographe et DJ.",
+    "event_date": "2026-06-15",
+    "event_time": "14:00:00",
+    "city": "Kara",
+    "location": "Salle de réception Tokoin",
+    "guest_count": 200,
+    "budget_min": "500000.00",
+    "budget_max": "1500000.00",
+    "status": "published",
+    "created_at": "2026-01-13T00:29:14.083Z",
+    "updated_at": "2026-01-13T00:29:14.083Z",
+    "services_needed": []
+  }
+},
+{
+  "model": "projects.project",
+  "pk": 3,
+  "fields": {
+    "client": [
+      "client2_test"
+    ],
+    "title": "Anniversaire 50 ans",
+    "event_type": 4,
+    "description": "Anniversaire surprise pour mes 50 ans. Ambiance chic et élégante.",
+    "event_date": "2026-05-20",
+    "event_time": "18:00:00",
+    "city": "Kpalimé",
+    "location": "Jardin privé Légbassito",
+    "guest_count": 100,
+    "budget_min": "300000.00",
+    "budget_max": "800000.00",
+    "status": "published",
+    "created_at": "2026-01-13T00:29:14.086Z",
+    "updated_at": "2026-01-13T00:29:14.086Z",
+    "services_needed": []
+  }
+},
+{
+  "model": "proposals.proposalrequest",
+  "pk": 1,
+  "fields": {
+    "project": 1,
+    "vendor": 48,
+    "message": "demande devis",
+    "status": "pending",
+    "created_at": "2026-01-12T02:15:07.108Z",
+    "viewed_at": null
+  }
+},
+{
+  "model": "messaging.conversation",
+  "pk": 1,
+  "fields": {
+    "proposal_request": 1,
+    "created_at": "2026-01-12T02:15:07.110Z",
+    "updated_at": "2026-01-12T02:15:07.110Z"
+  }
+},
+{
+  "model": "messaging.message",
+  "pk": 1,
+  "fields": {
+    "conversation": 1,
+    "sender": [
+      "client_test"
+    ],
+    "content": "demande devis",
+    "attachment": "",
+    "is_read": true,
+    "read_at": "2026-01-12T18:54:38.449Z",
+    "created_at": "2026-01-12T02:15:07.111Z"
+  }
+},
+{
+  "model": "messaging.message",
+  "pk": 2,
+  "fields": {
+    "conversation": 1,
+    "sender": [
+      "vendor_47_poku"
+    ],
+    "content": "Hello , je te remercie pour l'intérêt que tu portes à notre prestation. Nous te reviendrons rapidement avec une belle offre.",
+    "attachment": "",
+    "is_read": true,
+    "read_at": "2026-01-12T18:55:33.182Z",
+    "created_at": "2026-01-12T18:55:12.106Z"
+  }
+},
+{
+  "model": "core.termsofservice",
+  "pk": 1,
+  "fields": {
+    "title": "Conditions Générales d'Utilisation - Susy Event",
+    "content": "CONDITIONS GÉNÉRALES D'UTILISATION DE SUSY EVENT\n\nDate d'entrée en vigueur : 12 janvier 2026\n\nPRÉAMBULE\n\nLes présentes Conditions Générales d'Utilisation (ci-après « CGU ») régissent l'accès et l'utilisation de la plateforme Susy Event (ci-après « la Plateforme »), accessible à l'adresse [URL], éditée par [Nom de la société].\n\nLa Plateforme a pour objet de mettre en relation des clients souhaitant organiser des événements avec des prestataires de services événementiels au Bénin.\n\nARTICLE 1 - DÉFINITIONS\n\n« Client » : toute personne physique ou morale s'inscrivant sur la Plateforme dans le but d'organiser un événement et de rechercher des prestataires.\n\n« Prestataire » : toute personne physique ou morale proposant des services événementiels via la Plateforme.\n\n« Utilisateur » : désigne indifféremment le Client ou le Prestataire.\n\n« Projet » : demande formulée par un Client pour l'organisation d'un événement.\n\n« Proposition » : offre commerciale soumise par un Prestataire en réponse à un Projet.\n\nARTICLE 2 - ACCEPTATION DES CGU\n\nL'accès et l'utilisation de la Plateforme impliquent l'acceptation pleine et entière des présentes CGU. En cochant la case « J'accepte les Conditions Générales d'Utilisation » lors de l'inscription, l'Utilisateur reconnaît avoir pris connaissance des présentes CGU et s'engage à les respecter.\n\nTout manquement aux présentes CGU pourra entraîner la suspension ou la résiliation du compte de l'Utilisateur, sans préavis ni indemnité.\n\nARTICLE 3 - INSCRIPTION ET COMPTE UTILISATEUR\n\n3.1 - Conditions d'inscription\nL'inscription sur la Plateforme est réservée :\n- Aux personnes physiques majeures et juridiquement capables\n- Aux personnes morales dûment immatriculées\n\n3.2 - Informations requises\nLors de l'inscription, l'Utilisateur s'engage à fournir des informations exactes, complètes et à jour. Toute information erronée ou frauduleuse pourra entraîner la suspension immédiate du compte.\n\n3.3 - Identifiants de connexion\nL'Utilisateur est responsable de la confidentialité de ses identifiants de connexion. Toute utilisation de son compte est présumée être effectuée par lui-même.\n\nARTICLE 4 - DESCRIPTION DES SERVICES\n\n4.1 - Pour les Clients\nLa Plateforme permet aux Clients de :\n- Créer et publier des Projets d'événements\n- Recevoir des Propositions de Prestataires\n- Comparer les offres et sélectionner un ou plusieurs Prestataires\n- Communiquer avec les Prestataires via la messagerie intégrée\n\n4.2 - Pour les Prestataires\nLa Plateforme permet aux Prestataires de :\n- Créer un profil professionnel détaillé\n- Consulter les Projets publiés par les Clients\n- Soumettre des Propositions commerciales\n- Communiquer avec les Clients via la messagerie intégrée\n\nARTICLE 5 - OBLIGATIONS DES UTILISATEURS\n\n5.1 - Obligations générales\nL'Utilisateur s'engage à :\n- Respecter les lois et règlements en vigueur au Bénin\n- Ne pas utiliser la Plateforme à des fins illégales ou frauduleuses\n- Ne pas porter atteinte aux droits de tiers\n- Ne pas diffuser de contenu offensant, diffamatoire ou contraire aux bonnes mœurs\n- Ne pas tenter d'accéder de manière non autorisée aux systèmes de la Plateforme\n\n5.2 - Obligations spécifiques des Prestataires\nLes Prestataires s'engagent à :\n- Disposer des autorisations légales nécessaires pour exercer leur activité\n- Fournir des Propositions conformes aux demandes des Clients\n- Respecter les engagements pris dans leurs Propositions\n- Maintenir à jour leurs informations professionnelles\n\nARTICLE 6 - RÔLE DE LA PLATEFORME\n\nSusy Event agit uniquement en qualité d'intermédiaire technique facilitant la mise en relation entre Clients et Prestataires. La Plateforme n'est pas partie aux contrats conclus entre les Utilisateurs.\n\nLa Plateforme ne garantit pas :\n- La qualité, la fiabilité ou l'exactitude des Propositions des Prestataires\n- La bonne exécution des prestations convenues entre Clients et Prestataires\n- Le paiement des Prestataires par les Clients\n\nARTICLE 7 - RESPONSABILITÉ\n\n7.1 - Limitation de responsabilité\nLa Plateforme décline toute responsabilité en cas de :\n- Défaillance, inexécution ou mauvaise exécution des prestations par les Prestataires\n- Litige entre Clients et Prestataires\n- Perte de données résultant d'une mauvaise utilisation de la Plateforme\n- Interruption temporaire ou définitive des services pour maintenance ou cas de force majeure\n\n7.2 - Responsabilité des Utilisateurs\nChaque Utilisateur est seul responsable de l'utilisation qu'il fait de la Plateforme et des contenus qu'il publie. Il garantit la Plateforme contre tout recours de tiers résultant de son utilisation.\n\nARTICLE 8 - PROPRIÉTÉ INTELLECTUELLE\n\nL'ensemble des éléments de la Plateforme (design, logos, textes, images, logiciels) est protégé par le droit d'auteur et appartient exclusivement à Susy Event ou à ses partenaires.\n\nToute reproduction, représentation, modification ou exploitation non autorisée constitue une contrefaçon sanctionnée par le Code pénal béninois et les conventions internationales applicables.\n\nL'Utilisateur conserve la propriété des contenus qu'il publie sur la Plateforme, mais accorde à Susy Event une licence non exclusive, mondiale et gratuite d'utilisation de ces contenus pour les besoins du fonctionnement de la Plateforme.\n\nARTICLE 9 - PROTECTION DES DONNÉES PERSONNELLES\n\nConformément au Règlement Général sur la Protection des Données (RGPD) et à la loi béninoise n°2017-20 du 20 avril 2018 portant code du numérique, les données personnelles des Utilisateurs sont collectées et traitées de manière sécurisée.\n\nLes Utilisateurs disposent d'un droit d'accès, de rectification, de suppression et d'opposition concernant leurs données personnelles. Ces droits peuvent être exercés en contactant : [email de contact].\n\nPour plus d'informations, veuillez consulter notre Politique de Confidentialité.\n\nARTICLE 10 - DURÉE ET RÉSILIATION\n\n10.1 - Durée\nLes présentes CGU sont conclues pour une durée indéterminée à compter de l'inscription de l'Utilisateur.\n\n10.2 - Résiliation par l'Utilisateur\nL'Utilisateur peut résilier son compte à tout moment en adressant une demande à [email de contact].\n\n10.3 - Résiliation par la Plateforme\nLa Plateforme se réserve le droit de suspendre ou résilier le compte d'un Utilisateur en cas de :\n- Violation des présentes CGU\n- Comportement frauduleux ou abusif\n- Non-paiement des sommes dues (le cas échéant)\n- Demande des autorités compétentes\n\nARTICLE 11 - MODIFICATION DES CGU\n\nSusy Event se réserve le droit de modifier les présentes CGU à tout moment. Les Utilisateurs seront informés de toute modification substantielle par email ou notification sur la Plateforme.\n\nL'utilisation continue de la Plateforme après notification des modifications vaut acceptation des nouvelles CGU.\n\nARTICLE 12 - DROIT APPLICABLE ET RÈGLEMENT DES LITIGES\n\n12.1 - Droit applicable\nLes présentes CGU sont régies par le droit béninois et les Actes uniformes de l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires (OHADA).\n\n12.2 - Règlement amiable\nEn cas de différend relatif à l'interprétation ou à l'exécution des présentes CGU, les parties s'engagent à rechercher une solution amiable avant toute action judiciaire.\n\n12.3 - Juridiction compétente\nÀ défaut de résolution amiable, tout litige sera soumis à la compétence exclusive des tribunaux de Cotonou, Bénin.\n\nARTICLE 13 - CONTACT\n\nPour toute question relative aux présentes CGU, vous pouvez nous contacter :\n- Par email : contact@susyevent.com\n- Par téléphone : [numéro]\n- Par courrier : [adresse]\n\nARTICLE 14 - DISPOSITIONS DIVERSES\n\n14.1 - Nullité partielle\nSi une ou plusieurs stipulations des présentes CGU sont tenues pour non valides ou déclarées telles en application d'une loi, d'un règlement ou à la suite d'une décision définitive d'une juridiction compétente, les autres stipulations garderont toute leur force et leur portée.\n\n14.2 - Non-renonciation\nLe fait pour Susy Event de ne pas se prévaloir d'un manquement de l'Utilisateur à l'une quelconque des obligations des présentes CGU ne saurait être interprété comme une renonciation à se prévaloir ultérieurement d'un tel manquement.\n\n---\n\nDernière mise à jour : 12 janvier 2026\nVersion : 1.0",
+    "version": "1.0",
+    "effective_date": "2026-01-12",
+    "is_active": true,
+    "created_at": "2026-01-12T00:11:20.407Z",
+    "updated_at": "2026-01-12T00:11:20.407Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 1,
+  "fields": {
+    "name": "Lomé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.140Z",
+    "updated_at": "2026-01-11T22:59:33.140Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 2,
+  "fields": {
+    "name": "Kara",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.185Z",
+    "updated_at": "2026-01-11T22:59:33.185Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 3,
+  "fields": {
+    "name": "Sokodé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.204Z",
+    "updated_at": "2026-01-11T22:59:33.204Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 4,
+  "fields": {
+    "name": "Atakpamé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.223Z",
+    "updated_at": "2026-01-11T22:59:33.223Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 5,
+  "fields": {
+    "name": "Kpalimé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.236Z",
+    "updated_at": "2026-01-11T22:59:33.236Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 6,
+  "fields": {
+    "name": "Dapaong",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.248Z",
+    "updated_at": "2026-01-11T22:59:33.248Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 7,
+  "fields": {
+    "name": "Tsévié",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.262Z",
+    "updated_at": "2026-01-11T22:59:33.262Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 8,
+  "fields": {
+    "name": "Aného",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.271Z",
+    "updated_at": "2026-01-11T22:59:33.271Z"
+  }
+},
+{
+  "model": "core.city",
+  "pk": 9,
+  "fields": {
+    "name": "Bassar",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.283Z",
+    "updated_at": "2026-01-11T22:59:33.283Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 1,
+  "fields": {
+    "city": 1,
+    "name": "Tokoin",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.143Z",
+    "updated_at": "2026-01-11T22:59:33.143Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 2,
+  "fields": {
+    "city": 1,
+    "name": "Hanoukopé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.144Z",
+    "updated_at": "2026-01-11T22:59:33.144Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 3,
+  "fields": {
+    "city": 1,
+    "name": "Adidogomé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.146Z",
+    "updated_at": "2026-01-11T22:59:33.146Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 4,
+  "fields": {
+    "city": 1,
+    "name": "Bè",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.147Z",
+    "updated_at": "2026-01-11T22:59:33.147Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 5,
+  "fields": {
+    "city": 1,
+    "name": "Nyékonakpoè",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.149Z",
+    "updated_at": "2026-01-11T22:59:33.149Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 6,
+  "fields": {
+    "city": 1,
+    "name": "Agoè",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.151Z",
+    "updated_at": "2026-01-11T22:59:33.151Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 7,
+  "fields": {
+    "city": 1,
+    "name": "Hédzranawoé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.152Z",
+    "updated_at": "2026-01-11T22:59:33.152Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 8,
+  "fields": {
+    "city": 1,
+    "name": "Avedji",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.154Z",
+    "updated_at": "2026-01-11T22:59:33.154Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 9,
+  "fields": {
+    "city": 1,
+    "name": "Légbassito",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.156Z",
+    "updated_at": "2026-01-11T22:59:33.156Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 10,
+  "fields": {
+    "city": 1,
+    "name": "Amadahomé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.158Z",
+    "updated_at": "2026-01-11T22:59:33.158Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 11,
+  "fields": {
+    "city": 1,
+    "name": "Amoutivé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.160Z",
+    "updated_at": "2026-01-11T22:59:33.160Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 12,
+  "fields": {
+    "city": 1,
+    "name": "Cacaveli",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.163Z",
+    "updated_at": "2026-01-11T22:59:33.163Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 13,
+  "fields": {
+    "city": 1,
+    "name": "Djidjolé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.167Z",
+    "updated_at": "2026-01-11T22:59:33.167Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 14,
+  "fields": {
+    "city": 1,
+    "name": "Gbényédzi",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.169Z",
+    "updated_at": "2026-01-11T22:59:33.169Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 15,
+  "fields": {
+    "city": 1,
+    "name": "Aflao Sagbado",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.172Z",
+    "updated_at": "2026-01-11T22:59:33.172Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 16,
+  "fields": {
+    "city": 2,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.187Z",
+    "updated_at": "2026-01-11T22:59:33.187Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 17,
+  "fields": {
+    "city": 2,
+    "name": "Tchaoudjo",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.189Z",
+    "updated_at": "2026-01-11T22:59:33.189Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 18,
+  "fields": {
+    "city": 2,
+    "name": "Sarakawa",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.192Z",
+    "updated_at": "2026-01-11T22:59:33.192Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 19,
+  "fields": {
+    "city": 2,
+    "name": "Lassa",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.194Z",
+    "updated_at": "2026-01-11T22:59:33.194Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 20,
+  "fields": {
+    "city": 2,
+    "name": "Pya",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.195Z",
+    "updated_at": "2026-01-11T22:59:33.195Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 21,
+  "fields": {
+    "city": 2,
+    "name": "Kpaha",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.198Z",
+    "updated_at": "2026-01-11T22:59:33.198Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 22,
+  "fields": {
+    "city": 2,
+    "name": "Défale",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.200Z",
+    "updated_at": "2026-01-11T22:59:33.200Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 23,
+  "fields": {
+    "city": 2,
+    "name": "Katomè",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.202Z",
+    "updated_at": "2026-01-11T22:59:33.202Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 24,
+  "fields": {
+    "city": 3,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.206Z",
+    "updated_at": "2026-01-11T22:59:33.206Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 25,
+  "fields": {
+    "city": 3,
+    "name": "Kpangalam",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.207Z",
+    "updated_at": "2026-01-11T22:59:33.207Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 26,
+  "fields": {
+    "city": 3,
+    "name": "Katchamba",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.209Z",
+    "updated_at": "2026-01-11T22:59:33.209Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 27,
+  "fields": {
+    "city": 3,
+    "name": "Gbangbara",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.212Z",
+    "updated_at": "2026-01-11T22:59:33.212Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 28,
+  "fields": {
+    "city": 3,
+    "name": "Komah",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.214Z",
+    "updated_at": "2026-01-11T22:59:33.214Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 29,
+  "fields": {
+    "city": 3,
+    "name": "Aledjo",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.215Z",
+    "updated_at": "2026-01-11T22:59:33.215Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 30,
+  "fields": {
+    "city": 3,
+    "name": "Didaoure",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.219Z",
+    "updated_at": "2026-01-11T22:59:33.219Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 31,
+  "fields": {
+    "city": 3,
+    "name": "Tchitchao",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.221Z",
+    "updated_at": "2026-01-11T22:59:33.221Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 32,
+  "fields": {
+    "city": 4,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.225Z",
+    "updated_at": "2026-01-11T22:59:33.225Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 33,
+  "fields": {
+    "city": 4,
+    "name": "Agbandi",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.227Z",
+    "updated_at": "2026-01-11T22:59:33.227Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 34,
+  "fields": {
+    "city": 4,
+    "name": "Adeta",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.229Z",
+    "updated_at": "2026-01-11T22:59:33.229Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 35,
+  "fields": {
+    "city": 4,
+    "name": "Kpodzi",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.232Z",
+    "updated_at": "2026-01-11T22:59:33.232Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 36,
+  "fields": {
+    "city": 4,
+    "name": "Akpare",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.234Z",
+    "updated_at": "2026-01-11T22:59:33.234Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 37,
+  "fields": {
+    "city": 5,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.238Z",
+    "updated_at": "2026-01-11T22:59:33.238Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 38,
+  "fields": {
+    "city": 5,
+    "name": "Tomegbé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.240Z",
+    "updated_at": "2026-01-11T22:59:33.240Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 39,
+  "fields": {
+    "city": 5,
+    "name": "Kuma Apoti",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.242Z",
+    "updated_at": "2026-01-11T22:59:33.242Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 40,
+  "fields": {
+    "city": 5,
+    "name": "Atsavé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.244Z",
+    "updated_at": "2026-01-11T22:59:33.244Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 41,
+  "fields": {
+    "city": 5,
+    "name": "Kpélé Élé",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.247Z",
+    "updated_at": "2026-01-11T22:59:33.247Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 42,
+  "fields": {
+    "city": 6,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.250Z",
+    "updated_at": "2026-01-11T22:59:33.250Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 43,
+  "fields": {
+    "city": 6,
+    "name": "Nawaré",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.253Z",
+    "updated_at": "2026-01-11T22:59:33.253Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 44,
+  "fields": {
+    "city": 6,
+    "name": "Kountoiré",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.255Z",
+    "updated_at": "2026-01-11T22:59:33.255Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 45,
+  "fields": {
+    "city": 6,
+    "name": "Nawalbou",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.257Z",
+    "updated_at": "2026-01-11T22:59:33.257Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 46,
+  "fields": {
+    "city": 6,
+    "name": "Bombouaka",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.260Z",
+    "updated_at": "2026-01-11T22:59:33.260Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 47,
+  "fields": {
+    "city": 7,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.263Z",
+    "updated_at": "2026-01-11T22:59:33.263Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 48,
+  "fields": {
+    "city": 7,
+    "name": "Davié",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.266Z",
+    "updated_at": "2026-01-11T22:59:33.266Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 49,
+  "fields": {
+    "city": 7,
+    "name": "Kélégougan",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.268Z",
+    "updated_at": "2026-01-11T22:59:33.268Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 50,
+  "fields": {
+    "city": 7,
+    "name": "Mission Tové",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.269Z",
+    "updated_at": "2026-01-11T22:59:33.269Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 51,
+  "fields": {
+    "city": 8,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.274Z",
+    "updated_at": "2026-01-11T22:59:33.274Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 52,
+  "fields": {
+    "city": 8,
+    "name": "Glidji",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.276Z",
+    "updated_at": "2026-01-11T22:59:33.276Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 53,
+  "fields": {
+    "city": 8,
+    "name": "Anexo",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.278Z",
+    "updated_at": "2026-01-11T22:59:33.278Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 54,
+  "fields": {
+    "city": 8,
+    "name": "Akodesséwa",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.281Z",
+    "updated_at": "2026-01-11T22:59:33.281Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 55,
+  "fields": {
+    "city": 9,
+    "name": "Centre-ville",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.285Z",
+    "updated_at": "2026-01-11T22:59:33.285Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 56,
+  "fields": {
+    "city": 9,
+    "name": "Kabou",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.288Z",
+    "updated_at": "2026-01-11T22:59:33.288Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 57,
+  "fields": {
+    "city": 9,
+    "name": "Bangéli",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.290Z",
+    "updated_at": "2026-01-11T22:59:33.290Z"
+  }
+},
+{
+  "model": "core.quartier",
+  "pk": 58,
+  "fields": {
+    "city": 9,
+    "name": "Dimouri",
+    "is_active": true,
+    "created_at": "2026-01-11T22:59:33.291Z",
+    "updated_at": "2026-01-11T22:59:33.292Z"
+  }
+}
+]

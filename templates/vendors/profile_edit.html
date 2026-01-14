@@ -1,0 +1,410 @@
+{% extends 'base.html' %}
+
+{% block title %}Modifier mon profil - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <div class="mb-6">
+            <a href="{% url 'vendors:dashboard' %}"
+               class="inline-flex items-center text-lily-purple hover:text-lily-dark transition font-medium">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour au tableau de bord
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h1 class="text-3xl font-light text-lily-dark mb-8">Modifier mon profil prestataire</h1>
+
+            <!-- Message de statut pour profil inactif -->
+            {% if not vendor_profile.is_active %}
+            <div class="mb-6 bg-orange-50 border-2 border-orange-400 rounded-xl p-6">
+                <div class="flex items-start">
+                    <svg class="w-6 h-6 text-orange-600 mr-3 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-orange-900 mb-2">⏳ Profil en attente de validation</h3>
+                        <p class="text-sm text-orange-800 mb-3">
+                            Votre profil sera vérifié par notre équipe avant publication. Complétez toutes les informations ci-dessous pour accélérer la validation :
+                        </p>
+                        <ul class="text-sm text-orange-800 space-y-1 ml-4 list-disc">
+                            <li><strong>Description détaillée</strong> de vos services</li>
+                            <li><strong>Photos de qualité</strong> de vos réalisations (max 5MB par image)</li>
+                            <li><strong>Informations de contact</strong> complètes (WhatsApp recommandé)</li>
+                            <li><strong>Tarifs indicatifs</strong> (budget min/max)</li>
+                        </ul>
+                        <p class="text-sm text-orange-700 mt-3 italic">
+                            💡 Astuce : Des photos de haute qualité et une description professionnelle augmentent vos chances d'être validé rapidement !
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+
+                <div>
+                    <label for="business_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom de l'entreprise *
+                    </label>
+                    <input type="text" name="business_name" id="business_name" value="{{ vendor_profile.business_name }}" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Types de services proposés *
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {% for service in service_types %}
+                            <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 cursor-pointer transition">
+                                <input type="checkbox" name="service_types" value="{{ service.id }}"
+                                       {% if service in vendor_profile.service_types.all %}checked{% endif %}
+                                       class="h-4 w-4 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                                <span class="ml-2 text-sm text-gray-700">{{ service.name }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        🌍 Pays *
+                        <span class="text-xs font-normal text-gray-500 block mt-1">
+                            Dans quel(s) pays proposez-vous vos services ?
+                        </span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {% for country in countries %}
+                            <label class="flex items-center p-3 border border-gray-300 rounded-lg hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 cursor-pointer transition">
+                                <input type="checkbox" name="countries" value="{{ country.id }}"
+                                       {% if country in vendor_profile.countries.all %}checked{% endif %}
+                                       class="h-4 w-4 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                                <span class="ml-2 text-sm text-gray-700">{{ country.flag_emoji }} {{ country.name }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2 italic">
+                        💡 Vous pouvez sélectionner plusieurs pays si vous intervenez dans différentes zones géographiques.
+                    </p>
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                        Description de votre activité *
+                    </label>
+                    <textarea name="description" id="description" rows="5" required
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">{{ vendor_profile.description }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                            Ville *
+                        </label>
+                        <select name="city" id="city" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                            <option value="">Sélectionnez une ville</option>
+                            {% for city in cities %}
+                                <option value="{{ city.id }}" {% if vendor_profile.city.id == city.id %}selected{% endif %}>
+                                    {{ city.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="quartier" class="block text-sm font-medium text-gray-700 mb-2">
+                            Quartier
+                        </label>
+                        <select name="quartier" id="quartier"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                            <option value="">Sélectionnez un quartier</option>
+                            {% for quartier in quartiers %}
+                                <option value="{{ quartier.id }}" data-city="{{ quartier.city.id }}" {% if vendor_profile.quartier.id == quartier.id %}selected{% endif %}>
+                                    {{ quartier.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="google_maps_link" class="block text-sm font-medium text-gray-700 mb-2">
+                        📍 Localisation Google Maps *
+                    </label>
+                    <input type="url" name="google_maps_link" id="google_maps_link" value="{{ vendor_profile.google_maps_link }}"
+                           placeholder="https://maps.app.goo.gl/xxxxx ou https://goo.gl/maps/xxxxx"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    <div class="mt-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                        <p class="text-sm text-blue-800 font-medium mb-2">💡 Comment obtenir votre lien Google Maps :</p>
+                        <ol class="text-xs text-blue-700 space-y-1 ml-4 list-decimal">
+                            <li>Ouvrez Google Maps sur votre téléphone ou ordinateur</li>
+                            <li>Cherchez votre emplacement ou appuyez longuement sur la carte</li>
+                            <li>Cliquez sur "Partager" puis "Copier le lien"</li>
+                            <li>Collez le lien ici</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+                        Adresse (optionnel)
+                    </label>
+                    <input type="text" name="address" id="address" value="{{ vendor_profile.address }}"
+                           placeholder="Ex: À côté de l'hôtel X, près du marché Y"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    <p class="text-sm text-gray-500 mt-1">Point de repère ou description pour faciliter l'accès</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">
+                            WhatsApp
+                        </label>
+                        <input type="text" name="whatsapp" id="whatsapp" value="{{ vendor_profile.whatsapp }}"
+                               placeholder="+228 XX XX XX XX"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="website" class="block text-sm font-medium text-gray-700 mb-2">
+                            Site web
+                        </label>
+                        <input type="url" name="website" id="website" value="{{ vendor_profile.website }}"
+                               placeholder="https://"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="facebook" class="block text-sm font-medium text-gray-700 mb-2">
+                            Page Facebook
+                        </label>
+                        <input type="url" name="facebook" id="facebook" value="{{ vendor_profile.facebook }}"
+                               placeholder="https://facebook.com/..."
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="instagram" class="block text-sm font-medium text-gray-700 mb-2">
+                            Instagram
+                        </label>
+                        <input type="text" name="instagram" id="instagram" value="{{ vendor_profile.instagram }}"
+                               placeholder="@votrecompte"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="min_budget" class="block text-sm font-medium text-gray-700 mb-2">
+                            Budget minimum (FCFA)
+                        </label>
+                        <input type="number" name="min_budget" id="min_budget" value="{{ vendor_profile.min_budget }}" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+
+                    <div>
+                        <label for="max_budget" class="block text-sm font-medium text-gray-700 mb-2">
+                            Budget maximum (FCFA)
+                        </label>
+                        <input type="number" name="max_budget" id="max_budget" value="{{ vendor_profile.max_budget }}" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="logo" class="block text-sm font-medium text-gray-700 mb-2">
+                        Logo de l'entreprise
+                    </label>
+                    {% if vendor_profile.logo %}
+                    <div class="mb-3">
+                        <img src="{{ vendor_profile.logo.url }}" alt="Logo actuel" class="h-24 w-24 object-cover rounded-lg border-2 border-gray-200">
+                        <p class="text-xs text-gray-500 mt-1">Logo actuel</p>
+                    </div>
+                    {% endif %}
+                    <input type="file" name="logo" id="logo" accept="image/jpeg,image/jpg,image/png,image/webp"
+                           class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-lily-purple file:text-white hover:file:bg-opacity-90">
+                    <p class="text-sm text-gray-500 mt-1">Format carré recommandé (ex: 500x500px). Taille max: 5MB. Formats: JPG, PNG, WEBP</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Photos de présentation
+                        {% if vendor_profile.subscription_tier %}
+                            <span class="text-xs text-gray-500">({{ vendor_profile.images.count }}/{{ vendor_profile.subscription_tier.max_images }} utilisées)</span>
+                        {% endif %}
+                    </label>
+                    
+                    {% if vendor_profile.images.exists %}
+                    <div class="grid grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+                        {% for image in vendor_profile.images.all %}
+                        <div class="relative group">
+                            <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="h-24 w-full object-cover rounded-lg border-2 border-gray-200">
+                            <button type="button" onclick="deleteImage({{ image.id }})"
+                                    class="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <input type="file" name="images" id="images" accept="image/jpeg,image/jpg,image/png,image/webp" multiple
+                           onchange="validateImages(this)"
+                           class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-lily-purple file:text-white hover:file:bg-opacity-90">
+                    <p class="text-sm text-gray-500 mt-1">
+                        Vous pouvez sélectionner plusieurs images. Taille max par image: 5MB. Formats: JPG, PNG, WEBP
+                    </p>
+                    <div id="image-preview" class="mt-3 grid grid-cols-3 md:grid-cols-4 gap-3"></div>
+                </div>
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="submit"
+                            class="flex-1 bg-lily-purple text-white px-8 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        Enregistrer les modifications
+                    </button>
+                    <a href="{% url 'vendors:dashboard' %}"
+                       class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const citySelect = document.getElementById('city');
+    const quartierSelect = document.getElementById('quartier');
+    const allQuartiers = Array.from(quartierSelect.options).slice(1); // Exclure l'option par défaut
+
+    function filterQuartiers() {
+        const selectedCityId = citySelect.value;
+
+        // Vider le select des quartiers sauf l'option par défaut
+        quartierSelect.innerHTML = '<option value="">Sélectionnez un quartier</option>';
+
+        if (!selectedCityId) {
+            quartierSelect.disabled = true;
+            return;
+        }
+
+        quartierSelect.disabled = false;
+
+        // Ajouter seulement les quartiers de la ville sélectionnée
+        allQuartiers.forEach(option => {
+            if (option.dataset.city === selectedCityId) {
+                quartierSelect.appendChild(option.cloneNode(true));
+            }
+        });
+    }
+
+    // Filtrer au changement de ville
+    citySelect.addEventListener('change', filterQuartiers);
+
+    // Filtrer au chargement de la page
+    filterQuartiers();
+});
+
+// Validation et prévisualisation des images
+function validateImages(input) {
+    const files = Array.from(input.files);
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxImages = {{ vendor_profile.subscription_tier.max_images|default:10 }};
+    const currentCount = {{ vendor_profile.images.count }};
+    const availableSlots = maxImages - currentCount;
+    const preview = document.getElementById('image-preview');
+    preview.innerHTML = '';
+    
+    // Vérifier le nombre d'images
+    if (files.length > availableSlots) {
+        alert(`Vous ne pouvez ajouter que ${availableSlots} image(s) supplémentaire(s). Limite de votre abonnement: ${maxImages} images.`);
+        input.value = '';
+        return;
+    }
+    
+    let validFiles = [];
+    let hasError = false;
+    
+    files.forEach((file, index) => {
+        // Vérifier la taille
+        if (file.size > maxSize) {
+            alert(`L'image "${file.name}" est trop volumineuse (${(file.size / (1024*1024)).toFixed(2)}MB). Taille maximale: 5MB.`);
+            hasError = true;
+            return;
+        }
+        
+        // Vérifier le type
+        if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+            alert(`L'image "${file.name}" n'est pas dans un format accepté. Formats autorisés: JPG, PNG, WEBP.`);
+            hasError = true;
+            return;
+        }
+        
+        validFiles.push(file);
+        
+        // Prévisualisation
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const div = document.createElement('div');
+            div.className = 'relative';
+            div.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" class="h-24 w-full object-cover rounded-lg border-2 border-lily-purple">
+                <div class="absolute top-1 right-1 bg-lily-purple text-white text-xs px-2 py-1 rounded-full">
+                    ${(file.size / 1024).toFixed(0)}KB
+                </div>
+            `;
+            preview.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    });
+    
+    if (hasError) {
+        input.value = '';
+        preview.innerHTML = '';
+    }
+}
+
+// Validation du logo
+const logoInput = document.getElementById('logo');
+if (logoInput) {
+    logoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        
+        if (file.size > maxSize) {
+            alert(`Le logo est trop volumineux (${(file.size / (1024*1024)).toFixed(2)}MB). Taille maximale: 5MB.`);
+            e.target.value = '';
+            return;
+        }
+        
+        if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
+            alert(`Format non accepté. Formats autorisés: JPG, PNG, WEBP.`);
+            e.target.value = '';
+            return;
+        }
+    });
+}
+
+// Fonction de suppression d'image (à implémenter côté serveur)
+function deleteImage(imageId) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        // TODO: Implémenter la suppression via AJAX
+        alert('Fonctionnalité à venir');
+    }
+}
+</script>
+{% endblock %}

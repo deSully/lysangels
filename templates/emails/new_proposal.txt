@@ -1,0 +1,22 @@
+Bonjour {{ client_name }},
+
+Bonne nouvelle ! {{ vendor_name }} vous a envoyé une proposition pour votre projet "{{ project_title }}".
+
+Proposition : {{ proposal_title }}
+Prestataire : {{ vendor_name }}
+Prix proposé : {{ price }} FCFA
+Délai : {{ delivery_time }}
+
+Aperçu :
+{{ proposal_preview }}
+
+Pour consulter la proposition complète, connectez-vous à votre espace :
+{{ proposal_url }}
+
+Prenez le temps de consulter tous les détails avant de prendre votre décision.
+
+---
+LysAngels - Votre partenaire événementiel au Togo
+© {{ current_year }} LysAngels. Tous droits réservés.
+
+Visitez notre site : {{ site_url }}

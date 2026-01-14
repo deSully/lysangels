@@ -1,0 +1,11 @@
+{% if has_image %}
+<img 
+    src="{{ src }}"
+    {% if srcset %}srcset="{{ srcset }}"{% endif %}
+    {% if sizes %}sizes="{{ sizes }}"{% endif %}
+    alt="{{ alt }}"
+    class="{{ css_class }}"
+    {% if lazy %}loading="lazy"{% endif %}
+    decoding="async"
+>
+{% endif %}

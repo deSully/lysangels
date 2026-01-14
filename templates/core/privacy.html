@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Politique de Confidentialité - LysAngels{% endblock %}
+
+{% block content %}
+<div class="bg-lily-cream min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-lily-dark mb-4">
+                    Politique de Confidentialité
+                </h1>
+                <p class="text-gray-600">
+                    Dernière mise à jour : {{ "now"|date:"d F Y" }}
+                </p>
+            </div>
+
+            <!-- Contenu -->
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-8">
+                
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">1. Introduction</h2>
+                    <p>
+                        LysAngels ("nous", "notre", "nos") s'engage à protéger la vie privée de ses utilisateurs. 
+                        Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et 
+                        protégeons vos informations personnelles lorsque vous utilisez notre plateforme.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">2. Données collectées</h2>
+                    <p>Nous collectons les informations suivantes :</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Informations d'identification :</strong> Nom, prénom, email, numéro de téléphone</li>
+                        <li><strong>Informations de profil :</strong> Ville, quartier, type de compte (client/prestataire)</li>
+                        <li><strong>Pour les prestataires :</strong> Nom d'entreprise, services proposés, photos, tarifs, réseaux sociaux</li>
+                        <li><strong>Données d'utilisation :</strong> Projets créés, demandes de devis, propositions, messages</li>
+                        <li><strong>Données techniques :</strong> Adresse IP, type de navigateur, pages visitées</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">3. Utilisation des données</h2>
+                    <p>Vos données sont utilisées pour :</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Créer et gérer votre compte</li>
+                        <li>Faciliter la mise en relation entre clients et prestataires</li>
+                        <li>Envoyer des notifications relatives à vos projets et demandes</li>
+                        <li>Améliorer nos services et l'expérience utilisateur</li>
+                        <li>Assurer la sécurité de la plateforme</li>
+                        <li>Respecter nos obligations légales</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">4. Partage des données</h2>
+                    <p>Nous ne vendons jamais vos données personnelles. Nous partageons vos informations uniquement dans les cas suivants :</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Avec les prestataires :</strong> Lorsque vous envoyez une demande de devis, vos coordonnées sont partagées avec le prestataire concerné</li>
+                        <li><strong>Avec les clients :</strong> Les prestataires peuvent voir vos informations de contact lors d'échanges commerciaux</li>
+                        <li><strong>Profils publics :</strong> Les informations de profil des prestataires validés sont visibles par tous les utilisateurs connectés</li>
+                        <li><strong>Obligations légales :</strong> Si requis par la loi ou une autorité compétente</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">5. Sécurité des données</h2>
+                    <p>
+                        Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre 
+                        tout accès non autorisé, perte, destruction ou divulgation. Ces mesures incluent :
+                    </p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Chiffrement des mots de passe</li>
+                        <li>Connexion sécurisée HTTPS</li>
+                        <li>Limitation d'accès aux données personnelles</li>
+                        <li>Surveillance et audits de sécurité réguliers</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">6. Vos droits</h2>
+                    <p>Conformément à la réglementation en vigueur, vous disposez des droits suivants :</p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Droit d'accès :</strong> Consulter les données que nous détenons sur vous</li>
+                        <li><strong>Droit de rectification :</strong> Corriger vos informations personnelles</li>
+                        <li><strong>Droit de suppression :</strong> Demander la suppression de votre compte et de vos données</li>
+                        <li><strong>Droit d'opposition :</strong> Vous opposer au traitement de vos données</li>
+                        <li><strong>Droit à la portabilité :</strong> Recevoir vos données dans un format structuré</li>
+                    </ul>
+                    <p class="mt-4">
+                        Pour exercer ces droits, contactez-nous à : <a href="mailto:privacy@eventsusy.tg" class="text-lily-purple hover:text-lily-gold">privacy@eventsusy.tg</a>
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">7. Cookies</h2>
+                    <p>
+                        Notre site utilise des cookies essentiels pour le bon fonctionnement de la plateforme (session utilisateur, authentification). 
+                        Nous n'utilisons pas de cookies publicitaires ou de tracking tiers.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">8. Conservation des données</h2>
+                    <p>
+                        Vos données personnelles sont conservées aussi longtemps que votre compte est actif. 
+                        Après suppression de votre compte, vos données sont supprimées sous 30 jours, sauf obligation légale de conservation.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">9. Modifications de la politique</h2>
+                    <p>
+                        Nous nous réservons le droit de modifier cette politique de confidentialité. 
+                        Toute modification sera publiée sur cette page avec une nouvelle date de mise à jour. 
+                        Nous vous encourageons à consulter régulièrement cette page.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">10. Contact</h2>
+                    <p>
+                        Pour toute question concernant cette politique de confidentialité, contactez-nous :
+                    </p>
+                    <ul class="list-none space-y-2 mt-4">
+                        <li><strong>Email :</strong> <a href="mailto:privacy@eventsusy.tg" class="text-lily-purple hover:text-lily-gold">privacy@eventsusy.tg</a></li>
+                        <li><strong>Téléphone :</strong> +228 XX XX XX XX</li>
+                        <li><strong>Adresse :</strong> Lomé, Togo</li>
+                    </ul>
+                </section>
+
+            </div>
+
+            <!-- Bouton retour -->
+            <div class="mt-12 text-center">
+                <a href="{% url 'core:home' %}" 
+                   class="inline-block px-6 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-opacity-90 transition">
+                    ← Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,578 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if vendor %}Modifier{% else %}Créer{% endif %} un prestataire - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-lily-dark mb-2">
+                {% if vendor %}Modifier le prestataire{% else %}Créer un nouveau prestataire{% endif %}
+            </h1>
+            <p class="text-gray-600">Gérez les prestataires de la plateforme</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <form method="post" enctype="multipart/form-data" class="space-y-8" id="vendorForm">
+                {% csrf_token %}
+
+                <!-- Section 1: Compte utilisateur -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Informations du compte
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nom d'utilisateur <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="username" id="username" required
+                                   {% if vendor %}value="{{ vendor.user.username }}" readonly class="bg-gray-100"{% endif %}
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="ex: jean_martin">
+                            {% if vendor %}
+                                <p class="mt-1 text-xs text-gray-500">Le nom d'utilisateur ne peut pas être modifié</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" name="email" id="email" required
+                                   value="{{ vendor.user.email|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="email@exemple.com">
+                        </div>
+
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Prénom
+                            </label>
+                            <input type="text" name="first_name" id="first_name"
+                                   value="{{ vendor.user.first_name|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="Jean">
+                        </div>
+
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nom
+                            </label>
+                            <input type="text" name="last_name" id="last_name"
+                                   value="{{ vendor.user.last_name|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="Martin">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                                Téléphone
+                            </label>
+                            <input type="tel" name="phone" id="phone"
+                                   value="{{ vendor.user.phone|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="+228 XX XX XX XX">
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                Mot de passe {% if not vendor %}<span class="text-red-500">*</span>{% endif %}
+                            </label>
+                            <input type="password" name="password" id="password"
+                                   {% if not vendor %}required{% endif %}
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="{% if vendor %}Laisser vide pour ne pas changer{% else %}Mot de passe{% endif %}">
+                            {% if vendor %}
+                                <p class="mt-1 text-xs text-gray-500">Laisser vide pour conserver le mot de passe actuel</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Informations entreprise -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Informations de l'entreprise
+                    </h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="business_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nom de l'entreprise <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="business_name" id="business_name" required
+                                   value="{{ vendor.business_name|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="ex: Photo & Vidéo Pro">
+                        </div>
+
+                        <div>
+                            <label for="logo" class="block text-sm font-medium text-gray-700 mb-2">
+                                Logo de l'entreprise <span class="text-red-500">*</span>
+                            </label>
+                            {% if vendor and vendor.logo %}
+                                <div class="mb-3 flex items-center gap-4">
+                                    <img src="{{ vendor.logo.url }}" alt="Logo actuel" class="h-20 w-20 object-cover rounded-lg border-2 border-gray-200">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Logo actuel</p>
+                                        <p class="text-xs text-gray-500">Choisir un nouveau fichier pour le remplacer</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <input type="file" name="logo" id="logo" accept="image/*" 
+                                   {% if not vendor %}required{% endif %}
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-lily-purple file:text-white hover:file:bg-opacity-90">
+                            <p class="mt-1 text-sm text-gray-500">Format accepté: JPG, PNG, GIF (max 2MB)</p>
+                        </div>
+
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                                Description de l'activité <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="description" id="description" rows="4" required
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                      placeholder="Décrivez votre activité, vos services, votre expérience...">{{ vendor.description|default:'' }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Photos de présentation (modération) -->
+                    {% if vendor %}
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                            Photos de présentation 
+                            <span class="text-xs text-gray-500">({{ vendor.images.count }}/{{ vendor.subscription_tier.max_images }} utilisées)</span>
+                        </label>
+                        
+                        {% if vendor.images.exists %}
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-4">
+                            {% for image in vendor.images.all %}
+                            <div class="relative group">
+                                <img src="{{ image.image.url }}" alt="{{ image.caption|default:'Photo' }}" 
+                                     class="h-32 w-full object-cover rounded-lg border-2 border-gray-200 cursor-pointer hover:border-lily-purple transition"
+                                     onclick="viewImage('{{ image.image.url }}', '{{ image.caption|default:"Photo"|escapejs }}')">
+                                <button type="button" onclick="deleteImageAdmin({{ image.id }}, {{ vendor.id }})"
+                                        class="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg hover:bg-red-700">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                                {% if image.caption %}
+                                <p class="text-xs text-gray-600 mt-1 truncate">{{ image.caption }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p class="text-sm text-gray-500 italic py-4 px-4 bg-gray-50 rounded-lg">
+                            Aucune photo uploadée par ce prestataire
+                        </p>
+                        {% endif %}
+
+                        <!-- Ajout de nouvelles photos par l'admin -->
+                        <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <label for="admin_images" class="block text-sm font-medium text-blue-900 mb-2">
+                                Ajouter des photos (admin)
+                            </label>
+                            <input type="file" name="images" id="admin_images" accept="image/jpeg,image/jpg,image/png,image/webp" multiple
+                                   onchange="previewAdminImages(this)"
+                                   class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                            <p class="text-xs text-blue-700 mt-2">
+                                Vous pouvez ajouter des photos au nom du prestataire. Taille max: 5MB par image. Formats: JPG, PNG, WEBP
+                            </p>
+                            <div id="admin-image-preview" class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Section 3: Services proposés -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Services proposés <span class="text-red-500">*</span>
+                    </h2>
+                    <p class="text-sm text-gray-600 mb-4">Sélectionnez tous les services que vous proposez</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {% for service in service_types %}
+                        <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition
+                               {% if vendor and service in vendor.service_types.all %}border-lily-purple bg-lily-purple bg-opacity-10{% endif %}">
+                            <input type="checkbox" name="service_types" value="{{ service.id }}"
+                                   {% if vendor and service in vendor.service_types.all %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                            <span class="ml-2 text-sm font-medium text-gray-900">
+                                {% if service.icon %}{{ service.icon }} {% endif %}{{ service.name }}
+                            </span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Section 4: Pays -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        🌍 Pays <span class="text-red-500">*</span>
+                    </h2>
+                    <p class="text-sm text-gray-600 mb-4">Dans quel(s) pays le prestataire peut-il intervenir ?</p>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3">
+                        <p class="text-sm text-gray-600 italic">
+                            ℹ️ Pour le moment, le service est disponible uniquement au Togo. 
+                            D'autres pays seront ajoutés prochainement (Bénin, Ghana, etc.).
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {% for country in countries %}
+                        <label class="flex items-center p-3 border-2 rounded-lg
+                               {% if country.code == 'TG' %}border-lily-purple bg-lily-purple bg-opacity-10 opacity-75 cursor-not-allowed{% else %}border-gray-200 cursor-pointer hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5{% endif %}
+                               {% if vendor and country in vendor.countries.all and country.code != 'TG' %}border-lily-purple bg-lily-purple bg-opacity-10{% endif %} transition">
+                            <input type="checkbox" name="countries" value="{{ country.id }}"
+                                   {% if country.code == 'TG' %}checked disabled{% endif %}
+                                   {% if vendor and country in vendor.countries.all and country.code != 'TG' %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                            <span class="ml-2 text-sm font-medium {% if country.code == 'TG' %}text-gray-600{% else %}text-gray-900{% endif %}">
+                                {{ country.flag_emoji }} {{ country.name }}
+                                {% if country.code == 'TG' %}<span class="text-xs text-gray-500">(par défaut)</span>{% endif %}
+                            </span>
+                            {# Champ caché pour garantir que Togo est toujours envoyé même si disabled #}
+                            {% if country.code == 'TG' %}
+                            <input type="hidden" name="countries" value="{{ country.id }}">
+                            {% endif %}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Section 5: Localisation -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Localisation
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                                Ville <span class="text-red-500">*</span>
+                            </label>
+                            <select name="city" id="city" required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                                <option value="">Sélectionnez une ville</option>
+                                {% for city in cities %}
+                                    <option value="{{ city.id }}" 
+                                            {% if vendor and vendor.city.id == city.id %}selected{% endif %}
+                                            data-city-id="{{ city.id }}">
+                                        {{ city.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="quartier" class="block text-sm font-medium text-gray-700 mb-2">
+                                Quartier
+                            </label>
+                            <select name="quartier" id="quartier"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                                <option value="">Sélectionnez un quartier</option>
+                                {% if vendor and vendor.quartier %}
+                                    <option value="{{ vendor.quartier.id }}" selected>{{ vendor.quartier.name }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="google_maps_link" class="block text-sm font-medium text-gray-700 mb-2">
+                                📍 Localisation Google Maps
+                            </label>
+                            <input type="url" name="google_maps_link" id="google_maps_link"
+                                   value="{{ vendor.google_maps_link|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="https://maps.app.goo.gl/xxxxx ou https://goo.gl/maps/xxxxx">
+                            <p class="mt-1 text-sm text-gray-500">Lien de partage Google Maps de l'emplacement</p>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+                                Adresse / Point de repère
+                            </label>
+                            <input type="text" name="address" id="address"
+                                   value="{{ vendor.address|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="Ex: À côté de l'hôtel X, près du marché Y">
+                            <p class="mt-1 text-sm text-gray-500">Description pour faciliter l'accès (optionnel)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Informations commerciales -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Informations commerciales
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="min_budget" class="block text-sm font-medium text-gray-700 mb-2">
+                                Budget minimum (FCFA)
+                            </label>
+                            <input type="number" name="min_budget" id="min_budget" min="0" step="1000"
+                                   value="{{ vendor.min_budget|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="ex: 50000">
+                        </div>
+
+                        <div>
+                            <label for="max_budget" class="block text-sm font-medium text-gray-700 mb-2">
+                                Budget maximum (FCFA)
+                            </label>
+                            <input type="number" name="max_budget" id="max_budget" min="0" step="1000"
+                                   value="{{ vendor.max_budget|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="ex: 500000">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Réseaux sociaux et contact -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Réseaux sociaux et contact
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="website" class="block text-sm font-medium text-gray-700 mb-2">
+                                Site web
+                            </label>
+                            <input type="url" name="website" id="website"
+                                   value="{{ vendor.website|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="https://www.monsite.com">
+                        </div>
+
+                        <div>
+                            <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">
+                                WhatsApp
+                            </label>
+                            <input type="tel" name="whatsapp" id="whatsapp"
+                                   value="{{ vendor.whatsapp|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="+228 XX XX XX XX">
+                        </div>
+
+                        <div>
+                            <label for="facebook" class="block text-sm font-medium text-gray-700 mb-2">
+                                Page Facebook
+                            </label>
+                            <input type="url" name="facebook" id="facebook"
+                                   value="{{ vendor.facebook|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="https://facebook.com/...">
+                        </div>
+
+                        <div>
+                            <label for="instagram" class="block text-sm font-medium text-gray-700 mb-2">
+                                Instagram
+                            </label>
+                            <input type="text" name="instagram" id="instagram"
+                                   value="{{ vendor.instagram|default:'' }}"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                                   placeholder="@moncompte">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Abonnement -->
+                <div class="border-b border-gray-200 pb-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        💳 Gestion de l'abonnement
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="subscription_tier" class="block text-sm font-medium text-gray-700 mb-2">
+                                Type d'abonnement
+                            </label>
+                            <select name="subscription_tier" id="subscription_tier"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                                <option value="">Aucun abonnement (Gratuit)</option>
+                                {% for tier in subscription_tiers %}
+                                    <option value="{{ tier.id }}" 
+                                            {% if vendor and vendor.subscription_tier and vendor.subscription_tier.id == tier.id %}selected{% endif %}>
+                                        {{ tier.name }} - {{ tier.price_monthly }} FCFA/mois
+                                        {% if tier.slug == 'premium' %}⭐{% elif tier.slug == 'standard' %}✓{% endif %}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <p class="mt-1 text-xs text-gray-500">Seuls les abonnements Standard et Premium sont visibles dans les listes</p>
+                        </div>
+
+                        <div>
+                            <label for="subscription_expires_at" class="block text-sm font-medium text-gray-700 mb-2">
+                                Date d'expiration
+                            </label>
+                            <input type="datetime-local" name="subscription_expires_at" id="subscription_expires_at"
+                                   {% if vendor and vendor.subscription_expires_at %}value="{{ vendor.subscription_expires_at|date:'Y-m-d\TH:i' }}"{% endif %}
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                            <p class="mt-1 text-xs text-gray-500">Laisser vide pour un abonnement sans limite de temps</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 7: Statut -->
+                <div>
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Statut du prestataire
+                    </h2>
+                    <div class="space-y-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="is_active" 
+                                   {% if not vendor or vendor.is_active %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                            <span class="ml-2 text-sm font-medium text-gray-900">
+                                Profil actif (visible sur la plateforme)
+                            </span>
+                        </label>
+
+                        <label class="flex items-center">
+                            <input type="checkbox" name="is_featured"
+                                   {% if vendor and vendor.is_featured %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                            <span class="ml-2 text-sm font-medium text-gray-900">
+                                ⭐ Mettre en avant ce prestataire
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="flex gap-4 pt-4 border-t border-gray-200">
+                    <button type="submit"
+                            class="flex-1 bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        {% if vendor %}Enregistrer les modifications{% else %}Créer le prestataire{% endif %}
+                    </button>
+                    <a href="{% url 'accounts:admin_vendor_list' %}"
+                       class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Charger dynamiquement les quartiers en fonction de la ville sélectionnée
+document.getElementById('city').addEventListener('change', function() {
+    const cityId = this.value;
+    const quartierSelect = document.getElementById('quartier');
+    
+    // Réinitialiser les quartiers
+    quartierSelect.innerHTML = '<option value="">Chargement...</option>';
+    
+    if (cityId) {
+        // Appeler l'API pour récupérer les quartiers
+        fetch(`/api/quartiers/?city=${cityId}`)
+            .then(response => response.json())
+            .then(data => {
+                quartierSelect.innerHTML = '<option value="">Sélectionnez un quartier</option>';
+                data.forEach(quartier => {
+                    const option = document.createElement('option');
+                    option.value = quartier.id;
+                    option.textContent = quartier.name;
+                    quartierSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                quartierSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+            });
+    } else {
+        quartierSelect.innerHTML = '<option value="">Sélectionnez d\'abord une ville</option>';
+    }
+});
+
+// Validation du formulaire
+document.getElementById('vendorForm').addEventListener('submit', function(e) {
+    const serviceTypes = document.querySelectorAll('input[name="service_types"]:checked');
+    if (serviceTypes.length === 0) {
+        e.preventDefault();
+        alert('Veuillez sélectionner au moins un type de service.');
+        return false;
+    }
+});
+
+// Preview des images ajoutées par l'admin
+function previewAdminImages(input) {
+    const preview = document.getElementById('admin-image-preview');
+    preview.innerHTML = '';
+    
+    if (input.files) {
+        Array.from(input.files).forEach((file, index) => {
+            // Validation taille
+            if (file.size > 5 * 1024 * 1024) {
+                alert(`${file.name} dépasse 5MB et ne sera pas uploadé`);
+                return;
+            }
+            
+            // Validation format
+            if (!file.type.match('image.*')) {
+                alert(`${file.name} n'est pas une image valide`);
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'relative';
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="h-24 w-full object-cover rounded-lg border-2 border-blue-300">
+                    <span class="absolute top-1 left-1 bg-blue-600 text-white text-xs px-2 py-0.5 rounded">Nouveau</span>
+                `;
+                preview.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+// Viewer d'image en modal
+function viewImage(url, caption) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4';
+    modal.onclick = function() { modal.remove(); };
+    modal.innerHTML = `
+        <div class="relative max-w-4xl max-h-full">
+            <img src="${url}" alt="${caption}" class="max-h-screen object-contain rounded-lg">
+            <p class="text-white text-center mt-2">${caption}</p>
+            <button class="absolute top-2 right-2 bg-white text-gray-800 p-2 rounded-full hover:bg-gray-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// Suppression d'image par l'admin
+function deleteImageAdmin(imageId, vendorId) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+        return;
+    }
+    
+    fetch(`/admin/vendors/${vendorId}/delete-image/${imageId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Erreur lors de la suppression: ' + (data.error || 'Erreur inconnue'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la suppression de l\'image');
+    });
+}
+</script>
+{% endblock %}

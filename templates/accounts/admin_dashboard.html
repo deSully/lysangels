@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Admin - LysAngels{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold text-lily-dark mb-2">Dashboard Administrateur</h1>
+            <p class="text-gray-600">Gestion complète de la plateforme LysAngels</p>
+        </div>
+
+        <!-- Statistiques globales -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Utilisateurs -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-600 font-medium">Utilisateurs</h3>
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-3xl font-bold text-lily-dark mb-2">{{ total_users }}</p>
+                <div class="flex gap-4 text-sm">
+                    <span class="text-gray-600">{{ total_clients }} clients</span>
+                    <span class="text-gray-600">{{ total_providers }} prestataires</span>
+                </div>
+            </div>
+
+            <!-- Projets -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-600 font-medium">Projets</h3>
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <p class="text-3xl font-bold text-lily-dark mb-2">{{ total_projects }}</p>
+                <p class="text-sm text-gray-600">{{ active_projects }} actifs</p>
+            </div>
+
+            <!-- Propositions -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-600 font-medium">Propositions</h3>
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <p class="text-3xl font-bold text-lily-dark mb-2">{{ total_proposals }}</p>
+                <p class="text-sm text-gray-600">Toutes statuts confondus</p>
+            </div>
+
+            <!-- Prestataires en attente -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-600 font-medium">En attente</h3>
+                    <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-3xl font-bold text-lily-dark mb-2">{{ pending_vendors }}</p>
+                <p class="text-sm text-gray-600">Prestataires à valider</p>
+            </div>
+        </div>
+
+        <!-- Alerte prestataires en attente -->
+        {% if pending_vendors > 0 %}
+        <div class="bg-orange-50 border-2 border-orange-400 rounded-xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-orange-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-xl font-medium text-orange-900">{{ pending_vendors }} prestataire{{ pending_vendors|pluralize }} en attente de validation</h3>
+                        <p class="text-sm text-orange-700 mt-1">Ces prestataires ont créé leur compte mais ne sont pas encore activés</p>
+                    </div>
+                </div>
+                <a href="{% url 'accounts:admin_vendor_list' %}?is_active=0" class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition shadow-lg">
+                    Voir les prestataires
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Sections de gestion -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Configuration de la plateforme -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-medium text-lily-dark mb-6">Configuration</h2>
+                <div class="space-y-3">
+                    <a href="{% url 'accounts:admin_country_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Pays</p>
+                                <p class="text-sm text-gray-600">{{ total_countries|default:1 }} pays disponible{{ total_countries|default:1|pluralize }}</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_city_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Villes</p>
+                                <p class="text-sm text-gray-600">{{ total_cities }} villes disponibles</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_quartier_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Quartiers</p>
+                                <p class="text-sm text-gray-600">{{ total_quartiers }} quartiers disponibles</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_service_type_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Types de services</p>
+                                <p class="text-sm text-gray-600">{{ total_service_types }} types disponibles</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_event_type_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Types d'événements</p>
+                                <p class="text-sm text-gray-600">{{ total_event_types }} types disponibles</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gestion de la plateforme -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-medium text-lily-dark mb-6">Gestion</h2>
+                <div class="space-y-3">
+                    <a href="{% url 'accounts:admin_project_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Projets</p>
+                                <p class="text-sm text-gray-600">Voir tous les projets</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_vendor_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Prestataires</p>
+                                <p class="text-sm text-gray-600">Gérer les prestataires</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_proposal_request_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Demandes de devis</p>
+                                <p class="text-sm text-gray-600">Suivre les demandes</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    <a href="{% url 'accounts:admin_proposal_list' %}" class="flex items-center justify-between p-4 rounded-lg border-2 border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 text-lily-purple mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            <div>
+                                <p class="font-medium text-lily-dark">Propositions</p>
+                                <p class="text-sm text-gray-600">Suivre les propositions</p>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activités récentes -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Derniers projets -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-medium text-lily-dark mb-6">Derniers projets</h2>
+                <div class="space-y-4">
+                    {% for project in recent_projects %}
+                        <a href="{% url 'accounts:admin_project_detail' project.id %}" class="block p-4 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <p class="font-medium text-lily-dark">{{ project.title }}</p>
+                                <span class="text-xs px-2 py-1 rounded-full {% if project.status == 'published' %}bg-green-100 text-green-700{% elif project.status == 'in_progress' %}bg-blue-100 text-blue-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                    {{ project.get_status_display }}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600">{{ project.client.get_full_name }} • {{ project.event_type.name }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ project.created_at|date:"d/m/Y à H:i" }}</p>
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-500 text-center py-8">Aucun projet récent</p>
+                    {% endfor %}
+                </div>
+                {% if recent_projects %}
+                    <a href="{% url 'accounts:admin_project_list' %}" class="block text-center mt-4 text-lily-purple hover:text-lily-gold font-medium">
+                        Voir tous les projets →
+                    </a>
+                {% endif %}
+            </div>
+            
+            <!-- Avis en attente de modération -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-medium text-lily-dark mb-6">Avis à modérer</h2>
+                <div class="space-y-4">
+                    {% for review in pending_reviews %}
+                        <div class="p-4 rounded-lg border border-yellow-200 bg-yellow-50">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <p class="font-medium text-lily-dark">{{ review.vendor.business_name }}</p>
+                                    <p class="text-sm text-gray-600">Par {{ review.client.get_full_name }}</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    {% for i in "12345" %}
+                                        <svg class="w-4 h-4 {% if forloop.counter <= review.rating %}text-lily-gold{% else %}text-gray-300{% endif %}"
+                                             fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3 line-clamp-2">{{ review.comment }}</p>
+                            <div class="flex gap-2">
+                                <a href="{% url 'vendors:moderate_review' review.id %}" 
+                                   class="flex-1 text-center px-3 py-2 bg-lily-purple text-white text-sm rounded hover:bg-opacity-90 transition">
+                                    Modérer
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-gray-500 text-center py-8">Aucun avis en attente</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Derniers prestataires -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-2xl font-medium text-lily-dark mb-6">Derniers prestataires</h2>
+                <div class="space-y-4">
+                    {% for vendor in recent_vendors %}
+                        <a href="{% url 'accounts:admin_vendor_detail' vendor.id %}" class="block p-4 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <p class="font-medium text-lily-dark">{{ vendor.business_name }}</p>
+                                <span class="text-xs px-2 py-1 rounded-full {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                    {% if vendor.is_active %}Actif{% else %}Inactif{% endif %}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600">{{ vendor.user.get_full_name }} • {{ vendor.city }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ vendor.created_at|date:"d/m/Y à H:i" }}</p>
+                        </a>
+                    {% empty %}
+                        <p class="text-gray-500 text-center py-8">Aucun prestataire récent</p>
+                    {% endfor %}
+                </div>
+                {% if recent_vendors %}
+                    <a href="{% url 'accounts:admin_vendor_list' %}" class="block text-center mt-4 text-lily-purple hover:text-lily-gold font-medium">
+                        Voir tous les prestataires →
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

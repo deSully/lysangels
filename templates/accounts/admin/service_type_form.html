@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if service_type %}Modifier{% else %}Ajouter{% endif %} un type de service - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-lily-dark mb-2">
+                {% if service_type %}Modifier{% else %}Ajouter{% endif %} un type de service
+            </h1>
+            <p class="text-gray-600">Gérez les types de services disponibles sur la plateforme</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom du service <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="name" id="name" required
+                           value="{{ service_type.name|default:'' }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                           placeholder="Ex: Photographe, Traiteur, DJ...">
+                </div>
+
+                <div>
+                    <label for="icon" class="block text-sm font-medium text-gray-700 mb-2">
+                        Icône (emoji)
+                    </label>
+                    <input type="text" name="icon" id="icon"
+                           value="{{ service_type.icon|default:'' }}"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                           placeholder="Ex: 📸, 🍽️, 🎵, 🎨...">
+                    <p class="mt-1 text-sm text-gray-500">Utilisez un emoji pour représenter ce service</p>
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                        Description
+                    </label>
+                    <textarea name="description" id="description" rows="4"
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent"
+                              placeholder="Description du type de service...">{{ service_type.description|default:'' }}</textarea>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit"
+                            class="flex-1 bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        {% if service_type %}Enregistrer les modifications{% else %}Créer le type de service{% endif %}
+                    </button>
+                    <a href="{% url 'accounts:admin_service_type_list' %}"
+                       class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

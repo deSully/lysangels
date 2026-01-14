@@ -1,0 +1,15 @@
+Bonjour {{ recipient_name }},
+
+Vous avez reçu un nouveau message de {{ sender_name }} concernant le projet "{{ project_title }}".
+
+Message:
+{{ message_preview }}
+
+Pour répondre à ce message, connectez-vous à votre compte :
+{{ conversation_url }}
+
+---
+LysAngels - Votre partenaire événementiel au Togo
+© {{ current_year }} LysAngels. Tous droits réservés.
+
+Visitez notre site : {{ site_url }}

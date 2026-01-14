@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Supprimer un pays - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-lily-dark mb-2">Supprimer un pays</h1>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <div class="mb-6">
+                <div class="flex items-center mb-4">
+                    <span class="text-4xl mr-4">{{ country.flag_emoji }}</span>
+                    <div>
+                        <h2 class="text-2xl font-medium text-lily-dark">{{ country.name }}</h2>
+                        <p class="text-gray-600">Code: {{ country.code }}</p>
+                    </div>
+                </div>
+
+                {% if city_count > 0 or vendor_count > 0 %}
+                <div class="bg-red-50 border-2 border-red-400 rounded-lg p-4 mt-6">
+                    <div class="flex">
+                        <svg class="w-6 h-6 text-red-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="font-bold text-red-900 mb-2">⚠️ Attention : Ce pays contient des données</h3>
+                            <ul class="text-sm text-red-800 space-y-1">
+                                {% if city_count > 0 %}
+                                <li>• {{ city_count }} ville{{ city_count|pluralize }} associée{{ city_count|pluralize }}</li>
+                                {% endif %}
+                                {% if vendor_count > 0 %}
+                                <li>• {{ vendor_count }} prestataire{{ vendor_count|pluralize }} intervient dans ce pays</li>
+                                {% endif %}
+                            </ul>
+                            <p class="text-sm text-red-900 mt-3 font-medium">
+                                La suppression de ce pays supprimera également toutes les données associées.
+                                Cette action est irréversible !
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                    <p class="text-sm text-blue-800">
+                        Ce pays ne contient aucune donnée. Vous pouvez le supprimer en toute sécurité.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+
+            <form method="post" class="mt-8">
+                {% csrf_token %}
+                <p class="text-gray-700 mb-6">
+                    Êtes-vous sûr de vouloir supprimer le pays <strong>{{ country.flag_emoji }} {{ country.name }}</strong> ?
+                </p>
+
+                <div class="flex gap-4">
+                    <button type="submit"
+                            class="flex-1 bg-red-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-red-700 transition">
+                        Oui, supprimer ce pays
+                    </button>
+                    <a href="{% url 'accounts:admin_country_list' %}"
+                       class="flex-1 text-center px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

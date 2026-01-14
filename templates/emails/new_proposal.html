@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle proposition reçue - LysAngels</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Inter', Arial, sans-serif; background-color: #FDFCFB;">
+    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <tr>
+            <td align="center" style="padding: 40px 0;">
+                <table role="presentation" style="width: 600px; max-width: 100%; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #8B7BA8 0%, #D4AF37 100%); padding: 40px; text-align: center; border-radius: 16px 16px 0 0;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 400; letter-spacing: 1px;">
+                                LysAngels
+                            </h1>
+                            <p style="margin: 10px 0 0; color: #ffffff; font-size: 16px; font-weight: 400; opacity: 0.9;">
+                                Nouvelle proposition reçue
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 40px;">
+                            <p style="margin: 0 0 20px; font-size: 16px; color: #2C2C2C; font-weight: 400; line-height: 1.6;">
+                                Bonjour <strong style="font-weight: 500;">{{ client_name }}</strong>,
+                            </p>
+                            
+                            <p style="margin: 0 0 30px; font-size: 16px; color: #2C2C2C; font-weight: 400; line-height: 1.6;">
+                                Bonne nouvelle ! <strong style="font-weight: 500;">{{ vendor_name }}</strong> vous a envoyé une proposition pour votre projet "<strong style="font-weight: 500;">{{ project_title }}</strong>".
+                            </p>
+
+                            <!-- Détails de la proposition -->
+                            <div style="background-color: #F5F1ED; border-left: 4px solid #D4AF37; padding: 20px; margin: 0 0 30px; border-radius: 8px;">
+                                <h3 style="margin: 0 0 15px; font-size: 18px; color: #2C2C2C; font-weight: 500;">
+                                    {{ proposal_title }}
+                                </h3>
+                                <table style="width: 100%; font-size: 14px; color: #666; line-height: 1.8;">
+                                    <tr>
+                                        <td style="padding: 5px 0; width: 40%;"><strong>Prestataire :</strong></td>
+                                        <td style="padding: 5px 0;">{{ vendor_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0;"><strong>Prix proposé :</strong></td>
+                                        <td style="padding: 5px 0; font-size: 18px; color: #D4AF37; font-weight: 500;">{{ price }} FCFA</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 0;"><strong>Délai :</strong></td>
+                                        <td style="padding: 5px 0;">{{ delivery_time }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Aperçu de la proposition -->
+                            <div style="background-color: #FAFAFA; padding: 20px; margin: 0 0 30px; border-radius: 8px; border: 1px solid #E5E5E5;">
+                                <p style="margin: 0 0 10px; font-size: 14px; color: #666; font-weight: 500;">
+                                    Aperçu de la proposition :
+                                </p>
+                                <p style="margin: 0; font-size: 14px; color: #2C2C2C; font-weight: 400; line-height: 1.6;">
+                                    {{ proposal_preview }}
+                                </p>
+                            </div>
+
+                            <!-- CTA Button -->
+                            <table role="presentation" style="margin: 0 auto;">
+                                <tr>
+                                    <td style="border-radius: 12px; background-color: #D4AF37;">
+                                        <a href="{{ proposal_url }}" 
+                                           style="display: inline-block; padding: 16px 40px; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 12px;">
+                                            Consulter la proposition complète
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p style="margin: 30px 0 0; font-size: 14px; color: #666; font-weight: 400; line-height: 1.6;">
+                                Prenez le temps de consulter tous les détails avant de prendre votre décision.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #F5F1ED; padding: 30px; text-align: center; border-radius: 0 0 16px 16px;">
+                            <p style="margin: 0 0 10px; font-size: 14px; color: #666; font-weight: 400;">
+                                LysAngels - Votre partenaire événementiel au Togo
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #999; font-weight: 400;">
+                                © {{ current_year }} LysAngels. Tous droits réservés.
+                            </p>
+                            <p style="margin: 10px 0 0; font-size: 12px; color: #999; font-weight: 400;">
+                                <a href="{{ site_url }}" style="color: #8B7BA8; text-decoration: none;">Visitez notre site</a> | 
+                                <a href="{{ site_url }}/contact" style="color: #8B7BA8; text-decoration: none;">Contact</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

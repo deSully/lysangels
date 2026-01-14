@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestion des prestataires - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-lily-dark mb-2">Gestion des prestataires</h1>
+                <p class="text-gray-600">
+                    {{ vendors.paginator.count }} prestataire{{ vendors.paginator.count|pluralize }}
+                    {% if selected_is_active or selected_service_type or selected_city or selected_quartier %}
+                        trouvé{{ vendors.paginator.count|pluralize }}
+                    {% else %}
+                        au total
+                    {% endif %}
+                </p>
+            </div>
+            <div class="flex gap-4">
+                <a href="{% url 'accounts:admin_dashboard' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                    Retour au dashboard
+                </a>
+                <a href="{% url 'accounts:admin_vendor_create' %}" class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                    + Créer un prestataire
+                </a>
+            </div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="bg-white rounded-xl shadow-sm mb-6">
+            <!-- En-tête des filtres (toujours visible) -->
+            <button type="button" id="toggleFilters" class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
+                    <h3 class="font-medium text-gray-900">Filtres de recherche</h3>
+                    {% if selected_is_active or selected_service_types or selected_cities or selected_quartiers %}
+                        <span class="px-2 py-1 bg-lily-purple text-white text-xs rounded-full">
+                            Filtres actifs
+                        </span>
+                    {% endif %}
+                </div>
+                <svg id="filterIcon" class="w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+
+            <!-- Contenu des filtres (collapsible) -->
+            <div id="filtersContent" class="hidden border-t border-gray-200">
+                <form method="get" class="p-6 space-y-6">
+                <!-- Statut -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Statut
+                    </label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="is_active" value="" {% if not selected_is_active %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
+                            <span class="ml-2 text-sm text-gray-700">Tous</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="is_active" value="1" {% if selected_is_active == '1' %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
+                            <span class="ml-2 text-sm text-gray-700">Actifs uniquement</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="is_active" value="0" {% if selected_is_active == '0' %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
+                            <span class="ml-2 text-sm text-gray-700">Inactifs uniquement</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Types de services
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {% for service in service_types %}
+                        <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition
+                               {% if service.id|stringformat:'s' in selected_service_types %}border-lily-purple bg-lily-purple bg-opacity-10{% endif %}">
+                            <input type="checkbox" name="service_types" value="{{ service.id }}"
+                                   {% if service.id|stringformat:'s' in selected_service_types %}checked{% endif %}
+                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                            <span class="ml-2 text-sm text-gray-700">{{ service.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Localisation -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Localisation
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Villes -->
+                        <div>
+                            <p class="text-xs font-medium text-gray-600 mb-2 uppercase">Villes</p>
+                            <div class="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                                {% for city in cities %}
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded">
+                                    <input type="checkbox" name="cities" value="{{ city.id }}"
+                                           {% if city.id|stringformat:'s' in selected_cities %}checked{% endif %}
+                                           class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple city-checkbox"
+                                           data-city-id="{{ city.id }}">
+                                    <span class="ml-2 text-sm text-gray-700">{{ city.name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Quartiers -->
+                        <div>
+                            <p class="text-xs font-medium text-gray-600 mb-2 uppercase">Quartiers</p>
+                            <div class="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                                {% for quartier in quartiers %}
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded quartier-item" data-city="{{ quartier.city.id }}">
+                                    <input type="checkbox" name="quartiers" value="{{ quartier.id }}"
+                                           {% if quartier.id|stringformat:'s' in selected_quartiers %}checked{% endif %}
+                                           class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
+                                    <span class="ml-2 text-sm text-gray-700">{{ quartier.name }} <span class="text-xs text-gray-500">({{ quartier.city.name }})</span></span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex gap-3 pt-4 border-t border-gray-200">
+                    <button type="submit" class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        Appliquer les filtres
+                    </button>
+                    {% if selected_is_active or selected_service_types or selected_cities or selected_quartiers %}
+                        <a href="{% url 'accounts:admin_vendor_list' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                            Réinitialiser tout
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle filters visibility
+            const toggleBtn = document.getElementById('toggleFilters');
+            const filtersContent = document.getElementById('filtersContent');
+            const filterIcon = document.getElementById('filterIcon');
+
+            // Auto-expand if filters are active (check for badge presence)
+            const filterBadge = document.querySelector('.px-2.py-1.bg-lily-purple.text-white');
+            if (filterBadge) {
+                filtersContent.classList.remove('hidden');
+                filterIcon.classList.add('rotate-180');
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                filtersContent.classList.toggle('hidden');
+                filterIcon.classList.toggle('rotate-180');
+            });
+
+            // Filtrer les quartiers en fonction des villes sélectionnées
+            const cityCheckboxes = document.querySelectorAll('.city-checkbox');
+            const quartierItems = document.querySelectorAll('.quartier-item');
+
+            function filterQuartiers() {
+                // Récupérer les IDs des villes sélectionnées
+                const selectedCities = Array.from(cityCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.dataset.cityId);
+
+                // Si aucune ville sélectionnée, afficher tous les quartiers
+                if (selectedCities.length === 0) {
+                    quartierItems.forEach(item => {
+                        item.style.display = 'flex';
+                    });
+                } else {
+                    // Afficher seulement les quartiers des villes sélectionnées
+                    quartierItems.forEach(item => {
+                        if (selectedCities.includes(item.dataset.city)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                            // Décocher les quartiers cachés
+                            const checkbox = item.querySelector('input[type="checkbox"]');
+                            if (checkbox) checkbox.checked = false;
+                        }
+                    });
+                }
+            }
+
+            // Écouter les changements sur les checkboxes de ville
+            cityCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', filterQuartiers);
+            });
+
+            // Filtrer au chargement si des villes sont déjà sélectionnées
+            filterQuartiers();
+        });
+        </script>
+
+        <!-- Liste des prestataires -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prestataire</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ville</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for vendor in vendors %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                {% if vendor.logo %}
+                                    <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
+                                {% else %}
+                                    <div class="h-10 w-10 rounded-full bg-lily-purple text-white flex items-center justify-center mr-3 font-medium">
+                                        {{ vendor.business_name|first|upper }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <div class="font-medium text-gray-900">{{ vendor.business_name }}</div>
+                                    <div class="text-sm text-gray-500">{{ vendor.user.get_full_name|default:vendor.user.username }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">
+                            {% for service in vendor.service_types.all|slice:":3" %}
+                                <span class="inline-block px-2 py-1 bg-lily-purple bg-opacity-10 text-lily-purple rounded text-xs mr-1 mb-1">
+                                    {{ service.name }}
+                                </span>
+                            {% endfor %}
+                            {% if vendor.service_types.count > 3 %}
+                                <span class="text-xs text-gray-500">+{{ vendor.service_types.count|add:"-3" }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ vendor.city.name }}
+                            {% if vendor.quartier %}
+                                <div class="text-xs text-gray-500">{{ vendor.quartier.name }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {% if vendor.reviews.count > 0 %}
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                    </svg>
+                                    <span class="text-gray-900 font-medium">{{ vendor.rating|floatformat:1 }}</span>
+                                </div>
+                            {% else %}
+                                <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-col gap-1">
+                                <span class="px-2 py-1 text-xs rounded-full text-center {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                                    {% if vendor.is_active %}✓ Actif{% else %}✕ Inactif{% endif %}
+                                </span>
+                                {% if vendor.is_featured %}
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 text-center">
+                                        ⭐ Vedette
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <div class="flex items-center gap-2">
+                                <!-- Action rapide : Activer/Désactiver -->
+                                <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="px-3 py-1 rounded-lg text-xs font-medium transition {% if vendor.is_active %}bg-red-100 text-red-700 hover:bg-red-200{% else %}bg-green-100 text-green-700 hover:bg-green-200{% endif %}"
+                                            title="{% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}">
+                                        {% if vendor.is_active %}
+                                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+                                            </svg>
+                                        {% else %}
+                                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        {% endif %}
+                                    </button>
+                                </form>
+                                
+                                <a href="{% url 'accounts:admin_vendor_detail' vendor.id %}" 
+                                   class="text-lily-purple hover:text-lily-gold transition">
+                                    Détails
+                                </a>
+                                <a href="{% url 'accounts:admin_vendor_edit' vendor.id %}" 
+                                   class="text-blue-600 hover:text-blue-800 transition">
+                                    Modifier
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                            Aucun prestataire trouvé
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if vendors.has_other_pages %}
+        <div class="mt-6 flex justify-center">
+            <nav class="flex gap-2">
+                {% if vendors.has_previous %}
+                    <a href="?page={{ vendors.previous_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}{% for id in selected_service_types %}&service_types={{ id }}{% endfor %}{% for id in selected_cities %}&cities={{ id }}{% endfor %}{% for id in selected_quartiers %}&quartiers={{ id }}{% endfor %}"
+                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Précédent
+                    </a>
+                {% endif %}
+
+                <span class="px-4 py-2 text-gray-700">
+                    Page {{ vendors.number }} sur {{ vendors.paginator.num_pages }}
+                </span>
+
+                {% if vendors.has_next %}
+                    <a href="?page={{ vendors.next_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}{% for id in selected_service_types %}&service_types={{ id }}{% endfor %}{% for id in selected_cities %}&cities={{ id }}{% endfor %}{% for id in selected_quartiers %}&quartiers={{ id }}{% endfor %}"
+                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        Suivant
+                    </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+Bonjour {{ vendor_name }},
+
+Vous avez reçu une nouvelle demande de devis de {{ client_name }} pour un événement.
+
+Projet : {{ project_title }}
+Type d'événement : {{ event_type }}
+Date : {{ event_date }}
+Lieu : {{ location }}
+Budget : {{ budget }}
+Nombre d'invités : {{ guests_count }} personnes
+
+Message du client :
+"{{ client_message }}"
+
+Pour répondre à cette demande, connectez-vous à votre espace :
+{{ request_url }}
+
+Répondez rapidement pour maximiser vos chances de décrocher ce contrat !
+
+---
+LysAngels - Votre partenaire événementiel au Togo
+© {{ current_year }} LysAngels. Tous droits réservés.
+
+Visitez notre site : {{ site_url }}

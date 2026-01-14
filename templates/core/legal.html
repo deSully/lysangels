@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Mentions Légales - LysAngels{% endblock %}
+
+{% block content %}
+<div class="bg-lily-cream min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-lily-dark mb-4">
+                    Mentions Légales
+                </h1>
+            </div>
+
+            <!-- Contenu -->
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-8">
+                
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">1. Éditeur du site</h2>
+                    <p>Le site LysAngels est édité par :</p>
+                    <ul class="list-none space-y-2 mt-4">
+                        <li><strong>Raison sociale :</strong> LysAngels</li>
+                        <li><strong>Forme juridique :</strong> [À compléter]</li>
+                        <li><strong>Adresse du siège social :</strong> Lomé, Togo</li>
+                        <li><strong>Email :</strong> <a href="mailto:contact@eventsusy.tg" class="text-lily-purple hover:text-lily-gold">contact@eventsusy.tg</a></li>
+                        <li><strong>Téléphone :</strong> +228 XX XX XX XX</li>
+                        <li><strong>Numéro d'immatriculation :</strong> [À compléter]</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">2. Directeur de la publication</h2>
+                    <p>
+                        Le directeur de la publication du site est : [Nom du directeur à compléter]
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">3. Hébergement</h2>
+                    <p>Le site LysAngels est hébergé par :</p>
+                    <ul class="list-none space-y-2 mt-4">
+                        <li><strong>Hébergeur :</strong> [À compléter lors du déploiement en production]</li>
+                        <li><strong>Adresse :</strong> [À compléter]</li>
+                        <li><strong>Téléphone :</strong> [À compléter]</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">4. Propriété intellectuelle</h2>
+                    <p>
+                        L'ensemble du contenu de ce site (textes, images, vidéos, logos, graphismes, etc.) est la propriété exclusive 
+                        d'LysAngels ou de ses partenaires. Toute reproduction, représentation, modification, publication, adaptation 
+                        totale ou partielle des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite sans 
+                        l'autorisation écrite préalable d'LysAngels.
+                    </p>
+                    <p class="mt-4">
+                        Les marques, logos et signes distinctifs reproduits sur le site sont la propriété d'LysAngels ou 
+                        font l'objet d'une autorisation d'utilisation. Toute reproduction totale ou partielle de ces marques 
+                        ou de ces logos sans l'autorisation expresse d'LysAngels est interdite.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">5. Données personnelles</h2>
+                    <p>
+                        LysAngels s'engage à protéger la vie privée de ses utilisateurs conformément à la réglementation 
+                        en vigueur sur la protection des données personnelles.
+                    </p>
+                    <p class="mt-4">
+                        Pour en savoir plus sur la collecte et le traitement de vos données personnelles, 
+                        consultez notre <a href="{% url 'core:privacy' %}" class="text-lily-purple hover:text-lily-gold font-medium">Politique de Confidentialité</a>.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">6. Responsabilité</h2>
+                    <p>
+                        LysAngels met tout en œuvre pour offrir aux utilisateurs des informations et des outils fiables. 
+                        Cependant, LysAngels ne pourra être tenue responsable des erreurs, d'une absence de disponibilité 
+                        des informations et/ou de la présence de virus sur son site.
+                    </p>
+                    <p class="mt-4">
+                        Les informations fournies par les prestataires (descriptions, tarifs, photos) relèvent de leur propre responsabilité. 
+                        LysAngels agit uniquement en tant qu'intermédiaire de mise en relation et ne peut être tenue responsable 
+                        de la qualité des services fournis par les prestataires.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">7. Liens hypertextes</h2>
+                    <p>
+                        Le site LysAngels peut contenir des liens vers d'autres sites internet. LysAngels n'exerce aucun contrôle 
+                        sur ces sites et décline toute responsabilité quant à leur contenu.
+                    </p>
+                    <p class="mt-4">
+                        La création de liens hypertextes vers le site LysAngels nécessite l'autorisation préalable écrite d'LysAngels.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">8. Cookies</h2>
+                    <p>
+                        Le site utilise des cookies techniques nécessaires à son bon fonctionnement (gestion de session, authentification). 
+                        Ces cookies ne collectent aucune donnée personnelle à des fins commerciales.
+                    </p>
+                    <p class="mt-4">
+                        Vous pouvez configurer votre navigateur pour refuser les cookies, mais cela peut affecter certaines fonctionnalités du site.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">9. Droit applicable et juridiction compétente</h2>
+                    <p>
+                        Les présentes mentions légales sont régies par le droit togolais. En cas de litige et à défaut d'accord amiable, 
+                        le litige sera porté devant les tribunaux compétents de Lomé, Togo.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-medium text-lily-dark mb-4">10. Contact</h2>
+                    <p>
+                        Pour toute question concernant les mentions légales, vous pouvez nous contacter :
+                    </p>
+                    <ul class="list-none space-y-2 mt-4">
+                        <li><strong>Email :</strong> <a href="mailto:legal@eventsusy.tg" class="text-lily-purple hover:text-lily-gold">legal@eventsusy.tg</a></li>
+                        <li><strong>Téléphone :</strong> +228 XX XX XX XX</li>
+                        <li><strong>Adresse :</strong> Lomé, Togo</li>
+                    </ul>
+                </section>
+
+                <section class="bg-lily-purple bg-opacity-5 p-6 rounded-lg border border-lily-purple border-opacity-20">
+                    <p class="text-sm text-gray-600 italic">
+                        <strong>Note :</strong> Les informations marquées "[À compléter]" devront être renseignées 
+                        avant la mise en production du site avec les informations légales officielles de l'entreprise.
+                    </p>
+                </section>
+
+            </div>
+
+            <!-- Bouton retour -->
+            <div class="mt-12 text-center">
+                <a href="{% url 'core:home' %}" 
+                   class="inline-block px-6 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-opacity-90 transition">
+                    ← Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

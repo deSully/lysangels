@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+
+{% block title %}LysAngels - Votre événement parfait commence ici{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    .animate-delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .animate-delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .animate-delay-3 { animation-delay: 0.6s; opacity: 0; }
+    
+    .hero-overlay {
+        background: linear-gradient(135deg, rgba(139, 123, 168, 0.95) 0%, rgba(232, 213, 196, 0.85) 100%);
+    }
+    
+    .shimmer-button {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+    }
+    
+    .stat-card {
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Background -->
+<section class="relative overflow-hidden" style="min-height: 600px;">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-lily-purple/90 via-lily-rose/80 to-lily-gold/70"></div>
+        <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=%2760%27 height=%2760%27 viewBox=%270 0 60 60%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cg fill=%27none%27 fill-rule=%27evenodd%27%3E%3Cg fill=%27%23ffffff%27 fill-opacity=%270.4%27%3E%3Cpath d=%27M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
+                Créez des moments<br>
+                <span class="text-lily-gold">inoubliables</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/95 mb-10 max-w-3xl mx-auto animate-fade-in-up animate-delay-1 leading-relaxed">
+                Connectez-vous avec les meilleurs prestataires événementiels du Togo.<br>
+                De l'idée à la réalisation, nous transformons vos rêves en réalité.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up animate-delay-2">
+                <a href="{% url 'projects:project_create' %}" class="group relative bg-white text-lily-purple px-10 py-5 rounded-full font-bold text-lg hover:bg-lily-gold hover:text-white transition-all duration-300 transform hover:scale-105 shadow-2xl overflow-hidden">
+                    <span class="relative z-10">Créer mon projet</span>
+                    <div class="absolute inset-0 shimmer-button opacity-0 group-hover:opacity-100"></div>
+                </a>
+                <a href="{% url 'vendors:vendor_list' %}" class="bg-transparent border-3 border-white text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-lily-purple transition-all duration-300 shadow-xl">
+                    Découvrir les prestataires
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Wave -->
+    <div class="absolute bottom-0 left-0 right-0 z-10">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#FAFAFA"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Types d'événements Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-lily-dark mb-4">
+                Quel événement organisez-vous ?
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                De l'intimité d'une célébration familiale à la grandeur d'un événement corporate, nous avons les prestataires qu'il vous faut.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <!-- Mariages -->
+            <div class="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105" style="height: 400px;">
+                <div class="absolute inset-0 bg-gradient-to-br from-lily-purple/80 to-lily-rose/60 group-hover:from-lily-purple/70 group-hover:to-lily-rose/50 transition-all duration-500"></div>
+                <div class="absolute inset-0 flex flex-col justify-end p-8 text-white">
+                    <h3 class="text-3xl font-bold mb-3">Mariages</h3>
+                    <p class="text-white/90 mb-4">Le jour le plus important de votre vie mérite une organisation parfaite</p>
+                    <a href="{% url 'vendors:vendor_list' %}?event_type=mariage" class="inline-block bg-white text-lily-purple px-6 py-3 rounded-full font-medium hover:bg-lily-gold hover:text-white transition w-fit">
+                        Voir les prestataires
+                    </a>
+                </div>
+            </div>
+
+            <!-- Événements d'entreprise -->
+            <div class="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105" style="height: 400px;">
+                <div class="absolute inset-0 bg-gradient-to-br from-lily-dark/80 to-lily-purple/60 group-hover:from-lily-dark/70 group-hover:to-lily-purple/50 transition-all duration-500"></div>
+                <div class="absolute inset-0 flex flex-col justify-end p-8 text-white">
+                    <h3 class="text-3xl font-bold mb-3">Événements Corporate</h3>
+                    <p class="text-white/90 mb-4">Conférences, séminaires, lancements de produits professionnels</p>
+                    <a href="{% url 'vendors:vendor_list' %}?event_type=conference" class="inline-block bg-white text-lily-dark px-6 py-3 rounded-full font-medium hover:bg-lily-gold hover:text-white transition w-fit">
+                        Voir les prestataires
+                    </a>
+                </div>
+            </div>
+
+            <!-- Célébrations -->
+            <div class="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105" style="height: 400px;">
+                <div class="absolute inset-0 bg-gradient-to-br from-lily-gold/80 to-lily-rose/60 group-hover:from-lily-gold/70 group-hover:to-lily-rose/50 transition-all duration-500"></div>
+                <div class="absolute inset-0 flex flex-col justify-end p-8 text-white">
+                    <h3 class="text-3xl font-bold mb-3">Célébrations</h3>
+                    <p class="text-white/90 mb-4">Anniversaires, baptêmes, fiançailles et moments spéciaux</p>
+                    <a href="{% url 'vendors:vendor_list' %}?event_type=anniversaire" class="inline-block bg-white text-lily-dark px-6 py-3 rounded-full font-medium hover:bg-lily-purple hover:text-white transition w-fit">
+                        Voir les prestataires
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-20 bg-lily-cream">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-lily-dark mb-4">
+                Tous les services dont vous avez besoin
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Une sélection de professionnels qualifiés pour chaque aspect de votre événement
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for service in service_types %}
+                <a href="{% url 'vendors:vendor_list' %}?service={{ service.id }}" class="group bg-white rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-transparent hover:border-lily-purple">
+                    <div class="w-20 h-20 bg-gradient-to-br from-lily-purple to-lily-rose rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-lily-dark text-lg mb-2 group-hover:text-lily-purple transition-colors">{{ service.name }}</h3>
+                    {% if service.description %}
+                        <p class="text-gray-500 text-sm line-clamp-2">{{ service.description }}</p>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="py-20 bg-white relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute top-0 left-0 w-64 h-64 bg-lily-purple/5 rounded-full -translate-x-32 -translate-y-32"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-lily-rose/5 rounded-full translate-x-32 translate-y-32"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-lily-dark mb-4">
+                Simple, Rapide, Efficace
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                En quelques étapes seulement, trouvez les prestataires parfaits pour votre événement
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <!-- Connecting lines for desktop -->
+            <div class="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-lily-purple via-lily-rose to-lily-gold" style="top: 40px; left: 12%; right: 12%; height: 2px;"></div>
+            
+            <!-- Étape 1 -->
+            <div class="relative text-center group">
+                <div class="w-24 h-24 bg-gradient-to-br from-lily-purple to-lily-rose rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <span class="text-white text-2xl font-bold">1</span>
+                </div>
+                <div class="bg-white p-6 rounded-xl group-hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-lily-dark">Inscrivez-vous</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Créez votre compte en quelques secondes. C'est gratuit, simple et sécurisé.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="relative text-center group">
+                <div class="w-24 h-24 bg-gradient-to-br from-lily-purple to-lily-rose rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <span class="text-white text-2xl font-bold">2</span>
+                </div>
+                <div class="bg-white p-6 rounded-xl group-hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-lily-dark">Décrivez votre projet</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Type d'événement, date, budget, localisation... Partagez votre vision avec nous.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="relative text-center group">
+                <div class="w-24 h-24 bg-gradient-to-br from-lily-rose to-lily-gold rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <span class="text-white text-2xl font-bold">3</span>
+                </div>
+                <div class="bg-white p-6 rounded-xl group-hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-lily-dark">Recevez des propositions</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Les prestataires qualifiés vous contactent avec des offres personnalisées.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Étape 4 -->
+            <div class="relative text-center group">
+                <div class="w-24 h-24 bg-gradient-to-br from-lily-gold to-lily-purple rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl group-hover:scale-110 transition-transform duration-300 relative z-10">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="bg-white p-6 rounded-xl group-hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-xl font-bold mb-3 text-lily-dark">Concrétisez votre rêve</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Comparez, échangez et choisissez les prestataires parfaits pour vous.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-16">
+            <a href="{% url 'projects:project_create' %}" class="inline-block bg-gradient-to-r from-lily-purple via-lily-rose to-lily-gold text-white px-12 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                Commencer maintenant
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Pourquoi LysAngels -->
+<section class="py-20 bg-gradient-to-br from-lily-cream to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-lily-dark mb-4">
+                Pourquoi choisir LysAngels ?
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                La plateforme qui révolutionne l'organisation d'événements au Togo
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="text-center group">
+                <div class="w-32 h-32 bg-gradient-to-br from-lily-purple to-lily-rose rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform duration-300 shadow-xl">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-lily-dark mb-4">Prestataires Vérifiés</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Tous nos prestataires sont soigneusement sélectionnés et évalués pour garantir la qualité de vos événements.
+                </p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-32 h-32 bg-gradient-to-br from-lily-rose to-lily-gold rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform duration-300 shadow-xl">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-lily-dark mb-4">Gain de Temps</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Fini les recherches interminables. Recevez plusieurs propositions en quelques heures seulement.
+                </p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-32 h-32 bg-gradient-to-br from-lily-gold to-lily-purple rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform duration-300 shadow-xl">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-lily-dark mb-4">Transparent & Gratuit</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Aucun frais caché. Comparez les offres en toute transparence et choisissez librement.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center stat-card p-6 rounded-2xl bg-gradient-to-br from-lily-purple/5 to-transparent">
+                <div class="text-5xl font-bold bg-gradient-to-r from-lily-purple to-lily-rose bg-clip-text text-transparent mb-3">
+                    {{ stats.service_types_count }}+
+                </div>
+                <div class="text-gray-600 font-medium">Catégories de Services</div>
+            </div>
+            <div class="text-center stat-card p-6 rounded-2xl bg-gradient-to-br from-lily-rose/5 to-transparent">
+                <div class="text-5xl font-bold bg-gradient-to-r from-lily-rose to-lily-gold bg-clip-text text-transparent mb-3">
+                    {{ stats.vendors_count }}+
+                </div>
+                <div class="text-gray-600 font-medium">Prestataires Qualifiés</div>
+            </div>
+            <div class="text-center stat-card p-6 rounded-2xl bg-gradient-to-br from-lily-gold/5 to-transparent">
+                <div class="text-5xl font-bold bg-gradient-to-r from-lily-gold to-lily-purple bg-clip-text text-transparent mb-3">
+                    {{ stats.projects_count }}+
+                </div>
+                <div class="text-gray-600 font-medium">Projets Créés</div>
+            </div>
+            <div class="text-center stat-card p-6 rounded-2xl bg-gradient-to-br from-lily-purple/5 to-transparent">
+                <div class="text-5xl font-bold bg-gradient-to-r from-lily-purple to-lily-gold bg-clip-text text-transparent mb-3">
+                    {% if stats.satisfaction_rate > 0 %}{{ stats.satisfaction_rate }}%{% else %}100%{% endif %}
+                </div>
+                <div class="text-gray-600 font-medium">Satisfaction Client</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="relative py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-lily-dark via-lily-purple to-lily-rose"></div>
+    <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=%2760%27 height=%2760%27 viewBox=%270 0 60 60%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cg fill=%27none%27 fill-rule=%27evenodd%27%3E%3Cg fill=%27%23ffffff%27 fill-opacity=%270.4%27%3E%3Cpath d=%27M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
+            Prêt à créer votre événement<br>
+            <span class="text-lily-gold">de rêve ?</span>
+        </h2>
+        <p class="text-white/95 text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed">
+            Rejoignez des centaines de personnes qui ont fait confiance à LysAngels pour leurs événements les plus importants
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-6">
+            <a href="{% url 'accounts:register' %}" class="group relative bg-white text-lily-purple px-12 py-5 rounded-full font-bold text-lg hover:bg-lily-gold hover:text-white transition-all duration-300 transform hover:scale-105 shadow-2xl overflow-hidden">
+                <span class="relative z-10">Créer mon compte gratuit</span>
+                <div class="absolute inset-0 shimmer-button opacity-0 group-hover:opacity-100"></div>
+            </a>
+            <a href="{% url 'core:how_it_works' %}" class="bg-transparent border-3 border-white text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 backdrop-blur-sm">
+                En savoir plus
+            </a>
+        </div>
+        
+        <div class="mt-16 flex flex-wrap justify-center gap-8 text-white/80 text-sm">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Inscription gratuite</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Sans engagement</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Support dédié</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

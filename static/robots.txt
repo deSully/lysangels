@@ -1,0 +1,16 @@
+# robots.txt - LysAngels
+# Ce fichier indique aux moteurs de recherche quelles pages explorer
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /accounts/dashboard/
+Disallow: /vendors/dashboard/
+Disallow: /messages/
+Disallow: /projects/create/
+Disallow: /projects/*/edit/
+Disallow: /media/messages/
+Disallow: /static/
+
+# Sitemap
+Sitemap: https://lysangels.tg/sitemap.xml

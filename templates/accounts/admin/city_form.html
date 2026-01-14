@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if city %}Modifier{% else %}Ajouter{% endif %} une ville - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-lily-dark mb-2">{% if city %}Modifier{% else %}Ajouter{% endif %} une ville</h1>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <div>
+                    <label for="country" class="block text-sm font-medium text-gray-700 mb-2">
+                        Pays *
+                    </label>
+                    <select name="country" id="country" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition bg-gray-50 cursor-not-allowed">
+                        {% for country in countries %}
+                            <option value="{{ country.id }}" 
+                                    {% if city and city.country.id == country.id %}selected{% endif %}
+                                    {% if country.code == 'TG' %}selected disabled{% endif %}>
+                                {{ country.flag_emoji }} {{ country.name }}
+                                {% if country.code == 'TG' %}(seul pays disponible pour le moment){% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {# Champ caché pour garantir que la valeur soit envoyée même si disabled #}
+                    {% for country in countries %}
+                        {% if country.code == 'TG' %}
+                        <input type="hidden" name="country" value="{{ country.id }}">
+                        {% endif %}
+                    {% endfor %}
+                    <p class="mt-2 text-sm text-gray-500 italic">
+                        ℹ️ D'autres pays seront ajoutés prochainement (Bénin, Ghana, etc.)
+                    </p>
+                </div>
+
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nom de la ville *
+                    </label>
+                    <input type="text" name="name" id="name" value="{% if city %}{{ city.name }}{% endif %}" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" name="is_active" id="is_active" {% if not city or city.is_active %}checked{% endif %}
+                           class="h-4 w-4 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                    <label for="is_active" class="ml-2 block text-sm text-gray-700">
+                        Ville active
+                    </label>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit"
+                            class="flex-1 bg-lily-purple text-white px-8 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+                        {% if city %}Enregistrer les modifications{% else %}Créer la ville{% endif %}
+                    </button>
+                    <a href="{% url 'accounts:admin_city_list' %}"
+                       class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

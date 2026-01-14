@@ -1,0 +1,414 @@
+{% extends 'base.html' %}
+
+{% block title %}Comment ça marche - LysAngels{% endblock %}
+
+{% block meta_description %}Découvrez comment LysAngels simplifie l'organisation de vos événements en 4 étapes : recherchez, comparez, contactez et réservez les meilleurs prestataires au Togo.{% endblock %}
+
+{% block meta_keywords %}utilisation plateforme, réserver prestataire, organisation événement, guide LysAngels{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero avec personnalité */
+    .how-hero {
+        background: linear-gradient(to bottom right, #1A1A1A, #2D1B3D, #3D2554);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Éléments flottants animés */
+    .floating-icon {
+        position: absolute;
+        animation: float 6s ease-in-out infinite;
+        opacity: 0.15;
+        filter: blur(1px);
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    .floating-icon:nth-child(2) {
+        animation-delay: 1s;
+        animation-duration: 7s;
+    }
+
+    .floating-icon:nth-child(3) {
+        animation-delay: 2s;
+        animation-duration: 8s;
+    }
+
+    /* Shimmer effect sur le titre */
+    @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+
+    .shimmer-text {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(255, 255, 255, 1) 50%,
+            rgba(255, 255, 255, 0.9) 100%
+        );
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+    }
+
+    /* Badge animé */
+    @keyframes badge-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+        50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+    }
+
+    .badge-animated {
+        animation: badge-pulse 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="how-hero py-20 md:py-24 relative">
+    <!-- Decorative animated elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute w-96 h-96 bg-lily-gold/10 rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
+        <div class="absolute w-80 h-80 bg-lily-rose/10 rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute w-64 h-64 bg-lily-purple/10 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Icônes flottantes décoratives -->
+    <div class="floating-icon" style="top: 20%; left: 10%; font-size: 3rem;">📋</div>
+    <div class="floating-icon" style="top: 60%; right: 15%; font-size: 2.5rem;">✨</div>
+    <div class="floating-icon" style="top: 40%; right: 8%; font-size: 2rem;">🎯</div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+            <!-- Badge animé -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6 badge-animated">
+                <svg class="w-4 h-4 text-lily-gold" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                </svg>
+                <span class="text-white text-sm font-medium">Guide d'utilisation</span>
+            </div>
+
+            <!-- Titre principal avec effet shimmer -->
+            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span class="shimmer-text">Simple. Rapide.</span><br>
+                <span class="text-gradient-gold">Efficace.</span>
+            </h1>
+
+            <!-- Description enrichie -->
+            <p class="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
+                Un processus simple et efficace pour concrétiser vos projets événementiels.
+                <span class="text-lily-gold font-medium">Tout ce dont vous avez besoin</span> en quelques clics.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="bg-white py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Clients -->
+        <div class="mb-20 md:mb-32">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <div class="inline-flex items-center justify-center px-6 py-2 mb-6 bg-lily-purple/5 border border-lily-purple/20 rounded-full">
+                    <span class="text-lily-purple font-semibold text-sm">POUR LES CLIENTS</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Trouvez le prestataire idéal
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    4 étapes simples pour organiser votre événement de rêve
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Étape 1 -->
+                <div class="scroll-reveal group">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    1
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Créez votre projet</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Décrivez votre événement : <strong class="text-lily-purple">type, date, lieu, budget</strong>, services recherchés.
+                                    Plus vous êtes précis, meilleures seront les propositions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 2 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    2
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Explorez et contactez</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Parcourez notre <strong class="text-lily-purple">catalogue de prestataires qualifiés</strong>. Consultez leurs profils,
+                                    portfolios et envoyez des demandes de devis personnalisées.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    3
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Recevez des propositions</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Les prestataires vous envoient des propositions détaillées avec <strong class="text-lily-purple">prix,
+                                    conditions et disponibilités</strong>. Comparez et choisissez en toute sérénité.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.3s;">
+                    <div class="bg-lily-cream rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    4
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Échangez et validez</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Utilisez notre <strong class="text-lily-purple">messagerie intégrée</strong> pour affiner les détails.
+                                    Une fois satisfait, validez votre choix et préparez votre événement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Separator -->
+        <div class="relative mb-20 md:mb-32 scroll-reveal">
+            <div class="flex items-center justify-center">
+                <div class="h-px bg-gray-200 flex-1 max-w-xs"></div>
+                <div class="mx-8">
+                    <div class="w-12 h-12 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center transform rotate-45">
+                        <svg class="w-6 h-6 text-white -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="h-px bg-gray-200 flex-1 max-w-xs"></div>
+            </div>
+        </div>
+
+        <!-- Section Prestataires -->
+        <div class="mb-16">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <div class="inline-flex items-center justify-center px-6 py-2 mb-6 bg-lily-gold/5 border border-lily-gold/20 rounded-full">
+                    <span class="text-lily-gold font-semibold text-sm">POUR LES PRESTATAIRES</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Développez votre activité
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    4 étapes simples pour trouver de nouveaux clients
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+                <!-- Étape 1 -->
+                <div class="scroll-reveal group">
+                    <div class="bg-gradient-to-br from-lily-gold/5 to-lily-gold/10 rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-lily-gold/20">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    1
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Créez votre profil</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Inscrivez-vous et créez un <strong class="text-lily-gold">profil professionnel attractif</strong>.
+                                    Ajoutez vos services, photos, tarifs et zones d'intervention.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 2 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-gradient-to-br from-lily-gold/5 to-lily-gold/10 rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-lily-gold/20">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    2
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Recevez des demandes</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Les clients intéressés par vos services vous envoient <strong class="text-lily-gold">des demandes de devis</strong>.
+                                    Consultez les détails de leurs projets dans votre tableau de bord.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-gradient-to-br from-lily-gold/5 to-lily-gold/10 rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-lily-gold/20">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    3
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Envoyez vos propositions</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Répondez avec des <strong class="text-lily-gold">propositions personnalisées et compétitives</strong>.
+                                    Mettez en avant votre expertise et votre valeur ajoutée.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.3s;">
+                    <div class="bg-gradient-to-br from-lily-gold/5 to-lily-gold/10 rounded-3xl p-6 md:p-8 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-lily-gold/20">
+                        <div class="flex items-start mb-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 bg-gradient-to-br from-lily-gold to-gold-light rounded-2xl flex items-center justify-center text-white font-bold text-xl mr-5 group-hover:scale-110 transition-transform duration-300">
+                                    4
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-3">Développez votre activité</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Gagnez en <strong class="text-lily-gold">visibilité, développez votre réseau et augmentez vos revenus</strong>
+                                    grâce à notre plateforme.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="mt-20 md:mt-32">
+            <div class="text-center mb-12 md:mb-20 scroll-reveal">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-lily-dark mb-4 tracking-tight">
+                    Pourquoi c'est si simple ?
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Des fonctionnalités pensées pour vous faciliter la vie
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Feature 1 -->
+                <div class="scroll-reveal group">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-blue-200/50">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Recherche intuitive</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Filtres puissants pour trouver exactement ce que vous cherchez en quelques clics.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.1s;">
+                    <div class="bg-gradient-to-br from-green-50 to-green-100/50 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-green-200/50">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Messagerie intégrée</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Échangez directement avec les prestataires sans quitter la plateforme.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="scroll-reveal group" style="animation-delay: 0.2s;">
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-3xl p-8 h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-purple-200/50">
+                        <div class="w-16 h-16 bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold text-lily-dark mb-4">Profils vérifiés</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            Tous les prestataires sont vérifiés et validés par notre équipe.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="relative overflow-hidden bg-gradient-to-r from-purple-dark via-lily-purple to-lily-dark py-16 md:py-24">
+    <!-- Decorative elements -->
+    <div class="absolute inset-0 overflow-hidden opacity-10">
+        <div class="absolute w-96 h-96 bg-white rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
+        <div class="absolute w-80 h-80 bg-lily-gold rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-reveal">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            Prêt à commencer ?
+        </h2>
+        <p class="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+            Rejoignez LysAngels aujourd'hui et donnez vie à vos événements
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'accounts:register' %}"
+               class="bg-white text-lily-purple px-8 py-4 rounded-2xl font-semibold hover:bg-lily-cream transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1">
+                Créer un compte
+            </a>
+            <a href="{% url 'vendors:vendor_list' %}"
+               class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-lily-purple transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                Découvrir les prestataires
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

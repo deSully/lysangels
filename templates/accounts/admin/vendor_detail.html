@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+
+{% block title %}Détails du prestataire - Admin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-lily-cream py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-lily-dark mb-2">{{ vendor.business_name }}</h1>
+                <p class="text-gray-600">Détails du prestataire</p>
+            </div>
+            <a href="{% url 'accounts:admin_vendor_list' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
+                Retour à la liste
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Informations du prestataire -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Informations générales -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center">
+                            {% if vendor.logo %}
+                                <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" class="h-20 w-20 rounded-full object-cover mr-4">
+                            {% else %}
+                                <div class="h-20 w-20 rounded-full bg-lily-purple text-white flex items-center justify-center mr-4 text-2xl font-bold">
+                                    {{ vendor.business_name|first|upper }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h2 class="text-2xl font-medium text-lily-dark">{{ vendor.business_name }}</h2>
+                                <p class="text-gray-600">{{ vendor.user.get_full_name|default:vendor.user.username }}</p>
+                                {% if vendor.rating %}
+                                    <div class="flex items-center mt-1">
+                                        <svg class="w-5 h-5 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        </svg>
+                                        <span class="text-gray-900 font-medium">{{ vendor.rating|floatformat:1 }}</span>
+                                        <span class="text-gray-500 text-sm ml-1">({{ vendor.review_count }} avis)</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Ville</p>
+                            <p class="font-medium text-gray-900">{{ vendor.city.name }}</p>
+                        </div>
+                        {% if vendor.quartier %}
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Quartier</p>
+                            <p class="font-medium text-gray-900">{{ vendor.quartier.name }}</p>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Téléphone</p>
+                            <p class="font-medium text-gray-900">{{ vendor.phone|default:"-" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Email</p>
+                            <p class="font-medium text-gray-900">{{ vendor.user.email }}</p>
+                        </div>
+                        {% if vendor.website %}
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Site web</p>
+                            <a href="{{ vendor.website }}" target="_blank" class="font-medium text-lily-purple hover:text-lily-gold">
+                                {{ vendor.website }}
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% if vendor.address %}
+                        <div class="col-span-2">
+                            <p class="text-sm text-gray-600 mb-1">Adresse</p>
+                            <p class="font-medium text-gray-900">{{ vendor.address }}</p>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Membre depuis</p>
+                            <p class="font-medium text-gray-900">{{ vendor.created_at|date:"d/m/Y" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Dernière mise à jour</p>
+                            <p class="font-medium text-gray-900">{{ vendor.updated_at|date:"d/m/Y à H:i" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-600 mb-2">Services proposés</p>
+                        <div class="flex flex-wrap gap-2">
+                            {% for service in vendor.service_types.all %}
+                                <span class="px-3 py-1 bg-lily-purple bg-opacity-10 text-lily-purple rounded-full text-sm font-medium">
+                                    {{ service.icon }} {{ service.name }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if vendor.description %}
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-600 mb-2">Description</p>
+                        <p class="text-gray-900">{{ vendor.description }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Galerie d'images -->
+                {% if vendor.images.all %}
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">
+                        Galerie ({{ vendor.images.count }} image{{ vendor.images.count|pluralize }})
+                    </h2>
+                    <div class="grid grid-cols-3 gap-4">
+                        {% for image in vendor.images.all %}
+                            <img src="{{ image.image.url }}" alt="{{ image.caption }}" class="w-full h-32 object-cover rounded-lg">
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar - Actions admin -->
+            <div class="space-y-6">
+                <!-- Gestion de l'abonnement -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">💳 Abonnement</h2>
+                    
+                    <div class="mb-4 p-4 rounded-lg {% if vendor.subscription_tier %}{% if vendor.subscription_tier.slug == 'premium' %}bg-gradient-to-r from-yellow-100 to-yellow-50 border-2 border-yellow-300{% elif vendor.subscription_tier.slug == 'standard' %}bg-blue-50 border-2 border-blue-300{% else %}bg-gray-50 border-2 border-gray-300{% endif %}{% else %}bg-gray-50 border-2 border-gray-300{% endif %}">
+                        <div class="text-center">
+                            {% if vendor.subscription_tier %}
+                                {% if vendor.subscription_tier.slug == 'premium' %}
+                                    <div class="text-3xl mb-2">⭐</div>
+                                {% elif vendor.subscription_tier.slug == 'standard' %}
+                                    <div class="text-3xl mb-2">✓</div>
+                                {% else %}
+                                    <div class="text-3xl mb-2">○</div>
+                                {% endif %}
+                                <p class="font-bold text-lg {% if vendor.subscription_tier.slug == 'premium' %}text-yellow-700{% elif vendor.subscription_tier.slug == 'standard' %}text-blue-700{% else %}text-gray-700{% endif %}">
+                                    {{ vendor.subscription_tier.name }}
+                                </p>
+                                <p class="text-sm text-gray-600 mt-1">{{ vendor.subscription_tier.price_monthly }} FCFA/mois</p>
+                                {% if vendor.subscription_expires_at %}
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        Expire le {{ vendor.subscription_expires_at|date:"d/m/Y" }}
+                                    </p>
+                                {% else %}
+                                    <p class="text-xs text-green-600 mt-2">Sans date d'expiration</p>
+                                {% endif %}
+                            {% else %}
+                                <div class="text-3xl mb-2">⚠️</div>
+                                <p class="font-bold text-gray-700">Aucun abonnement</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}" class="inline-block w-full px-4 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-opacity-90 transition">
+                            Modifier l'abonnement
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">Actions administrateur</h2>
+                    
+                    <!-- Toggle Active -->
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="toggle_active">
+                        <button type="submit" class="w-full px-4 py-3 rounded-lg font-medium transition
+                            {% if vendor.is_active %}
+                                bg-red-100 text-red-700 hover:bg-red-200
+                            {% else %}
+                                bg-green-100 text-green-700 hover:bg-green-200
+                            {% endif %}">
+                            {% if vendor.is_active %}
+                                Désactiver le prestataire
+                            {% else %}
+                                Activer le prestataire
+                            {% endif %}
+                        </button>
+                    </form>
+
+                    <!-- Toggle Featured -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="toggle_featured">
+                        <button type="submit" class="w-full px-4 py-3 rounded-lg font-medium transition
+                            {% if vendor.is_featured %}
+                                bg-gray-100 text-gray-700 hover:bg-gray-200
+                            {% else %}
+                                bg-yellow-100 text-yellow-700 hover:bg-yellow-200
+                            {% endif %}">
+                            {% if vendor.is_featured %}
+                                ⭐ Retirer la mise en avant
+                            {% else %}
+                                ⭐ Mettre en avant
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Statut -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">Statut</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Compte</span>
+                            <span class="px-3 py-1 text-xs rounded-full {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                                {% if vendor.is_active %}Actif{% else %}Inactif{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Mis en avant</span>
+                            <span class="px-3 py-1 text-xs rounded-full {% if vendor.is_featured %}bg-yellow-100 text-yellow-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                {% if vendor.is_featured %}Oui{% else %}Non{% endif %}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Email vérifié</span>
+                            <span class="px-3 py-1 text-xs rounded-full {% if vendor.user.email %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                {% if vendor.user.email %}Oui{% else %}Non{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations utilisateur -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-medium text-lily-dark mb-4">Utilisateur</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Nom d'utilisateur</p>
+                            <p class="font-medium text-gray-900">{{ vendor.user.username }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Type de compte</p>
+                            <p class="font-medium text-gray-900">
+                                {% if vendor.user.user_type == 'provider' %}Prestataire
+                                {% elif vendor.user.user_type == 'client' %}Client
+                                {% elif vendor.user.is_susy_admin %}Admin
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Dernière connexion</p>
+                            <p class="font-medium text-gray-900">
+                                {% if vendor.user.last_login %}
+                                    {{ vendor.user.last_login|date:"d/m/Y à H:i" }}
+                                {% else %}
+                                    Jamais connecté
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
