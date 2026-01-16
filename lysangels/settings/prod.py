@@ -11,7 +11,7 @@ import os
 # ==============================================================================
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-dev-key-change-me-in-production')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
-ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost').split(',') if h.strip()]
+ALLOWED_HOSTS = ['*']  # Allow all hosts in production; adjust as needed
 
 # Site URL
 SITE_URL = os.environ.get('SITE_URL', 'https://lysangels.tg')
