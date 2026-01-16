@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lysangels.settings')
+# Use prod settings by default in production (Railway sets DJANGO_SETTINGS_MODULE)
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lysangels.settings.prod')
 
 application = get_wsgi_application()
