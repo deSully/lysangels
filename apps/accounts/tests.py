@@ -19,14 +19,22 @@ class UserRegistrationTests(TestCase):
         data = {
             'username': 'testclient',
             'email': 'client@test.com',
-            'password1': 'TestPass123!',
-            'password2': 'TestPass123!',
+            'password': 'TestPass123!',
+            'password_confirm': 'TestPass123!',
             'first_name': 'Jean',
             'last_name': 'Dupont',
             'user_type': 'client',
-            'phone': '90123456'
+            'phone': '0690123456',  # 10 chiffres
+            'city': 'Abidjan',
+            'accept_terms': True
         }
         response = self.client.post(self.register_url, data)
+        
+        # Déboguer en cas d'échec
+        if response.status_code != 302:
+            from django.forms import forms
+            if hasattr(response, 'context') and 'form' in response.context:
+                print("Form errors:", response.context['form'].errors)
         
         # Vérifier redirection après succès
         self.assertEqual(response.status_code, 302)
@@ -42,14 +50,26 @@ class UserRegistrationTests(TestCase):
         data = {
             'username': 'testvendor',
             'email': 'vendor@test.com',
-            'password1': 'TestPass123!',
-            'password2': 'TestPass123!',
+            'password': 'TestPass123!',
+            'password_confirm': 'TestPass123!',
             'first_name': 'Marie',
             'last_name': 'Martin',
             'user_type': 'provider',
-            'phone': '90654321'
+            'phone': '0690654321',  # 10 chiffres
+            'city': 'Abidjan',
+            'accept_terms': True
         }
         response = self.client.post(self.register_url, data)
+        
+        # Déboguer
+        if response.status_code != 302:
+            if hasattr(response, 'context') and 'form' in response.context:
+                print("Form errors:", response.context['form'].errors)
+            # Vérifier si une exception s'est produite
+            from django.contrib import messages as django_messages
+            storage = django_messages.get_messages(response.wsgi_request)
+            for message in storage:
+                print(f"Message: {message}")
         
         self.assertEqual(response.status_code, 302)
         
@@ -210,7 +230,8 @@ class UserProfileTests(TestCase):
             'first_name': 'Marie',
             'last_name': 'Martin',
             'email': 'new@test.com',
-            'phone': '90123456'
+            'phone': '0698765432',  # 10 chiffres
+            'city': 'Lomé'  # Ajouter city
         })
         
         # Recharger l'utilisateur
@@ -335,7 +356,7 @@ class PermissionTests(TestCase):
         """Test qu'un prestataire ne peut pas créer de projet"""
         self.client.login(username='vendor', password='Pass123!')
         
-        project_create_url = reverse('projects:create')
+        project_create_url = reverse('projects:project_create')
         response = self.client.get(project_create_url)
         
         # Devrait être bloqué

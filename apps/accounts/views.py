@@ -46,10 +46,16 @@ def register(request):
                     # Si c'est un prestataire, créer le profil prestataire
                     if user.user_type == 'provider':
                         business_name = form.cleaned_data.get('business_name', f"{user.first_name} {user.last_name}")
+                        
+                        # Chercher la ville dans City model si elle existe
+                        city_obj = None
+                        if user.city:
+                            city_obj = City.objects.filter(name__iexact=user.city).first()
+                        
                         VendorProfile.objects.create(
                             user=user,
                             business_name=business_name,
-                            city=user.city,
+                            city=city_obj,  # Utiliser l'objet City ou None
                             description='',
                             is_active=False  # Inactif jusqu'à validation par l'admin
                         )

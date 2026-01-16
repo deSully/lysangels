@@ -41,30 +41,37 @@ def validate_file_mime_type(file, allowed_mimes, file_type='fichier'):
     """
     Valide le MIME type réel du fichier (pas juste l'extension)
     Utilise python-magic pour lire les magic bytes
+    Retourne le MIME type détecté
     """
+    file_mime = None
     try:
         # Lire les premiers bytes pour détecter le vrai type
         file.seek(0)
-        file_mime = magic.from_buffer(file.read(2048), mime=True)
+        file_content = file.read(2048)
         file.seek(0)  # Reset cursor
         
-        if file_mime not in allowed_mimes:
+        file_mime = magic.from_buffer(file_content, mime=True)
+        
+        if file_mime and file_mime not in allowed_mimes:
             raise ValidationError(
                 f'Type de {file_type} non autorisé. '
                 f'Types acceptés: {", ".join(allowed_mimes)}. '
                 f'Type détecté: {file_mime}'
             )
-    except Exception as e:
+    except (AttributeError, ImportError):
         # Si python-magic n'est pas disponible, fallback sur content_type
         if hasattr(file, 'content_type'):
-            if file.content_type not in allowed_mimes:
+            file_mime = file.content_type
+            if file_mime not in allowed_mimes:
                 raise ValidationError(
                     f'Type de {file_type} non autorisé: {file.content_type}. '
                     f'Types acceptés: {", ".join(allowed_mimes)}'
                 )
         else:
-            # Dernier fallback: validation par extension
+            # Dernier fallback: validation par extension uniquement
             pass
+    
+    return file_mime
 
 
 def validate_file_extension(file, allowed_extensions, file_type='fichier'):

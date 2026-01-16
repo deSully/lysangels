@@ -84,4 +84,8 @@ urlpatterns = [
     # Gestion des demandes et propositions
     path('admin/proposal-requests/', admin_views.proposal_request_list, name='admin_proposal_request_list'),
     path('admin/proposals/', admin_views.proposal_list, name='admin_proposal_list'),
+
+    # Gestion des messages de contact
+    path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),
+    path('admin/contact-messages/<int:pk>/', admin_views.contact_message_detail, name='admin_contact_message_detail'),
 ]

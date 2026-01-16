@@ -17,6 +17,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third party
     'easy_thumbnails',
+    'cloudinary',
+    'cloudinary_storage',
     # LysAngels apps
     'apps.accounts',
     'apps.vendors',

@@ -44,10 +44,12 @@
 .btn-primary:hover {
   background-color: var(--color-purple-dark);
   box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
 }
 
 .btn-primary:active {
-  transform: none;
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:focus {
@@ -89,11 +91,12 @@
 .btn-accent:hover {
   background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-lily-gold) 100%);
   box-shadow: var(--shadow-xl);
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-1px);
 }
 
 .btn-accent:active {
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
+  box-shadow: var(--shadow-gold);
 }
 
 .btn-accent:focus {
@@ -117,6 +120,26 @@
   background-color: var(--color-gray-200);
 }
 
+/* Outline button - Boutons sur fonds sombres */
+.btn-outline {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--color-lily-white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-outline:active {
+  transform: translateY(0);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
 /* Danger button - Actions destructives */
 .btn-danger {
   background-color: var(--color-error);
@@ -128,6 +151,11 @@
   background-color: var(--color-error-dark);
   box-shadow: var(--shadow-lg);
   transform: translateY(-1px);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Button sizes */

@@ -63,6 +63,25 @@
                 <p class="text-3xl font-bold text-lily-dark mb-2">{{ pending_vendors }}</p>
                 <p class="text-sm text-gray-600">Prestataires à valider</p>
             </div>
+
+            <!-- Messages de contact -->
+            <a href="{% url 'accounts:admin_contact_message_list' %}" class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition block">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-600 font-medium">Messages</h3>
+                    <div class="relative">
+                        <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        {% if new_contact_messages > 0 %}
+                        <span class="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                            {{ new_contact_messages }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="text-3xl font-bold text-lily-dark mb-2">{{ new_contact_messages }}</p>
+                <p class="text-sm text-gray-600">Nouveau{{ new_contact_messages|pluralize:"x" }} message{{ new_contact_messages|pluralize }}</p>
+            </a>
         </div>
 
         <!-- Alerte prestataires en attente -->

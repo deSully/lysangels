@@ -259,8 +259,8 @@ class ProjectEditTests(TestCase):
             'city': 'Kara',
             'budget_min': 200000,
             'budget_max': 500000,
-            'services_needed': [self.service.id],
-            'status': 'published'
+            'services_needed': [self.service.id]
+            # Note: status n'est pas éditable via le formulaire
         }
         
         response = self.client.post(self.edit_url, data)
@@ -272,7 +272,8 @@ class ProjectEditTests(TestCase):
         self.project.refresh_from_db()
         self.assertEqual(self.project.title, 'Projet Modifié')
         self.assertEqual(self.project.city, 'Kara')
-        self.assertEqual(self.project.status, 'published')
+        # Le statut ne change pas car il n'est pas dans le formulaire
+        self.assertEqual(self.project.status, 'draft')
         
     def test_cannot_edit_other_users_project(self):
         """Test qu'on ne peut pas modifier le projet d'un autre utilisateur"""

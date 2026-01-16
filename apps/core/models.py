@@ -187,3 +187,50 @@ class Notification(models.Model):
             self.is_read = True
             self.read_at = timezone.now()
             self.save()
+
+
+class ContactMessage(models.Model):
+    """Messages de contact reçus via le formulaire"""
+
+    SUBJECT_CHOICES = [
+        ('general', 'Question générale'),
+        ('vendor', 'Devenir prestataire'),
+        ('technical', 'Problème technique'),
+        ('partnership', 'Partenariat'),
+        ('other', 'Autre'),
+    ]
+
+    STATUS_CHOICES = [
+        ('new', 'Nouveau'),
+        ('read', 'Lu'),
+        ('replied', 'Répondu'),
+        ('archived', 'Archivé'),
+    ]
+
+    name = models.CharField(max_length=100, verbose_name='Nom complet')
+    email = models.EmailField(verbose_name='Email')
+    phone = models.CharField(max_length=20, blank=True, verbose_name='Téléphone')
+    subject = models.CharField(
+        max_length=20,
+        choices=SUBJECT_CHOICES,
+        default='general',
+        verbose_name='Sujet'
+    )
+    message = models.TextField(verbose_name='Message')
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='new',
+        verbose_name='Statut'
+    )
+    admin_notes = models.TextField(blank=True, verbose_name='Notes admin')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Reçu le')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Message de contact'
+        verbose_name_plural = 'Messages de contact'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.get_subject_display()} ({self.created_at.strftime('%d/%m/%Y')})"

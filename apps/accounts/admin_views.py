@@ -8,7 +8,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator
 
 from .models import User
-from apps.core.models import City, Quartier, Country
+from apps.core.models import City, Quartier, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, SubscriptionTier, Review
 from apps.projects.models import EventType, Project
 from apps.proposals.models import ProposalRequest, Proposal
@@ -53,6 +53,10 @@ def admin_dashboard(request):
         'vendor', 'client', 'project'
     ).order_by('-created_at')[:5]
 
+    # Messages de contact non lus
+    new_contact_messages = ContactMessage.objects.filter(status='new').count()
+    recent_contact_messages = ContactMessage.objects.order_by('-created_at')[:5]
+
     context = {
         'total_users': total_users,
         'total_clients': total_clients,
@@ -69,6 +73,8 @@ def admin_dashboard(request):
         'recent_projects': recent_projects,
         'recent_vendors': recent_vendors,
         'pending_reviews': pending_reviews,
+        'new_contact_messages': new_contact_messages,
+        'recent_contact_messages': recent_contact_messages,
     }
     return render(request, 'accounts/admin_dashboard.html', context)
 
@@ -906,21 +912,95 @@ def vendor_delete_image(request, vendor_id, image_id):
     from django.http import JsonResponse
     from apps.vendors.models import VendorImage
     import os
-    
+
     if request.method == 'POST':
         try:
             vendor = get_object_or_404(VendorProfile, pk=vendor_id)
             image = get_object_or_404(VendorImage, pk=image_id, vendor=vendor)
-            
+
             # Supprimer le fichier physique
             if image.image and os.path.isfile(image.image.path):
                 os.remove(image.image.path)
-            
+
             # Supprimer l'entrée en base
             image.delete()
-            
+
             return JsonResponse({'success': True, 'message': 'Image supprimée avec succès'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=400)
-    
+
     return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+
+
+# ========== GESTION DES MESSAGES DE CONTACT ==========
+
+@admin_required
+def contact_message_list(request):
+    """Liste des messages de contact"""
+    contact_messages = ContactMessage.objects.all().order_by('-created_at')
+
+    # Filtres
+    status = request.GET.get('status')
+    subject = request.GET.get('subject')
+
+    if status:
+        contact_messages = contact_messages.filter(status=status)
+    if subject:
+        contact_messages = contact_messages.filter(subject=subject)
+
+    # Compteurs pour les badges
+    new_count = ContactMessage.objects.filter(status='new').count()
+
+    # Pagination
+    paginator = Paginator(contact_messages, 20)
+    page = request.GET.get('page')
+    contact_messages = paginator.get_page(page)
+
+    context = {
+        'contact_messages': contact_messages,
+        'selected_status': status,
+        'selected_subject': subject,
+        'new_count': new_count,
+        'status_choices': ContactMessage.STATUS_CHOICES,
+        'subject_choices': ContactMessage.SUBJECT_CHOICES,
+    }
+    return render(request, 'accounts/admin/contact_message_list.html', context)
+
+
+@admin_required
+def contact_message_detail(request, pk):
+    """Détail d'un message de contact"""
+    contact_message = get_object_or_404(ContactMessage, pk=pk)
+
+    # Marquer comme lu automatiquement
+    if contact_message.status == 'new':
+        contact_message.status = 'read'
+        contact_message.save()
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+
+        if action == 'update_status':
+            new_status = request.POST.get('status')
+            if new_status in dict(ContactMessage.STATUS_CHOICES):
+                contact_message.status = new_status
+                contact_message.save()
+                messages.success(request, 'Statut mis à jour.')
+
+        elif action == 'save_notes':
+            contact_message.admin_notes = request.POST.get('admin_notes', '')
+            contact_message.save()
+            messages.success(request, 'Notes enregistrées.')
+
+        elif action == 'delete':
+            contact_message.delete()
+            messages.success(request, 'Message supprimé.')
+            return redirect('accounts:admin_contact_message_list')
+
+        return redirect('accounts:admin_contact_message_detail', pk=pk)
+
+    context = {
+        'contact_message': contact_message,
+        'status_choices': ContactMessage.STATUS_CHOICES,
+    }
+    return render(request, 'accounts/admin/contact_message_detail.html', context)

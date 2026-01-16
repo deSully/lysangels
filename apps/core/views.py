@@ -8,8 +8,10 @@ from apps.vendors.models import ServiceType, VendorProfile
 from apps.projects.models import EventType, Project
 from apps.proposals.models import Proposal
 from apps.accounts.models import User
-from apps.core.models import Quartier, TermsOfService, Notification
+from apps.core.models import Quartier, TermsOfService, Notification, ContactMessage
 from apps.core.cache_utils import get_cached_service_types, get_cached_event_types
+from apps.core.forms import ContactForm
+from django.contrib import messages
 
 
 def home(request):
@@ -46,8 +48,17 @@ def about(request):
 
 
 def contact(request):
-    """Page Contact"""
-    return render(request, 'core/contact.html')
+    """Page Contact avec formulaire"""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.')
+            return redirect('core:contact')
+    else:
+        form = ContactForm()
+
+    return render(request, 'core/contact.html', {'form': form})
 
 
 def how_it_works(request):

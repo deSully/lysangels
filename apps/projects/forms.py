@@ -106,20 +106,6 @@ class ProjectCreateForm(forms.ModelForm):
         })
     )
     
-    expected_attendees = forms.IntegerField(
-        required=False,
-        min_value=1,
-        error_messages={
-            'invalid': 'Veuillez saisir un nombre valide.',
-            'min_value': 'Le nombre d\'invités doit être au moins 1.',
-        },
-        widget=forms.NumberInput(attrs={
-            'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition',
-            'placeholder': 'Ex: 100',
-            'min': '1'
-        })
-    )
-    
     budget_min = forms.IntegerField(
         required=False,
         min_value=0,
@@ -152,9 +138,25 @@ class ProjectCreateForm(forms.ModelForm):
         model = Project
         fields = [
             'title', 'event_type', 'description', 'city', 'location',
-            'event_date', 'event_time', 'expected_attendees',
+            'event_date', 'event_time', 'guest_count',  # Changé: expected_attendees -> guest_count
             'budget_min', 'budget_max', 'services_needed'
         ]
+        # Mapping des noms de champs pour la compatibilité
+        field_classes = {
+            'guest_count': forms.IntegerField
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Utiliser expected_attendees comme alias pour guest_count
+        if 'guest_count' in self.fields:
+            self.fields['guest_count'].label = 'Nombre d\'invités estimé'
+            self.fields['guest_count'].required = False
+            self.fields['guest_count'].widget.attrs.update({
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition',
+                'placeholder': 'Ex: 100',
+                'min': '1'
+            })
     
     def clean_event_date(self):
         """Validation de la date de l'événement"""

@@ -79,17 +79,26 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # ==============================================================================
 # STATIC & MEDIA FILES
 # ==============================================================================
-# In production, serve static files with WhiteNoise or CDN
-MIDDLEWARE.insert(1, 'django.middleware.security.SecurityMiddleware')
-# For WhiteNoise (if using): MIDDLEWARE.insert(2, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# WhiteNoise for serving static files
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 # Static files - collect with: python manage.py collectstatic
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files - in production, consider using S3/Cloudinary
+# ==============================================================================
+# CLOUDINARY (Media files storage)
+# ==============================================================================
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+# Use Cloudinary for media files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # ==============================================================================

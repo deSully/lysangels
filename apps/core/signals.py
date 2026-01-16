@@ -63,7 +63,7 @@ def notify_new_proposal(sender, instance, created, **kwargs):
             'project_title': instance.project.title,
             'proposal_title': instance.title,
             'price': f'{instance.price:,.0f}'.replace(',', ' '),
-            'delivery_time': instance.delivery_time,
+            'validity_days': instance.validity_days,  # Corrigé: Proposal n'a pas delivery_time mais validity_days
             'proposal_preview': instance.message[:200] + ('...' if len(instance.message) > 200 else ''),
             'proposal_url': f"{settings.SITE_URL}{reverse('proposals:proposal_detail', kwargs={'pk': instance.pk})}",
             'site_url': settings.SITE_URL,
@@ -112,9 +112,9 @@ def notify_new_request(sender, instance, created, **kwargs):
             'project_title': instance.project.title,
             'event_type': instance.project.event_type.name,
             'event_date': instance.project.event_date.strftime('%d/%m/%Y'),
-            'location': f"{instance.project.city}{', ' + instance.project.quartier.name if instance.project.quartier else ''}",
+            'location': instance.project.city,  # Project n'a que city, pas quartier
             'budget': f'{instance.project.budget_min:,.0f}'.replace(',', ' ') + (' - ' + f'{instance.project.budget_max:,.0f}'.replace(',', ' ') if instance.project.budget_max else '') + ' FCFA',
-            'guests_count': instance.project.guests_count or 'Non spécifié',
+            'guests_count': instance.project.guest_count or 'Non spécifié',  # C'est guest_count pas guests_count
             'client_message': instance.message,
             'request_url': f"{settings.SITE_URL}{reverse('proposals:request_detail', kwargs={'pk': instance.pk})}",
             'site_url': settings.SITE_URL,
