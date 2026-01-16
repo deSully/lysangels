@@ -3,8 +3,14 @@ Validateurs personnalisés pour les uploads de fichiers
 Sécurité renforcée avec vérification MIME type stricte
 """
 from django.core.exceptions import ValidationError
-import magic
 import os
+
+# Import conditionnel de python-magic (nécessite libmagic sur le système)
+try:
+    import magic
+    HAS_MAGIC = True
+except ImportError:
+    HAS_MAGIC = False
 
 
 # Tailles maximales (en bytes)
@@ -40,37 +46,39 @@ ALLOWED_ATTACHMENT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.pdf', '.doc
 def validate_file_mime_type(file, allowed_mimes, file_type='fichier'):
     """
     Valide le MIME type réel du fichier (pas juste l'extension)
-    Utilise python-magic pour lire les magic bytes
+    Utilise python-magic pour lire les magic bytes si disponible
     Retourne le MIME type détecté
     """
     file_mime = None
-    try:
-        # Lire les premiers bytes pour détecter le vrai type
-        file.seek(0)
-        file_content = file.read(2048)
-        file.seek(0)  # Reset cursor
-        
-        file_mime = magic.from_buffer(file_content, mime=True)
-        
-        if file_mime and file_mime not in allowed_mimes:
-            raise ValidationError(
-                f'Type de {file_type} non autorisé. '
-                f'Types acceptés: {", ".join(allowed_mimes)}. '
-                f'Type détecté: {file_mime}'
-            )
-    except (AttributeError, ImportError):
-        # Si python-magic n'est pas disponible, fallback sur content_type
-        if hasattr(file, 'content_type'):
-            file_mime = file.content_type
-            if file_mime not in allowed_mimes:
+
+    if HAS_MAGIC:
+        try:
+            # Lire les premiers bytes pour détecter le vrai type
+            file.seek(0)
+            file_content = file.read(2048)
+            file.seek(0)  # Reset cursor
+
+            file_mime = magic.from_buffer(file_content, mime=True)
+
+            if file_mime and file_mime not in allowed_mimes:
                 raise ValidationError(
-                    f'Type de {file_type} non autorisé: {file.content_type}. '
-                    f'Types acceptés: {", ".join(allowed_mimes)}'
+                    f'Type de {file_type} non autorisé. '
+                    f'Types acceptés: {", ".join(allowed_mimes)}. '
+                    f'Type détecté: {file_mime}'
                 )
-        else:
-            # Dernier fallback: validation par extension uniquement
-            pass
-    
+            return file_mime
+        except Exception:
+            pass  # Fallback to content_type check
+
+    # Fallback: utiliser content_type du fichier uploadé
+    if hasattr(file, 'content_type'):
+        file_mime = file.content_type
+        if file_mime not in allowed_mimes:
+            raise ValidationError(
+                f'Type de {file_type} non autorisé: {file.content_type}. '
+                f'Types acceptés: {", ".join(allowed_mimes)}'
+            )
+
     return file_mime
 
 
