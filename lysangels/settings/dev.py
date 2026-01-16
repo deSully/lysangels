@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-$c(r!$v2+2=5hpa&@_xsc5wh-rl@q-4+a44_mhiy)&8im_s&-6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Site URL for emails and notifications
 SITE_URL = 'http://localhost:8000'
