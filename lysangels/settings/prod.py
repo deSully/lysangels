@@ -186,3 +186,14 @@ if SENTRY_DSN:
         send_default_pii=False,
         environment='production',
     )
+
+
+# 1. Indique à Django qu'il est derrière un proxy (Railway) qui gère le HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# 2. Désactive la redirection SSL forcée par Django (car Railway s'en occupe déjà)
+SECURE_SSL_REDIRECT = False
+
+# 3. Paramètres recommandés pour la prod sur Railway
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
