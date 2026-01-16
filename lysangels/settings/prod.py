@@ -5,13 +5,15 @@ Uses PostgreSQL, environment variables, strict security
 from .base import *
 from decouple import config, Csv
 import dj_database_url
+import os
 
 # ==============================================================================
 # SECURITY
 # ==============================================================================
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+# Use os.environ first (Railway injects vars there), fallback to decouple
+SECRET_KEY = os.environ.get('SECRET_KEY') or config('SECRET_KEY', default='fallback-dev-key-change-me')
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else config('ALLOWED_HOSTS', default='localhost', cast=Csv())
 
 # Site URL
 SITE_URL = config('SITE_URL', default='https://lysangels.tg')
