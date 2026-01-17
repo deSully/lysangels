@@ -478,15 +478,15 @@ class Command(BaseCommand):
                                     resource_type='image'
                                 )
 
-                                # URL Cloudinary complète
+                                # URL Cloudinary complète - c'est ce qu'on va stocker
                                 cloudinary_url = result.get('secure_url', '')
 
-                                # Stocker juste le public_id pour que django-cloudinary-storage puisse le retrouver
-                                # Format: folder/public_id (sans extension)
-                                logo_path = f"vendors/logos/{username}_logo"
-                                VendorProfile.objects.filter(pk=profile.pk).update(logo=logo_path)
-
-                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name}'))
+                                if cloudinary_url:
+                                    # Stocker l'URL complète Cloudinary directement
+                                    VendorProfile.objects.filter(pk=profile.pk).update(logo=cloudinary_url)
+                                    self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name} -> {cloudinary_url[:60]}...'))
+                                else:
+                                    self.stdout.write(self.style.WARNING(f'    ⚠ Upload OK mais pas d\'URL: {result}'))
                             else:
                                 # Fallback local
                                 from django.core.files.storage import default_storage
