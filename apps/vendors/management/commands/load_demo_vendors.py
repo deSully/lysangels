@@ -411,17 +411,51 @@ class Command(BaseCommand):
                 if logo_urls:
                     try:
                         logo_url = random.choice(logo_urls)
-                        response = requests.get(logo_url, timeout=15)
-                        if response.status_code == 200:
-                            filename = f"{username}_logo.jpg"
-                            profile.logo.save(filename, ContentFile(response.content), save=True)
-                            self.stdout.write(self.style.SUCCESS(f'    ✓ Logo uploadé pour {business_name}'))
+
+                        # Upload direct vers Cloudinary
+                        from django.conf import settings as django_settings
+                        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', {})
+
+                        if cloudinary_config:
+                            import cloudinary
+                            import cloudinary.uploader
+
+                            # Configurer Cloudinary
+                            cloudinary.config(
+                                cloud_name=cloudinary_config.get('CLOUD_NAME'),
+                                api_key=cloudinary_config.get('API_KEY'),
+                                api_secret=cloudinary_config.get('API_SECRET'),
+                            )
+
+                            # Upload direct depuis l'URL Unsplash vers Cloudinary
+                            result = cloudinary.uploader.upload(
+                                logo_url,
+                                folder='media/vendors/logos',
+                                public_id=f'{username}_logo',
+                                overwrite=True,
+                                resource_type='image'
+                            )
+
+                            # Stocker le chemin Cloudinary dans le champ logo
+                            # Le format attendu par django-cloudinary-storage
+                            cloudinary_path = f"vendors/logos/{username}_logo"
+                            profile.logo = cloudinary_path
+                            profile.save(update_fields=['logo'])
+
+                            self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name}'))
                         else:
-                            self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
+                            # Fallback local si pas de Cloudinary
+                            response = requests.get(logo_url, timeout=15)
+                            if response.status_code == 200:
+                                filename = f"{username}_logo.jpg"
+                                profile.logo.save(filename, ContentFile(response.content), save=True)
+                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo local: {business_name}'))
+                            else:
+                                self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
                         self.stdout.write(self.style.WARNING(f'    ⚠ Timeout téléchargement logo pour {business_name}'))
                     except Exception as e:
-                        self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo pour {business_name}: {str(e)[:50]}'))
+                        self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo pour {business_name}: {str(e)[:80]}'))
 
             created_count += 1
             if created_count % 10 == 0:
