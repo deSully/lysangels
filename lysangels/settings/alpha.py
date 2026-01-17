@@ -11,7 +11,11 @@ import os
 # ==============================================================================
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-dev-key-change-me-in-production')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
-ALLOWED_HOSTS = ["alpha.lysangels.com"]
+ALLOWED_HOSTS = [
+    "alpha.lysangels.com",
+    "lysangels.com",
+    "www.lysangels.com"
+]
 
 # Site URL
 SITE_URL = os.environ.get('SITE_URL', 'https://lysangels.tg')
