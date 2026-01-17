@@ -425,46 +425,38 @@ class Command(BaseCommand):
                     try:
                         logo_url = random.choice(logo_urls)
 
-                        # Upload direct vers Cloudinary
-                        from django.conf import settings as django_settings
-                        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', {})
+                        # Télécharger l'image depuis Unsplash
+                        response = requests.get(logo_url, timeout=15)
+                        if response.status_code == 200:
+                            filename = f"{username}_logo.jpg"
 
-                        if cloudinary_config:
-                            import cloudinary
-                            import cloudinary.uploader
+                            # Utiliser le storage Django (Cloudinary si configuré)
+                            # On doit bypasser la méthode save() du modèle qui redimensionne
+                            from django.core.files.storage import default_storage
 
-                            # Configurer Cloudinary
-                            cloudinary.config(
-                                cloud_name=cloudinary_config.get('CLOUD_NAME'),
-                                api_key=cloudinary_config.get('API_KEY'),
-                                api_secret=cloudinary_config.get('API_SECRET'),
-                            )
+                            # Sauvegarder directement via le storage
+                            path = f"vendors/logos/{filename}"
 
-                            # Upload direct depuis l'URL Unsplash vers Cloudinary
-                            result = cloudinary.uploader.upload(
-                                logo_url,
-                                folder='media/vendors/logos',
-                                public_id=f'{username}_logo',
-                                overwrite=True,
-                                resource_type='image'
-                            )
+                            # Supprimer si existe déjà
+                            if default_storage.exists(path):
+                                default_storage.delete(path)
 
-                            # Stocker le chemin Cloudinary dans le champ logo
-                            # Le format attendu par django-cloudinary-storage
-                            cloudinary_path = f"vendors/logos/{username}_logo"
-                            profile.logo = cloudinary_path
-                            profile.save(update_fields=['logo'])
+                            # Sauvegarder le nouveau fichier
+                            saved_path = default_storage.save(path, ContentFile(response.content))
 
-                            self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name}'))
-                        else:
-                            # Fallback local si pas de Cloudinary
-                            response = requests.get(logo_url, timeout=15)
-                            if response.status_code == 200:
-                                filename = f"{username}_logo.jpg"
-                                profile.logo.save(filename, ContentFile(response.content), save=True)
-                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo local: {business_name}'))
+                            # Mettre à jour le champ logo directement (sans passer par save() du modèle)
+                            VendorProfile.objects.filter(pk=profile.pk).update(logo=saved_path)
+
+                            # Vérifier l'URL générée
+                            profile.refresh_from_db()
+                            logo_url_result = profile.logo.url if profile.logo else 'N/A'
+
+                            if 'cloudinary' in logo_url_result:
+                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name}'))
                             else:
-                                self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
+                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name} ({logo_url_result[:50]})'))
+                        else:
+                            self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
                         self.stdout.write(self.style.WARNING(f'    ⚠ Timeout téléchargement logo pour {business_name}'))
                     except Exception as e:
