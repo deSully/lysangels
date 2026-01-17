@@ -215,6 +215,11 @@ class Command(BaseCommand):
             help='Télécharge et upload les logos sur Cloudinary',
         )
         parser.add_argument(
+            '--reset',
+            action='store_true',
+            help='Supprime tous les vendors de démo et leurs images Cloudinary avant de recréer',
+        )
+        parser.add_argument(
             '--count',
             type=int,
             default=100,
@@ -223,16 +228,24 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         with_images = options.get('with_images', False)
+        reset = options.get('reset', False)
         count = options.get('count', 100)
 
-        self.stdout.write(f'Chargement de {count} prestataires de démonstration...\n')
+        # Récupérer la config Cloudinary
+        from django.conf import settings as django_settings
+        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', {})
+
+        # Reset : supprimer tous les vendors de démo et leurs images
+        if reset:
+            self._reset_demo_data(cloudinary_config)
+
+        self.stdout.write(f'\nChargement de {count} prestataires de démonstration...\n')
 
         # Vérifier la configuration Cloudinary si --with-images
         if with_images:
-            from django.conf import settings
-            storage_backend = getattr(settings, 'DEFAULT_FILE_STORAGE', '')
-            if 'cloudinary' in storage_backend.lower():
-                self.stdout.write(self.style.SUCCESS('✓ Cloudinary configuré - les images seront uploadées sur le cloud'))
+            storage_backend = getattr(django_settings, 'DEFAULT_FILE_STORAGE', '')
+            if cloudinary_config:
+                self.stdout.write(self.style.SUCCESS(f'✓ Cloudinary configuré (cloud: {cloudinary_config.get("CLOUD_NAME")})'))
             else:
                 self.stdout.write(self.style.WARNING(
                     '⚠ Cloudinary non configuré - les images seront stockées localement\n'
@@ -468,3 +481,52 @@ class Command(BaseCommand):
             self.stdout.write(self.style.NOTICE(
                 '\n💡 Pour ajouter les logos: python manage.py load_demo_vendors --with-images'
             ))
+
+    def _reset_demo_data(self, cloudinary_config):
+        """Supprime tous les vendors de démo et leurs images sur Cloudinary."""
+        self.stdout.write('🗑️  RESET: Suppression des données de démonstration...\n')
+
+        # 1. Supprimer les images sur Cloudinary
+        if cloudinary_config:
+            self.stdout.write('  Suppression des images sur Cloudinary...')
+            try:
+                import cloudinary
+                import cloudinary.api
+
+                cloudinary.config(
+                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
+                    api_key=cloudinary_config.get('API_KEY'),
+                    api_secret=cloudinary_config.get('API_SECRET'),
+                )
+
+                # Supprimer tout le dossier media/vendors/logos
+                try:
+                    result = cloudinary.api.delete_resources_by_prefix(
+                        'media/vendors/logos/',
+                        resource_type='image'
+                    )
+                    deleted_count = len(result.get('deleted', {}))
+                    self.stdout.write(self.style.SUCCESS(f'    ✓ {deleted_count} images supprimées de Cloudinary'))
+                except Exception as e:
+                    self.stdout.write(self.style.WARNING(f'    ⚠ Erreur suppression Cloudinary: {str(e)[:50]}'))
+
+            except ImportError:
+                self.stdout.write(self.style.WARNING('    ⚠ Module cloudinary non disponible'))
+        else:
+            self.stdout.write('  (Cloudinary non configuré, pas d\'images cloud à supprimer)')
+
+        # 2. Supprimer les profils vendors de démo (email @demo.lysangels.tg)
+        self.stdout.write('  Suppression des profils prestataires de démo...')
+        demo_vendors = VendorProfile.objects.filter(user__email__endswith='@demo.lysangels.tg')
+        vendor_count = demo_vendors.count()
+        demo_vendors.delete()
+        self.stdout.write(self.style.SUCCESS(f'    ✓ {vendor_count} profils supprimés'))
+
+        # 3. Supprimer les utilisateurs de démo
+        self.stdout.write('  Suppression des utilisateurs de démo...')
+        demo_users = User.objects.filter(email__endswith='@demo.lysangels.tg')
+        user_count = demo_users.count()
+        demo_users.delete()
+        self.stdout.write(self.style.SUCCESS(f'    ✓ {user_count} utilisateurs supprimés'))
+
+        self.stdout.write(self.style.SUCCESS('\n✅ Reset terminé!'))
