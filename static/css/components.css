@@ -25,7 +25,16 @@
   cursor: pointer;
   transition: all var(--transition-base);
   white-space: nowrap;
-  transform: none;
+  transform: translateY(0) scale(1);
+}
+
+/* Reset transform on focus to prevent stuck state */
+.btn:focus {
+  transform: translateY(0) scale(1);
+}
+
+.btn:focus:hover {
+  transform: translateY(-1px) scale(1);
 }
 
 .btn:disabled {
