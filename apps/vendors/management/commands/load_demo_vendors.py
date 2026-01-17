@@ -216,6 +216,18 @@ class Command(BaseCommand):
 
         self.stdout.write(f'Chargement de {count} prestataires de démonstration...\n')
 
+        # Vérifier la configuration Cloudinary si --with-images
+        if with_images:
+            from django.conf import settings
+            storage_backend = getattr(settings, 'DEFAULT_FILE_STORAGE', '')
+            if 'cloudinary' in storage_backend.lower():
+                self.stdout.write(self.style.SUCCESS('✓ Cloudinary configuré - les images seront uploadées sur le cloud'))
+            else:
+                self.stdout.write(self.style.WARNING(
+                    '⚠ Cloudinary non configuré - les images seront stockées localement\n'
+                    f'  Storage actuel: {storage_backend}'
+                ))
+
         # Vérifier que les types de services existent
         service_types = list(ServiceType.objects.all())
         if not service_types:
@@ -388,12 +400,17 @@ class Command(BaseCommand):
                 if logo_urls:
                     try:
                         logo_url = random.choice(logo_urls)
-                        response = requests.get(logo_url, timeout=10)
+                        response = requests.get(logo_url, timeout=15)
                         if response.status_code == 200:
                             filename = f"{username}_logo.jpg"
                             profile.logo.save(filename, ContentFile(response.content), save=True)
-                    except Exception:
-                        pass
+                            self.stdout.write(self.style.SUCCESS(f'    ✓ Logo uploadé pour {business_name}'))
+                        else:
+                            self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
+                    except requests.exceptions.Timeout:
+                        self.stdout.write(self.style.WARNING(f'    ⚠ Timeout téléchargement logo pour {business_name}'))
+                    except Exception as e:
+                        self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo pour {business_name}: {str(e)[:50]}'))
 
             created_count += 1
             if created_count % 10 == 0:
