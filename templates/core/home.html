@@ -11,6 +11,18 @@
 
 {% block extra_css %}
 <style>
+    /* Hero hauteur = écran - navbar (environ 80px) */
+    .hero-section {
+        height: calc(100vh - 80px);
+    }
+
+    @media (max-width: 1024px) {
+        .hero-section {
+            height: auto;
+            min-height: 0;
+        }
+    }
+
     /* Hero Split Design - Premium & Modern */
     .hero-split-left {
         background: linear-gradient(135deg, #1A1A1A 0%, #2D1B3D 50%, #1A1A1A 100%);
@@ -41,37 +53,35 @@
     }
 
     .hero-split-right {
-        background: linear-gradient(135deg, #F4EDE4 0%, #FDFCFB 100%);
         position: relative;
         overflow: hidden;
+        height: 100%;
     }
 
-    /* Image grid pour le côté droit */
+    /* Image grid pour le côté droit - occupe tout l'espace */
     .hero-image-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-rows: repeat(3, 1fr);
+        gap: 0;
         height: 100%;
-        padding: 2rem;
+        width: 100%;
     }
 
     .hero-image-item {
-        border-radius: 1rem;
         overflow: hidden;
         position: relative;
-        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .hero-image-item:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.12);
     }
 
     .hero-image-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .hero-image-item:hover img {
+        transform: scale(1.05);
     }
 
     .hero-image-item:nth-child(1) {
@@ -125,9 +135,9 @@
 
 {% block content %}
 <!-- Hero Split Section - Modern & Premium -->
-<section class="grid lg:grid-cols-2">
+<section class="hero-section grid lg:grid-cols-2">
     <!-- Left: Texte & CTAs -->
-    <div class="hero-split-left flex px-6 sm:px-8 lg:px-16 xl:px-20 py-16 lg:py-20">
+    <div class="hero-split-left flex items-center px-6 sm:px-8 lg:px-16 xl:px-20 py-16 lg:py-20">
         <div class="relative z-10 max-w-xl hero-content">
             <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white mb-6 leading-tight">
                 Créez des Événements<br>
