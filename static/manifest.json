@@ -12,7 +12,7 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "/static/images/icons/icon-72x72.png",
+      "src": "/static/images/oub/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any maskable"
