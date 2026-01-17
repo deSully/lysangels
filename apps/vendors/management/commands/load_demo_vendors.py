@@ -120,53 +120,64 @@ DESCRIPTIONS = {
     ],
 }
 
-# URLs d'images Unsplash par catégorie
+# URLs d'images Unsplash par catégorie (URLs stables avec photo ID)
 LOGO_URLS = {
     'Photographe': [
         'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=400&h=400&fit=crop',
     ],
     'Vidéaste': [
-        'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1579566346927-c68383817a25?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1540655037529-dec987208707?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1616469829581-73993eb86b02?w=400&h=400&fit=crop',
     ],
     'DJ / Musique': [
-        'https://images.unsplash.com/photo-1571266028243-d220e7a45380?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&h=400&fit=crop',
     ],
     'Traiteur': [
         'https://images.unsplash.com/photo-1555244162-803834f70033?w=400&h=400&fit=crop',
         'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop',
     ],
     'Décoration': [
         'https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=400&h=400&fit=crop',
         'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=400&h=400&fit=crop',
     ],
     'Pâtisserie': [
         'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1535141192574-5d4897c12636?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=400&fit=crop',
     ],
     'Maquillage / Coiffure': [
-        'https://images.unsplash.com/photo-1560869713-bf5e568e6fee?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=400&fit=crop',
     ],
     'Salle de réception': [
         'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=400&fit=crop',
         'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=400&h=400&fit=crop',
     ],
     'Location matériel': [
         'https://images.unsplash.com/photo-1530023367847-a683933f4172?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=400&fit=crop',
     ],
     'Fleuriste': [
         'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=400&fit=crop',
-        'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=400&h=400&fit=crop',
     ],
     'Animation': [
         'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=400&fit=crop',
     ],
     'Transport': [
         'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&h=400&fit=crop',
     ],
 }
 
