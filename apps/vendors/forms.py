@@ -157,6 +157,9 @@ class VendorProfileForm(forms.ModelForm):
         })
     )
     
+    # Le champ logo est maintenant un URLField dans le modèle
+    # On utilise un ImageField dans le formulaire pour l'upload,
+    # mais on le gère manuellement dans save()
     logo = forms.ImageField(
         required=False,
         validators=[validate_image_file],
@@ -175,8 +178,10 @@ class VendorProfileForm(forms.ModelForm):
             'business_name', 'description', 'service_types', 'countries',
             'city', 'quartier', 'address', 'google_maps_link',
             'whatsapp', 'website', 'facebook', 'instagram',
-            'min_budget', 'max_budget', 'logo'
+            'min_budget', 'max_budget'
         ]
+        # Note: 'logo' est géré manuellement dans save() car c'est un URLField
+        # dans le modèle mais un ImageField dans le formulaire pour l'upload
     
     def clean_description(self):
         """Validation de la description"""
@@ -209,8 +214,81 @@ class VendorProfileForm(forms.ModelForm):
             raise ValidationError(
                 'Le budget maximum doit être supérieur ou égal au budget minimum.'
             )
-        
+
         return cleaned_data
+
+    def save(self, commit=True):
+        """Sauvegarde le profil et upload le logo vers Cloudinary si présent"""
+        instance = super().save(commit=False)
+
+        # Gérer l'upload du logo vers Cloudinary
+        logo_file = self.cleaned_data.get('logo')
+        if logo_file:
+            logo_url = self._upload_logo_to_cloudinary(logo_file, instance)
+            if logo_url:
+                instance.logo = logo_url
+
+        if commit:
+            instance.save()
+            self.save_m2m()
+
+        return instance
+
+    def _upload_logo_to_cloudinary(self, logo_file, instance):
+        """Upload le logo vers Cloudinary et retourne l'URL"""
+        import os
+        from django.conf import settings
+
+        # Récupérer la config Cloudinary
+        cloudinary_config = getattr(settings, 'CLOUDINARY_STORAGE', None)
+
+        # Si pas de config dans settings, essayer les variables d'environnement
+        if not cloudinary_config:
+            cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+            api_key = os.environ.get('CLOUDINARY_API_KEY', '')
+            api_secret = os.environ.get('CLOUDINARY_API_SECRET', '')
+
+            if cloud_name and api_key and api_secret:
+                cloudinary_config = {
+                    'CLOUD_NAME': cloud_name,
+                    'API_KEY': api_key,
+                    'API_SECRET': api_secret,
+                }
+
+        if not cloudinary_config or not cloudinary_config.get('CLOUD_NAME'):
+            # Pas de Cloudinary configuré, on ne peut pas uploader
+            return None
+
+        try:
+            import cloudinary
+            import cloudinary.uploader
+
+            cloudinary.config(
+                cloud_name=cloudinary_config.get('CLOUD_NAME'),
+                api_key=cloudinary_config.get('API_KEY'),
+                api_secret=cloudinary_config.get('API_SECRET'),
+            )
+
+            # Générer un public_id unique
+            public_id = f"vendor_{instance.user.id}_logo"
+
+            # Upload vers Cloudinary
+            result = cloudinary.uploader.upload(
+                logo_file,
+                folder='vendors/logos',
+                public_id=public_id,
+                overwrite=True,
+                resource_type='image',
+                transformation=[
+                    {'width': 800, 'height': 800, 'crop': 'limit'},
+                    {'quality': 'auto:good'}
+                ]
+            )
+
+            return result.get('secure_url', '')
+
+        except Exception:
+            return None
 
 
 class ReviewForm(forms.ModelForm):

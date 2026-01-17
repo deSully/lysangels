@@ -7,7 +7,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
 from apps.core.models import City, Quartier, Country
-from apps.core.validators import validate_image_file
+from apps.core.validators import validate_image_file  # Toujours utilisé par VendorImage
 
 
 class SubscriptionTier(models.Model):
@@ -73,13 +73,11 @@ class VendorProfile(models.Model):
         verbose_name='Utilisateur'
     )
     business_name = models.CharField(max_length=200, verbose_name='Nom de l\'entreprise')
-    logo = models.ImageField(
-        upload_to='vendors/logos/',
+    logo = models.URLField(
         blank=True,
-        null=True,
+        default='',
         verbose_name='Logo',
-        validators=[validate_image_file],
-        help_text='Taille max: 5MB. Formats: JPEG, PNG, WebP. Recommandé: carré (500x500px)'
+        help_text='URL de l\'image du logo (Cloudinary ou autre)'
     )
     
     # Abonnement
@@ -243,46 +241,6 @@ class VendorProfile(models.Model):
         
         return stars
 
-    def save(self, *args, **kwargs):
-        """Redimensionne le logo avant sauvegarde"""
-        if self.logo:
-            self.logo = self._resize_image(self.logo, max_width=800, max_height=800)
-        super().save(*args, **kwargs)
-
-    @staticmethod
-    def _resize_image(image_field, max_width=800, max_height=800):
-        """Redimensionne une image en conservant les proportions"""
-        try:
-            img = Image.open(image_field)
-            
-            # Convertir en RGB si nécessaire (pour les PNG avec transparence)
-            if img.mode in ('RGBA', 'LA', 'P'):
-                background = Image.new('RGB', img.size, (255, 255, 255))
-                if img.mode == 'P':
-                    img = img.convert('RGBA')
-                background.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
-                img = background
-            
-            # Calculer les nouvelles dimensions en conservant le ratio
-            img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
-            
-            # Sauvegarder dans un buffer
-            output = BytesIO()
-            img.save(output, format='JPEG', quality=85, optimize=True)
-            output.seek(0)
-            
-            # Créer un nouveau fichier InMemoryUploadedFile
-            return InMemoryUploadedFile(
-                output,
-                'ImageField',
-                image_field.name,
-                'image/jpeg',
-                sys.getsizeof(output),
-                None
-            )
-        except Exception as e:
-            # En cas d'erreur, retourner l'image originale
-            return image_field
 
 
 class VendorImage(models.Model):

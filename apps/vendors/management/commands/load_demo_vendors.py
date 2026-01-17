@@ -452,15 +452,36 @@ class Command(BaseCommand):
                         if response.status_code == 200:
                             filename = f"{username}_logo.jpg"
 
-                            # Sauvegarder via le champ ImageField (qui utilise le storage configuré)
-                            # Cela fonctionne avec Cloudinary si DEFAULT_FILE_STORAGE est configuré
-                            try:
-                                # Recharger le profil pour éviter les problèmes de cache
-                                profile.refresh_from_db()
-                                profile.logo.save(filename, ContentFile(response.content), save=True)
-                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name}'))
-                            except Exception as save_error:
-                                self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo pour {business_name}: {str(save_error)[:60]}'))
+                            # Uploader vers Cloudinary si configuré
+                            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
+                                import cloudinary
+                                import cloudinary.uploader
+
+                                cloudinary.config(
+                                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
+                                    api_key=cloudinary_config.get('API_KEY'),
+                                    api_secret=cloudinary_config.get('API_SECRET'),
+                                )
+
+                                # Upload vers Cloudinary
+                                result = cloudinary.uploader.upload(
+                                    response.content,
+                                    folder='vendors/logos',
+                                    public_id=username + '_logo',
+                                    overwrite=True,
+                                    resource_type='image'
+                                )
+
+                                # Stocker l'URL Cloudinary dans le champ URLField
+                                cloudinary_url = result.get('secure_url', '')
+                                if cloudinary_url:
+                                    VendorProfile.objects.filter(pk=profile.pk).update(logo=cloudinary_url)
+                                    self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name}'))
+                                else:
+                                    self.stdout.write(self.style.WARNING(f'    ⚠ Upload échoué pour {business_name}'))
+                            else:
+                                # Sans Cloudinary, on ne peut pas stocker le logo (URLField nécessite une URL)
+                                self.stdout.write(self.style.WARNING(f'    ⚠ Cloudinary non configuré, logo ignoré pour {business_name}'))
                         else:
                             self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
