@@ -231,9 +231,35 @@ class Command(BaseCommand):
         reset = options.get('reset', False)
         count = options.get('count', 100)
 
-        # Récupérer la config Cloudinary
+        # Récupérer la config Cloudinary (depuis settings OU variables d'environnement directement)
+        import os
         from django.conf import settings as django_settings
-        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', {})
+        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', None)
+
+        # Si CLOUDINARY_STORAGE est vide, lire directement les variables d'environnement
+        if not cloudinary_config:
+            cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+            api_key = os.environ.get('CLOUDINARY_API_KEY', '')
+            api_secret = os.environ.get('CLOUDINARY_API_SECRET', '')
+
+            if cloud_name and api_key and api_secret:
+                cloudinary_config = {
+                    'CLOUD_NAME': cloud_name,
+                    'API_KEY': api_key,
+                    'API_SECRET': api_secret,
+                }
+                self.stdout.write(self.style.SUCCESS('  ✓ Config Cloudinary chargée depuis variables d\'environnement'))
+            else:
+                cloudinary_config = {}
+                missing = []
+                if not cloud_name:
+                    missing.append('CLOUDINARY_CLOUD_NAME')
+                if not api_key:
+                    missing.append('CLOUDINARY_API_KEY')
+                if not api_secret:
+                    missing.append('CLOUDINARY_API_SECRET')
+                if missing:
+                    self.stdout.write(self.style.WARNING(f'  ⚠ Variables manquantes: {", ".join(missing)}'))
 
         # Reset : supprimer tous les vendors de démo et leurs images
         if reset:
@@ -244,7 +270,9 @@ class Command(BaseCommand):
         # Vérifier la configuration Cloudinary si --with-images
         if with_images:
             storage_backend = getattr(django_settings, 'DEFAULT_FILE_STORAGE', '')
-            if cloudinary_config:
+            self.stdout.write(f'  DEBUG: DEFAULT_FILE_STORAGE = {storage_backend}')
+            self.stdout.write(f'  DEBUG: CLOUDINARY_STORAGE = {cloudinary_config}')
+            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
                 self.stdout.write(self.style.SUCCESS(f'✓ Cloudinary configuré (cloud: {cloudinary_config.get("CLOUD_NAME")})'))
             else:
                 self.stdout.write(self.style.WARNING(
@@ -430,31 +458,44 @@ class Command(BaseCommand):
                         if response.status_code == 200:
                             filename = f"{username}_logo.jpg"
 
-                            # Utiliser le storage Django (Cloudinary si configuré)
-                            # On doit bypasser la méthode save() du modèle qui redimensionne
-                            from django.core.files.storage import default_storage
+                            # Utiliser Cloudinary directement si configuré
+                            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
+                                import cloudinary
+                                import cloudinary.uploader
 
-                            # Sauvegarder directement via le storage
-                            path = f"vendors/logos/{filename}"
+                                cloudinary.config(
+                                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
+                                    api_key=cloudinary_config.get('API_KEY'),
+                                    api_secret=cloudinary_config.get('API_SECRET'),
+                                )
 
-                            # Supprimer si existe déjà
-                            if default_storage.exists(path):
-                                default_storage.delete(path)
+                                # Upload vers Cloudinary
+                                result = cloudinary.uploader.upload(
+                                    response.content,
+                                    folder='vendors/logos',
+                                    public_id=username + '_logo',
+                                    overwrite=True,
+                                    resource_type='image'
+                                )
 
-                            # Sauvegarder le nouveau fichier
-                            saved_path = default_storage.save(path, ContentFile(response.content))
+                                # URL Cloudinary complète
+                                cloudinary_url = result.get('secure_url', '')
 
-                            # Mettre à jour le champ logo directement (sans passer par save() du modèle)
-                            VendorProfile.objects.filter(pk=profile.pk).update(logo=saved_path)
+                                # Stocker juste le public_id pour que django-cloudinary-storage puisse le retrouver
+                                # Format: folder/public_id (sans extension)
+                                logo_path = f"vendors/logos/{username}_logo"
+                                VendorProfile.objects.filter(pk=profile.pk).update(logo=logo_path)
 
-                            # Vérifier l'URL générée
-                            profile.refresh_from_db()
-                            logo_url_result = profile.logo.url if profile.logo else 'N/A'
-
-                            if 'cloudinary' in logo_url_result:
                                 self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name}'))
                             else:
-                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name} ({logo_url_result[:50]})'))
+                                # Fallback local
+                                from django.core.files.storage import default_storage
+                                path = f"vendors/logos/{filename}"
+                                if default_storage.exists(path):
+                                    default_storage.delete(path)
+                                saved_path = default_storage.save(path, ContentFile(response.content))
+                                VendorProfile.objects.filter(pk=profile.pk).update(logo=saved_path)
+                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo local: {business_name}'))
                         else:
                             self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
