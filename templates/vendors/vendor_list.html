@@ -476,8 +476,15 @@
                            class="{% if vendor.subscription_tier.name == 'Premium' %}card-featured{% else %}card-minimal{% endif %} card-animate-enter group">
                             <!-- Image avec ratio carré -->
                             <div class="relative aspect-square bg-gradient-to-br from-lily-rose to-lily-cream flex items-center justify-center overflow-hidden rounded-lg mb-3">
-                                {% if vendor.images.first %}
-                                    <img 
+                                {% if vendor.logo %}
+                                    <img
+                                        src="{{ vendor.logo.url }}"
+                                        alt="{{ vendor.business_name }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                        loading="lazy"
+                                        decoding="async">
+                                {% elif vendor.images.first %}
+                                    <img
                                         src="{% thumbnail_url vendor.images.first.image 'medium' %}"
                                         srcset="{% responsive_srcset vendor.images.first.image 'small' 'medium' 'large' %}"
                                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
@@ -568,8 +575,15 @@
                        class="{% if vendor.subscription_tier.name == 'Premium' %}card-featured{% else %}card-minimal{% endif %} group animate-fade-in-up">
                         <!-- Image avec ratio carré -->
                         <div class="relative aspect-square bg-gradient-to-br from-lily-rose to-lily-cream flex items-center justify-center overflow-hidden rounded-lg mb-3">
-                            {% if vendor.images.first %}
-                                <img 
+                            {% if vendor.logo %}
+                                <img
+                                    src="{{ vendor.logo.url }}"
+                                    alt="{{ vendor.business_name }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                    loading="lazy"
+                                    decoding="async">
+                            {% elif vendor.images.first %}
+                                <img
                                     src="{% thumbnail_url vendor.images.first.image 'medium' %}"
                                     srcset="{% responsive_srcset vendor.images.first.image 'small' 'medium' 'large' %}"
                                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

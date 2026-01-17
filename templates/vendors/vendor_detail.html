@@ -163,8 +163,15 @@
 {% block content %}
 <!-- Hero Immersif Full-Width -->
 <div class="vendor-hero">
-    {% if vendor.images.first %}
-        <img 
+    {% if vendor.logo %}
+        <img
+            src="{{ vendor.logo.url }}"
+            alt="{{ vendor.business_name }}"
+            class="vendor-hero-image"
+            loading="eager"
+            decoding="async">
+    {% elif vendor.images.first %}
+        <img
             src="{% thumbnail_url vendor.images.first.image 'hero' %}"
             srcset="{% responsive_srcset vendor.images.first.image 'medium' 'large' 'hero' %}"
             sizes="100vw"
