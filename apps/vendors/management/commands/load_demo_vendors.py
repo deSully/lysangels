@@ -8,11 +8,190 @@ from apps.vendors.models import ServiceType, VendorProfile, SubscriptionTier
 from apps.core.models import Country, City
 from django.core.files.base import ContentFile
 import requests
-from io import BytesIO
+import random
 
 User = get_user_model()
 
 DEFAULT_PASSWORD = 'password123'
+
+# Prénoms togolais/africains
+FIRST_NAMES_MALE = [
+    'Kodjo', 'Kofi', 'Yao', 'Edem', 'Koffi', 'Mensah', 'Kwame', 'Kossi',
+    'Afi', 'Komlan', 'Sena', 'Dodji', 'Esso', 'Foli', 'Gabin', 'Hervé',
+    'Innocent', 'Jean', 'Komi', 'Luc', 'Marc', 'Nestor', 'Olivier', 'Pascal',
+    'Romain', 'Serge', 'Théophile', 'Victor', 'William', 'Xavier', 'Yves', 'Zinsou'
+]
+
+FIRST_NAMES_FEMALE = [
+    'Ama', 'Akua', 'Adjoa', 'Efua', 'Akossiwa', 'Ablavi', 'Kafui', 'Esi',
+    'Afia', 'Dzifa', 'Enyonam', 'Mawuena', 'Sena', 'Yawa', 'Abla', 'Akofa',
+    'Délali', 'Elinam', 'Félicia', 'Grace', 'Henriette', 'Irène', 'Joséphine', 'Kékéli',
+    'Laure', 'Marie', 'Nadège', 'Olivia', 'Pélagie', 'Rita', 'Sandra', 'Thérèse'
+]
+
+LAST_NAMES = [
+    'Agbeko', 'Amouzou', 'Assogba', 'Ayivi', 'Bamisso', 'Dossou', 'Ekoué', 'Fiadjoe',
+    'Gbeassor', 'Houndefo', 'Issa', 'Johnson', 'Klu', 'Lawson', 'Mensah', 'N\'Tcha',
+    'Olympio', 'Pétey', 'Quashie', 'Radji', 'Soglo', 'Teko', 'Ugo', 'Vignon',
+    'Wilson', 'Xomakou', 'Yovo', 'Zankli', 'Adjovi', 'Bodjona', 'Creppy', 'Degbe',
+    'Eklu', 'Foley', 'Gaba', 'Houeto', 'Igue', 'Jato', 'Kokou', 'Loko'
+]
+
+# Quartiers de Lomé
+QUARTIERS = [
+    'Tokoin', 'Bè', 'Adidogomé', 'Agoè', 'Kodjoviakopé', 'Nyékonakpoè',
+    'Hédzranawoé', 'Djidjolé', 'Gbossimé', 'Kégué', 'Adakpamé', 'Baguida',
+    'Aflao', 'Cacavéli', 'Atikoumé', 'Agbalépédo', 'Amadahomé', 'Akodésséwa'
+]
+
+# Templates de description par service
+DESCRIPTIONS = {
+    'Photographe': [
+        "Studio photo professionnel avec {years} ans d'expérience. Spécialisé dans les mariages, portraits et événements d'entreprise. Équipement haut de gamme et retouches incluses.",
+        "Photographe passionné capturant vos moments précieux depuis {years} ans. Style moderne et créatif. Livraison rapide et album photo personnalisé.",
+        "Expert en photographie événementielle. Couverture complète de vos cérémonies avec drone disponible. Plus de {events}+ événements réalisés.",
+        "Photographe artistique spécialisé dans les mariages africains traditionnels et modernes. {years} ans d'expérience, travail soigné et professionnel.",
+    ],
+    'Vidéaste': [
+        "Vidéaste professionnel avec équipement cinématographique. Films de mariage, clips événementiels, couverture drone. {years} ans d'expérience.",
+        "Réalisation vidéo haut de gamme pour tous vos événements. Montage créatif, musique personnalisée, livraison sous 2 semaines.",
+        "Spécialiste du film de mariage émouvant. Captation multi-caméras, drone 4K, montage professionnel. Plus de {events}+ mariages filmés.",
+        "Studio de production vidéo complet. Publicités, événements corporate, mariages. Équipe expérimentée et créative.",
+    ],
+    'DJ / Musique': [
+        "DJ professionnel avec {years} ans d'expérience. Sonorisation et éclairage inclus. Tous styles musicaux : afrobeat, coupé-décalé, RnB, variétés.",
+        "Animation musicale pour mariages et soirées. Équipement son et lumière haut de gamme. Ambiance garantie !",
+        "DJ polyvalent spécialisé dans les mariages. Plus de {events}+ soirées animées. Playlist personnalisée selon vos goûts.",
+        "Orchestre live et DJ pour vos événements. Musique traditionnelle et moderne. Créons ensemble l'ambiance parfaite.",
+    ],
+    'Traiteur': [
+        "Service traiteur spécialisé cuisine africaine et internationale. Buffets, cocktails, repas assis. Capacité jusqu'à 500 couverts.",
+        "Traiteur événementiel avec {years} ans d'expérience. Menus personnalisés, produits frais et locaux. Service impeccable garanti.",
+        "Cuisine traditionnelle togolaise revisitée pour vos événements. Buffets généreux, présentation soignée, service professionnel.",
+        "Traiteur haut de gamme pour mariages et événements corporate. Chef expérimenté, carte variée, options végétariennes disponibles.",
+    ],
+    'Décoration': [
+        "Décorateur événementiel créatif. Mariages, anniversaires, événements corporate. Création sur mesure selon vos envies et budget.",
+        "Spécialiste de la décoration florale et événementielle. {years} ans d'expérience. Transformons vos rêves en réalité.",
+        "Studio de décoration premium. Concepts uniques, matériaux de qualité, mise en place complète. Plus de {events}+ événements décorés.",
+        "Décoration traditionnelle africaine et moderne. Tentes, pagodes, mobilier événementiel. Location et installation comprises.",
+    ],
+    'Pâtisserie': [
+        "Pâtissière créative spécialisée dans les gâteaux de mariage. Pièces montées, wedding cakes, cupcakes personnalisés.",
+        "Atelier de pâtisserie artisanale. Gâteaux sur mesure, saveurs originales, décoration artistique. {years} ans de passion.",
+        "Cake designer professionnel. Créations uniques pour mariages et anniversaires. Dégustation gratuite sur rendez-vous.",
+        "Pâtisserie événementielle haut de gamme. Buffets sucrés, pièces montées spectaculaires, macarons personnalisés.",
+    ],
+    'Maquillage / Coiffure': [
+        "Maquilleuse professionnelle spécialisée mariées. Mise en beauté, coiffure, accessoires. {years} ans d'expérience.",
+        "Studio beauté mobile pour vos événements. Maquillage, coiffure, nail art. Équipe de 3 professionnelles disponible.",
+        "Spécialiste du maquillage africain traditionnel et moderne. Formation internationale, produits haut de gamme.",
+        "Coiffeuse et maquilleuse pour mariages. Tresses, tissages, perruques, maquillage longue tenue. Essai inclus.",
+    ],
+    'Salle de réception': [
+        "Salle de réception climatisée, capacité {capacity} personnes. Parking gratuit, cuisine équipée, sono incluse.",
+        "Espace événementiel moderne avec jardin. Idéal pour mariages et séminaires. {capacity} places assises.",
+        "Domaine de réception en bord de mer. Cadre exceptionnel pour vos événements. Capacité jusqu'à {capacity} invités.",
+        "Salle polyvalente au cœur de Lomé. Modulable, climatisée, équipée. Location à partir de 4 heures.",
+    ],
+    'Location matériel': [
+        "Location de matériel événementiel complet. Tables, chaises, vaisselle, nappes. Livraison et installation incluses.",
+        "Tout pour vos événements : tentes, pagodes, mobilier, éclairage. Stock important, tarifs compétitifs.",
+        "Location de matériel de sonorisation et éclairage professionnel. Technicien disponible sur demande.",
+        "Vaisselle, verrerie et décoration de table à louer. Large choix, qualité premium, livraison Lomé et environs.",
+    ],
+    'Fleuriste': [
+        "Fleuriste événementiel spécialisé dans les mariages. Bouquets, compositions, décoration florale complète.",
+        "Atelier floral créatif. Fleurs fraîches et artificielles haut de gamme. {years} ans d'expérience en événementiel.",
+        "Compositions florales sur mesure pour tous vos événements. Livraison et installation comprises.",
+        "Fleuriste artistique. Créations originales, bouquets de mariée, décoration de tables et espaces.",
+    ],
+    'Animation': [
+        "Animateur événementiel professionnel. MC bilingue, jeux, ambiance garantie. Plus de {events}+ événements animés.",
+        "Équipe d'animation complète : animateur, danseuses traditionnelles, cracheur de feu. Spectacles sur mesure.",
+        "Animation enfants et adultes. Clown, maquillage, jeux, mascotte. Forfaits anniversaires disponibles.",
+        "Groupe folklorique traditionnel. Danses, percussions, costumes authentiques. Animation culturelle unique.",
+    ],
+    'Transport': [
+        "Location de véhicules de luxe avec chauffeur. Limousines, berlines, 4x4 pour mariages et VIP.",
+        "Service de transport événementiel. Navettes invités, voiture des mariés, coordination complète.",
+        "Flotte de véhicules décorés pour mariages. Chauffeurs en costume, ponctualité garantie.",
+        "Transport VIP et événementiel. Véhicules climatisés, chauffeurs professionnels, tarifs forfaitaires.",
+    ],
+}
+
+# URLs d'images Unsplash par catégorie
+LOGO_URLS = {
+    'Photographe': [
+        'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=400&h=400&fit=crop',
+    ],
+    'Vidéaste': [
+        'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=400&fit=crop',
+    ],
+    'DJ / Musique': [
+        'https://images.unsplash.com/photo-1571266028243-d220e7a45380?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop',
+    ],
+    'Traiteur': [
+        'https://images.unsplash.com/photo-1555244162-803834f70033?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop',
+    ],
+    'Décoration': [
+        'https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop',
+    ],
+    'Pâtisserie': [
+        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?w=400&h=400&fit=crop',
+    ],
+    'Maquillage / Coiffure': [
+        'https://images.unsplash.com/photo-1560869713-bf5e568e6fee?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=400&fit=crop',
+    ],
+    'Salle de réception': [
+        'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop',
+    ],
+    'Location matériel': [
+        'https://images.unsplash.com/photo-1530023367847-a683933f4172?w=400&h=400&fit=crop',
+    ],
+    'Fleuriste': [
+        'https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400&h=400&fit=crop',
+    ],
+    'Animation': [
+        'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=400&fit=crop',
+    ],
+    'Transport': [
+        'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=400&fit=crop',
+    ],
+}
+
+# Noms d'entreprises par service
+BUSINESS_NAME_TEMPLATES = {
+    'Photographe': ['Photo {}', 'Studio {}', '{} Photography', 'Objectif {}', '{} Images', 'Flash {}'],
+    'Vidéaste': ['Vidéo {}', '{} Films', 'Studio {}', '{} Production', 'Ciné {}', '{} Motion'],
+    'DJ / Musique': ['DJ {}', '{} Sound', '{} Music', 'Mix {}', '{} Vibes', 'Beat {}'],
+    'Traiteur': ['Saveurs {}', '{} Traiteur', 'Délices {}', 'Chef {}', '{} Cuisine', 'Goût {}'],
+    'Décoration': ['Déco {}', '{} Events', '{} Design', 'Art {}', '{} Créations', 'Style {}'],
+    'Pâtisserie': ['Pâtisserie {}', '{} Cakes', 'Douceurs {}', 'Sweet {}', '{} Délices', 'Gâteaux {}'],
+    'Maquillage / Coiffure': ['Beauty {}', '{} Glam', 'Style {}', '{} Look', 'Beauté {}', '{} Makeup'],
+    'Salle de réception': ['Espace {}', 'Domaine {}', 'Salle {}', '{} Events', 'Le {}', 'Villa {}'],
+    'Location matériel': ['{} Location', 'Équip {}', '{} Events', 'Matériel {}', '{} Services'],
+    'Fleuriste': ['Fleurs {}', '{} Floral', 'Pétales {}', '{} Bouquets', 'Rose {}', '{} Garden'],
+    'Animation': ['Anim {}', '{} Show', 'Fun {}', '{} Events', 'Happy {}', '{} Party'],
+    'Transport': ['Trans {}', '{} Limousine', 'VIP {}', '{} Cars', 'Elite {}', '{} Drive'],
+}
+
+CREATIVE_WORDS = [
+    'Élégance', 'Prestige', 'Royal', 'Premium', 'Excellence', 'Luxe', 'Or', 'Diamant',
+    'Étoile', 'Soleil', 'Lumière', 'Harmonie', 'Passion', 'Rêve', 'Magic', 'Crystal',
+    'Perle', 'Velours', 'Saphir', 'Jade', 'Ambre', 'Opale', 'Topaze', 'Rubis',
+    'Azur', 'Eden', 'Paradise', 'Gloria', 'Victory', 'Success', 'Fortune', 'Zenith'
+]
 
 
 class Command(BaseCommand):
@@ -24,14 +203,22 @@ class Command(BaseCommand):
             action='store_true',
             help='Télécharge et upload les logos sur Cloudinary',
         )
+        parser.add_argument(
+            '--count',
+            type=int,
+            default=100,
+            help='Nombre de prestataires à créer (défaut: 100)',
+        )
 
     def handle(self, *args, **options):
         with_images = options.get('with_images', False)
+        count = options.get('count', 100)
 
-        self.stdout.write('Chargement des prestataires de démonstration...\n')
+        self.stdout.write(f'Chargement de {count} prestataires de démonstration...\n')
 
         # Vérifier que les types de services existent
-        if not ServiceType.objects.exists():
+        service_types = list(ServiceType.objects.all())
+        if not service_types:
             self.stdout.write(self.style.ERROR(
                 '❌ Aucun type de service trouvé. Exécutez d\'abord:\n'
                 '   python manage.py load_service_types'
@@ -50,7 +237,7 @@ class Command(BaseCommand):
             defaults={'country': togo, 'is_active': True}
         )
 
-        # Créer ou récupérer l'abonnement gratuit
+        # Créer les abonnements
         free_tier, _ = SubscriptionTier.objects.get_or_create(
             slug='gratuit',
             defaults={
@@ -63,103 +250,98 @@ class Command(BaseCommand):
             }
         )
 
-        # Prestataires de démonstration
-        demo_vendors = [
-            {
-                'username': 'photo_elegance',
-                'email': 'photo.elegance@demo.lysangels.tg',
-                'first_name': 'Kodjo',
-                'last_name': 'Mensah',
-                'business_name': 'Photo Élégance',
-                'description': 'Studio photo professionnel spécialisé dans les mariages et événements. '
-                              'Plus de 10 ans d\'expérience dans la capture de vos moments précieux.',
-                'service_type': 'Photographe',
-                'whatsapp': '+228 90 12 34 56',
-                'min_budget': 50000,
-                'max_budget': 500000,
-                'logo_url': 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=400&fit=crop',
-            },
-            {
-                'username': 'dj_vibes_togo',
-                'email': 'dj.vibes@demo.lysangels.tg',
-                'first_name': 'Yao',
-                'last_name': 'Amouzou',
-                'business_name': 'DJ Vibes Togo',
-                'description': 'DJ professionnel avec équipement son et lumière haut de gamme. '
-                              'Ambiance garantie pour tous vos événements!',
-                'service_type': 'DJ / Musique',
-                'whatsapp': '+228 91 23 45 67',
-                'min_budget': 100000,
-                'max_budget': 300000,
-                'logo_url': 'https://images.unsplash.com/photo-1571266028243-d220e7a45380?w=400&h=400&fit=crop',
-            },
-            {
-                'username': 'saveurs_africa',
-                'email': 'saveurs.africa@demo.lysangels.tg',
-                'first_name': 'Ama',
-                'last_name': 'Koffi',
-                'business_name': 'Saveurs d\'Africa',
-                'description': 'Service traiteur spécialisé dans la cuisine africaine et internationale. '
-                              'Buffets, cocktails, repas assis pour tous vos événements.',
-                'service_type': 'Traiteur',
-                'whatsapp': '+228 92 34 56 78',
-                'min_budget': 200000,
-                'max_budget': 2000000,
-                'logo_url': 'https://images.unsplash.com/photo-1555244162-803834f70033?w=400&h=400&fit=crop',
-            },
-            {
-                'username': 'deco_magic',
-                'email': 'deco.magic@demo.lysangels.tg',
-                'first_name': 'Akossiwa',
-                'last_name': 'Assogba',
-                'business_name': 'Déco Magic Events',
-                'description': 'Décoration événementielle créative et sur mesure. '
-                              'Nous transformons vos rêves en réalité avec des décors uniques.',
-                'service_type': 'Décoration',
-                'whatsapp': '+228 93 45 67 89',
-                'min_budget': 150000,
-                'max_budget': 1500000,
-                'logo_url': 'https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=400&h=400&fit=crop',
-            },
-            {
-                'username': 'patisserie_delice',
-                'email': 'patisserie.delice@demo.lysangels.tg',
-                'first_name': 'Edem',
-                'last_name': 'Agbeko',
-                'business_name': 'Pâtisserie Délice',
-                'description': 'Gâteaux de mariage et pièces montées sur mesure. '
-                              'Créations artistiques et saveurs raffinées pour vos célébrations.',
-                'service_type': 'Pâtisserie',
-                'whatsapp': '+228 94 56 78 90',
-                'min_budget': 30000,
-                'max_budget': 500000,
-                'logo_url': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
-            },
-            {
-                'username': 'video_pro_228',
-                'email': 'video.pro@demo.lysangels.tg',
-                'first_name': 'Kofi',
-                'last_name': 'Agbodjan',
-                'business_name': 'Vidéo Pro 228',
-                'description': 'Vidéaste professionnel, captation et montage de qualité cinématographique. '
-                              'Films de mariage, clips événementiels, drone.',
-                'service_type': 'Vidéaste',
-                'whatsapp': '+228 95 67 89 01',
-                'min_budget': 80000,
-                'max_budget': 600000,
-                'logo_url': 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=400&fit=crop',
-            },
-        ]
+        standard_tier, _ = SubscriptionTier.objects.get_or_create(
+            slug='standard',
+            defaults={
+                'name': 'Standard',
+                'price_monthly': 5000,
+                'display_priority': 1,
+                'is_visible_in_list': True,
+                'description': 'Abonnement standard',
+                'max_images': 10
+            }
+        )
 
+        premium_tier, _ = SubscriptionTier.objects.get_or_create(
+            slug='premium',
+            defaults={
+                'name': 'Premium',
+                'price_monthly': 15000,
+                'display_priority': 0,
+                'is_visible_in_list': True,
+                'description': 'Abonnement premium avec priorité',
+                'max_images': 30
+            }
+        )
+
+        tiers = [free_tier, free_tier, free_tier, standard_tier, standard_tier, premium_tier]
+        used_usernames = set()
+        used_business_names = set()
         created_count = 0
-        for vendor_data in demo_vendors:
+
+        for i in range(count):
+            # Choisir un service aléatoire
+            service_type = random.choice(service_types)
+            service_name = service_type.name
+
+            # Générer un nom unique
+            is_female = random.random() < 0.4
+            first_name = random.choice(FIRST_NAMES_FEMALE if is_female else FIRST_NAMES_MALE)
+            last_name = random.choice(LAST_NAMES)
+
+            # Générer username unique
+            base_username = f"{first_name.lower()}_{last_name.lower()}".replace("'", "").replace(" ", "_")
+            username = base_username
+            suffix = 1
+            while username in used_usernames or User.objects.filter(username=username).exists():
+                username = f"{base_username}_{suffix}"
+                suffix += 1
+            used_usernames.add(username)
+
+            # Générer nom d'entreprise unique
+            templates = BUSINESS_NAME_TEMPLATES.get(service_name, ['{} Events'])
+            word = random.choice(CREATIVE_WORDS)
+            business_name = random.choice(templates).format(word)
+            suffix = 1
+            while business_name in used_business_names:
+                business_name = f"{random.choice(templates).format(word)} {suffix}"
+                suffix += 1
+            used_business_names.add(business_name)
+
+            # Générer description
+            years = random.randint(3, 15)
+            events = random.randint(50, 500)
+            capacity = random.choice([100, 150, 200, 300, 500])
+            desc_templates = DESCRIPTIONS.get(service_name, ["Service professionnel de qualité. {years} ans d'expérience."])
+            description = random.choice(desc_templates).format(years=years, events=events, capacity=capacity)
+
+            # Budgets selon le service
+            budget_ranges = {
+                'Photographe': (50000, 500000),
+                'Vidéaste': (80000, 600000),
+                'DJ / Musique': (50000, 300000),
+                'Traiteur': (100000, 2000000),
+                'Décoration': (100000, 1500000),
+                'Pâtisserie': (25000, 500000),
+                'Maquillage / Coiffure': (20000, 150000),
+                'Salle de réception': (200000, 2000000),
+                'Location matériel': (50000, 500000),
+                'Fleuriste': (30000, 400000),
+                'Animation': (50000, 300000),
+                'Transport': (50000, 400000),
+            }
+            min_b, max_b = budget_ranges.get(service_name, (50000, 500000))
+            min_budget = random.randint(min_b // 10000, min_b // 5000) * 10000
+            max_budget = random.randint(max_b // 2 // 10000, max_b // 10000) * 10000
+
             # Créer l'utilisateur
+            email = f"{username}@demo.lysangels.tg"
             user, user_created = User.objects.get_or_create(
-                username=vendor_data['username'],
+                username=username,
                 defaults={
-                    'email': vendor_data['email'],
-                    'first_name': vendor_data['first_name'],
-                    'last_name': vendor_data['last_name'],
+                    'email': email,
+                    'first_name': first_name,
+                    'last_name': last_name,
                     'user_type': 'provider',
                     'is_verified': True,
                 }
@@ -171,59 +353,56 @@ class Command(BaseCommand):
 
             # Vérifier si le profil existe déjà
             if hasattr(user, 'vendor_profile'):
-                self.stdout.write(f'  - {vendor_data["business_name"]} (existant)')
-                continue
-
-            # Récupérer le type de service
-            try:
-                service_type = ServiceType.objects.get(name=vendor_data['service_type'])
-            except ServiceType.DoesNotExist:
-                self.stdout.write(self.style.WARNING(
-                    f'  ⚠ Service "{vendor_data["service_type"]}" non trouvé, ignoré'
-                ))
                 continue
 
             # Créer le profil prestataire
+            quartier = random.choice(QUARTIERS)
+            whatsapp = f"+228 9{random.randint(0,9)} {random.randint(10,99)} {random.randint(10,99)} {random.randint(10,99)}"
+
             profile = VendorProfile.objects.create(
                 user=user,
-                business_name=vendor_data['business_name'],
-                description=vendor_data['description'],
-                whatsapp=vendor_data['whatsapp'],
-                min_budget=vendor_data['min_budget'],
-                max_budget=vendor_data['max_budget'],
-                subscription_tier=free_tier,
+                business_name=business_name,
+                description=description,
+                whatsapp=whatsapp,
+                address=f"{quartier}, Lomé",
+                min_budget=min_budget,
+                max_budget=max_budget,
+                subscription_tier=random.choice(tiers),
                 city=lome,
                 is_active=True,
             )
 
-            # Ajouter le type de service
+            # Ajouter le type de service (parfois plusieurs)
             profile.service_types.add(service_type)
+            if random.random() < 0.2:  # 20% ont un 2e service
+                other_service = random.choice(service_types)
+                if other_service != service_type:
+                    profile.service_types.add(other_service)
 
             # Ajouter le pays
             profile.countries.add(togo)
 
             # Télécharger et uploader le logo si demandé
-            if with_images and vendor_data.get('logo_url'):
-                try:
-                    response = requests.get(vendor_data['logo_url'], timeout=10)
-                    if response.status_code == 200:
-                        # Déterminer l'extension
-                        content_type = response.headers.get('content-type', 'image/jpeg')
-                        ext = 'jpg' if 'jpeg' in content_type else 'png'
-                        filename = f"{vendor_data['username']}_logo.{ext}"
+            if with_images:
+                logo_urls = LOGO_URLS.get(service_name, [])
+                if logo_urls:
+                    try:
+                        logo_url = random.choice(logo_urls)
+                        response = requests.get(logo_url, timeout=10)
+                        if response.status_code == 200:
+                            filename = f"{username}_logo.jpg"
+                            profile.logo.save(filename, ContentFile(response.content), save=True)
+                    except Exception:
+                        pass
 
-                        # Sauvegarder le logo (sera uploadé sur Cloudinary en prod)
-                        profile.logo.save(filename, ContentFile(response.content), save=True)
-                        self.stdout.write(f'    📷 Logo uploadé')
-                except Exception as e:
-                    self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo: {str(e)[:50]}'))
-
-            self.stdout.write(self.style.SUCCESS(f'  ✓ {vendor_data["business_name"]}'))
             created_count += 1
+            if created_count % 10 == 0:
+                self.stdout.write(f'  {created_count} prestataires créés...')
 
         self.stdout.write(self.style.SUCCESS(f'\n✅ {created_count} prestataires créés!'))
+        self.stdout.write(f'🔑 Mot de passe: {DEFAULT_PASSWORD}')
 
         if not with_images:
             self.stdout.write(self.style.NOTICE(
-                '\n💡 Pour ajouter les logos, relancez avec: --with-images'
+                '\n💡 Pour ajouter les logos: python manage.py load_demo_vendors --with-images'
             ))
