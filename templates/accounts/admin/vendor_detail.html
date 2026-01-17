@@ -24,7 +24,7 @@
                     <div class="flex items-start justify-between mb-6">
                         <div class="flex items-center">
                             {% if vendor.logo %}
-                                <img src="{{ vendor.logo }}" alt="{{ vendor.business_name }}" class="h-20 w-20 rounded-full object-cover mr-4">
+                                <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" class="h-20 w-20 rounded-full object-cover mr-4">
                             {% else %}
                                 <div class="h-20 w-20 rounded-full bg-lily-purple text-white flex items-center justify-center mr-4 text-2xl font-bold">
                                     {{ vendor.business_name|first|upper }}

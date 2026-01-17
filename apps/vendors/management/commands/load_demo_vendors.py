@@ -231,48 +231,14 @@ class Command(BaseCommand):
         reset = options.get('reset', False)
         count = options.get('count', 100)
 
-        # Récupérer la config Cloudinary (depuis settings OU variables d'environnement directement)
-        import os
-        from django.conf import settings as django_settings
-        cloudinary_config = getattr(django_settings, 'CLOUDINARY_STORAGE', None)
-
-        # Si CLOUDINARY_STORAGE est vide, lire directement les variables d'environnement
-        if not cloudinary_config:
-            cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
-            api_key = os.environ.get('CLOUDINARY_API_KEY', '')
-            api_secret = os.environ.get('CLOUDINARY_API_SECRET', '')
-
-            if cloud_name and api_key and api_secret:
-                cloudinary_config = {
-                    'CLOUD_NAME': cloud_name,
-                    'API_KEY': api_key,
-                    'API_SECRET': api_secret,
-                }
-                self.stdout.write(self.style.SUCCESS('  ✓ Config Cloudinary chargée depuis variables d\'environnement'))
-            else:
-                cloudinary_config = {}
-                missing = []
-                if not cloud_name:
-                    missing.append('CLOUDINARY_CLOUD_NAME')
-                if not api_key:
-                    missing.append('CLOUDINARY_API_KEY')
-                if not api_secret:
-                    missing.append('CLOUDINARY_API_SECRET')
-                if missing:
-                    self.stdout.write(self.style.WARNING(f'  ⚠ Variables manquantes: {", ".join(missing)}'))
-
-        # Reset : supprimer tous les vendors de démo et leurs images
+        # Reset : supprimer tous les vendors de démo
         if reset:
-            self._reset_demo_data(cloudinary_config)
+            self._reset_demo_data()
 
         self.stdout.write(f'\nChargement de {count} prestataires de démonstration...\n')
 
-        # Vérifier la configuration Cloudinary si --with-images
         if with_images:
-            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
-                self.stdout.write(self.style.SUCCESS(f'✓ Cloudinary configuré (cloud: {cloudinary_config.get("CLOUD_NAME")})'))
-            else:
-                self.stdout.write(self.style.WARNING('⚠ Cloudinary non configuré - les images seront stockées localement'))
+            self.stdout.write(self.style.SUCCESS('✓ Les logos seront téléchargés et stockés localement'))
 
         # Vérifier que les types de services existent
         service_types = list(ServiceType.objects.all())
@@ -440,7 +406,7 @@ class Command(BaseCommand):
             # Ajouter le pays
             profile.countries.add(togo)
 
-            # Télécharger et uploader le logo si demandé
+            # Télécharger et sauvegarder le logo si demandé
             if with_images:
                 logo_urls = LOGO_URLS.get(service_name, [])
                 if logo_urls:
@@ -452,36 +418,9 @@ class Command(BaseCommand):
                         if response.status_code == 200:
                             filename = f"{username}_logo.jpg"
 
-                            # Uploader vers Cloudinary si configuré
-                            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
-                                import cloudinary
-                                import cloudinary.uploader
-
-                                cloudinary.config(
-                                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
-                                    api_key=cloudinary_config.get('API_KEY'),
-                                    api_secret=cloudinary_config.get('API_SECRET'),
-                                )
-
-                                # Upload vers Cloudinary
-                                result = cloudinary.uploader.upload(
-                                    response.content,
-                                    folder='vendors/logos',
-                                    public_id=username + '_logo',
-                                    overwrite=True,
-                                    resource_type='image'
-                                )
-
-                                # Stocker l'URL Cloudinary dans le champ URLField
-                                cloudinary_url = result.get('secure_url', '')
-                                if cloudinary_url:
-                                    VendorProfile.objects.filter(pk=profile.pk).update(logo=cloudinary_url)
-                                    self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name}'))
-                                else:
-                                    self.stdout.write(self.style.WARNING(f'    ⚠ Upload échoué pour {business_name}'))
-                            else:
-                                # Sans Cloudinary, on ne peut pas stocker le logo (URLField nécessite une URL)
-                                self.stdout.write(self.style.WARNING(f'    ⚠ Cloudinary non configuré, logo ignoré pour {business_name}'))
+                            # Sauvegarder via le champ ImageField (stockage local ou R2)
+                            profile.logo.save(filename, ContentFile(response.content), save=True)
+                            self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name}'))
                         else:
                             self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
@@ -501,47 +440,24 @@ class Command(BaseCommand):
                 '\n💡 Pour ajouter les logos: python manage.py load_demo_vendors --with-images'
             ))
 
-    def _reset_demo_data(self, cloudinary_config):
-        """Supprime tous les vendors de démo et leurs images sur Cloudinary."""
+    def _reset_demo_data(self):
+        """Supprime tous les vendors de démo et leurs fichiers."""
         self.stdout.write('🗑️  RESET: Suppression des données de démonstration...\n')
 
-        # 1. Supprimer les images sur Cloudinary
-        if cloudinary_config:
-            self.stdout.write('  Suppression des images sur Cloudinary...')
-            try:
-                import cloudinary
-                import cloudinary.api
-
-                cloudinary.config(
-                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
-                    api_key=cloudinary_config.get('API_KEY'),
-                    api_secret=cloudinary_config.get('API_SECRET'),
-                )
-
-                # Supprimer tout le dossier vendors/logos (sans préfixe media/)
-                try:
-                    result = cloudinary.api.delete_resources_by_prefix(
-                        'vendors/logos/',
-                        resource_type='image'
-                    )
-                    deleted_count = len(result.get('deleted', {}))
-                    self.stdout.write(self.style.SUCCESS(f'    ✓ {deleted_count} images supprimées de Cloudinary'))
-                except Exception as e:
-                    self.stdout.write(self.style.WARNING(f'    ⚠ Erreur suppression Cloudinary: {str(e)[:50]}'))
-
-            except ImportError:
-                self.stdout.write(self.style.WARNING('    ⚠ Module cloudinary non disponible'))
-        else:
-            self.stdout.write('  (Cloudinary non configuré, pas d\'images cloud à supprimer)')
-
-        # 2. Supprimer les profils vendors de démo (email @demo.lysangels.tg)
+        # 1. Supprimer les profils vendors de démo (les fichiers sont supprimés automatiquement)
         self.stdout.write('  Suppression des profils prestataires de démo...')
         demo_vendors = VendorProfile.objects.filter(user__email__endswith='@demo.lysangels.tg')
         vendor_count = demo_vendors.count()
+
+        # Supprimer les fichiers logo avant de supprimer les profils
+        for vendor in demo_vendors:
+            if vendor.logo:
+                vendor.logo.delete(save=False)
+
         demo_vendors.delete()
         self.stdout.write(self.style.SUCCESS(f'    ✓ {vendor_count} profils supprimés'))
 
-        # 3. Supprimer les utilisateurs de démo
+        # 2. Supprimer les utilisateurs de démo
         self.stdout.write('  Suppression des utilisateurs de démo...')
         demo_users = User.objects.filter(email__endswith='@demo.lysangels.tg')
         user_count = demo_users.count()

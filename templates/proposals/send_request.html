@@ -20,7 +20,7 @@
             <div class="bg-lily-cream rounded-xl p-6 mb-8">
                 <div class="flex items-start">
                     {% if vendor.logo %}
-                        <img src="{{ vendor.logo }}" alt="{{ vendor.business_name }}"
+                        <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}"
                              class="w-16 h-16 rounded-lg object-cover mr-4">
                     {% else %}
                         <div class="w-16 h-16 rounded-lg bg-lily-purple flex items-center justify-center text-white text-2xl font-bold mr-4">

@@ -73,11 +73,13 @@ class VendorProfile(models.Model):
         verbose_name='Utilisateur'
     )
     business_name = models.CharField(max_length=200, verbose_name='Nom de l\'entreprise')
-    logo = models.URLField(
+    logo = models.ImageField(
+        upload_to='vendors/logos/',
         blank=True,
-        default='',
+        null=True,
         verbose_name='Logo',
-        help_text='URL de l\'image du logo (Cloudinary ou autre)'
+        help_text="Logo du prestataire (upload local)",
+        validators=[validate_image_file]
     )
     
     # Abonnement
