@@ -269,16 +269,10 @@ class Command(BaseCommand):
 
         # Vérifier la configuration Cloudinary si --with-images
         if with_images:
-            storage_backend = getattr(django_settings, 'DEFAULT_FILE_STORAGE', '')
-            self.stdout.write(f'  DEBUG: DEFAULT_FILE_STORAGE = {storage_backend}')
-            self.stdout.write(f'  DEBUG: CLOUDINARY_STORAGE = {cloudinary_config}')
             if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
                 self.stdout.write(self.style.SUCCESS(f'✓ Cloudinary configuré (cloud: {cloudinary_config.get("CLOUD_NAME")})'))
             else:
-                self.stdout.write(self.style.WARNING(
-                    '⚠ Cloudinary non configuré - les images seront stockées localement\n'
-                    f'  Storage actuel: {storage_backend}'
-                ))
+                self.stdout.write(self.style.WARNING('⚠ Cloudinary non configuré - les images seront stockées localement'))
 
         # Vérifier que les types de services existent
         service_types = list(ServiceType.objects.all())
@@ -458,44 +452,15 @@ class Command(BaseCommand):
                         if response.status_code == 200:
                             filename = f"{username}_logo.jpg"
 
-                            # Utiliser Cloudinary directement si configuré
-                            if cloudinary_config and cloudinary_config.get('CLOUD_NAME'):
-                                import cloudinary
-                                import cloudinary.uploader
-
-                                cloudinary.config(
-                                    cloud_name=cloudinary_config.get('CLOUD_NAME'),
-                                    api_key=cloudinary_config.get('API_KEY'),
-                                    api_secret=cloudinary_config.get('API_SECRET'),
-                                )
-
-                                # Upload vers Cloudinary
-                                result = cloudinary.uploader.upload(
-                                    response.content,
-                                    folder='vendors/logos',
-                                    public_id=username + '_logo',
-                                    overwrite=True,
-                                    resource_type='image'
-                                )
-
-                                # URL Cloudinary complète - c'est ce qu'on va stocker
-                                cloudinary_url = result.get('secure_url', '')
-
-                                if cloudinary_url:
-                                    # Stocker l'URL complète Cloudinary directement
-                                    VendorProfile.objects.filter(pk=profile.pk).update(logo=cloudinary_url)
-                                    self.stdout.write(self.style.SUCCESS(f'    ✓ Logo Cloudinary: {business_name} -> {cloudinary_url[:60]}...'))
-                                else:
-                                    self.stdout.write(self.style.WARNING(f'    ⚠ Upload OK mais pas d\'URL: {result}'))
-                            else:
-                                # Fallback local
-                                from django.core.files.storage import default_storage
-                                path = f"vendors/logos/{filename}"
-                                if default_storage.exists(path):
-                                    default_storage.delete(path)
-                                saved_path = default_storage.save(path, ContentFile(response.content))
-                                VendorProfile.objects.filter(pk=profile.pk).update(logo=saved_path)
-                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo local: {business_name}'))
+                            # Sauvegarder via le champ ImageField (qui utilise le storage configuré)
+                            # Cela fonctionne avec Cloudinary si DEFAULT_FILE_STORAGE est configuré
+                            try:
+                                # Recharger le profil pour éviter les problèmes de cache
+                                profile.refresh_from_db()
+                                profile.logo.save(filename, ContentFile(response.content), save=True)
+                                self.stdout.write(self.style.SUCCESS(f'    ✓ Logo: {business_name}'))
+                            except Exception as save_error:
+                                self.stdout.write(self.style.WARNING(f'    ⚠ Erreur logo pour {business_name}: {str(save_error)[:60]}'))
                         else:
                             self.stdout.write(self.style.WARNING(f'    ⚠ Échec téléchargement logo pour {business_name} (HTTP {response.status_code})'))
                     except requests.exceptions.Timeout:
@@ -532,10 +497,10 @@ class Command(BaseCommand):
                     api_secret=cloudinary_config.get('API_SECRET'),
                 )
 
-                # Supprimer tout le dossier media/vendors/logos
+                # Supprimer tout le dossier vendors/logos (sans préfixe media/)
                 try:
                     result = cloudinary.api.delete_resources_by_prefix(
-                        'media/vendors/logos/',
+                        'vendors/logos/',
                         resource_type='image'
                     )
                     deleted_count = len(result.get('deleted', {}))
