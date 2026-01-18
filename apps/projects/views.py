@@ -36,8 +36,9 @@ def project_create(request):
     else:
         form = ProjectCreateForm()
 
-    event_types = get_cached_event_types()
-    service_types = get_cached_service_types(ordered=False)
+    # Bypass cache pour debug - récupérer directement depuis la DB
+    event_types = list(EventType.objects.all())
+    service_types = list(ServiceType.objects.all())
 
     context = {
         'form': form,

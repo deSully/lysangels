@@ -23,18 +23,20 @@
   border: none;
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  transform: translateY(0) scale(1);
+  /* Prevent size changes */
+  transform: none;
+  flex-shrink: 0;
 }
 
-/* Reset transform on focus to prevent stuck state */
-.btn:focus {
-  transform: translateY(0) scale(1);
-}
-
-.btn:focus:hover {
-  transform: translateY(-1px) scale(1);
+/* Reset any transform on all states */
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn:focus-visible {
+  transform: none;
+  outline: none;
 }
 
 .btn:disabled {
@@ -53,11 +55,9 @@
 .btn-primary:hover {
   background-color: var(--color-purple-dark);
   box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
 
@@ -78,11 +78,10 @@
   background-color: var(--color-lily-purple);
   color: var(--color-lily-white);
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
 }
 
 .btn-secondary:active {
-  transform: translateY(0);
+  /* plus d'animation de taille */
 }
 
 .btn-secondary:focus {
@@ -100,11 +99,9 @@
 .btn-accent:hover {
   background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-lily-gold) 100%);
   box-shadow: var(--shadow-xl);
-  transform: translateY(-1px);
 }
 
 .btn-accent:active {
-  transform: translateY(0);
   box-shadow: var(--shadow-gold);
 }
 
@@ -141,11 +138,9 @@
 .btn-outline:hover {
   background-color: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-1px);
 }
 
 .btn-outline:active {
-  transform: translateY(0);
   background-color: rgba(255, 255, 255, 0.15);
 }
 
@@ -159,11 +154,9 @@
 .btn-danger:hover {
   background-color: var(--color-error-dark);
   box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
 }
 
 .btn-danger:active {
-  transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
 
@@ -259,22 +252,21 @@
   overflow: hidden;
 }
 
-.btn-ripple::before {
-  content: '';
+/* Ripple element created by JS */
+.btn-ripple .ripple {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
 }
 
-.btn-ripple:active::before {
-  width: 300px;
-  height: 300px;
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 /* Button group */
