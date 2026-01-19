@@ -9,6 +9,7 @@ from datetime import datetime
 from apps.proposals.models import Proposal, ProposalRequest
 from apps.messaging.models import Message
 from apps.core.models import Notification
+from apps.projects.models import AdminRecommendation
 
 
 @receiver(post_save, sender=Message)
@@ -62,7 +63,7 @@ def notify_new_proposal(sender, instance, created, **kwargs):
             'vendor_name': instance.vendor.business_name,
             'project_title': instance.project.title,
             'proposal_title': instance.title,
-            'price': f'{instance.price:,.0f}'.replace(',', ' '),
+            'price': f'{float(instance.price):,.0f}'.replace(',', ' '),
             'validity_days': instance.validity_days,  # Corrigé: Proposal n'a pas delivery_time mais validity_days
             'proposal_preview': instance.message[:200] + ('...' if len(instance.message) > 200 else ''),
             'proposal_url': f"{settings.SITE_URL}{reverse('proposals:proposal_detail', kwargs={'pk': instance.pk})}",
@@ -135,3 +136,59 @@ def notify_new_request(sender, instance, created, **kwargs):
             )
         except Exception as e:
             print(f"Erreur envoi email demande: {e}")
+
+
+@receiver(post_save, sender=AdminRecommendation)
+def notify_new_recommendation(sender, instance, created, **kwargs):
+    """
+    Notifier le client quand une recommandation Suzy passe en statut 'sent'.
+    La notification est envoyée quand le statut change de 'pending' à 'sent'.
+    """
+    # Seulement quand le statut passe à 'sent'
+    if instance.status != 'sent':
+        return
+
+    # Vérifier si c'est un changement de statut (pas une création directement en 'sent')
+    # On envoie la notification si sent_at est défini (ce qui est fait par mark_as_sent ou l'admin action)
+    if not instance.sent_at:
+        return
+
+    client = instance.project.client
+    vendor = instance.vendor
+
+    # Créer la notification
+    Notification.create_notification(
+        user=client,
+        notification_type='recommendation',
+        title='Nouvelle recommandation de Suzy',
+        message=f'Nous avons trouvé un prestataire pour votre projet "{instance.project.title}" : {vendor.business_name}',
+        link=reverse('projects:project_detail', kwargs={'pk': instance.project.pk})
+    )
+
+    # Envoyer l'email
+    if client.email:
+        context = {
+            'client_name': client.get_full_name() or client.username,
+            'project_title': instance.project.title,
+            'vendor_name': vendor.business_name,
+            'vendor_services': ', '.join([s.name for s in vendor.service_types.all()[:3]]),
+            'admin_note': instance.admin_note,
+            'project_url': f"{settings.SITE_URL}{reverse('projects:project_detail', kwargs={'pk': instance.project.pk})}",
+            'site_url': settings.SITE_URL,
+            'current_year': datetime.now().year,
+        }
+
+        try:
+            html_message = render_to_string('emails/new_recommendation.html', context)
+            plain_message = render_to_string('emails/new_recommendation.txt', context)
+
+            send_mail(
+                subject=f'Suzy a trouvé un prestataire pour vous - LysAngels',
+                message=plain_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[client.email],
+                html_message=html_message,
+                fail_silently=True,
+            )
+        except Exception as e:
+            print(f"Erreur envoi email recommandation: {e}")

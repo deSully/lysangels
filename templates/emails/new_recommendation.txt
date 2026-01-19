@@ -1,0 +1,21 @@
+Bonjour {{ client_name }},
+
+Notre équipe Suzy a analysé votre projet "{{ project_title }}" et nous avons trouvé un prestataire parfaitement adapté à vos besoins !
+
+PRESTATAIRE RECOMMANDÉ
+======================
+{{ vendor_name }}
+Services : {{ vendor_services }}
+
+POURQUOI CE PRESTATAIRE ?
+=========================
+{{ admin_note }}
+
+Consultez la fiche du prestataire et demandez un devis si son profil vous convient :
+{{ project_url }}
+
+Vous pouvez également continuer à explorer d'autres prestataires sur notre plateforme.
+
+---
+LysAngels - Votre partenaire événementiel au Togo
+{{ site_url }}

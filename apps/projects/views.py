@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
-from .models import Project, EventType
+from .models import Project, EventType, AdminRecommendation
 from .forms import ProjectCreateForm, ProjectEditForm
 from apps.vendors.models import ServiceType
 from apps.core.cache_utils import get_cached_service_types, get_cached_event_types
@@ -10,33 +11,58 @@ from apps.core.cache_utils import get_cached_service_types, get_cached_event_typ
 
 @login_required
 def project_create(request):
-    """Création d'un nouveau projet événementiel"""
+    """Création d'un nouveau projet événementiel (avec préremplissage possible pour un prestataire)"""
+    from apps.vendors.models import VendorProfile
+    vendor_id = request.GET.get('vendor_id')
+    initial = {}
+    preselected_vendor = None
+
+    if vendor_id:
+        try:
+            preselected_vendor = VendorProfile.objects.get(pk=vendor_id, is_active=True)
+            # Préremplir le service principal du prestataire
+            main_services = preselected_vendor.service_types.all()
+            if main_services.exists():
+                initial['services_needed'] = [s.pk for s in main_services]
+        except VendorProfile.DoesNotExist:
+            preselected_vendor = None
+
     if request.user.is_provider:
         messages.error(request, 'Les prestataires ne peuvent pas créer de projets.')
         return redirect('core:home')
 
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
-        
         if form.is_valid():
-            # Créer le projet avec les données validées
             project = form.save(commit=False)
             project.client = request.user
             project.status = 'published'
+            # Enregistre la demande d'accompagnement admin event
+            project.admin_event_help = form.cleaned_data.get('admin_event_help', False)
             project.save()
-            
-            # Sauvegarder les relations many-to-many (services_needed)
             form.save_m2m()
 
-            messages.success(request, 'Votre projet a été créé avec succès!')
+            # Si un vendor_id était présent, rediriger vers la demande de devis pour ce prestataire et ce projet (en automatique)
+            if vendor_id and preselected_vendor:
+                messages.success(request, 'Projet créé ! Votre demande de devis va être envoyée au prestataire.')
+                return redirect(f"{reverse('proposals:send_request', kwargs={'vendor_id': preselected_vendor.pk})}?project_id={project.pk}")
+
+            if project.admin_event_help:
+                messages.success(
+                    request,
+                    "Votre projet a été créé avec accompagnement personnalisé. L'admin event LysAngels est votre interlocuteur unique. Vous recevrez des propositions adaptées pour chaque service demandé."
+                )
+            else:
+                messages.success(
+                    request,
+                    'Votre projet a été créé avec succès ! Notre équipe Suzy analyse votre demande et vous proposera des prestataires adaptés sous 24-48h.'
+                )
             return redirect('projects:project_detail', pk=project.pk)
         else:
-            # Form invalide - les erreurs sont dans form.errors
             messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
     else:
-        form = ProjectCreateForm()
+        form = ProjectCreateForm(initial=initial)
 
-    # Bypass cache pour debug - récupérer directement depuis la DB
     event_types = list(EventType.objects.all())
     service_types = list(ServiceType.objects.all())
 
@@ -49,6 +75,7 @@ def project_create(request):
             {'title': 'Mon espace', 'url': 'accounts:dashboard'},
             {'title': 'Créer un projet'},
         ],
+        'preselected_vendor': preselected_vendor,
     }
     return render(request, 'projects/project_create.html', context)
 
@@ -65,9 +92,18 @@ def project_detail(request, pk):
 
     proposals = project.proposals.select_related('vendor__user').order_by('-created_at')
 
+    # Récupérer les recommandations Suzy (uniquement celles envoyées)
+    recommendations = project.recommendations.filter(
+        status__in=['sent', 'viewed', 'contacted']
+    ).select_related('vendor').order_by('-created_at')
+
+    # Marquer les recommandations comme vues par le client
+    recommendations.filter(status='sent').update(status='viewed')
+
     context = {
         'project': project,
         'proposals': proposals,
+        'recommendations': recommendations,
         'breadcrumbs': [
             {'title': 'Accueil', 'url': 'core:home'},
             {'title': 'Mes projets', 'url': 'projects:project_list'},

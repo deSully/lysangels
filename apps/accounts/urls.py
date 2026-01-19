@@ -84,6 +84,10 @@ urlpatterns = [
     # Gestion des demandes et propositions
     path('admin/proposal-requests/', admin_views.proposal_request_list, name='admin_proposal_request_list'),
     path('admin/proposals/', admin_views.proposal_list, name='admin_proposal_list'),
+    path('admin/projects/<int:project_id>/proposals/create/', admin_views.admin_proposal_create, name='admin_proposal_create'),
+
+    # Système de Recommandations Suzy
+    path('admin/suzy-recommendations/', admin_views.admin_recommendations_list, name='admin_suzy_recommendations_list'),
 
     # Gestion des messages de contact
     path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),

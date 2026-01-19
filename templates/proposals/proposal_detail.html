@@ -8,21 +8,23 @@
         <!-- Header avec retour -->
         <div class="mb-6">
             {% if user.is_provider %}
-                <a href="{% url 'proposals:request_list' %}"
-                   class="text-lily-purple hover:text-opacity-80 font-medium inline-flex items-center mb-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Retour aux demandes
-                </a>
+            <a href="{% url 'proposals:request_list' %}"
+                class="text-lily-purple hover:text-opacity-80 font-medium inline-flex items-center mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour aux demandes
+            </a>
             {% else %}
-                <a href="{% url 'projects:project_detail' proposal.project.id %}"
-                   class="text-lily-purple hover:text-opacity-80 font-medium inline-flex items-center mb-4">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Retour au projet
-                </a>
+            <a href="{% url 'projects:project_detail' proposal.project.id %}"
+                class="text-lily-purple hover:text-opacity-80 font-medium inline-flex items-center mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour au projet
+            </a>
             {% endif %}
         </div>
 
@@ -38,28 +40,28 @@
                                 {{ proposal.title }}
                             </h1>
                             {% if proposal.status == 'sent' %}
-                                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full font-medium text-sm">
-                                    📤 Envoyée
-                                </span>
+                            <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full font-medium text-sm">
+                                📤 Envoyée
+                            </span>
                             {% elif proposal.status == 'viewed' %}
-                                <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full font-medium text-sm">
-                                    👀 Vue par le client
-                                </span>
+                            <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full font-medium text-sm">
+                                👀 Vue par le client
+                            </span>
                             {% elif proposal.status == 'accepted' %}
-                                <span class="bg-green-500 px-4 py-2 rounded-full font-medium text-sm">
-                                    ✅ Acceptée
-                                </span>
+                            <span class="bg-green-500 px-4 py-2 rounded-full font-medium text-sm">
+                                ✅ Acceptée
+                            </span>
                             {% elif proposal.status == 'rejected' %}
-                                <span class="bg-red-500 px-4 py-2 rounded-full font-medium text-sm">
-                                    ❌ Refusée
-                                </span>
+                            <span class="bg-red-500 px-4 py-2 rounded-full font-medium text-sm">
+                                ❌ Refusée
+                            </span>
                             {% endif %}
                         </div>
 
                         <div class="flex items-center justify-between text-sm opacity-90">
                             <span>Proposition envoyée le {{ proposal.created_at|date:"d/m/Y à H:i" }}</span>
                             {% if proposal.viewed_at and not user.is_provider %}
-                                <span>Vue le {{ proposal.viewed_at|date:"d/m/Y à H:i" }}</span>
+                            <span>Vue le {{ proposal.viewed_at|date:"d/m/Y à H:i" }}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -74,16 +76,17 @@
                                         {{ proposal.price|floatformat:0 }} FCFA
                                     </p>
                                     {% if proposal.deposit_required %}
-                                        <p class="text-gray-600 text-sm mt-2">
-                                            Acompte requis : <span class="font-medium text-lily-dark">{{ proposal.deposit_required|floatformat:0 }} FCFA</span>
-                                        </p>
+                                    <p class="text-gray-600 text-sm mt-2">
+                                        Acompte requis : <span class="font-medium text-lily-dark">{{
+                                            proposal.deposit_required|floatformat:0 }} FCFA</span>
+                                    </p>
                                     {% endif %}
                                 </div>
                                 {% if proposal.validity_days %}
-                                    <div class="text-right">
-                                        <p class="text-gray-600 text-sm">Offre valable</p>
-                                        <p class="font-medium text-lg text-lily-dark">{{ proposal.validity_days }} jours</p>
-                                    </div>
+                                <div class="text-right">
+                                    <p class="text-gray-600 text-sm">Offre valable</p>
+                                    <p class="font-medium text-lg text-lily-dark">{{ proposal.validity_days }} jours</p>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -106,60 +109,71 @@
 
                         <!-- Conditions générales -->
                         {% if proposal.terms_and_conditions %}
-                            <div class="mb-8">
-                                <h2 class="font-medium text-lg text-gray-900 mb-3">Conditions et modalités</h2>
-                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                                    <p class="text-gray-700 whitespace-pre-line text-sm">{{ proposal.terms_and_conditions }}</p>
-                                </div>
+                        <div class="mb-8">
+                            <h2 class="font-medium text-lg text-gray-900 mb-3">Conditions et modalités</h2>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                                <p class="text-gray-700 whitespace-pre-line text-sm">{{ proposal.terms_and_conditions }}
+                                </p>
                             </div>
+                        </div>
                         {% endif %}
 
                         <!-- Pièce jointe -->
                         {% if proposal.attachment %}
-                            <div class="mb-8">
-                                <h2 class="font-medium text-base text-gray-900 mb-3">Document joint</h2>
-                                <a href="{{ proposal.attachment.url }}" target="_blank" download
-                                   class="inline-flex items-center bg-lily-purple text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    Télécharger le devis détaillé
-                                </a>
-                            </div>
+                        <div class="mb-8">
+                            <h2 class="font-medium text-base text-gray-900 mb-3">Document joint</h2>
+                            <a href="{{ proposal.attachment.url }}" target="_blank" download
+                                class="inline-flex items-center bg-lily-purple text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Télécharger le devis détaillé
+                            </a>
+                        </div>
                         {% endif %}
 
                         <!-- Actions client -->
                         {% if user.is_client and proposal.status in 'sent,viewed' %}
-                            <div class="border-t border-gray-200 pt-6">
-                                <h3 class="font-medium text-gray-900 mb-4">Que souhaitez-vous faire ?</h3>
-                                <div class="flex gap-4">
-                                    <form method="post" action="{% url 'proposals:accept_proposal' proposal.id %}" class="flex-1">
-                                        {% csrf_token %}
-                                        <button type="submit" 
-                                                onclick="return confirm('Êtes-vous sûr de vouloir accepter cette proposition ?')"
-                                                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition flex items-center justify-center">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                            Accepter la proposition
-                                        </button>
-                                    </form>
-                                    <form method="post" action="{% url 'proposals:reject_proposal' proposal.id %}" class="flex-1">
-                                        {% csrf_token %}
-                                        <button type="submit"
-                                                onclick="return confirm('Êtes-vous sûr de vouloir refuser cette proposition ?')"
-                                                class="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition flex items-center justify-center">
-                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
-                                            Refuser
-                                        </button>
-                                    </form>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-3 text-center">
-                                    Ou <a href="{% url 'messaging:start_conversation' proposal.request.id %}" class="text-lily-purple hover:underline">discutez avec le prestataire</a> pour négocier
-                                </p>
+                        <div class="border-t border-gray-200 pt-6">
+                            <h3 class="font-medium text-gray-900 mb-4">Que souhaitez-vous faire ?</h3>
+                            <div class="flex gap-4">
+                                <form method="post" action="{% url 'proposals:accept_proposal' proposal.id %}"
+                                    class="flex-1">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir accepter cette proposition ?')"
+                                        class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-600 transition flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        Accepter la proposition
+                                    </button>
+                                </form>
+                                <form method="post" action="{% url 'proposals:reject_proposal' proposal.id %}"
+                                    class="flex-1">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir refuser cette proposition ?')"
+                                        class="w-full bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        Refuser
+                                    </button>
+                                </form>
                             </div>
+                            {% if proposal.request.status != 'responded' %}
+                            <p class="text-sm text-gray-600 mt-3 text-center">
+                                Ou <a href="{% url 'messaging:start_conversation' proposal.request.id %}"
+                                    class="text-lily-purple hover:underline">discutez avec le prestataire</a> pour
+                                négocier
+                            </p>
+                            {% endif %}
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -174,13 +188,13 @@
                     </h3>
                     <div class="mb-4">
                         {% if proposal.vendor.logo %}
-                            <img src="{{ proposal.vendor.logo.url }}"
-                                 alt="{{ proposal.vendor.business_name }}"
-                                 class="w-full h-32 object-cover rounded-lg mb-3">
+                        <img src="{{ proposal.vendor.logo.url }}" alt="{{ proposal.vendor.business_name }}"
+                            class="w-full h-32 object-cover rounded-lg mb-3">
                         {% else %}
-                            <div class="w-full h-32 bg-gradient-to-br from-lily-purple to-lily-rose rounded-lg flex items-center justify-center mb-3">
-                                <span class="text-white text-4xl">{{ proposal.vendor.business_name|first }}</span>
-                            </div>
+                        <div
+                            class="w-full h-32 bg-gradient-to-br from-lily-purple to-lily-rose rounded-lg flex items-center justify-center mb-3">
+                            <span class="text-white text-4xl">{{ proposal.vendor.business_name|first }}</span>
+                        </div>
                         {% endif %}
                         <h4 class="font-medium text-gray-900 mb-1">{{ proposal.vendor.business_name }}</h4>
                         <p class="text-sm text-gray-600 mb-2">
@@ -188,20 +202,25 @@
                         </p>
                         <p class="text-sm text-gray-600">
                             <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
-                            {{ proposal.vendor.city }}{% if proposal.vendor.quartier %}, {{ proposal.vendor.quartier }}{% endif %}
+                            {{ proposal.vendor.city }}{% if proposal.vendor.quartier %}, {{ proposal.vendor.quartier
+                            }}{% endif %}
                         </p>
                     </div>
                     {% if not user.is_provider %}
-                        <a href="{% url 'vendors:vendor_detail' proposal.vendor.id %}"
-                           class="text-lily-purple hover:text-opacity-80 font-medium text-sm transition flex items-center">
-                            Voir le profil complet
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
+                    <a href="{% url 'vendors:vendor_detail' proposal.vendor.id %}"
+                        class="text-lily-purple hover:text-opacity-80 font-medium text-sm transition flex items-center">
+                        Voir le profil complet
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
                     {% endif %}
                 </div>
 
@@ -227,52 +246,58 @@
                         </div>
                     </div>
                     {% if not user.is_provider %}
-                        <a href="{% url 'projects:project_detail' proposal.project.id %}"
-                           class="inline-flex items-center text-lily-purple hover:text-opacity-80 font-medium text-sm transition mt-4">
-                            Voir le projet complet
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </a>
+                    <a href="{% url 'projects:project_detail' proposal.project.id %}"
+                        class="inline-flex items-center text-lily-purple hover:text-opacity-80 font-medium text-sm transition mt-4">
+                        Voir le projet complet
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
                     {% endif %}
                 </div>
 
                 <!-- Statut et validité -->
                 {% if proposal.status == 'accepted' %}
-                    <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-                        <div class="flex items-center mb-2">
-                            <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <h3 class="font-medium text-green-900">Proposition acceptée</h3>
-                        </div>
-                        <p class="text-sm text-green-800">
-                            {% if user.is_provider %}
-                                Félicitations ! Le client a accepté votre proposition.
-                            {% else %}
-                                Vous avez accepté cette proposition. Le prestataire va vous contacter.
-                            {% endif %}
-                        </p>
+                <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="font-medium text-green-900">Proposition acceptée</h3>
                     </div>
+                    <p class="text-sm text-green-800">
+                        {% if user.is_provider %}
+                        Félicitations ! Le client a accepté votre proposition.
+                        {% else %}
+                        Vous avez accepté cette proposition. Le prestataire va vous contacter.
+                        {% endif %}
+                    </p>
+                </div>
                 {% elif proposal.status == 'rejected' %}
-                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-                        <div class="flex items-center mb-2">
-                            <svg class="w-6 h-6 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <h3 class="font-medium text-red-900">Proposition refusée</h3>
-                        </div>
-                        <p class="text-sm text-red-800">
-                            Cette proposition a été refusée.
-                        </p>
+                <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-6 h-6 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="font-medium text-red-900">Proposition refusée</h3>
                     </div>
+                    <p class="text-sm text-red-800">
+                        Cette proposition a été refusée.
+                    </p>
+                </div>
                 {% endif %}
 
-                <!-- Messagerie -->
+                <!-- Messagerie (seulement si demande directe du client) -->
+                {% if proposal.request.status != 'responded' %}
                 <div class="bg-lily-purple text-white rounded-xl p-6">
                     <h3 class="font-medium mb-2 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                            </path>
                         </svg>
                         Besoin de discuter ?
                     </h3>
@@ -280,13 +305,16 @@
                         Échangez directement pour clarifier des détails ou négocier
                     </p>
                     <a href="{% url 'messaging:start_conversation' proposal.request.id %}"
-                       class="inline-flex items-center bg-white text-lily-purple px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition text-sm">
+                        class="inline-flex items-center bg-white text-lily-purple px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition text-sm">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                            </path>
                         </svg>
                         Ouvrir la conversation
                     </a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

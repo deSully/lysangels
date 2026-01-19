@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-6">Liste des propositions</h1>
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Projet</th>
+                <th class="px-4 py-2">Prestataire</th>
+                <th class="px-4 py-2">Montant</th>
+                <th class="px-4 py-2">Statut</th>
+                <th class="px-4 py-2">Date</th>
+                <th class="px-4 py-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proposal in proposals %}
+            <tr class="border-t">
+                <td class="px-4 py-2">
+                    <a href="{% url 'accounts:admin_project_detail' proposal.request.project.id %}" class="text-lily-purple hover:underline">
+                        {{ proposal.request.project.title }}
+                    </a>
+                </td>
+                <td class="px-4 py-2">{{ proposal.request.vendor.business_name }}</td>
+                <td class="px-4 py-2">{{ proposal.amount|default:'—' }}</td>
+                <td class="px-4 py-2">{{ proposal.get_status_display }}</td>
+                <td class="px-4 py-2">{{ proposal.created_at|date:"d/m/Y H:i" }}</td>
+                <td class="px-4 py-2">
+                    <a href="#" class="text-blue-600 hover:underline">Voir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-gray-500 py-8">Aucune proposition trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

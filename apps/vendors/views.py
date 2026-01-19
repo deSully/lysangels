@@ -552,13 +552,16 @@ def create_review(request, vendor_id):
                 comment=comment,
                 status='pending'  # En attente de modération
             )
-            
             messages.success(request, "Votre avis a été soumis et sera publié après modération. Merci !")
             return redirect('vendors:vendor_detail', vendor_id=vendor.id)
-            
         except Exception:
             messages.error(request, "Erreur lors de la création de l'avis. Veuillez réessayer.")
-    
+            return render(request, 'vendors/create_review.html', {
+                'vendor': vendor,
+                'eligible_projects': eligible_projects,
+            })
+
+    # GET ou POST incomplet/invalid
     return render(request, 'vendors/create_review.html', {
         'vendor': vendor,
         'eligible_projects': eligible_projects,

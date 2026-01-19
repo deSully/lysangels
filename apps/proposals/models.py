@@ -25,6 +25,14 @@ class ProposalRequest(models.Model):
         related_name='received_requests',
         verbose_name='Prestataire'
     )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='created_proposal_requests',
+        verbose_name='Créé par',
+        help_text='Utilisateur qui a créé cette demande (client ou admin)',
+        null=True  # Temporaire pour la migration
+    )
     message = models.TextField(verbose_name='Message au prestataire')
     status = models.CharField(
         max_length=20,

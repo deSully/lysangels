@@ -123,6 +123,7 @@ class Notification(models.Model):
         ('proposal_status', 'Changement statut proposition'),
         ('request', 'Nouvelle demande de devis'),
         ('request_status', 'Changement statut demande'),
+        ('recommendation', 'Recommandation Suzy'),
         ('system', 'Notification système'),
     ]
     

@@ -12,8 +12,14 @@ import datetime
 
 
 class ProjectCreateForm(forms.ModelForm):
-    """Formulaire de création de projet avec validation complète"""
-    
+    admin_event_help = forms.BooleanField(
+        required=False,
+        label="Je souhaite être accompagné (service payant)",
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-checkbox h-5 w-5 text-yellow-600',
+        })
+    )
+
     event_type = forms.ModelChoiceField(
         queryset=EventType.objects.all(),
         required=True,
@@ -138,8 +144,9 @@ class ProjectCreateForm(forms.ModelForm):
         model = Project
         fields = [
             'title', 'event_type', 'description', 'city', 'location',
-            'event_date', 'event_time', 'guest_count',  # Changé: expected_attendees -> guest_count
-            'budget_min', 'budget_max', 'services_needed'
+            'event_date', 'event_time', 'guest_count',
+            'budget_min', 'budget_max', 'services_needed',
+            'admin_event_help'
         ]
         # Mapping des noms de champs pour la compatibilité
         field_classes = {
@@ -178,32 +185,27 @@ class ProjectCreateForm(forms.ModelForm):
         
         return event_date
     
+
     def clean_description(self):
-        """Validation de la description"""
-        description = self.cleaned_data.get('description')
-        
-        if description:
-            # Description minimale de 20 caractères
-            if len(description.strip()) < 20:
-                raise ValidationError(
-                    'La description doit contenir au moins 20 caractères pour être pertinente.'
-                )
-        
-        return description
+        """Description libre, aucune contrainte de longueur"""
+        return self.cleaned_data.get('description')
     
     def clean(self):
-        """Validation globale du formulaire"""
+        """Budget optionnel, 0 par défaut, et cohérence min/max si renseignés"""
         cleaned_data = super().clean()
         budget_min = cleaned_data.get('budget_min')
         budget_max = cleaned_data.get('budget_max')
-        
-        # Vérifier que budget_max > budget_min si les deux sont renseignés
-        if budget_min and budget_max:
-            if budget_max < budget_min:
+        # Si non renseigné, mettre à 0
+        if not budget_min:
+            cleaned_data['budget_min'] = 0
+        if not budget_max:
+            cleaned_data['budget_max'] = 0
+        # Vérifier que budget_max >= budget_min si les deux sont renseignés
+        if cleaned_data['budget_min'] and cleaned_data['budget_max']:
+            if cleaned_data['budget_max'] < cleaned_data['budget_min']:
                 raise ValidationError(
                     'Le budget maximum doit être supérieur ou égal au budget minimum.'
                 )
-        
         return cleaned_data
 
 

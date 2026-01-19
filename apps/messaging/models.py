@@ -24,7 +24,8 @@ class Conversation(models.Model):
 
     @property
     def client(self):
-        return self.proposal_request.project.client
+        """Retourne l'utilisateur qui a créé la demande (client ou admin)"""
+        return self.proposal_request.created_by
 
     @property
     def vendor(self):

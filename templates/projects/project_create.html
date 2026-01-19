@@ -124,6 +124,17 @@
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
                 Décrivez votre événement en quelques étapes pour recevoir des propositions personnalisées
             </p>
+            {% if preselected_vendor %}
+            <div class="mt-6">
+                <div class="bg-lily-purple/10 border-l-4 border-lily-purple text-lily-dark p-4 rounded-lg text-base font-medium animate-fade-in-up">
+                    <svg class="w-6 h-6 inline-block mr-2 text-lily-purple align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Vous vous apprêtez à envoyer une demande de devis à <span class="font-bold">{{ preselected_vendor.business_name }}</span>.<br>
+                    Veuillez d'abord créer un projet pour continuer.
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Stepper -->
@@ -212,6 +223,19 @@
                         </h2>
 
                         <div class="space-y-6">
+                            <!-- Accompagnement admin event (service payant) -->
+                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-4 flex items-center gap-4">
+                                <div>
+                                    <p class="font-semibold text-yellow-800">Accompagnement personnalisé par LysAngels</p>
+                                    <p class="text-sm text-yellow-700">Ce service est payant&nbsp;: <span class="font-bold">15&nbsp;000 FCFA</span> pour la mise en relation et le suivi personnalisé par notre équipe événementielle.</p>
+                                </div>
+                                <div>
+                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="admin_event_help" id="admin_event_help" class="form-checkbox h-5 w-5 text-yellow-600">
+                                        <span class="text-sm text-yellow-800 font-medium">Je souhaite être accompagné (service payant)</span>
+                                    </label>
+                                </div>
+                            </div>
                             <!-- Titre -->
                             <div>
                                 <label for="title" class="block text-sm font-semibold text-lily-dark mb-2">
@@ -421,18 +445,37 @@
                                     Services recherchés <span class="text-red-500">*</span>
                                 </label>
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {% for service in service_types %}
-                                        <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-lily-purple hover:bg-lily-purple/5 cursor-pointer transition group">
-                                            <input type="checkbox" name="services_needed" value="{{ service.id }}"
-                                                   class="h-5 w-5 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
-                                            <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-lily-purple">{{ service.name }}</span>
-                                            <div class="absolute top-0 right-0 w-6 h-6 bg-lily-purple text-white rounded-bl-xl rounded-tr-xl hidden group-has-[:checked]:flex items-center justify-center">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                                </svg>
-                                            </div>
-                                        </label>
-                                    {% endfor %}
+                                    {% if preselected_vendor %}
+                                        {% for service in service_types %}
+                                            {% if service in preselected_vendor.service_types.all %}
+                                                <label class="relative flex items-center p-4 border-2 border-lily-purple rounded-xl bg-lily-purple/5 cursor-not-allowed group">
+                                                    <input type="checkbox" name="services_needed" value="{{ service.id }}" checked disabled
+                                                           class="h-5 w-5 text-lily-purple border-gray-300 rounded cursor-not-allowed">
+                                                    <!-- Input caché pour que la valeur soit envoyée -->
+                                                    <input type="hidden" name="services_needed" value="{{ service.id }}">
+                                                    <span class="ml-3 text-sm font-medium text-lily-purple">{{ service.name }}</span>
+                                                    <div class="absolute top-0 right-0 w-6 h-6 bg-lily-purple text-white rounded-bl-xl rounded-tr-xl flex items-center justify-center">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                    </div>
+                                                </label>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for service in service_types %}
+                                            <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-xl hover:border-lily-purple hover:bg-lily-purple/5 cursor-pointer transition group">
+                                                <input type="checkbox" name="services_needed" value="{{ service.id }}"
+                                                       class="h-5 w-5 text-lily-purple focus:ring-lily-purple border-gray-300 rounded">
+                                                <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-lily-purple">{{ service.name }}</span>
+                                                <div class="absolute top-0 right-0 w-6 h-6 bg-lily-purple text-white rounded-bl-xl rounded-tr-xl hidden group-has-[:checked]:flex items-center justify-center">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

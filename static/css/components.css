@@ -25,17 +25,14 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  /* Prevent size changes */
-  transform: none;
   flex-shrink: 0;
 }
 
-/* Reset any transform on all states */
+/* Remove outline on focus states */
 .btn:hover,
 .btn:focus,
 .btn:active,
 .btn:focus-visible {
-  transform: none;
   outline: none;
 }
 
@@ -54,7 +51,7 @@
 
 .btn-primary:hover {
   background-color: var(--color-purple-dark);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 0 12px 0 rgba(139, 92, 246, 0.3);
 }
 
 .btn-primary:active {

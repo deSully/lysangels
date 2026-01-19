@@ -43,11 +43,32 @@
                 </div>
             </div>
 
-            {% if projects %}
-                <!-- Formulaire -->
+            {% if project %}
+                <!-- Confirmation directe si projet déjà connu -->
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 text-lily-purple mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    <h3 class="text-lg font-medium text-lily-dark mb-2">Votre projet <span class="font-bold">{{ project.title }}</span> a bien été créé.</h3>
+                    <p class="text-gray-600 mb-6">
+                        Cliquez sur le bouton ci-dessous pour envoyer votre demande de devis à <span class="font-bold">{{ vendor.business_name }}</span>.
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="project_id" value="{{ project.id }}">
+                        <button type="submit"
+                                class="bg-lily-purple text-white px-8 py-3 rounded-lg font-medium hover:bg-opacity-90 transition transform hover:scale-105 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                            </svg>
+                            Envoyer la demande
+                        </button>
+                    </form>
+                </div>
+            {% elif projects %}
+                <!-- Formulaire classique -->
                 <form method="post" class="space-y-6">
                     {% csrf_token %}
-
                     <!-- Sélection du projet -->
                     <div>
                         <label for="project_id" class="block text-sm font-medium text-gray-700 mb-2">
@@ -67,7 +88,6 @@
                             Le prestataire verra tous les détails de votre projet
                         </p>
                     </div>
-
                     <!-- Message personnalisé -->
                     <div>
                         <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
@@ -80,7 +100,6 @@
                             💡 Conseil : Plus votre demande est détaillée, plus la proposition sera adaptée à vos besoins
                         </p>
                     </div>
-
                     <!-- Actions -->
                     <div class="flex items-center justify-between pt-6 border-t border-gray-200">
                         <a href="{% url 'vendors:vendor_detail' vendor.id %}"

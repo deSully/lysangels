@@ -395,7 +395,7 @@
                         <!-- Grille Instagram -->
                         <div class="photo-gallery">
                             {% for image in vendor.images.all %}
-                                <div class="photo-gallery-item" onclick="openLightbox({{ forloop.counter0 }})">
+                                <div class="photo-gallery-item" onclick="javascript:openLightbox({{ forloop.counter0 }});">
                                     <img 
                                         src="{% thumbnail_url image.image 'card' %}"
                                         srcset="{% responsive_srcset image.image 'small' 'card' 'medium' %}"
@@ -568,7 +568,7 @@
                                     <p class="text-white/90 text-sm">Demande gratuite et sans engagement</p>
                                 </div>
 
-                                <a href="{% url 'proposals:send_request' vendor.id %}"
+                                <a href="{% url 'projects:project_create' %}?vendor_id={{ vendor.id }}"
                                    class="btn btn-accent w-full justify-center">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -706,16 +706,18 @@
     </button>
 </div>
 
-<script>
-const images = [
-    {% for image in vendor.images.all %}
+<script type="application/json" id="images-json">
+[
+{% for image in vendor.images.all %}
     {
-        url: "{% thumbnail_url image.image 'large' %}",
-        caption: "{{ image.caption|default:'' }}"
+        "url": "{% thumbnail_url image.image 'large' %}",
+        "caption": "{{ image.caption|escapejs|default:'' }}"
     }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-];
-
+{% endfor %}
+]
+</script>
+<script>
+const images = JSON.parse(document.getElementById('images-json').textContent);
 let currentImageIndex = 0;
 
 function openLightbox(index) {

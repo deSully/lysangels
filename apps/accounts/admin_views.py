@@ -1,6 +1,99 @@
+# Formulaire de création de proposition par l'admin event
+
+
+# Décorateur pour restreindre l'accès aux admins Susy Event
 """
 Vues d'administration pour le profil Admin Susy Event
 """
+# Décorateur pour restreindre l'accès aux admins Susy Event
+from functools import wraps
+def admin_required(view_func):
+    """
+    Décorateur qui combine login_required et user_passes_test pour les vues basées sur fonction.
+    """
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            from django.contrib.auth.views import redirect_to_login
+            return redirect_to_login(request.get_full_path())
+        if not hasattr(request.user, 'user_type') or request.user.user_type != 'admin':
+            from django.http import HttpResponseForbidden
+            return HttpResponseForbidden("Accès réservé à l'administrateur Susy Event.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+@admin_required
+def admin_proposal_create(request, project_id):
+    from apps.proposals.models import Proposal, ProposalRequest
+    from apps.vendors.models import VendorProfile
+    from decimal import Decimal
+    project = get_object_or_404(Project, pk=project_id)
+    vendors = VendorProfile.objects.filter(is_active=True).order_by('business_name')
+
+    if request.method == 'POST':
+        vendor_id = request.POST.get('vendor')
+        price = request.POST.get('amount')
+        message = request.POST.get('message')
+        attachment = request.FILES.get('file')
+        title = request.POST.get('title', 'Proposition personnalisée')
+        description = request.POST.get('description', '')
+        terms = request.POST.get('terms_and_conditions', '')
+        validity_days = request.POST.get('validity_days', 30)
+
+        vendor = get_object_or_404(VendorProfile, pk=vendor_id)
+
+        # Create a ProposalRequest first (required for the Proposal)
+        proposal_request, created = ProposalRequest.objects.get_or_create(
+            project=project,
+            vendor=vendor,
+            defaults={
+                'message': message or 'Demande créée par l\'administrateur',
+                'status': 'responded',
+                'created_by': request.user  # L'admin qui crée la proposition
+            }
+        )
+
+        proposal = Proposal.objects.create(
+            request=proposal_request,
+            project=project,
+            vendor=vendor,
+            price=Decimal(price) if price else 0,
+            message=message,
+            title=title,
+            description=description,
+            terms_and_conditions=terms,
+            validity_days=validity_days,
+            attachment=attachment,
+            status='sent',
+        )
+        messages.success(request, 'Proposition créée avec succès !')
+        return redirect('accounts:admin_project_detail', pk=project_id)
+
+    context = {
+        'project': project,
+        'vendors': vendors,
+    }
+    return render(request, 'accounts/admin/proposal_form.html', context)
+"""
+Vues d'administration pour le profil Admin Susy Event
+"""
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+from django.contrib import messages
+from django.db.models import Count
+from django.core.paginator import Paginator
+
+from .models import User
+from apps.core.models import City, Quartier, Country, ContactMessage
+from apps.vendors.models import ServiceType, VendorProfile, SubscriptionTier, Review
+from apps.projects.models import EventType, Project, AdminRecommendation
+from apps.proposals.models import ProposalRequest, Proposal
+from apps.vendors.models import VendorProfile
+
+
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -10,19 +103,28 @@ from django.core.paginator import Paginator
 from .models import User
 from apps.core.models import City, Quartier, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, SubscriptionTier, Review
-from apps.projects.models import EventType, Project
+from apps.projects.models import EventType, Project, AdminRecommendation
 from apps.proposals.models import ProposalRequest, Proposal
+from apps.vendors.models import VendorProfile
 
+@admin_required
+def admin_recommendations_list(request):
+    """Vue custom : liste des recommandations Suzy pour l'admin"""
+    status = request.GET.get('status', '')
+    recommendations = AdminRecommendation.objects.select_related('project', 'vendor', 'recommended_by')
+    if status:
+        recommendations = recommendations.filter(status=status)
+    recommendations = recommendations.order_by('-created_at')[:100]  # Limite à 100 pour perf
 
-def admin_required(view_func):
-    """Décorateur pour vérifier que l'utilisateur est admin Susy Event"""
-    @login_required
-    def wrapper(request, *args, **kwargs):
-        if not request.user.is_susy_admin:
-            messages.error(request, 'Accès non autorisé.')
-            return redirect('core:home')
-        return view_func(request, *args, **kwargs)
-    return wrapper
+    # Statuts pour filtres
+    status_choices = AdminRecommendation.STATUS_CHOICES
+
+    context = {
+        'recommendations': recommendations,
+        'status_choices': status_choices,
+        'current_status': status,
+    }
+    return render(request, 'accounts/suzy_recommendations_list.html', context)
 
 
 @admin_required
@@ -516,12 +618,21 @@ def project_list(request):
     if status:
         projects = projects.filter(status=status)
 
+    # Filtre accompagnement admin event
+    admin_event_only = request.GET.get('admin_event_help')
+    if admin_event_only == '1':
+        projects = projects.filter(admin_event_help=True)
+
     # Pagination
     paginator = Paginator(projects, 20)
     page = request.GET.get('page')
     projects = paginator.get_page(page)
 
-    context = {'projects': projects, 'selected_status': status}
+    context = {
+        'projects': projects,
+        'selected_status': status,
+        'admin_event_only': admin_event_only,
+    }
     return render(request, 'accounts/admin/project_list.html', context)
 
 
@@ -529,11 +640,13 @@ def project_list(request):
 def project_detail(request, pk):
     """Détails d'un projet"""
     project = get_object_or_404(Project.objects.select_related('client', 'event_type'), pk=pk)
-    proposal_requests = project.proposal_requests.select_related('vendor').all()
+    
+    # Charger les propositions avec leurs informations complètes
+    proposals = project.proposals.select_related('vendor', 'request').all()
 
     context = {
         'project': project,
-        'proposal_requests': proposal_requests,
+        'proposals': proposals,
     }
     return render(request, 'accounts/admin/project_detail.html', context)
 

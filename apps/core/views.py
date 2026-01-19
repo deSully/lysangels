@@ -112,7 +112,6 @@ def notifications_list(request):
 
 
 @login_required
-@require_POST
 def mark_notification_read(request, pk):
     """Marquer une notification comme lue"""
     notification = get_object_or_404(Notification, pk=pk, user=request.user)

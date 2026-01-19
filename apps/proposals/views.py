@@ -13,6 +13,7 @@ from apps.core.validators import validate_attachment_file, check_user_storage_qu
 
 
 @login_required
+
 def send_request(request, vendor_id):
     """Envoyer une demande de devis à un prestataire"""
     if request.user.is_provider:
@@ -21,45 +22,59 @@ def send_request(request, vendor_id):
 
     vendor = get_object_or_404(VendorProfile, pk=vendor_id, is_active=True)
 
-    if request.method == 'POST':
-        project_id = request.POST.get('project_id')
-        message = request.POST.get('message')
+    # Cas où on vient d'être redirigé après création de projet
+    project_id = request.GET.get('project_id')
+    project = None
+    if project_id:
+        try:
+            project = Project.objects.get(pk=project_id, client=request.user)
+        except Project.DoesNotExist:
+            project = None
 
-        project = get_object_or_404(Project, pk=project_id, client=request.user)
-
-        # Vérifier si une demande n'existe pas déjà
-        if ProposalRequest.objects.filter(project=project, vendor=vendor).exists():
-            messages.warning(request, 'Vous avez déjà envoyé une demande à ce prestataire pour ce projet.')
+    if request.method == 'POST' or project:
+        # Si project_id est passé en GET, on ne demande pas de sélection ni de message
+        if project:
+            # Vérifier si une demande n'existe pas déjà
+            if ProposalRequest.objects.filter(project=project, vendor=vendor).exists():
+                messages.warning(request, 'Vous avez déjà envoyé une demande à ce prestataire pour ce projet.')
+                return redirect('vendors:vendor_detail', pk=vendor_id)
+            # Créer la demande de devis sans message personnalisé
+            proposal_request = ProposalRequest.objects.create(
+                project=project,
+                vendor=vendor,
+                message='',
+                created_by=request.user
+            )
+            Conversation.objects.create(proposal_request=proposal_request)
+            messages.success(request, f'Demande envoyée à {vendor.business_name}! Vous pouvez maintenant échanger via la messagerie.')
+            return redirect('vendors:vendor_detail', pk=vendor_id)
+        else:
+            project_id = request.POST.get('project_id')
+            message = request.POST.get('message')
+            project = get_object_or_404(Project, pk=project_id, client=request.user)
+            if ProposalRequest.objects.filter(project=project, vendor=vendor).exists():
+                messages.warning(request, 'Vous avez déjà envoyé une demande à ce prestataire pour ce projet.')
+                return redirect('vendors:vendor_detail', pk=vendor_id)
+            proposal_request = ProposalRequest.objects.create(
+                project=project,
+                vendor=vendor,
+                message=message,
+                created_by=request.user
+            )
+            Conversation.objects.create(proposal_request=proposal_request)
+            Message.objects.create(
+                conversation=proposal_request.conversation,
+                sender=request.user,
+                content=message
+            )
+            messages.success(request, f'Demande envoyée à {vendor.business_name}! Vous pouvez maintenant échanger via la messagerie.')
             return redirect('vendors:vendor_detail', pk=vendor_id)
 
-        # Créer la demande de devis
-        proposal_request = ProposalRequest.objects.create(
-            project=project,
-            vendor=vendor,
-            message=message
-        )
-
-        # Créer automatiquement la conversation
-        conversation = Conversation.objects.create(
-            proposal_request=proposal_request
-        )
-
-        # Créer le premier message (le message de la demande)
-        Message.objects.create(
-            conversation=conversation,
-            sender=request.user,
-            content=message
-        )
-
-        messages.success(request, f'Demande envoyée à {vendor.business_name}! Vous pouvez maintenant échanger via la messagerie.')
-        return redirect('vendors:vendor_detail', pk=vendor_id)
-
-    # Récupérer les projets actifs du client (publiés ou en cours)
     projects = request.user.projects.filter(status__in=['published', 'in_progress'])
-
     context = {
         'vendor': vendor,
         'projects': projects,
+        'project': project,
     }
     return render(request, 'proposals/send_request.html', context)
 

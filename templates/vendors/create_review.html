@@ -20,14 +20,6 @@
     <!-- Formulaire -->
     <form method="post" class="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
         {% csrf_token %}
-        
-        {% if messages %}
-            {% for message in messages %}
-                <div class="mb-6 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% else %}bg-green-50 text-green-800 border border-green-200{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
 
         <!-- Projet associé -->
         {% if eligible_projects %}
@@ -82,7 +74,7 @@
             <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="text-gray-600 hover:text-gray-800 transition-colors">
                 Annuler
             </a>
-            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-lily-purple to-lily-gold text-white rounded-lg hover:shadow-lg transition-shadow font-medium">
+            <button type="submit" class="px-8 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-opacity-90 transition">
                 Publier mon avis
             </button>
         </div>
