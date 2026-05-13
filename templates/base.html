@@ -247,10 +247,6 @@
                     <a href="{% url 'core:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}nav-link-active{% endif %}">
                         À propos
                     </a>
-                    <a href="{% url 'core:press' %}" class="nav-link {% if request.resolver_match.url_name == 'press' %}nav-link-active{% endif %}">
-                        Presse
-                    </a>
-
                     <!-- Bouton principal J'ai un projet -->
                     <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
                         J'ai un projet
@@ -307,10 +303,6 @@
                 <a href="{% url 'core:about' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'about' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
                     ℹ️ À propos
                 </a>
-                <a href="{% url 'core:press' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'press' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                    📰 Presse
-                </a>
-
                 <!-- Bouton principal mobile -->
                 <a href="{% url 'projects:project_create' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
                     J'ai un projet
@@ -407,7 +399,7 @@
                             <li><a href="{% url 'core:about' %}" class="hover:text-white transition">À propos</a></li>
                             <li><a href="{% url 'core:about' %}" class="hover:text-white transition">Notre mission</a></li>
                             <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Carrières</a></li>
-                            <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Presse</a></li>
+
                             <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Partenariats</a></li>
                         </ul>
                     </div>
