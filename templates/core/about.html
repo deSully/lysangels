@@ -1,397 +1,156 @@
 {% extends 'base.html' %}
 
 {% block title %}À propos - LysAngels{% endblock %}
-
-{% block meta_description %}LysAngels est un annuaire de prestataires événementiels au Togo. Notre mission : simplifier la mise en relation entre particuliers et professionnels de l'événementiel.{% endblock %}
-
-{% block meta_keywords %}LysAngels, à propos, mission, annuaire événementiel Togo, qui sommes-nous{% endblock %}
+{% block meta_description %}LysAngels est un annuaire de prestataires événementiels au Togo. Notre rôle : vous aider à trouver le bon professionnel pour votre événement, simplement.{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* ═══════════════════════════════════════
-       HERO ABOUT
-    ═══════════════════════════════════════ */
-    .about-hero {
-        background: linear-gradient(to bottom right, #1A1A1A, #2D1B3D, #3D2554);
-        position: relative;
-        overflow: hidden;
-        padding: 5rem 0 4.5rem;
-    }
-
-    .text-gradient-gold {
-        background: linear-gradient(135deg, #D4AF37 0%, #E5C158 50%, #D4AF37 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 200% auto;
-        animation: goldShimmer 4s linear infinite;
-    }
-    @keyframes goldShimmer {
-        0% { background-position: 0% center; }
-        100% { background-position: 200% center; }
-    }
-
-    /* ═══════════════════════════════════════
-       STATS RÉELLES (dynamiques)
-    ═══════════════════════════════════════ */
-    .stats-section {
-        background: #111;
-        position: relative; overflow: hidden;
-    }
-    .stats-section::before {
-        content: '';
-        position: absolute; inset: 0;
-        background-image: radial-gradient(circle at 50% 50%, rgba(139,92,246,.08) 0%, transparent 60%);
-    }
-    .stat-block {
-        text-align: center; padding: 2.5rem 1rem;
-        position: relative;
-    }
-    .stat-block:not(:last-child)::after {
-        content: '';
-        position: absolute; right: 0; top: 20%; bottom: 20%;
-        width: 1px; background: rgba(255,255,255,.08);
-    }
-    @media (max-width: 640px) {
-        .stat-block:nth-child(2)::after { display: none; }
-        .stat-block:nth-child(1), .stat-block:nth-child(2) {
-            border-bottom: 1px solid rgba(255,255,255,.06);
-        }
-    }
-    .stat-num {
-        font-family: 'Playfair Display', Georgia, serif !important;
-        font-size: clamp(2.5rem, 5vw, 4rem);
-        font-weight: 700 !important;
-        color: #D4AF37; line-height: 1;
-        display: block; margin-bottom: 0.5rem;
-    }
-    .stat-lbl {
-        font-size: 0.72rem; font-weight: 600;
-        letter-spacing: 0.1em; text-transform: uppercase;
-        color: rgba(255,255,255,.4);
-        display: block;
-    }
-
-    /* ═══════════════════════════════════════
-       VALEURS
-    ═══════════════════════════════════════ */
     .value-card {
         background: #fff;
         border: 1.5px solid #F4EDE4;
-        border-radius: 1.5rem;
-        padding: 2rem 1.75rem;
-        transition: border-color .3s, box-shadow .3s, transform .3s;
+        border-radius: 1.25rem;
+        padding: 1.5rem 1.75rem;
+        transition: border-color .2s, box-shadow .2s;
     }
     .value-card:hover {
         border-color: #8B5CF6;
-        box-shadow: 0 12px 40px rgba(139,92,246,.1);
-        transform: translateY(-4px);
+        box-shadow: 0 4px 20px rgba(139,92,246,.08);
     }
     .value-icon {
-        width: 3.5rem; height: 3.5rem; border-radius: 1rem;
+        width: 2.5rem; height: 2.5rem; border-radius: .625rem;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 1.25rem;
-        transition: transform .3s;
+        margin-bottom: 1rem; flex-shrink: 0;
     }
-    .value-card:hover .value-icon { transform: scale(1.1) rotate(-4deg); }
-
-    /* Scroll reveal */
-    .js-ready .scroll-reveal {
-        opacity: 0; transform: translateY(24px);
-        transition: opacity .6s ease, transform .6s ease;
-    }
-    .js-ready .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="bg-lily-cream min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
 
-<!-- ══════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════ -->
-<div class="about-hero relative">
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute w-96 h-96 bg-lily-gold/10 rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
-        <div class="absolute w-80 h-80 bg-lily-purple/10 rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center max-w-3xl mx-auto">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
-                <svg class="w-4 h-4 text-lily-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="text-white text-sm font-medium">Fondé à Lomé, Togo</span>
-            </div>
-
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-5 leading-tight text-white" style="font-family:'Playfair Display',Georgia,serif!important; letter-spacing:-0.02em;">
-                Qui sommes-nous ?
-            </h1>
-
-            <p class="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
-                LysAngels est un <strong class="text-white">annuaire de prestataires événementiels</strong> au Togo.
-                Notre rôle : vous aider à trouver le bon professionnel pour votre événement, simplement.
-            </p>
+        <!-- Titre -->
+        <div class="text-center mb-14">
+            <h1 class="text-3xl sm:text-4xl font-bold text-lily-dark mb-3">À propos</h1>
+            <p class="text-gray-500 text-lg max-w-xl mx-auto">LysAngels est un annuaire de prestataires événementiels au Togo.</p>
         </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     STATS RÉELLES
-═══════════════════════════════════════════ -->
-<section class="stats-section">
-    <div class="max-w-4xl mx-auto px-4 relative z-10">
-        <div class="grid grid-cols-2 md:grid-cols-3">
-
-            <div class="stat-block scroll-reveal">
-                <span class="stat-num">
-                    <span data-counter="{{ stats.vendors_count }}">{{ stats.vendors_count }}</span>+
-                </span>
-                <span class="stat-lbl">Prestataires référencés</span>
-            </div>
-
-            <div class="stat-block scroll-reveal" style="transition-delay:.1s">
-                <span class="stat-num">
-                    <span data-counter="{{ stats.service_types_count }}">{{ stats.service_types_count }}</span>
-                </span>
-                <span class="stat-lbl">Types de services</span>
-            </div>
-
-            <!-- v3.0 : stat dynamique — villes couvertes au lieu de "1 pays" -->
-            <div class="stat-block scroll-reveal col-span-2 md:col-span-1" style="transition-delay:.2s">
-                <span class="stat-num">
-                    <span data-counter="{{ stats.cities_count }}">{{ stats.cities_count }}</span>
-                </span>
-                <span class="stat-lbl">Villes couvertes</span>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     QUI SOMMES-NOUS
-═══════════════════════════════════════════ -->
-<div class="bg-white py-16 md:py-24">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Notre histoire -->
-        <div class="mb-16 md:mb-24 scroll-reveal">
-            <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-                <div>
-                    <span style="display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8B5CF6; margin-bottom:.75rem;">Notre histoire</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mb-5 tracking-tight leading-tight">
-                        Une idée simple,<br>un vrai besoin
-                    </h2>
-                    <p class="text-gray-600 leading-relaxed mb-4">
-                        Organiser un événement au Togo, c'est souvent chercher un prestataire de bouche à oreille, sans savoir où regarder ni comment comparer. LysAngels est né de ce constat.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed mb-4">
-                        Nous avons créé un annuaire en ligne pour centraliser les profils de prestataires vérifiés — photographes, traiteurs, DJ, décorateurs, animateurs — et permettre à chacun de les trouver facilement.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed">
-                        Pas de réservation en ligne, pas de messagerie interne. Juste la mise en relation : vous trouvez, vous contactez directement.
-                    </p>
-                </div>
-                <div class="relative">
-                    <!-- Image décorative -->
-                    <div style="border-radius:1.5rem; overflow:hidden; aspect-ratio:4/3; background:#111;">
-                        <img
-                            src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=85&fit=crop"
-                            alt="Événement au Togo"
-                            style="width:100%; height:100%; object-fit:cover; opacity:0.9;"
-                            loading="lazy"
-                        >
-                    </div>
-                    <!-- Badge flottant -->
-                    <div style="position:absolute; bottom:-1rem; left:-1rem; background:#fff; border:1.5px solid #F4EDE4; border-radius:1rem; padding:1rem 1.25rem; box-shadow:0 8px 24px rgba(0,0,0,0.1);">
-                        <div style="display:flex; align-items:center; gap:0.625rem;">
-                            <div style="width:2.5rem; height:2.5rem; border-radius:0.75rem; background:linear-gradient(135deg,#D4AF37,#B8941F); display:flex; align-items:center; justify-content:center;">
-                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            </div>
-                            <div>
-                                <p style="font-size:0.8rem; font-weight:700; color:#1A1A1A; line-height:1.2;">Lomé, Togo</p>
-                                <p style="font-size:0.7rem; color:#9CA3AF;">Plateforme locale</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="mb-16">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Notre histoire</span>
+                <div class="flex-1 h-px bg-lily-purple/15"></div>
+            </div>
+            <div class="bg-white border border-[#F4EDE4] rounded-2xl p-6 sm:p-8 space-y-4">
+                <p class="text-gray-600 leading-relaxed text-sm">
+                    Organiser un événement au Togo, c'est souvent chercher un prestataire de bouche à oreille, sans savoir où regarder ni comment comparer. LysAngels est né de ce constat.
+                </p>
+                <p class="text-gray-600 leading-relaxed text-sm">
+                    Nous avons créé un annuaire en ligne pour centraliser les profils de prestataires vérifiés — photographes, traiteurs, DJ, décorateurs, animateurs — et permettre à chacun de les trouver facilement.
+                </p>
+                <p class="text-gray-600 leading-relaxed text-sm">
+                    Pas de réservation en ligne, pas de messagerie interne. Juste la mise en relation : vous trouvez, vous contactez directement.
+                </p>
             </div>
         </div>
 
-        <!-- Ce qu'on fait / Ce qu'on ne fait pas -->
-        <div class="mb-16 md:mb-24 scroll-reveal">
-            <div class="text-center mb-10">
-                <span style="display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8B5CF6; margin-bottom:.75rem;">Transparence</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark tracking-tight">Ce que nous faisons — et ce que nous ne faisons pas</h2>
+        <!-- Ce qu'on fait / ne fait pas -->
+        <div class="mb-16">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Transparence</span>
+                <div class="flex-1 h-px bg-lily-purple/15"></div>
             </div>
+            <div class="grid sm:grid-cols-2 gap-4">
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Ce qu'on fait -->
-                <div style="background:#FDFCFB; border:1.5px solid #F4EDE4; border-radius:1.5rem; padding:2rem;">
-                    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.25rem;">
-                        <div style="width:2.5rem; height:2.5rem; border-radius:0.75rem; background:linear-gradient(135deg,#10B981,#059669); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <div class="bg-white border border-[#F4EDE4] rounded-2xl p-6">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#10B981,#059669);">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         </div>
-                        <h3 class="font-bold text-lily-dark text-lg">Ce que nous faisons</h3>
+                        <h3 class="font-bold text-lily-dark text-sm">Ce que nous faisons</h3>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                    <ul class="space-y-2.5">
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                             Référencer et vérifier des prestataires événementiels au Togo
                         </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                             Afficher leurs coordonnées pour un contact direct (WhatsApp, téléphone)
                         </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            Proposer un service d'accompagnement payant pour les clients qui le souhaitent
-                        </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                             Permettre la navigation libre sans inscription
                         </li>
                     </ul>
                 </div>
 
-                <!-- Ce qu'on ne fait pas -->
-                <div style="background:#FDFCFB; border:1.5px solid #F4EDE4; border-radius:1.5rem; padding:2rem;">
-                    <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1.25rem;">
-                        <div style="width:2.5rem; height:2.5rem; border-radius:0.75rem; background:linear-gradient(135deg,#EF4444,#DC2626); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <div class="bg-white border border-[#F4EDE4] rounded-2xl p-6">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#EF4444,#DC2626);">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </div>
-                        <h3 class="font-bold text-lily-dark text-lg">Ce que nous ne faisons pas</h3>
+                        <h3 class="font-bold text-lily-dark text-sm">Ce que nous ne faisons pas</h3>
                     </div>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <ul class="space-y-2.5">
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                             Gérer les réservations ou les paiements en ligne
                         </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                             Proposer une messagerie interne entre clients et prestataires
                         </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                            Garantir les prestations ou intervenir dans les contrats
-                        </li>
-                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <li class="flex items-start gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                             Permettre aux prestataires de s'inscrire eux-mêmes
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
 
         <!-- Nos valeurs -->
-        <div class="scroll-reveal">
-            <div class="text-center mb-10">
-                <span style="display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#8B5CF6; margin-bottom:.75rem;">Nos valeurs</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark tracking-tight">Ce qui nous guide</h2>
+        <div class="mb-16">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Nos valeurs</span>
+                <div class="flex-1 h-px bg-lily-purple/15"></div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid sm:grid-cols-3 gap-4">
 
                 <div class="value-card">
-                    <div class="value-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED); box-shadow:0 6px 16px rgba(139,92,246,.25);">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="value-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <h3 class="font-bold text-lily-dark text-lg mb-2">Honnêteté</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">
-                        Nous disons ce que nous faisons et nous faisons ce que nous disons. Pas de promesses excessives, pas de chiffres inventés.
-                    </p>
+                    <h3 class="font-bold text-lily-dark text-sm mb-1">Honnêteté</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Nous disons ce que nous faisons et nous faisons ce que nous disons. Pas de promesses excessives.</p>
                 </div>
 
                 <div class="value-card">
-                    <div class="value-icon" style="background:linear-gradient(135deg,#D4AF37,#B8941F); box-shadow:0 6px 16px rgba(212,175,55,.25);">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div class="value-icon" style="background:linear-gradient(135deg,#D4AF37,#B8941F);">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
-                    <h3 class="font-bold text-lily-dark text-lg mb-2">Sélection rigoureuse</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">
-                        Chaque prestataire est évalué avant d'être publié. Nous préférons un annuaire plus petit mais fiable à un catalogue exhaustif et non vérifié.
-                    </p>
+                    <h3 class="font-bold text-lily-dark text-sm mb-1">Sélection rigoureuse</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Chaque prestataire est évalué avant d'être publié. Un annuaire plus petit mais fiable.</p>
                 </div>
 
                 <div class="value-card">
-                    <div class="value-icon" style="background:linear-gradient(135deg,#10B981,#059669); box-shadow:0 6px 16px rgba(16,185,129,.25);">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <div class="value-icon" style="background:linear-gradient(135deg,#10B981,#059669);">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
-                    <h3 class="font-bold text-lily-dark text-lg mb-2">Simplicité</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">
-                        Trouver un prestataire ne devrait pas être compliqué. Notre interface est pensée pour aller à l'essentiel, sans friction inutile.
-                    </p>
+                    <h3 class="font-bold text-lily-dark text-sm mb-1">Simplicité</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Trouver un prestataire ne devrait pas être compliqué. Notre interface va à l'essentiel.</p>
                 </div>
 
             </div>
         </div>
 
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     CTA FINAL
-═══════════════════════════════════════════ -->
-<div class="relative overflow-hidden bg-gradient-to-r from-lily-dark via-purple-dark to-lily-dark py-16 md:py-24">
-    <div class="absolute inset-0 overflow-hidden opacity-10">
-        <div class="absolute w-96 h-96 bg-white rounded-full blur-3xl -top-20 -right-20 animate-pulse"></div>
-        <div class="absolute w-80 h-80 bg-lily-gold rounded-full blur-3xl -bottom-20 -left-20 animate-pulse" style="animation-delay: 1s;"></div>
-    </div>
-
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-reveal">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-            Prêt à organiser votre événement ?
-        </h2>
-        <p class="text-lg sm:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-            Parcourez notre annuaire et contactez directement les prestataires qui vous correspondent.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{% url 'vendors:vendor_list' %}" class="bg-white text-lily-purple px-8 py-4 rounded-2xl font-semibold hover:bg-lily-cream transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1">
-                Voir les prestataires
-            </a>
-            <a href="{% url 'projects:project_create' %}" class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-2xl font-semibold hover:bg-white hover:text-lily-purple transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                Déposer un projet
-            </a>
+        <!-- CTA final -->
+        <div class="text-center pt-4 border-t border-gray-100">
+            <p class="text-gray-500 text-sm mb-4">Prêt à trouver votre prestataire ?</p>
+            <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary">Voir les prestataires</a>
         </div>
+
     </div>
 </div>
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    document.documentElement.classList.add('js-ready');
-
-    // Scroll reveal
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-
-    // Counter animation
-    function animateCounter(el, target, duration) {
-        let startTime = null;
-        const step = (timestamp) => {
-            if (!startTime) startTime = timestamp;
-            const progress = Math.min((timestamp - startTime) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 4);
-            el.textContent = Math.floor(eased * target);
-            if (progress < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-    }
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && entry.target.dataset.counter) {
-                animateCounter(entry.target, parseInt(entry.target.dataset.counter), 1500);
-                counterObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
-</script>
 {% endblock %}
