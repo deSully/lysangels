@@ -2,501 +2,123 @@
 {% load thumbnail_tags %}
 
 {% block title %}Nos prestataires - LysAngels{% endblock %}
-{% block meta_description %}Découvrez notre sélection de prestataires événementiels premium au Togo : photographes, musiciens, DJ, traiteurs, décorateurs. Comparez, contactez et réservez en ligne.{% endblock %}
-{% block meta_keywords %}liste prestataires Togo, photographe mariage, DJ événement, musicien Lomé, traiteur, décorateur, prestataires vérifiés{% endblock %}
+{% block meta_description %}Découvrez notre sélection de prestataires événementiels au Togo : photographes, musiciens, DJ, traiteurs, décorateurs.{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* ── Hero ── */
-    .vendor-hero {
-        background: linear-gradient(135deg, #1A1A1A 0%, #2D1B3D 50%, #1A1A1A 100%);
-        position: relative; overflow: hidden;
-    }
-    .vendor-hero::before {
-        content: ''; position: absolute; inset: 0;
-        background-image:
-            radial-gradient(circle at 25% 75%, rgba(139,92,246,.18) 0%, transparent 50%),
-            radial-gradient(circle at 75% 25%, rgba(212,175,55,.12) 0%, transparent 50%);
-    }
-
-    /* ── Particules géométriques hero ── */
-    .hero-particle {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(212,175,55,0.08);
-        animation: particle-float 8s ease-in-out infinite;
-        pointer-events: none;
-    }
-    .hero-particle:nth-child(1) { width: 180px; height: 180px; top: 10%; left: 5%; animation-delay: 0s; }
-    .hero-particle:nth-child(2) { width: 120px; height: 120px; top: 60%; left: 15%; animation-delay: 2s; animation-duration: 10s; background: rgba(139,92,246,0.07); }
-    .hero-particle:nth-child(3) { width: 240px; height: 240px; top: 5%; right: 8%; animation-delay: 1s; animation-duration: 12s; }
-    .hero-particle:nth-child(4) { width: 80px; height: 80px; bottom: 15%; right: 20%; animation-delay: 3s; animation-duration: 9s; background: rgba(139,92,246,0.09); }
-    .hero-particle:nth-child(5) { width: 140px; height: 140px; bottom: 5%; left: 40%; animation-delay: 1.5s; animation-duration: 11s; }
-    @keyframes particle-float {
-        0%, 100% { transform: translateY(0) scale(1); }
-        33% { transform: translateY(-18px) scale(1.04); }
-        66% { transform: translateY(10px) scale(0.97); }
-    }
-
-    /* ── Featured spotlight ── */
-    .featured-spotlight {
-        background: #111;
-        position: relative; overflow: hidden;
-    }
-    .featured-spotlight::before {
-        content: '';
-        position: absolute; inset: 0;
-        background-image:
-            radial-gradient(circle at 80% 50%, rgba(212,175,55,.06) 0%, transparent 60%),
-            radial-gradient(circle at 20% 50%, rgba(139,92,246,.06) 0%, transparent 60%);
-    }
-    .spotlight-scroll {
-        display: flex; gap: 1.25rem;
-        overflow-x: auto; padding: 0.5rem 1rem 1.5rem;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-    .spotlight-scroll::-webkit-scrollbar { display: none; }
-    .spotlight-card {
-        flex-shrink: 0; width: 260px;
-        border-radius: 1.25rem; overflow: hidden;
-        scroll-snap-align: start; position: relative;
-        transition: transform .3s, box-shadow .3s;
-        text-decoration: none;
-    }
-    .spotlight-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,.5); }
-    .spotlight-card-img {
-        height: 300px; position: relative; overflow: hidden;
-    }
-    .spotlight-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
-    .spotlight-card:hover .spotlight-card-img img { transform: scale(1.06); }
-    .spotlight-card-placeholder {
-        width: 100%; height: 100%;
-        background: linear-gradient(135deg, #2D1B3D, #1A1A1A);
-        display: flex; align-items: center; justify-content: center;
-    }
-    .spotlight-card-overlay {
-        position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.2) 50%, transparent 100%);
-    }
-    .spotlight-card-content {
-        position: absolute; bottom: 0; left: 0; right: 0; padding: 1.25rem;
-    }
-    .spotlight-pill {
-        display: inline-block;
-        background: rgba(255,255,255,.12); backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.18);
-        color: rgba(255,255,255,.85);
-        font-size: .65rem; font-weight: 600; letter-spacing: .06em;
-        padding: .18rem .55rem; border-radius: 9999px; margin-right: .25rem; margin-bottom: .5rem;
-    }
-    .spotlight-name { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: .3rem; line-height: 1.2; }
-    .spotlight-city { font-size: .75rem; color: rgba(255,255,255,.5); margin-bottom: .75rem; }
-    .spotlight-cta { display: inline-flex; align-items: center; gap: .35rem; color: #D4AF37; font-size: .78rem; font-weight: 700; transition: gap .2s; }
-    .spotlight-card:hover .spotlight-cta { gap: .6rem; }
-    .spotlight-logo {
-        position: absolute; top: .875rem; right: .875rem;
-        width: 2.5rem; height: 2.5rem; border-radius: 50%;
-        background: #fff; border: 2px solid rgba(255,255,255,.3);
-        overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.3);
-    }
-    .spotlight-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .spotlight-logo-initial {
-        width: 100%; height: 100%;
-        display: flex; align-items: center; justify-content: center;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        color: #fff; font-weight: 700; font-size: .875rem;
-    }
-
-    /* ── Search bar ── */
-    .search-bar {
-        background: #fff;
-        border-radius: 1rem;
-        box-shadow: 0 8px 40px rgba(0,0,0,.12);
-        border: 1.5px solid transparent;
-        transition: border-color .2s, box-shadow .2s;
-    }
-    .search-bar:focus-within {
-        border-color: #8B5CF6;
-        box-shadow: 0 8px 40px rgba(139,92,246,.15);
-    }
-
-    /* ── Category chips ── */
     .cat-chip {
         display: inline-flex; align-items: center; gap: .5rem;
-        padding: .5rem 1rem; border-radius: 9999px;
-        border: 1.5px solid #F4EDE4; background: #fff;
+        padding: .45rem 1rem; border-radius: 9999px;
+        border: 1.5px solid #E5E7EB; background: #fff;
         font-size: .8rem; font-weight: 600; color: #4B5563;
         white-space: nowrap; cursor: pointer;
-        transition: border-color .2s, background .2s, color .2s, transform .15s;
+        transition: border-color .2s, background .2s, color .2s;
         text-decoration: none;
     }
     .cat-chip:hover, .cat-chip.active {
         border-color: #8B5CF6; background: #8B5CF6; color: #fff;
-        transform: translateY(-1px);
-    }
-    .cat-chip-icon {
-        width: 1.5rem; height: 1.5rem; border-radius: 50%;
-        background: rgba(139,92,246,.12);
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; transition: background .2s;
-    }
-    .cat-chip:hover .cat-chip-icon, .cat-chip.active .cat-chip-icon {
-        background: rgba(255,255,255,.2);
     }
 
-    /* ── Filter panel ── */
-    .filter-panel {
-        background: #fff; border-radius: 1rem;
-        border: 1.5px solid #F4EDE4;
-        overflow: hidden;
-    }
-    .filter-toggle {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 1rem 1.25rem; cursor: pointer;
-        transition: background .15s;
-    }
-    .filter-toggle:hover { background: #FDFCFB; }
-
-    /* ── Vendor cards ── */
     .vendor-card {
-        background: #fff; border-radius: 1.25rem;
+        background: #fff; border-radius: 1rem;
         border: 1.5px solid #F4EDE4; overflow: hidden;
-        transition: border-color .25s, box-shadow .25s, transform .25s;
+        transition: border-color .2s, box-shadow .2s, transform .2s;
         text-decoration: none; display: block;
     }
     .vendor-card:hover {
         border-color: #8B5CF6;
-        box-shadow: 0 8px 32px rgba(139,92,246,.12);
-        transform: translateY(-3px);
+        box-shadow: 0 6px 24px rgba(139,92,246,.1);
+        transform: translateY(-2px);
     }
     .vendor-card-img {
         aspect-ratio: 4/3; overflow: hidden;
         background: linear-gradient(135deg, #F4EDE4, #FDFCFB);
-        position: relative;
     }
     .vendor-card-img img {
         width: 100%; height: 100%; object-fit: cover;
-        transition: transform .4s ease;
+        transition: transform .4s;
     }
-    .vendor-card:hover .vendor-card-img img { transform: scale(1.06); }
+    .vendor-card:hover .vendor-card-img img { transform: scale(1.05); }
     .vendor-card-initial {
         width: 100%; height: 100%;
         display: flex; align-items: center; justify-content: center;
-        background: linear-gradient(135deg, rgba(139,92,246,.08), rgba(212,175,55,.06));
     }
-    .vendor-card-body { padding: 1rem 1.125rem 1.25rem; }
+    .vendor-card-body { padding: .875rem 1rem 1rem; }
 
-    /* Badge vérifié */
-    .badge-verified {
-        position: absolute; top: .625rem; left: .625rem;
-        display: inline-flex; align-items: center; gap: .25rem;
-        background: #10B981; color: #fff;
-        font-size: .65rem; font-weight: 700; letter-spacing: .04em;
-        padding: .2rem .5rem; border-radius: 9999px;
-        box-shadow: 0 2px 6px rgba(16,185,129,.3);
-    }
-    .badge-featured {
-        position: absolute; top: .625rem; right: .625rem;
-        display: inline-flex; align-items: center; gap: .25rem;
-        background: linear-gradient(135deg, #D4AF37, #B8941F); color: #fff;
-        font-size: .65rem; font-weight: 700;
-        padding: .2rem .5rem; border-radius: 9999px;
-        box-shadow: 0 2px 6px rgba(212,175,55,.35);
-    }
-
-    /* ── Category section header ── */
     .cat-section-header {
         display: flex; align-items: center; justify-content: space-between;
-        padding-bottom: .75rem; margin-bottom: 1.25rem;
+        padding-bottom: .625rem; margin-bottom: 1rem;
         border-bottom: 1.5px solid #F4EDE4;
     }
-    .cat-section-dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        flex-shrink: 0;
-    }
 
-    /* ── Section label ── */
-    .section-label {
-        font-size: .7rem; font-weight: 700;
-        letter-spacing: .12em; text-transform: uppercase; color: #8B5CF6;
-    }
-
-    /* ── Scrollbar hide ── */
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* ── Empty state ── */
-    .empty-state {
-        text-align: center; padding: 5rem 2rem;
-    }
-    .empty-state-icon {
-        width: 5rem; height: 5rem; border-radius: 1.5rem;
-        background: linear-gradient(135deg, rgba(139,92,246,.08), rgba(139,92,246,.04));
-        display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 1.5rem;
-    }
-    .empty-state-icon svg { width: 2.5rem; height: 2.5rem; color: #8B5CF6; }
-
-    /* ── Pagination ── */
-    .page-btn {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 2.25rem; height: 2.25rem; border-radius: .625rem;
-        font-size: .875rem; font-weight: 500;
-        border: 1.5px solid #F4EDE4; background: #fff; color: #4B5563;
-        transition: border-color .2s, background .2s, color .2s;
-        text-decoration: none;
-    }
-    .page-btn:hover { border-color: #8B5CF6; color: #8B5CF6; }
-    .page-btn.active { background: #8B5CF6; border-color: #8B5CF6; color: #fff; }
-    .page-btn.disabled { opacity: .35; pointer-events: none; }
+    .empty-state { text-align: center; padding: 5rem 2rem; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="bg-lily-cream min-h-screen">
-
-    <!-- ══════════════════════════════════════════
-         HERO
-         ══════════════════════════════════════════ -->
-    <div class="vendor-hero py-16 md:py-20">
-        <!-- Particules géométriques -->
-        <div class="hero-particle"></div>
-        <div class="hero-particle"></div>
-        <div class="hero-particle"></div>
-        <div class="hero-particle"></div>
-        <div class="hero-particle"></div>
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-
-            <span class="section-label text-white/50 mb-4 block">{{ total_vendors }}+ professionnels vérifiés</span>
-
-            <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-5 leading-tight tracking-tight">
-                Trouvez votre<br>
-                <span class="text-gradient-gold">prestataire idéal</span>
-            </h1>
-
-            <p class="text-gray-400 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-                Photographes, DJ, traiteurs, décorateurs… tous les professionnels dont vous avez besoin pour un événement parfait.
-            </p>
-
-            <!-- Barre de recherche -->
-            <form method="get" class="search-bar flex items-center max-w-2xl mx-auto px-4 py-2">
-                <svg class="w-5 h-5 text-gray-400 flex-shrink-0 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg>
-                <input type="text" name="search"
-                       value="{% if search_query %}{{ search_query }}{% endif %}"
-                       placeholder="Photographe, DJ, Traiteur…"
-                       class="flex-1 py-3 text-sm text-gray-700 placeholder-gray-400 bg-transparent focus:outline-none">
-                {% if selected_service %}<input type="hidden" name="service_type" value="{{ selected_service }}">{% endif %}
-                {% if selected_city %}<input type="hidden" name="city" value="{{ selected_city }}">{% endif %}
-                <button type="submit" class="btn btn-primary btn-sm ml-2 flex-shrink-0">
-                    Rechercher
-                </button>
-            </form>
-
-        </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════
-         FEATURED SPOTLIGHT (mode catégories seulement)
-         ══════════════════════════════════════════ -->
-    {% if display_mode == 'categories' and vendors_featured %}
-    <section class="featured-spotlight py-10 md:py-14">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-            <div class="flex items-center justify-between mb-6">
-                <div>
-                    <span style="font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#D4AF37; display:block; margin-bottom:.3rem;">Sélection premium</span>
-                    <h2 class="text-xl font-bold text-white">Prestataires en vedette</h2>
-                </div>
-                <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-white/50 hover:text-white transition-colors">
-                    Voir tous
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-            </div>
-
-            <div class="spotlight-scroll">
-                {% for vendor in vendors_featured %}
-                <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="spotlight-card">
-                    <div class="spotlight-card-img">
-                        {% if vendor.images.first %}
-                            <img src="{{ vendor.images.first.image.url }}" alt="{{ vendor.business_name }}" loading="lazy">
-                        {% else %}
-                            <div class="spotlight-card-placeholder">
-                                <span style="font-size:4rem; font-weight:700; color:rgba(255,255,255,0.1);">{{ vendor.business_name|first }}</span>
-                            </div>
-                        {% endif %}
-                        <div class="spotlight-card-overlay"></div>
-
-                        <!-- Logo en médaillon -->
-                        <div class="spotlight-logo">
-                            {% if vendor.logo %}
-                                <img src="{{ vendor.logo }}" alt="{{ vendor.business_name }}">
-                            {% else %}
-                                <div class="spotlight-logo-initial">{{ vendor.business_name|first }}</div>
-                            {% endif %}
-                        </div>
-
-                        <div class="spotlight-card-content">
-                            <div>
-                                {% for service in vendor.service_types.all|slice:":2" %}
-                                <span class="spotlight-pill">{{ service.name }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="spotlight-name">{{ vendor.business_name }}</div>
-                            {% if vendor.city %}
-                            <div class="spotlight-city">
-                                <svg style="display:inline; width:.75rem; height:.75rem; margin-right:.2rem; vertical-align:middle;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                {{ vendor.city }}
-                            </div>
-                            {% endif %}
-                            <span class="spotlight-cta">
-                                Voir le profil
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-
-        </div>
-    </section>
-    {% endif %}
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <!-- ══════════════════════════════════════════
-             CATÉGORIES — chips horizontaux
-             ══════════════════════════════════════════ -->
-        <div class="mb-8">
-            <div class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-hide">
-
-                <!-- Tout voir -->
-                <a href="{% url 'vendors:vendor_list' %}{% if search_query %}?search={{ search_query }}{% endif %}"
-                   class="cat-chip {% if not selected_service_types %}active{% endif %}">
-                    <span>Tous</span>
-                </a>
-
-                {% for service in service_types|slice:":10" %}
-                <a href="?service_types={{ service.id }}{% if search_query %}&search={{ search_query }}{% endif %}"
-                   class="cat-chip {% if service.id|stringformat:'s' in selected_service_types %}active{% endif %}">
-                    <span class="cat-chip-icon">
-                        {% if 'photo' in service.name|lower %}
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                        {% elif 'DJ' in service.name or 'music' in service.name|lower %}
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
-                        {% elif 'déco' in service.name|lower %}
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                        {% elif 'traiteur' in service.name|lower %}
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                        {% else %}
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        {% endif %}
-                    </span>
-                    {{ service.name|truncatewords:2 }}
-                </a>
-                {% endfor %}
-
+        <!-- En-tête -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-lily-dark">Nos prestataires</h1>
+                <p class="text-sm text-gray-400 mt-0.5">{{ total_vendors }} professionnel{{ total_vendors|pluralize }} vérifié{{ total_vendors|pluralize }}</p>
             </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════
-             FILTRES AVANCÉS
-             ══════════════════════════════════════════ -->
-        <div class="filter-panel mb-8">
-            <button type="button" id="toggleFilters" class="filter-toggle w-full">
-                <div class="flex items-center gap-2.5">
-                    <svg class="w-4 h-4 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
-                    </svg>
-                    <span class="font-medium text-sm text-gray-800">Filtres avancés</span>
-                    {% if selected_service_types or selected_cities %}
-                        <span class="px-2 py-0.5 bg-lily-purple text-white text-xs rounded-full font-semibold">Actifs</span>
-                    {% endif %}
-                </div>
-                <svg id="filterIcon" class="w-4 h-4 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            <form method="get" class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm focus-within:border-lily-purple transition w-full sm:w-auto sm:min-w-[280px]">
+                {% if selected_service_types %}
+                    {% for st in selected_service_types %}
+                    <input type="hidden" name="service_types" value="{{ st }}">
+                    {% endfor %}
+                {% endif %}
+                <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-            </button>
-
-            <div id="filtersContent" class="hidden border-t border-gray-100">
-                <form method="get" class="p-5 space-y-5">
-                    {% if search_query %}<input type="hidden" name="search" value="{{ search_query }}">{% endif %}
-
-                    <!-- Services -->
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Types de services</p>
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                            {% for service in service_types %}
-                            <label class="flex items-center gap-2 p-2.5 border border-gray-100 rounded-lg cursor-pointer hover:border-lily-purple hover:bg-lily-cream/50 transition text-sm
-                                   {% if service.id|stringformat:'s' in selected_service_types %}border-lily-purple bg-lily-cream{% endif %}">
-                                <input type="checkbox" name="service_types" value="{{ service.id }}"
-                                       {% if service.id|stringformat:'s' in selected_service_types %}checked{% endif %}
-                                       class="w-3.5 h-3.5 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
-                                <span class="text-gray-700">{{ service.name }}</span>
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <!-- Villes -->
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Ville</p>
-                        <div class="flex flex-wrap gap-2">
-                            {% for city in cities %}
-                            <label class="flex items-center gap-1.5 px-3 py-1.5 border border-gray-100 rounded-full cursor-pointer hover:border-lily-purple transition text-sm
-                                   {% if city.id|stringformat:'s' in selected_cities %}border-lily-purple bg-lily-cream{% endif %}">
-                                <input type="checkbox" name="cities" value="{{ city.id }}"
-                                       {% if city.id|stringformat:'s' in selected_cities %}checked{% endif %}
-                                       class="w-3 h-3 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
-                                <span class="text-gray-700">{{ city.name }}</span>
-                            </label>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3 pt-2 border-t border-gray-100">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            Appliquer
-                        </button>
-                        {% if selected_service_types or selected_cities %}
-                        <a href="?{% if search_query %}search={{ search_query }}{% endif %}" class="btn btn-ghost btn-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            Réinitialiser
-                        </a>
-                        {% endif %}
-                    </div>
-                </form>
-            </div>
+                <input type="text" name="search" value="{{ search_query }}"
+                       placeholder="Rechercher un prestataire…"
+                       class="flex-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent focus:outline-none">
+                {% if search_query %}
+                <a href="?{% for st in selected_service_types %}service_types={{ st }}&{% endfor %}" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </a>
+                {% endif %}
+            </form>
         </div>
 
-        <!-- ══════════════════════════════════════════
-             RÉSULTATS PAR CATÉGORIE
-             ══════════════════════════════════════════ -->
-        {% if display_mode == 'categories' %}
+        <!-- Chips catégories -->
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">
+            <a href="{% url 'vendors:vendor_list' %}{% if search_query %}?search={{ search_query }}{% endif %}"
+               class="cat-chip {% if not selected_service_types %}active{% endif %}">
+                Tous
+            </a>
+            {% for service in service_types %}
+            <a href="?service_types={{ service.id }}{% if search_query %}&search={{ search_query }}{% endif %}"
+               class="cat-chip {% if service.id|stringformat:'s' in selected_service_types %}active{% endif %}">
+                {% if service.icon %}{{ service.icon }} {% endif %}{{ service.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Grille par catégorie -->
+        {% if vendors_by_category %}
             {% for category in vendors_by_category %}
-            <div class="mb-14">
+            <div class="mb-12">
                 <div class="cat-section-header">
-                    <div class="flex items-center gap-2.5">
-                        <span class="cat-section-dot"></span>
-                        <div>
-                            <h2 class="text-base font-bold text-lily-dark">{{ category.service_type.name }}</h2>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ category.vendors|length }} professionnel{{ category.vendors|length|pluralize }}</p>
-                        </div>
+                    <div>
+                        <h2 class="text-base font-bold text-lily-dark">{{ category.service_type.name }}</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">{{ category.vendors|length }} professionnel{{ category.vendors|length|pluralize }}</p>
                     </div>
-                    <a href="?service_types={{ category.service_type.id }}"
-                       class="inline-flex items-center gap-1 text-xs font-semibold text-lily-purple hover:gap-2 transition-all">
+                    <a href="?service_types={{ category.service_type.id }}{% if search_query %}&search={{ search_query }}{% endif %}"
+                       class="text-xs font-semibold text-lily-purple hover:underline flex items-center gap-1">
                         Voir tout
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {% for vendor in category.vendors %}
                     <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="vendor-card">
                         <div class="vendor-card-img">
@@ -504,37 +126,24 @@
                                 <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
                             {% elif vendor.images.first %}
                                 <img src="{% thumbnail_url vendor.images.first.image 'medium' %}"
-                                     srcset="{% responsive_srcset vendor.images.first.image 'small' 'medium' 'large' %}"
-                                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
                                      alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
                             {% else %}
                                 <div class="vendor-card-initial">
-                                    <span class="text-5xl font-display font-bold text-lily-purple/20">{{ vendor.business_name|first }}</span>
+                                    <span class="text-5xl font-bold text-lily-purple/20">{{ vendor.business_name|first }}</span>
                                 </div>
-                            {% endif %}
-
-                            {% if vendor.is_active %}
-                            <span class="badge-verified">
-                                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                Vérifié
-                            </span>
-                            {% endif %}
-                            {% if vendor.is_featured %}
-                            <span class="badge-featured">
-                                <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                Vedette
-                            </span>
                             {% endif %}
                         </div>
                         <div class="vendor-card-body">
                             <h3 class="font-semibold text-sm text-lily-dark truncate mb-1">{{ vendor.business_name }}</h3>
+                            {% if vendor.city %}
                             <p class="text-xs text-gray-400 flex items-center gap-1 mb-2">
                                 <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 <span class="truncate">{{ vendor.city }}</span>
                             </p>
+                            {% endif %}
                             <div class="flex flex-wrap gap-1">
                                 {% for service in vendor.service_types.all|slice:":2" %}
-                                <span class="inline-block px-1.5 py-0.5 bg-lily-purple/8 text-lily-purple text-xs font-medium rounded-md">{{ service.name|truncatewords:2 }}</span>
+                                <span class="inline-block px-1.5 py-0.5 bg-lily-purple/10 text-lily-purple text-xs font-medium rounded-md">{{ service.name|truncatewords:2 }}</span>
                                 {% endfor %}
                                 {% if vendor.service_types.count > 2 %}
                                 <span class="inline-block px-1.5 py-0.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-md">+{{ vendor.service_types.count|add:"-2" }}</span>
@@ -547,136 +156,17 @@
             </div>
             {% endfor %}
 
-        <!-- ══════════════════════════════════════════
-             RÉSULTATS EN LISTE (filtres actifs)
-             ══════════════════════════════════════════ -->
-        {% elif display_mode == 'list' %}
-
-        {% if vendors %}
-            <div class="flex items-center justify-between mb-6">
-                <p class="text-sm text-gray-500">
-                    <span class="font-semibold text-lily-dark">{{ vendors.paginator.count }}</span>
-                    prestataire{{ vendors.paginator.count|pluralize }} trouvé{{ vendors.paginator.count|pluralize }}
-                </p>
-                <p class="text-xs text-gray-400">Page {{ vendors.number }} / {{ vendors.paginator.num_pages }}</p>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {% for vendor in vendors %}
-                <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="vendor-card">
-                    <div class="vendor-card-img">
-                        {% if vendor.logo %}
-                            <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
-                        {% elif vendor.images.first %}
-                            <img src="{% thumbnail_url vendor.images.first.image 'medium' %}"
-                                 srcset="{% responsive_srcset vendor.images.first.image 'small' 'medium' 'large' %}"
-                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                                 alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
-                        {% else %}
-                            <div class="vendor-card-initial">
-                                <span class="text-5xl font-display font-bold text-lily-purple/20">{{ vendor.business_name|first }}</span>
-                            </div>
-                        {% endif %}
-
-                        {% if vendor.is_active %}
-                        <span class="badge-verified">
-                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                            Vérifié
-                        </span>
-                        {% endif %}
-                        {% if vendor.is_featured %}
-                        <span class="badge-featured">
-                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            Vedette
-                        </span>
-                        {% endif %}
-                    </div>
-                    <div class="vendor-card-body">
-                        <h3 class="font-semibold text-sm text-lily-dark truncate mb-1">{{ vendor.business_name }}</h3>
-                        <p class="text-xs text-gray-400 flex items-center gap-1 mb-2">
-                            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            <span class="truncate">{{ vendor.city }}</span>
-                        </p>
-                        <div class="flex flex-wrap gap-1">
-                            {% for service in vendor.service_types.all|slice:":2" %}
-                            <span class="inline-block px-1.5 py-0.5 bg-lily-purple/8 text-lily-purple text-xs font-medium rounded-md">{{ service.name|truncatewords:2 }}</span>
-                            {% endfor %}
-                            {% if vendor.service_types.count > 2 %}
-                            <span class="inline-block px-1.5 py-0.5 bg-gray-100 text-gray-500 text-xs font-medium rounded-md">+{{ vendor.service_types.count|add:"-2" }}</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-
-            <!-- Pagination -->
-            {% if vendors.has_other_pages %}
-            <div class="mt-12 flex justify-center items-center gap-1.5">
-                {% if vendors.has_previous %}
-                <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_service %}service_type={{ selected_service }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}page={{ vendors.previous_page_number }}"
-                   class="page-btn">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                </a>
-                {% else %}
-                <span class="page-btn disabled"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></span>
-                {% endif %}
-
-                {% for num in vendors.paginator.page_range %}
-                    {% if vendors.number == num %}
-                        <span class="page-btn active">{{ num }}</span>
-                    {% elif num > vendors.number|add:'-3' and num < vendors.number|add:'3' %}
-                        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_service %}service_type={{ selected_service }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}page={{ num }}"
-                           class="page-btn">{{ num }}</a>
-                    {% endif %}
-                {% endfor %}
-
-                {% if vendors.has_next %}
-                <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_service %}service_type={{ selected_service }}&{% endif %}{% if selected_city %}city={{ selected_city }}&{% endif %}page={{ vendors.next_page_number }}"
-                   class="page-btn">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </a>
-                {% else %}
-                <span class="page-btn disabled"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
-                {% endif %}
-            </div>
-            {% endif %}
-
         {% else %}
-            <!-- Empty state -->
             <div class="empty-state">
-                <div class="empty-state-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <div class="w-16 h-16 rounded-2xl bg-lily-purple/8 flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <h3 class="text-xl font-bold text-lily-dark mb-2">Aucun prestataire trouvé</h3>
-                <p class="text-gray-500 text-sm max-w-sm mx-auto mb-6">Essayez d'élargir vos filtres ou de modifier votre recherche.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary btn-sm">Voir tous les prestataires</a>
-                    <button onclick="document.getElementById('toggleFilters').click()" class="btn btn-secondary btn-sm">Modifier les filtres</button>
-                </div>
+                <h3 class="text-lg font-bold text-lily-dark mb-2">Aucun prestataire trouvé</h3>
+                <p class="text-gray-500 text-sm max-w-xs mx-auto mb-5">Essayez un autre mot-clé ou parcourez toutes les catégories.</p>
+                <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary btn-sm">Voir tous les prestataires</a>
             </div>
-        {% endif %}
         {% endif %}
 
     </div>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.getElementById('toggleFilters');
-    const filtersContent = document.getElementById('filtersContent');
-    const filterIcon = document.getElementById('filterIcon');
-
-    const hasFilters = document.querySelector('input[name="service_types"]:checked, input[name="cities"]:checked') !== null;
-    if (hasFilters) {
-        filtersContent.classList.remove('hidden');
-        filterIcon.classList.add('rotate-180');
-    }
-
-    toggleBtn.addEventListener('click', function() {
-        filtersContent.classList.toggle('hidden');
-        filterIcon.classList.toggle('rotate-180');
-    });
-});
-</script>
 {% endblock %}
