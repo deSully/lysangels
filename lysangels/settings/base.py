@@ -21,8 +21,6 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.vendors',
     'apps.projects',
-    'apps.proposals',
-    'apps.messaging',
     'apps.core',
 ]
 
@@ -34,7 +32,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.vendors.middleware.SubscriptionMiddleware',
 ]
 
 ROOT_URLCONF = 'lysangels.urls'
@@ -51,8 +48,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
-                'apps.messaging.context_processors.unread_messages_count',
-                'apps.core.context_processors.notifications_processor',
             ],
         },
     },
@@ -134,3 +129,4 @@ CACHES = {
         'LOCATION': 'lysangels-cache',
     }
 }
+

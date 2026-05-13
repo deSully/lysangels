@@ -20,8 +20,7 @@ class RateLimitMiddleware:
         # Configuration du rate limiting par type d'action
         self.limits = {
             'login': {'max_attempts': 5, 'window': 300},  # 5 tentatives en 5 minutes
-            'register': {'max_attempts': 3, 'window': 3600},  # 3 inscriptions par heure
-            'password_reset': {'max_attempts': 3, 'window': 3600},  # 3 demandes par heure
+            'project_create': {'max_attempts': 10, 'window': 3600},  # 10 soumissions par heure
             'default': {'max_attempts': 30, 'window': 60},  # 30 requêtes par minute
         }
 
@@ -39,10 +38,8 @@ class RateLimitMiddleware:
         """Identifier le type d'action basé sur le chemin"""
         if '/login/' in path:
             return 'login'
-        elif '/register/' in path:
-            return 'register'
-        elif '/password-reset/' in path:
-            return 'password_reset'
+        elif '/projects/create/' in path:
+            return 'project_create'
         return None
 
     def _get_client_ip(self, request):

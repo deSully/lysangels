@@ -632,6 +632,9 @@ function initErrorTracking() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Mark body as JS-ready so scroll-reveal CSS activates
+    document.body.classList.add('js-ready');
+
     // Performance optimizations
     preloadImages();
     checkConnection();

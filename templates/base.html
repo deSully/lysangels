@@ -123,125 +123,89 @@
     <link rel="stylesheet" href="{% static 'css/components.css' %}">
     <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
 
-    <!-- CSS Global pour forcer Inter partout -->
+    <!-- CSS Global — v3.0 : Inter partout SAUF Playfair Display protégé -->
     <style>
-        * {
+        /*
+         * v3.0 FIX : On applique Inter sur tout SAUF les éléments
+         * qui utilisent explicitement Playfair Display (titres hero,
+         * stats, citations). Le sélecteur :not() protège ces éléments.
+         */
+        *:not([style*="Playfair"]):not(.hero-title):not(.stat-number):not(.stat-num):not(.step-number):not(.testimonial-quote):not(.font-display) {
             font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        }
+
+        /* Playfair Display explicitement restauré sur les éléments display */
+        [style*="Playfair"],
+        .hero-title,
+        .stat-number,
+        .stat-num,
+        .step-number,
+        .testimonial-quote,
+        .font-display,
+        .font-display * {
+            font-family: 'Playfair Display', Georgia, serif !important;
         }
 
         /* Hiérarchie typographique premium - Style Inter */
         body {
             font-size: 0.9375rem;
             line-height: 1.6;
-            font-weight: 400; /* Regular par défaut pour meilleure lisibilité */
+            font-weight: 400;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: -0.011em; /* Ajustement optique Inter */
+            letter-spacing: -0.011em;
+            /* v3.0 : fond crème chaud */
+            background-color: #FAF8F5;
         }
 
-        /* Titres principaux - Bold (700) ou SemiBold (600) */
-        h1 {
-            font-weight: 700;
-            letter-spacing: -0.022em;
-        }
-        
-        h2 {
-            font-weight: 600;
-            letter-spacing: -0.019em;
-        }
+        /* Titres principaux */
+        h1 { font-weight: 700; letter-spacing: -0.022em; }
+        h2 { font-weight: 600; letter-spacing: -0.019em; }
+        h3, h4, h5, h6 { font-weight: 600; letter-spacing: -0.014em; }
 
-        /* Sous-titres - SemiBold (600) */
-        h3, h4, h5, h6 {
-            font-weight: 600;
-            letter-spacing: -0.014em;
-        }
+        /* Labels et boutons */
+        label, button, .btn, a.btn { font-weight: 500; letter-spacing: -0.006em; }
 
-        /* Labels et boutons - Medium (500) */
-        label, button, .btn, a.btn {
-            font-weight: 500;
-            letter-spacing: -0.006em;
-        }
+        /* Texte courant */
+        p, span:not(.font-medium):not(.font-semibold):not(.font-bold), div { font-weight: 400; }
 
-        /* Texte courant - Regular (400) */
-        p, span:not(.font-medium):not(.font-semibold):not(.font-bold), div {
-            font-weight: 400;
-        }
-
-        /* Texte important - SemiBold (600) */
-        strong, b {
-            font-weight: 600;
-        }
+        /* Texte important */
+        strong, b { font-weight: 600; }
 
         /* Classes utilitaires Inter */
         .font-bold { font-weight: 700 !important; letter-spacing: -0.022em; }
         .font-semibold { font-weight: 600 !important; letter-spacing: -0.019em; }
         .font-medium { font-weight: 500 !important; letter-spacing: -0.011em; }
         .font-normal { font-weight: 400 !important; }
-        .font-light { font-weight: 400 !important; } /* Inter Regular au lieu de Light pour meilleure lisibilité */
+        .font-light { font-weight: 400 !important; }
 
-        /* Cartes moins agressives - style Airbnb */
+        /* Cartes — style Airbnb subtil */
         .card-subtle {
-            border: 1px solid #e5e7eb;
+            border: 1px solid #F4EDE4; /* v3.0 : bordure chaude au lieu de gris froid */
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease; /* v3.0 : transition plus lente = plus luxueux */
         }
-
         .card-subtle:hover {
             box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
             transform: translateY(-2px);
         }
 
-        /* Réduire les ombres par défaut */
-        .shadow-sm {
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-        }
-
-        .shadow-md {
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06) !important;
-        }
-
-        .shadow-lg {
-            box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08) !important;
-        }
-
-        .shadow-xl {
-            box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .shadow-2xl {
-            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.12) !important;
-        }
-
         /* Navigation active state */
-        .nav-link {
-            position: relative;
-            padding-bottom: 0.25rem;
-        }
-
-        .nav-link-active {
-            color: var(--color-lily-purple) !important;
-            font-weight: 600;
-        }
-
+        .nav-link { position: relative; padding-bottom: 0.25rem; }
+        .nav-link-active { color: var(--color-lily-purple) !important; font-weight: 600; }
         .nav-link-active::after {
             content: '';
             position: absolute;
             bottom: -0.5rem;
-            left: 0;
-            right: 0;
+            left: 0; right: 0;
             height: 2px;
             background: linear-gradient(90deg, var(--color-lily-purple), var(--color-lily-gold));
             border-radius: 2px;
             animation: navUnderline 0.3s ease-out;
         }
-
         @keyframes navUnderline {
-            from {
-                transform: scaleX(0);
-            }
-            to {
-                transform: scaleX(1);
-            }
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
         }
     </style>
 
@@ -283,74 +247,21 @@
                     <a href="{% url 'core:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}nav-link-active{% endif %}">
                         À propos
                     </a>
+                    <a href="{% url 'core:press' %}" class="nav-link {% if request.resolver_match.url_name == 'press' %}nav-link-active{% endif %}">
+                        Presse
+                    </a>
+
+                    <!-- Bouton principal J'ai un projet -->
+                    <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
+                        J'ai un projet
+                    </a>
 
                     {% if user.is_authenticated %}
-                        <!-- Badge Notifications avec compteur -->
-                        <div class="relative">
-                            <button id="notifications-btn" class="relative hover:text-lily-purple transition {% if 'notifications' in request.path %}text-lily-purple font-semibold{% else %}text-gray-700{% endif %}">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                </svg>
-                                {% if unread_notifications_count > 0 %}
-                                    <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full min-w-[18px]">
-                                        {{ unread_notifications_count }}
-                                    </span>
-                                {% endif %}
-                            </button>
-                            
-                            <!-- Dropdown Notifications -->
-                            <div id="notifications-dropdown" class="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl py-2 hidden z-50 max-h-[500px] overflow-y-auto">
-                                <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                                    <h3 class="font-medium text-lily-dark">Notifications</h3>
-                                    {% if unread_notifications_count > 0 %}
-                                        <button onclick="markAllAsRead()" class="text-xs text-lily-purple hover:text-lily-dark transition">
-                                            Tout marquer comme lu
-                                        </button>
-                                    {% endif %}
-                                </div>
-                                <div id="notifications-list">
-                                    <!-- Rempli dynamiquement ou depuis le contexte -->
-                                    <div class="px-4 py-8 text-center text-gray-500 text-sm">
-                                        Chargement...
-                                    </div>
-                                </div>
-                                <div class="px-4 py-3 border-t border-gray-200 text-center">
-                                    <a href="{% url 'core:notifications_list' %}" class="text-xs text-lily-purple hover:text-lily-dark transition font-medium">
-                                        Voir toutes les notifications
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Badge Messages avec compteur -->
-                        <a href="{% url 'messaging:conversation_list' %}" class="relative hover:text-lily-purple transition {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple font-semibold{% else %}text-gray-700{% endif %}">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                            </svg>
-                            {% if unread_messages_count > 0 %}
-                                <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full min-w-[18px]">
-                                    {{ unread_messages_count }}
-                                </span>
-                            {% endif %}
-                        </a>
-
-                        {% if user.is_provider %}
-                            <a href="{% url 'vendors:dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}nav-link-active{% endif %}">
-                                Mon espace
-                            </a>
-                        {% elif user.is_susy_admin %}
+                        {% if user.is_admin_event %}
                             <a href="{% url 'accounts:admin_dashboard' %}" class="nav-link {% if 'admin' in request.path %}nav-link-active{% endif %}">
                                 Administration
                             </a>
-                        {% else %}
-                            <a href="{% url 'accounts:dashboard' %}" class="nav-link {% if 'dashboard' in request.path or 'profile' in request.path %}nav-link-active{% endif %}">
-                                Mon espace
-                            </a>
-                            <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
-                                Créer un projet
-                            </a>
                         {% endif %}
-
                         <div class="relative">
                             <button id="user-menu-btn" class="flex items-center space-x-2 text-sm text-gray-700 hover:text-lily-purple transition font-medium">
                                 <span>{{ user.get_full_name|default:user.username }}</span>
@@ -359,17 +270,6 @@
                                 </svg>
                             </button>
                             <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-50">
-                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-lily-cream">
-                                    Mon profil
-                                </a>
-                                {% if user.is_provider %}
-                                    <a href="{% url 'vendors:profile_edit' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-lily-cream">
-                                        Modifier mon profil
-                                    </a>
-                                {% endif %}
-                                <a href="{% url 'messaging:conversation_list' %}" class="block px-4 py-2 text-sm {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:bg-lily-cream">
-                                    Messages
-                                </a>
                                 <hr class="my-2">
                                 <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-lily-cream">
                                     Déconnexion
@@ -377,11 +277,8 @@
                             </div>
                         </div>
                     {% else %}
-                        <a href="{% url 'accounts:login' %}" class="nav-link">
+                        <a href="{% url 'accounts:login' %}" class="nav-link text-gray-500 text-sm">
                             Connexion
-                        </a>
-                        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm">
-                            Inscription
                         </a>
                     {% endif %}
                 </div>
@@ -410,69 +307,30 @@
                 <a href="{% url 'core:about' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'about' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
                     ℹ️ À propos
                 </a>
+                <a href="{% url 'core:press' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'press' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                    📰 Presse
+                </a>
+
+                <!-- Bouton principal mobile -->
+                <a href="{% url 'projects:project_create' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
+                    J'ai un projet
+                </a>
 
                 {% if user.is_authenticated %}
                     <div class="border-t pt-2 mt-2">
-                        <!-- Notifications mobile -->
-                        <a href="{% url 'core:notifications_list' %}" class="flex items-center justify-between py-3 px-2 text-base {% if 'notifications' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                            <span>🔔 Notifications</span>
-                            {% if unread_notifications_count > 0 %}
-                                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium min-w-[24px] text-center">
-                                    {{ unread_notifications_count }}
-                                </span>
-                            {% endif %}
-                        </a>
-
-                        <!-- Messages mobile -->
-                        <a href="{% url 'messaging:conversation_list' %}" class="flex items-center justify-between py-3 px-2 text-base {% if 'messaging' in request.path or 'conversation' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                            <span>💬 Messages</span>
-                            {% if unread_messages_count > 0 %}
-                                <span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium min-w-[24px] text-center">
-                                    {{ unread_messages_count }}
-                                </span>
-                            {% endif %}
-                        </a>
-                    </div>
-
-                    <div class="border-t pt-2 mt-2">
-                        <!-- Espaces selon type utilisateur -->
-                        {% if user.is_provider %}
-                            <a href="{% url 'vendors:dashboard' %}" class="block py-3 px-2 text-base {% if 'dashboard' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                                📊 Mon espace prestataire
-                            </a>
-                            <a href="{% url 'vendors:profile_edit' %}" class="block py-3 px-2 text-base {% if 'profile_edit' in request.path or 'profile/edit' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                                ✏️ Modifier mon profil
-                            </a>
-                        {% elif user.is_susy_admin %}
+                        {% if user.is_admin_event %}
                             <a href="{% url 'accounts:admin_dashboard' %}" class="block py-3 px-2 text-base {% if 'admin' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                                👑 Administration
-                            </a>
-                        {% else %}
-                            <a href="{% url 'accounts:dashboard' %}" class="block py-3 px-2 text-base {% if 'dashboard' in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                                📊 Mon espace
-                            </a>
-                            <a href="{% url 'projects:project_create' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
-                                ➕ Créer un projet
+                                Administration
                             </a>
                         {% endif %}
-
-                        <a href="{% url 'accounts:profile' %}" class="block py-3 px-2 text-base {% if 'profile' in request.path and 'profile_edit' not in request.path and 'profile/edit' not in request.path %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                            👤 Mon profil
-                        </a>
-                    </div>
-
-                    <div class="border-t pt-2 mt-2">
                         <a href="{% url 'accounts:logout' %}" class="block py-3 px-2 text-base text-red-600 hover:bg-red-50 rounded-lg transition font-medium">
-                            🚪 Déconnexion
+                            Déconnexion
                         </a>
                     </div>
                 {% else %}
                     <div class="border-t pt-2 mt-2">
-                        <a href="{% url 'accounts:login' %}" class="block py-3 px-2 text-base text-gray-700 hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
-                            🔑 Connexion
-                        </a>
-                        <a href="{% url 'accounts:register' %}" class="block bg-lily-purple text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 hover:bg-opacity-90 transition shadow-md">
-                            ✨ Inscription
+                        <a href="{% url 'accounts:login' %}" class="block py-3 px-2 text-base text-gray-500 hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
+                            Connexion (admin)
                         </a>
                     </div>
                 {% endif %}
@@ -532,17 +390,13 @@
                         </ul>
                     </div>
 
-                    <!-- Colonne 3: Devenir prestataire -->
+                    <!-- Colonne 3: Prestataires -->
                     <div>
-                        <h4 class="font-semibold mb-5 text-sm">Devenir prestataire</h4>
+                        <h4 class="font-semibold mb-5 text-sm">Prestataires</h4>
                         <ul class="space-y-3 text-sm text-gray-400">
-                            <li><a href="{% url 'accounts:register' %}" class="hover:text-white transition">Inscrire mon activité</a></li>
-                            <li><a href="{% url 'core:how_it_works' %}" class="hover:text-white transition">Avantages LysAngels</a></li>
-                            <li><a href="{% url 'core:how_it_works' %}" class="hover:text-white transition">Ressources prestataires</a></li>
-                            {% if user.is_authenticated and user.is_provider %}
-                            <li><a href="{% url 'vendors:dashboard' %}" class="hover:text-white transition">Mon tableau de bord</a></li>
-                            {% endif %}
-                            <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Forum communauté</a></li>
+                            <li><a href="{% url 'vendors:vendor_list' %}" class="hover:text-white transition">Voir les prestataires</a></li>
+                            <li><a href="{% url 'core:how_it_works' %}" class="hover:text-white transition">Comment ça marche</a></li>
+                            <li><a href="{% url 'core:contact' %}" class="hover:text-white transition">Contacter LysAngels</a></li>
                         </ul>
                     </div>
 
@@ -671,74 +525,6 @@
             });
         }
 
-        // Notifications dropdown
-        const notificationsBtn = document.getElementById('notifications-btn');
-        const notificationsDropdown = document.getElementById('notifications-dropdown');
-
-        if (notificationsBtn && notificationsDropdown) {
-            notificationsBtn.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                notificationsDropdown.classList.toggle('hidden');
-                
-                // Charger les notifications au premier clic
-                if (!notificationsDropdown.dataset.loaded) {
-                    await loadNotifications();
-                    notificationsDropdown.dataset.loaded = 'true';
-                }
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!notificationsBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
-                    notificationsDropdown.classList.add('hidden');
-                }
-            });
-        }
-
-        async function loadNotifications() {
-            try {
-                const response = await fetch('{% url "core:notifications_list" %}');
-                const html = await response.text();
-                
-                // Extraire seulement la liste des notifications
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const notificationItems = doc.querySelectorAll('.notification-item');
-                
-                const notificationsList = document.getElementById('notifications-list');
-                
-                if (notificationItems.length === 0) {
-                    notificationsList.innerHTML = '<div class="px-4 py-8 text-center text-gray-500 text-sm">Aucune notification</div>';
-                } else {
-                    notificationsList.innerHTML = '';
-                    notificationItems.forEach((item, index) => {
-                        if (index < 5) {  // Afficher max 5 notifications dans le dropdown
-                            notificationsList.appendChild(item.cloneNode(true));
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Erreur chargement notifications:', error);
-                document.getElementById('notifications-list').innerHTML = '<div class="px-4 py-8 text-center text-gray-500 text-sm">Erreur de chargement</div>';
-            }
-        }
-
-        async function markAllAsRead() {
-            try {
-                const response = await fetch('{% url "core:mark_all_notifications_read" %}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                });
-
-                if (response.ok) {
-                    location.reload();
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        }
     </script>
     
     <!-- Mobile UX Enhancements -->

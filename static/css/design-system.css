@@ -1,7 +1,16 @@
 /**
  * LysAngels Design System
  * Design tokens et variables CSS pour une cohérence graphique totale
- * Version: 2.0 - Optimisé pour présentation investisseurs
+ * Version: 3.0 - Direction artistique "Le Gratin" — Premium africain
+ *
+ * CHANGEMENTS v3.0 :
+ * - Fond body crème plus prononcé (#FAF8F5) pour casser le blanc clinique
+ * - Palette enrichie : ivoire, champagne, bordeaux profond en accent tertiaire
+ * - Typographie : Playfair Display protégée du reset Inter (voir base.html)
+ * - Accentuation or omniprésente sur les éléments interactifs et les séparateurs
+ * - Espacement vertical des sections augmenté (6rem → 7rem) pour respirer
+ * - Navbar avec liseré doré subtil en bas pour un effet premium immédiat
+ * - Liens et hover states plus luxueux (transitions plus lentes, couleurs plus riches)
  */
 
 /* ============================================
@@ -38,9 +47,12 @@
   --color-gray-100: #F3F4F6;
   --color-gray-50: #F9FAFB;
 
-  --color-lily-cream: #FDFCFB;
+  --color-lily-cream: #FAF8F5;       /* v3.0 : crème plus prononcé, casse le blanc clinique */
   --color-lily-rose: #F4EDE4;
+  --color-lily-ivory: #F7F3ED;       /* v3.0 : ivoire chaud pour fonds alternés */
   --color-lily-white: #FFFFFF;
+  --color-burgundy: #6B2737;         /* v3.0 : accent tertiaire bordeaux profond */
+  --color-burgundy-light: #8B3A4A;
 
   /* FEEDBACK - Statuts clairs */
   --color-success: #10B981;
@@ -497,4 +509,83 @@ small {
 .backdrop-blur-lg {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+
+/* ============================================
+   v3.0 — PREMIUM "LE GRATIN" ENHANCEMENTS
+   Direction artistique haut de gamme
+   ============================================ */
+
+/* --- Fond body crème chaud au lieu du blanc clinique --- */
+body {
+  background-color: var(--color-lily-cream); /* #FAF8F5 — crème prononcé */
+}
+
+/* --- Playfair Display protégé du reset Inter ---
+   Les éléments avec style inline font-family Playfair
+   ou la classe .font-display gardent leur serif.
+   Voir aussi le fix dans base.html <style>. */
+[style*="Playfair"],
+[style*="playfair"],
+.font-display,
+.font-display *,
+.hero-title,
+.stat-number,
+.stat-num,
+.step-number,
+.testimonial-quote {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+/* --- Navbar premium : liseré doré subtil --- */
+.navbar {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15); /* or subtil au lieu du gris */
+  box-shadow: 0 1px 3px 0 rgba(212, 175, 55, 0.06); /* ombre dorée très légère */
+}
+
+/* --- Sections : espacement vertical augmenté pour respirer --- */
+section.py-16 { padding-top: 5rem; padding-bottom: 5rem; }
+section.py-24 { padding-top: 7rem; padding-bottom: 7rem; }
+@media (min-width: 768px) {
+  section.py-16 { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+  section.py-24 { padding-top: 7.5rem; padding-bottom: 7.5rem; }
+}
+
+/* --- Séparateurs dorés entre sections --- */
+.section-gold-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.25), transparent);
+  border: none;
+  margin: 0;
+}
+
+/* --- Liens premium : transition plus lente, couleur or au hover --- */
+a:not(.btn):not(.nav-link):not(.event-card):not(.service-pill):not(.featured-card) {
+  transition: color 0.3s ease;
+}
+
+/* --- Fond ivoire chaud pour sections alternées --- */
+.bg-lily-ivory {
+  background-color: var(--color-lily-ivory);
+}
+
+/* --- Fond champagne pour highlights --- */
+.bg-champagne {
+  background-color: var(--color-champagne);
+}
+
+/* --- Bordures plus chaudes (rose/ivoire au lieu de gris froid) --- */
+.border-warm {
+  border-color: var(--color-lily-rose);
+}
+
+/* --- Texte or pour labels premium --- */
+.text-lily-gold {
+  color: var(--color-lily-gold);
+}
+
+/* --- Footer : liseré doré en haut --- */
+footer.bg-lily-dark {
+  border-top: 2px solid rgba(212, 175, 55, 0.2);
 }

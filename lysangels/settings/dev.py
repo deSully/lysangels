@@ -29,3 +29,4 @@ DATABASES = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'LysAngels <noreply@lysangels.tg>'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+

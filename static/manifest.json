@@ -12,7 +12,7 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "/static/images/ouboui /icon-72x72.png",
+      "src": "/static/images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any maskable"
@@ -61,20 +61,6 @@
     }
   ],
   "categories": ["lifestyle", "business", "entertainment"],
-  "screenshots": [
-    {
-      "src": "/static/images/screenshots/home-mobile.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/static/images/screenshots/vendors-mobile.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Voir les prestataires",
@@ -89,9 +75,9 @@
       ]
     },
     {
-      "name": "Créer un projet",
-      "short_name": "Nouveau projet",
-      "description": "Démarrer un nouveau projet événementiel",
+      "name": "J'ai besoin d'aide",
+      "short_name": "Demande d'aide",
+      "description": "Soumettre une demande d'aide pour votre événement",
       "url": "/projects/create/",
       "icons": [
         {
@@ -99,29 +85,7 @@
           "sizes": "96x96"
         }
       ]
-    },
-    {
-      "name": "Mes messages",
-      "short_name": "Messages",
-      "description": "Accéder à mes conversations",
-      "url": "/messages/",
-      "icons": [
-        {
-          "src": "/static/images/icons/shortcut-messages.png",
-          "sizes": "96x96"
-        }
-      ]
     }
   ],
-  "share_target": {
-    "action": "/share/",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
   "prefer_related_applications": false
 }

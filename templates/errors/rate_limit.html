@@ -31,12 +31,6 @@
                     Retour à l'accueil
                 </a>
                 
-                {% if action == 'login' %}
-                <a href="{% url 'accounts:password_reset' %}" 
-                   class="block w-full border-2 border-lily-purple text-lily-purple py-3 rounded-lg font-medium hover:bg-lily-purple hover:text-white transition">
-                    Mot de passe oublié ?
-                </a>
-                {% endif %}
             </div>
 
             <div class="mt-6 text-xs text-gray-500">

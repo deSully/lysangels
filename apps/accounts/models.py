@@ -10,7 +10,7 @@ class User(AbstractUser):
     USER_TYPE_CHOICES = [
         ('client', 'Client'),
         ('provider', 'Prestataire'),
-        ('admin', 'Administrateur Susy Event'),
+        ('admin', 'Administrateur'),
     ]
 
     user_type = models.CharField(
@@ -58,5 +58,5 @@ class User(AbstractUser):
         return self.user_type == 'provider'
 
     @property
-    def is_susy_admin(self):
+    def is_admin_event(self):
         return self.user_type == 'admin'

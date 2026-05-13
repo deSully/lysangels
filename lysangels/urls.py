@@ -19,14 +19,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
-from apps.core.sitemaps import StaticViewsSitemap, VendorSitemap, ProjectSitemap
+from apps.core.sitemaps import StaticViewsSitemap, VendorSitemap
 from apps.core.robots import robots_txt
 
 # Configuration des sitemaps
 sitemaps = {
     'static': StaticViewsSitemap,
     'vendors': VendorSitemap,
-    'projects': ProjectSitemap,
 }
 
 urlpatterns = [
@@ -35,8 +34,6 @@ urlpatterns = [
     path('accounts/', include('apps.accounts.urls')),
     path('vendors/', include('apps.vendors.urls')),
     path('projects/', include('apps.projects.urls')),
-    path('proposals/', include('apps.proposals.urls')),
-    path('messages/', include('apps.messaging.urls')),
     
     # SEO: Sitemap et robots.txt
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
