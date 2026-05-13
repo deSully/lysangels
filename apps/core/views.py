@@ -55,10 +55,6 @@ def how_it_works(request):
     return render(request, 'core/how_it_works.html')
 
 
-def press(request):
-    return render(request, 'core/press.html')
-
-
 def terms_of_service(request):
     active_terms = TermsOfService.objects.filter(is_active=True).first()
     return render(request, 'core/terms.html', {'terms': active_terms})
