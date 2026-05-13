@@ -36,18 +36,7 @@ def home(request):
 
 
 def about(request):
-    """Page À propos — v3.0 : stats réelles + villes"""
-    total_vendors = VendorProfile.objects.filter(is_active=True).count()
-    total_service_types = ServiceType.objects.count()
-    total_cities = City.objects.filter(is_active=True).count()
-    context = {
-        'stats': {
-            'vendors_count': total_vendors,
-            'service_types_count': total_service_types,
-            'cities_count': total_cities,
-        }
-    }
-    return render(request, 'core/about.html', context)
+    return render(request, 'core/about.html')
 
 
 def contact(request):
