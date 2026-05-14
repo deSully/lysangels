@@ -158,6 +158,47 @@ class VendorImage(models.Model):
             return image_field
 
 
+class VendorApplication(models.Model):
+    """Candidature d'un prestataire souhaitant rejoindre LysAngels"""
+    STATUS_CHOICES = [
+        ('pending', 'En attente'),
+        ('contacted', 'Contacté'),
+        ('approved', 'Approuvé'),
+        ('rejected', 'Refusé'),
+    ]
+    name = models.CharField(max_length=200, verbose_name='Nom complet')
+    email = models.EmailField(verbose_name='Email')
+    whatsapp = models.CharField(max_length=30, verbose_name='WhatsApp')
+    city = models.CharField(max_length=100, verbose_name='Ville')
+    service_types = models.ManyToManyField(
+        ServiceType,
+        related_name='applications',
+        verbose_name='Types de prestation',
+        blank=True,
+    )
+    description = models.TextField(verbose_name='Description de l\'activité')
+    instagram = models.CharField(max_length=200, blank=True, verbose_name='Instagram')
+    facebook = models.CharField(max_length=200, blank=True, verbose_name='Facebook')
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        verbose_name='Statut',
+        db_index=True,
+    )
+    admin_notes = models.TextField(blank=True, verbose_name='Notes admin')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Candidature prestataire'
+        verbose_name_plural = 'Candidatures prestataires'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} — {self.city} ({self.get_status_display()})"
+
+
 class ContactView(models.Model):
     """Trace chaque fois qu'un visiteur demande à voir les coordonnées d'un prestataire"""
     vendor = models.ForeignKey(

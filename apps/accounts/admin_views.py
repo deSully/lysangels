@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 
 from apps.core.models import City, Country
-from apps.vendors.models import ServiceType, VendorProfile, VendorImage
+from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
 from apps.projects.models import EventType, Project, ProjectNote
 
 
@@ -469,6 +469,47 @@ def vendor_toggle_active(request, pk):
         status = 'activé' if vendor.is_active else 'désactivé'
         messages.success(request, f'Prestataire {status} avec succès!')
     return redirect(request.META.get('HTTP_REFERER', 'accounts:admin_vendor_list'))
+
+
+# ========== GESTION DES CANDIDATURES PRESTATAIRES ==========
+
+@admin_required
+def application_list(request):
+    """Liste des candidatures prestataires"""
+    applications = VendorApplication.objects.prefetch_related('service_types').order_by('-created_at')
+    status = request.GET.get('status')
+    if status:
+        applications = applications.filter(status=status)
+    paginator = Paginator(applications, 20)
+    applications = paginator.get_page(request.GET.get('page'))
+    return render(request, 'accounts/admin/application_list.html', {
+        'applications': applications,
+        'selected_status': status,
+        'status_choices': VendorApplication.STATUS_CHOICES,
+    })
+
+
+@admin_required
+def application_detail(request, pk):
+    """Détails d'une candidature prestataire"""
+    application = get_object_or_404(
+        VendorApplication.objects.prefetch_related('service_types'), pk=pk
+    )
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        admin_notes = request.POST.get('admin_notes', '').strip()
+        valid_statuses = [s[0] for s in VendorApplication.STATUS_CHOICES]
+        if new_status in valid_statuses:
+            application.status = new_status
+            application.admin_notes = admin_notes
+            application.save()
+            messages.success(request, 'Candidature mise à jour.')
+        else:
+            messages.error(request, 'Statut invalide.')
+        return redirect('accounts:admin_application_detail', pk=pk)
+    return render(request, 'accounts/admin/application_detail.html', {
+        'application': application,
+    })
 
 
 @admin_required

@@ -1,0 +1,138 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}{{ application.name }} - Candidature Admin{% endblock %}
+
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-xl font-semibold text-gray-900">{{ application.name }}</h1>
+        <p class="text-sm text-gray-500 mt-0.5">Candidature reçue le {{ application.created_at|date:"d/m/Y à H:i" }}</p>
+    </div>
+    <a href="{% url 'accounts:admin_application_list' %}"
+       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+</div>
+
+<div class="grid grid-cols-3 gap-6">
+
+    <!-- Colonne gauche -->
+    <div class="col-span-2 space-y-4">
+
+        <!-- Coordonnées -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Coordonnées</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Nom complet</p>
+                    <p class="text-sm text-gray-900">{{ application.name }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Email</p>
+                    <p class="text-sm text-gray-900">{{ application.email }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">WhatsApp</p>
+                    <p class="text-sm text-gray-900">
+                        <a href="https://wa.me/{{ application.whatsapp|cut:' '|cut:'+' }}"
+                           target="_blank" class="text-green-700 hover:underline">
+                            {{ application.whatsapp }}
+                        </a>
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Ville</p>
+                    <p class="text-sm text-gray-900">{{ application.city }}</p>
+                </div>
+                {% if application.instagram %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Instagram</p>
+                    <p class="text-sm text-gray-900">{{ application.instagram }}</p>
+                </div>
+                {% endif %}
+                {% if application.facebook %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Facebook</p>
+                    <p class="text-sm text-gray-900">{{ application.facebook }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Types de prestation -->
+        {% if application.service_types.exists %}
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-3">Types de prestation</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for st in application.service_types.all %}
+                <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-2 py-0.5">
+                    {% if st.icon %}{{ st.icon }} {% endif %}{{ st.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Description -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-3">Description de l'activité</h2>
+            <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{{ application.description }}</p>
+        </div>
+
+    </div>
+
+    <!-- Colonne droite — Actions -->
+    <div class="col-span-1 space-y-4">
+
+        <!-- Statut + notes -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Gestion</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-500 mb-1">Statut</label>
+                    <select name="status"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                        {% for value, label in application.STATUS_CHOICES %}
+                        <option value="{{ value }}" {% if application.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-500 mb-1">Notes internes</label>
+                    <textarea name="admin_notes" rows="4"
+                              placeholder="Notes visibles uniquement par l'admin…"
+                              class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm resize-none focus:ring-2 focus:ring-lily-purple focus:border-transparent">{{ application.admin_notes }}</textarea>
+                </div>
+                <button type="submit"
+                        class="w-full bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+                    Enregistrer
+                </button>
+            </form>
+        </div>
+
+        <!-- Créer le profil prestataire -->
+        {% if application.status == 'approved' %}
+        <div class="bg-green-50 border border-green-200 rounded-lg p-5">
+            <p class="text-sm text-green-800 font-medium mb-3">Candidature approuvée</p>
+            <p class="text-xs text-green-700 mb-4">Créez maintenant le profil prestataire à partir de cette candidature.</p>
+            <a href="{% url 'accounts:admin_vendor_create' %}?from_application={{ application.pk }}&name={{ application.name|urlencode }}&whatsapp={{ application.whatsapp|urlencode }}&description={{ application.description|urlencode }}&instagram={{ application.instagram|urlencode }}&facebook={{ application.facebook|urlencode }}"
+               class="block w-full bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium text-center hover:bg-green-800 transition">
+                Créer le profil prestataire →
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Statut badge -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <p class="text-xs text-gray-500 mb-2">Statut actuel</p>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full
+                {% if application.status == 'pending' %}bg-orange-100 text-orange-700
+                {% elif application.status == 'contacted' %}bg-gray-100 text-gray-600
+                {% elif application.status == 'approved' %}bg-green-100 text-green-700
+                {% else %}bg-red-100 text-red-600{% endif %}">
+                {{ application.get_status_display }}
+            </span>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

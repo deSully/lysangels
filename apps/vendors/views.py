@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from .models import VendorProfile, ContactView
+from django.contrib import messages
+from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
 
 
@@ -91,4 +92,57 @@ def reveal_contact(request, pk):
     return JsonResponse({
         'whatsapp': vendor.whatsapp,
         'whatsapp_url': f"https://wa.me/{vendor.whatsapp.replace(' ', '').replace('+', '')}",
+    })
+
+
+def vendor_signup(request):
+    """Formulaire public de candidature prestataire"""
+    service_types = ServiceType.objects.all().order_by('name')
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        whatsapp = request.POST.get('whatsapp', '').strip()
+        city = request.POST.get('city', '').strip()
+        description = request.POST.get('description', '').strip()
+        instagram = request.POST.get('instagram', '').strip()
+        facebook = request.POST.get('facebook', '').strip()
+        service_type_ids = request.POST.getlist('service_types')
+
+        errors = []
+        if not name:
+            errors.append('Le nom est requis.')
+        if not email:
+            errors.append('L\'email est requis.')
+        if not whatsapp:
+            errors.append('Le numéro WhatsApp est requis.')
+        if not city:
+            errors.append('La ville est requise.')
+        if not description:
+            errors.append('La description de l\'activité est requise.')
+        if not service_type_ids:
+            errors.append('Veuillez sélectionner au moins un type de prestation.')
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+        else:
+            application = VendorApplication.objects.create(
+                name=name,
+                email=email,
+                whatsapp=whatsapp,
+                city=city,
+                description=description,
+                instagram=instagram,
+                facebook=facebook,
+            )
+            application.service_types.set(service_type_ids)
+            messages.success(request, 'Votre candidature a bien été envoyée ! Nous vous contacterons prochainement.')
+            return redirect('vendors:vendor_signup')
+
+    return render(request, 'vendors/vendor_signup.html', {
+        'service_types': service_types,
+        'breadcrumbs': [
+            {'title': 'Accueil', 'url': 'core:home'},
+            {'title': 'Devenir prestataire'},
+        ],
     })
