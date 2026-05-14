@@ -3,13 +3,59 @@
 {% block title %}J'ai un projet — LysAngels{% endblock %}
 {% block meta_description %}Décrivez votre projet événementiel et notre équipe vous contacte rapidement.{% endblock %}
 
+{% block extra_css %}
+<style>
+    .stepper-nav {
+        display: flex; align-items: center; justify-content: center;
+        gap: 0; margin-bottom: 2.5rem;
+    }
+    .stepper-step {
+        display: flex; flex-direction: column; align-items: center; gap: .375rem;
+        position: relative;
+    }
+    .stepper-circle {
+        width: 2.25rem; height: 2.25rem; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .8rem; font-weight: 700;
+        border: 2px solid #E5E7EB; background: #fff; color: #9CA3AF;
+        transition: all .25s;
+    }
+    .stepper-step.active .stepper-circle {
+        border-color: #8B5CF6; background: #8B5CF6; color: #fff;
+    }
+    .stepper-step.done .stepper-circle {
+        border-color: #8B5CF6; background: #8B5CF6; color: #fff;
+    }
+    .stepper-label {
+        font-size: .65rem; font-weight: 600; color: #9CA3AF;
+        text-transform: uppercase; letter-spacing: .05em;
+        white-space: nowrap;
+    }
+    .stepper-step.active .stepper-label,
+    .stepper-step.done .stepper-label { color: #8B5CF6; }
+    .stepper-line {
+        flex: 1; height: 2px; background: #E5E7EB;
+        margin: 0 .5rem; margin-bottom: 1.25rem;
+        transition: background .25s;
+    }
+    .stepper-line.done { background: #8B5CF6; }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+    .step-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; }
+    .step-nav-right { display: flex; gap: .75rem; margin-left: auto; }
+    .field-error { border-color: #EF4444 !important; }
+    .inline-error { color: #EF4444; font-size: .8rem; margin-top: .25rem; display: none; }
+    .inline-error.visible { display: block; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="min-h-screen bg-lily-cream py-12">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="text-center mb-10">
             <h1 class="text-3xl font-bold text-lily-dark mb-3">J'ai un projet</h1>
-            <p class="text-gray-600 text-lg">Décrivez votre projet et notre équipe vous contactera rapidement.</p>
+            <p class="text-gray-600">Décrivez votre événement et notre équipe vous contactera rapidement.</p>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -22,14 +68,37 @@
                 {% endfor %}
             {% endif %}
 
-            <form method="post" novalidate>
+            <!-- Stepper navigation -->
+            <div class="stepper-nav" id="stepperNav">
+                <div class="stepper-step active" id="nav-1">
+                    <div class="stepper-circle">1</div>
+                    <span class="stepper-label">Contact</span>
+                </div>
+                <div class="stepper-line" id="line-1"></div>
+                <div class="stepper-step" id="nav-2">
+                    <div class="stepper-circle">2</div>
+                    <span class="stepper-label">Projet</span>
+                </div>
+                <div class="stepper-line" id="line-2"></div>
+                <div class="stepper-step" id="nav-3">
+                    <div class="stepper-circle">3</div>
+                    <span class="stepper-label">Détails</span>
+                </div>
+                <div class="stepper-line" id="line-3"></div>
+                <div class="stepper-step" id="nav-4">
+                    <div class="stepper-circle">4</div>
+                    <span class="stepper-label">Services</span>
+                </div>
+            </div>
+
+            <form method="post" novalidate id="projectForm">
                 {% csrf_token %}
 
-                <!-- Coordonnées -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4 pb-2 border-b border-gray-100">Vos coordonnées</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
+                <!-- Étape 1 : Coordonnées -->
+                <div class="step-panel active" id="step-1">
+                    <h2 class="text-lg font-semibold text-lily-dark mb-6">Vos coordonnées</h2>
+                    <div class="space-y-4">
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">
                                 Nom complet <span class="text-red-500">*</span>
                             </label>
@@ -37,28 +106,40 @@
                             {% if form.contact_name.errors %}
                                 <p class="text-red-500 text-sm mt-1">{{ form.contact_name.errors.0 }}</p>
                             {% endif %}
+                            <p class="inline-error" id="err-contact_name">Ce champ est requis.</p>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
-                                Email <span class="text-red-500">*</span>
-                            </label>
-                            {{ form.contact_email }}
-                            {% if form.contact_email.errors %}
-                                <p class="text-red-500 text-sm mt-1">{{ form.contact_email.errors.0 }}</p>
-                            {% endif %}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Email <span class="text-red-500">*</span>
+                                </label>
+                                {{ form.contact_email }}
+                                {% if form.contact_email.errors %}
+                                    <p class="text-red-500 text-sm mt-1">{{ form.contact_email.errors.0 }}</p>
+                                {% endif %}
+                                <p class="inline-error" id="err-contact_email">Entrez une adresse email valide.</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone (optionnel)</label>
+                                {{ form.contact_phone }}
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone (optionnel)</label>
-                            {{ form.contact_phone }}
+                    </div>
+                    <div class="step-nav">
+                        <div class="step-nav-right">
+                            <button type="button" onclick="goNext(1)" class="btn btn-primary">
+                                Suivant
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Votre projet -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4 pb-2 border-b border-gray-100">Votre projet</h2>
+                <!-- Étape 2 : Votre projet -->
+                <div class="step-panel" id="step-2">
+                    <h2 class="text-lg font-semibold text-lily-dark mb-6">Votre projet</h2>
                     <div class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Type d'événement</label>
                                 {{ form.event_type }}
@@ -76,14 +157,27 @@
                             {% if form.description.errors %}
                                 <p class="text-red-500 text-sm mt-1">{{ form.description.errors.0 }}</p>
                             {% endif %}
+                            <p class="inline-error" id="err-description">Ce champ est requis.</p>
+                        </div>
+                    </div>
+                    <div class="step-nav">
+                        <button type="button" onclick="goTo(1)" class="text-gray-500 text-sm font-medium hover:text-lily-dark transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+                            Précédent
+                        </button>
+                        <div class="step-nav-right">
+                            <button type="button" onclick="goNext(2)" class="btn btn-primary">
+                                Suivant
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Détails de l'événement -->
-                <div class="mb-8">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4 pb-2 border-b border-gray-100">Détails de l'événement (optionnels)</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Étape 3 : Détails -->
+                <div class="step-panel" id="step-3">
+                    <h2 class="text-lg font-semibold text-lily-dark mb-6">Détails de l'événement <span class="text-gray-400 font-normal text-sm">(optionnels)</span></h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
                             {{ form.event_date }}
@@ -115,13 +209,26 @@
                     {% if form.non_field_errors %}
                         <p class="text-red-500 text-sm mt-2">{{ form.non_field_errors.0 }}</p>
                     {% endif %}
+                    <div class="step-nav">
+                        <button type="button" onclick="goTo(2)" class="text-gray-500 text-sm font-medium hover:text-lily-dark transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+                            Précédent
+                        </button>
+                        <div class="step-nav-right">
+                            <button type="button" onclick="goTo(4)" class="btn btn-primary">
+                                Suivant
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Services recherchés -->
-                {% if service_types %}
-                <div class="mb-8">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4 pb-2 border-b border-gray-100">Services recherchés (optionnel)</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <!-- Étape 4 : Services recherchés -->
+                <div class="step-panel" id="step-4">
+                    <h2 class="text-lg font-semibold text-lily-dark mb-2">Services recherchés <span class="text-gray-400 font-normal text-sm">(optionnel)</span></h2>
+                    <p class="text-gray-500 text-sm mb-6">Sélectionnez tout ce dont vous avez besoin pour votre événement.</p>
+                    {% if service_types %}
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
                         {% for service in service_types %}
                             <label class="flex items-center gap-2 cursor-pointer p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
                                 <input type="checkbox" name="services_needed" value="{{ service.pk }}"
@@ -132,18 +239,118 @@
                             </label>
                         {% endfor %}
                     </div>
+                    {% endif %}
+                    <div class="step-nav">
+                        <button type="button" onclick="goTo(3)" class="text-gray-500 text-sm font-medium hover:text-lily-dark transition flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+                            Précédent
+                        </button>
+                        <div class="step-nav-right">
+                            <button type="submit" class="btn btn-accent btn-lg">
+                                Envoyer ma demande
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
 
-                <!-- Envoi -->
-                <div class="text-center">
-                    <button type="submit" class="bg-lily-purple text-white px-10 py-4 rounded-xl font-semibold text-base hover:bg-purple-dark transition shadow-md">
-                        Envoyer ma demande
-                    </button>
-                    <p class="text-gray-500 text-sm mt-3">Notre équipe vous contactera dans les 24h.</p>
-                </div>
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var current = 1;
+
+    function goTo(n) {
+        document.getElementById('step-' + current).classList.remove('active');
+        document.getElementById('nav-' + current).classList.remove('active');
+
+        for (var i = 1; i <= 4; i++) {
+            var nav = document.getElementById('nav-' + i);
+            nav.classList.remove('active', 'done');
+            if (i < n) {
+                nav.classList.add('done');
+                var circle = nav.querySelector('.stepper-circle');
+                circle.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+            } else {
+                nav.querySelector('.stepper-circle').textContent = i;
+            }
+            if (i < 4) {
+                document.getElementById('line-' + i).classList.toggle('done', i < n);
+            }
+        }
+
+        document.getElementById('nav-' + n).classList.add('active');
+        document.getElementById('step-' + n).classList.add('active');
+        current = n;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateStep(n) {
+        var valid = true;
+        if (n === 1) {
+            var name = document.getElementById('id_contact_name');
+            var email = document.getElementById('id_contact_email');
+            var nameErr = document.getElementById('err-contact_name');
+            var emailErr = document.getElementById('err-contact_email');
+
+            if (!name.value.trim()) {
+                name.classList.add('field-error');
+                nameErr.classList.add('visible');
+                valid = false;
+            } else {
+                name.classList.remove('field-error');
+                nameErr.classList.remove('visible');
+            }
+
+            var emailVal = email.value.trim();
+            var emailOk = emailVal && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+            if (!emailOk) {
+                email.classList.add('field-error');
+                emailErr.classList.add('visible');
+                valid = false;
+            } else {
+                email.classList.remove('field-error');
+                emailErr.classList.remove('visible');
+            }
+        }
+        if (n === 2) {
+            var desc = document.getElementById('id_description');
+            var descErr = document.getElementById('err-description');
+            if (!desc.value.trim()) {
+                desc.classList.add('field-error');
+                descErr.classList.add('visible');
+                valid = false;
+            } else {
+                desc.classList.remove('field-error');
+                descErr.classList.remove('visible');
+            }
+        }
+        return valid;
+    }
+
+    function goNext(n) {
+        if (validateStep(n)) goTo(n + 1);
+    }
+
+    // If form was re-rendered with server-side errors, jump to first step with errors
+    (function () {
+        var errorFields = {
+            1: ['id_contact_name', 'id_contact_email'],
+            2: ['id_description'],
+            3: ['id_event_date', 'id_budget_min', 'id_budget_max'],
+        };
+        for (var step = 1; step <= 3; step++) {
+            for (var j = 0; j < errorFields[step].length; j++) {
+                var el = document.getElementById(errorFields[step][j]);
+                if (el && el.closest('.step-panel') && el.closest('.step-panel').querySelector('.text-red-500')) {
+                    goTo(step);
+                    return;
+                }
+            }
+        }
+    })();
+</script>
 {% endblock %}
