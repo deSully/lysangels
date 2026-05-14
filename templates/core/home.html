@@ -1,304 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}LysAngels - La plateforme événementielle N°1 au Togo{% endblock %}
-
-{% block meta_description %}Trouvez les meilleurs prestataires événementiels au Togo sur LysAngels. Musiciens, photographes, DJ, traiteurs pour mariages, anniversaires et événements professionnels.{% endblock %}
-
-{% block meta_keywords %}événementiel Togo, prestataires mariage, photographe Lomé, musicien événement, DJ mariage, traiteur Togo, organisation événement{% endblock %}
-
-{% block og_title %}LysAngels - Plateforme Événementielle N°1 au Togo{% endblock %}
-{% block og_description %}La plateforme #1 pour trouver et réserver les meilleurs prestataires pour vos événements au Togo. Mariages, anniversaires, événements d'entreprise.{% endblock %}
+{% block title %}LysAngels — Prestataires événementiels au Togo{% endblock %}
+{% block meta_description %}Trouvez les meilleurs prestataires événementiels au Togo sur LysAngels. Photographes, DJ, traiteurs, décorateurs pour mariages, anniversaires et événements.{% endblock %}
+{% block meta_keywords %}événementiel Togo, prestataires mariage, photographe Lomé, DJ mariage, traiteur Togo{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* ═══════════════════════════════════════
-       HERO CINÉMATIQUE
-    ═══════════════════════════════════════ */
-    .hero-cinematic {
-        height: 100vh;
-        min-height: 700px;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    /* v3.0 : Image hero — mariage africain coloré et vivant */
     .hero-bg {
-        position: absolute;
-        inset: 0;
+        position: absolute; inset: 0;
         background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90&fit=crop');
-        background-size: cover;
-        background-position: center 40%;
-        transform: scale(1.05);
-        animation: heroZoom 20s ease-in-out infinite alternate;
+        background-size: cover; background-position: center 40%;
     }
-    @keyframes heroZoom {
-        from { transform: scale(1.0); }
-        to   { transform: scale(1.07); }
+    .service-pill {
+        display: flex; align-items: center; gap: .75rem;
+        background: #fff; border: 1.5px solid #F4EDE4; border-radius: .875rem;
+        padding: .875rem 1rem; transition: border-color .2s, box-shadow .2s;
+        text-decoration: none; color: #1A1A1A; min-width: 0;
     }
-    .hero-overlay-dark {
-        position: absolute; inset: 0;
-        background: rgba(10, 10, 10, 0.62);
+    .service-pill:hover { border-color: #8B5CF6; box-shadow: 0 4px 16px rgba(139,92,246,.1); }
+    .service-pill-icon {
+        width: 2.5rem; height: 2.5rem; border-radius: .625rem;
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; box-shadow: 0 4px 10px rgba(139,92,246,.25);
     }
-    .hero-overlay-gradient {
-        position: absolute; inset: 0;
-        background: linear-gradient(
-            to top,
-            #1A1A1A 0%,
-            rgba(26,26,26,0.4) 40%,
-            transparent 100%
-        );
-    }
-    .hero-overlay-gradient-left {
-        position: absolute; inset: 0;
-        background: radial-gradient(ellipse at 20% 50%, rgba(139,92,246,0.18) 0%, transparent 60%);
-    }
-
-    /* Contenu hero */
-    .hero-content-cinematic {
-        position: relative; z-index: 10;
-        text-align: center;
-        padding: 0 1.5rem;
-        max-width: 900px;
-    }
-    .hero-content-cinematic > * {
-        animation: heroFadeIn 1s ease-out both;
-    }
-    .hero-content-cinematic > *:nth-child(1) { animation-delay: 0.2s; }
-    .hero-content-cinematic > *:nth-child(2) { animation-delay: 0.5s; }
-    .hero-content-cinematic > *:nth-child(3) { animation-delay: 0.8s; }
-    .hero-content-cinematic > *:nth-child(4) { animation-delay: 1.0s; }
-    .hero-content-cinematic > *:nth-child(5) { animation-delay: 1.2s; }
-    @keyframes heroFadeIn {
-        from { opacity: 0; transform: translateY(40px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Badge premier */
-    .badge-premier {
-        display: inline-flex; align-items: center; gap: 0.5rem;
-        background: rgba(212,175,55,0.15);
-        border: 1px solid rgba(212,175,55,0.5);
-        color: #D4AF37;
-        font-size: 0.75rem; font-weight: 700;
-        letter-spacing: 0.12em; text-transform: uppercase;
-        padding: 0.45rem 1.2rem; border-radius: 9999px;
-        margin-bottom: 1.75rem;
-        animation: badgePulse 3s ease-in-out infinite;
-    }
-    @keyframes badgePulse {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.3); }
-        50% { box-shadow: 0 0 0 8px rgba(212,175,55,0); }
-    }
-
-    /* Titre hero */
-    .hero-title {
-        font-family: 'Playfair Display', Georgia, serif !important;
-        font-size: clamp(2.8rem, 7vw, 5.5rem);
-        font-weight: 700 !important;
-        color: #fff;
-        line-height: 1.08;
-        letter-spacing: -0.02em;
-        margin-bottom: 1.5rem;
-    }
-    .text-gradient-gold {
-        background: linear-gradient(135deg, #D4AF37 0%, #E5C158 50%, #D4AF37 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 200% auto;
-        animation: goldShimmer 4s linear infinite;
-    }
-    @keyframes goldShimmer {
-        0% { background-position: 0% center; }
-        100% { background-position: 200% center; }
-    }
-
-    /* Scroll indicator */
-    .scroll-indicator-wrap {
-        position: absolute; bottom: 2.5rem; left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-        animation: heroFadeIn 1s ease-out 1.6s both;
-    }
-    .scroll-indicator-wrap span {
-        font-size: 0.65rem; font-weight: 600;
-        letter-spacing: 0.12em; text-transform: uppercase;
-        color: rgba(255,255,255,0.4);
-    }
-    .scroll-mouse {
-        width: 24px; height: 38px;
-        border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
-        display: flex; justify-content: center; padding-top: 6px;
-    }
-    .scroll-mouse-dot {
-        width: 4px; height: 8px; background: #D4AF37; border-radius: 2px;
-        animation: scrollDot 2s ease-in-out infinite;
-    }
-    @keyframes scrollDot {
-        0%, 100% { transform: translateY(0); opacity: 1; }
-        50% { transform: translateY(8px); opacity: 0.3; }
-    }
-
-    /* Micro-promesses */
-    .hero-promises {
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;
-        margin-top: 2.5rem;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .hero-promise-item {
-        display: flex; align-items: center; gap: 0.5rem;
-        color: rgba(255,255,255,0.55); font-size: 0.8rem;
-    }
-
-    /* ═══════════════════════════════════════
-       STATS BAR
-    ═══════════════════════════════════════ */
-    .stats-bar {
-        background: #111;
-        border-bottom: 1px solid rgba(212,175,55,0.1);
-    }
-    .stats-bar-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0;
-    }
-    @media (max-width: 640px) {
-        .stats-bar-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    .stat-item {
-        padding: 1.75rem 1rem;
-        text-align: center;
-        position: relative;
-    }
-    .stat-item:not(:last-child)::after {
-        content: '';
-        position: absolute; right: 0; top: 25%; bottom: 25%;
-        width: 1px;
-        background: rgba(212,175,55,0.2);
-    }
-    .stat-number {
-        font-family: 'Playfair Display', Georgia, serif !important;
-        font-size: 2.25rem;
-        font-weight: 700 !important;
-        color: #D4AF37;
-        line-height: 1;
-        display: block;
-    }
-    .stat-label {
-        font-size: 0.72rem; font-weight: 600;
-        letter-spacing: 0.1em; text-transform: uppercase;
-        color: rgba(255,255,255,0.45);
-        margin-top: 0.4rem;
-        display: block;
-    }
-
-    /* ═══════════════════════════════════════
-       EVENT CARDS (améliorés)
-    ═══════════════════════════════════════ */
-    .event-card {
-        background-size: cover; background-position: center;
-        position: relative; border-radius: 1.5rem; overflow: hidden; cursor: pointer;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-    .event-card:hover { transform: scale(1.015); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
-    .event-card::before {
-        content: ''; position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.2) 55%, transparent 100%);
-        transition: opacity .4s ease;
-    }
-    .event-card:hover::before { opacity: 0.95; }
-    .event-card-inner {
-        position: relative; z-index: 10;
-        display: flex; flex-direction: column; justify-content: flex-end;
-        height: 100%; padding: 2rem;
-    }
-    .event-card-tag {
-        display: inline-flex; align-items: center; gap: .375rem;
-        background: rgba(255,255,255,.12); backdrop-filter: blur(8px);
-        border: 1px solid rgba(255,255,255,.2); color: #fff;
-        font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-        padding: .3rem .8rem; border-radius: 9999px; margin-bottom: 1rem; width: fit-content;
-    }
-    .event-card-cta {
-        display: inline-flex; align-items: center; gap: .5rem;
-        background: #fff; color: #1A1A1A; font-size: .875rem; font-weight: 600;
-        padding: .625rem 1.25rem; border-radius: .75rem; width: fit-content; margin-top: 1rem;
-        transition: background .2s, transform .2s; box-shadow: 0 4px 16px rgba(0,0,0,.3);
-    }
-    .event-card:hover .event-card-cta { background: #D4AF37; transform: translateY(-2px); }
-    .event-card-cta svg { transition: transform .2s; }
-    .event-card:hover .event-card-cta svg { transform: translateX(4px); }
-
-    /* Ligne décorative sous le h2 */
-    .section-headline-decorated {
-        position: relative; display: inline-block;
-        padding-bottom: 1.25rem;
-    }
-    .section-headline-decorated::after {
-        content: '';
-        position: absolute; bottom: 0; left: 0;
-        width: 3rem; height: 3px;
-        background: linear-gradient(90deg, #D4AF37, #E5C158);
-        border-radius: 2px;
-    }
-
-    /* Espacement section-label → h2 */
-    .section-label {
-        display: inline-block; font-size: .68rem; font-weight: 700;
-        letter-spacing: .14em; text-transform: uppercase; color: #8B5CF6;
-        margin-bottom: .875rem;
-        line-height: 1;
-    }
-
-    /* ═══════════════════════════════════════
-       FEATURED VENDORS (scroll horizontal)
-    ═══════════════════════════════════════ */
-    .featured-section {
-        background: #111;
-        padding: 4rem 0 4.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-    .featured-section::before {
-        content: '';
-        position: absolute; inset: 0;
-        background-image: radial-gradient(circle at 80% 50%, rgba(212,175,55,0.06) 0%, transparent 60%),
-                          radial-gradient(circle at 20% 50%, rgba(139,92,246,0.06) 0%, transparent 60%);
-    }
-    .featured-scroll {
-        display: flex;
-        gap: 1.25rem;
-        overflow-x: auto;
-        padding: 0.5rem 1rem 1.5rem;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-    .featured-scroll::-webkit-scrollbar { display: none; }
     .featured-card {
-        flex-shrink: 0;
-        width: 280px;
-        border-radius: 1.5rem;
-        overflow: hidden;
-        scroll-snap-align: start;
-        position: relative;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        text-decoration: none;
+        border-radius: 1.25rem; overflow: hidden; position: relative;
+        transition: transform .3s, box-shadow .3s;
+        text-decoration: none; display: block;
     }
-    .featured-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.5); }
-    .featured-card-img {
-        height: 340px; position: relative; overflow: hidden;
-    }
-    .featured-card-img img {
-        width: 100%; height: 100%; object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-    .featured-card:hover .featured-card-img img { transform: scale(1.06); }
+    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.2); }
+    .featured-card-img { height: 300px; position: relative; overflow: hidden; }
+    .featured-card-img img { width: 100%; height: 100%; object-fit: cover; }
     .featured-card-img-placeholder {
         width: 100%; height: 100%;
         background: linear-gradient(135deg, #2D1B3D, #1A1A1A);
@@ -306,485 +39,143 @@
     }
     .featured-card-overlay {
         position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+        background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
     }
-    .featured-card-content {
-        position: absolute; bottom: 0; left: 0; right: 0;
-        padding: 1.5rem;
-    }
-    .featured-card-services {
-        display: flex; flex-wrap: wrap; gap: 0.375rem;
-        margin-bottom: 0.875rem;
-    }
-    .featured-pill {
-        background: rgba(255,255,255,0.12); backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,0.18);
-        color: rgba(255,255,255,0.85);
-        font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em;
-        padding: 0.2rem 0.65rem; border-radius: 9999px;
-    }
-    .featured-card-name {
-        font-size: 1.2rem; font-weight: 700;
-        color: #fff; margin-bottom: 0.4rem;
-        line-height: 1.2;
-    }
-    .featured-card-city {
-        font-size: 0.78rem; color: rgba(255,255,255,0.55);
-        display: flex; align-items: center; gap: 0.3rem;
-        margin-bottom: 1rem;
-    }
-    .featured-card-cta {
-        display: inline-flex; align-items: center; gap: 0.4rem;
-        color: #D4AF37; font-size: 0.8rem; font-weight: 700;
-        letter-spacing: 0.04em;
-        transition: gap 0.2s;
-    }
-    .featured-card:hover .featured-card-cta { gap: 0.7rem; }
-    /* Badge logo rond */
     .featured-logo-badge {
         position: absolute; top: 1rem; right: 1rem;
-        width: 3rem; height: 3rem;
-        border-radius: 50%; overflow: hidden;
-        background: #fff;
-        border: 2px solid rgba(255,255,255,0.3);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        width: 2.75rem; height: 2.75rem; border-radius: 50%; overflow: hidden;
+        background: #fff; border: 2px solid rgba(255,255,255,.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,.3);
     }
     .featured-logo-badge img { width: 100%; height: 100%; object-fit: cover; }
     .featured-logo-initial {
         width: 100%; height: 100%;
         display: flex; align-items: center; justify-content: center;
         background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        color: #fff; font-weight: 700; font-size: 1rem;
+        color: #fff; font-weight: 700; font-size: .95rem;
     }
-
-    /* ═══════════════════════════════════════
-       SERVICES GRID (avec dot pattern)
-    ═══════════════════════════════════════ */
-    .services-section-bg {
-        background-color: #fff;
-        background-image: radial-gradient(circle, rgba(139,92,246,0.07) 1px, transparent 1px);
-        background-size: 28px 28px;
+    .featured-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.25rem; }
+    .featured-card-services { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .625rem; }
+    .featured-pill {
+        background: rgba(255,255,255,.12); backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.85);
+        font-size: .68rem; font-weight: 600; letter-spacing: .06em;
+        padding: .2rem .55rem; border-radius: 9999px;
     }
-    .services-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: .75rem;
+    .featured-card-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: .25rem; line-height: 1.2; }
+    .featured-card-city {
+        font-size: .75rem; color: rgba(255,255,255,.55);
+        display: flex; align-items: center; gap: .3rem; margin-bottom: .75rem;
     }
-    @media (min-width: 640px)  { .services-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(4, 1fr); } }
-    .service-pill {
-        display: flex; align-items: center; gap: .75rem;
-        background: rgba(255,255,255,0.92); border: 1.5px solid #F4EDE4; border-radius: .875rem;
-        padding: .875rem 1rem; transition: border-color .2s, box-shadow .2s, transform .2s;
-        text-decoration: none; color: #1A1A1A; min-width: 0;
-        backdrop-filter: blur(4px);
-    }
-    .service-pill:hover { border-color: #8B5CF6; box-shadow: 0 6px 20px rgba(139,92,246,.15); transform: translateY(-3px); }
-    .service-pill-icon {
-        width: 2.5rem; height: 2.5rem; border-radius: .625rem;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; transition: transform .2s;
-        box-shadow: 0 4px 10px rgba(139,92,246,.25);
-    }
-    .service-pill:hover .service-pill-icon { transform: scale(1.12) rotate(-3deg); }
-    .service-pill span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-
-    /* ═══════════════════════════════════════
-       STEPS (améliorés)
-    ═══════════════════════════════════════ */
-    .steps-connector {
-        display: none;
-    }
-    @media (min-width: 768px) {
-        .steps-wrapper { position: relative; }
-        .steps-connector {
-            display: block;
-            position: absolute;
-            top: 3.5rem; left: calc(33.33% + 1rem); right: calc(33.33% + 1rem);
-            height: 2px;
-            background: repeating-linear-gradient(90deg, #D4AF37 0, #D4AF37 8px, transparent 8px, transparent 20px);
-            opacity: 0.35;
-            z-index: 0;
-        }
+    .featured-card-cta {
+        display: inline-flex; align-items: center; gap: .4rem;
+        color: #D4AF37; font-size: .8rem; font-weight: 700; letter-spacing: .04em;
     }
     .step-card {
-        position: relative; background: #fff; border-radius: 1.5rem;
-        padding: 2.25rem 1.75rem; border: 1.5px solid #F4EDE4;
-        transition: border-color .3s, box-shadow .3s, transform .3s;
-        z-index: 1;
+        background: #fff; border-radius: 1.25rem;
+        padding: 2rem 1.75rem; border: 1.5px solid #F4EDE4;
+        transition: border-color .2s, box-shadow .2s;
     }
-    .step-card:hover { border-color: #8B5CF6; box-shadow: 0 12px 40px rgba(139,92,246,.14); transform: translateY(-6px); }
-    .step-number {
-        font-size: 5rem; font-weight: 800; line-height: 1;
-        color: rgba(212,175,55,0.1);
-        position: absolute; top: 0.75rem; right: 1.25rem;
-        pointer-events: none; user-select: none;
-        font-family: 'Playfair Display', Georgia, serif !important;
-    }
+    .step-card:hover { border-color: #8B5CF6; box-shadow: 0 8px 32px rgba(139,92,246,.1); }
     .step-icon-wrap {
-        width: 3.75rem; height: 3.75rem; border-radius: 50%;
+        width: 3.5rem; height: 3.5rem; border-radius: 50%;
         background: linear-gradient(135deg, #8B5CF6, #7C3AED);
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 1.375rem; box-shadow: 0 6px 16px rgba(139,92,246,.35);
-        transition: transform 0.4s ease;
+        margin-bottom: 1rem; box-shadow: 0 6px 16px rgba(139,92,246,.3);
     }
-    .step-card:hover .step-icon-wrap { transform: rotate(-8deg) scale(1.08); }
-
-    /* ═══════════════════════════════════════
-       TÉMOIGNAGES
-    ═══════════════════════════════════════ */
-    .testimonials-section {
-        background: #FDFCFB;
-        position: relative;
-        overflow: hidden;
-    }
-    .testimonials-section::before {
-        content: '';
-        position: absolute; top: 0; left: 0; right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #8B5CF6, #D4AF37, #8B5CF6);
-        background-size: 200% auto;
-        animation: gradientMove 4s linear infinite;
-    }
-    @keyframes gradientMove {
-        0% { background-position: 0% center; }
-        100% { background-position: 200% center; }
-    }
-    .testimonial-card {
-        background: #fff; border-radius: 1.5rem;
-        padding: 2.25rem 2rem;
-        border: 1.5px solid #F4EDE4;
-        position: relative;
-        transition: border-color .3s, box-shadow .3s, transform .3s;
-    }
-    .testimonial-card:hover { border-color: #D4AF37; box-shadow: 0 8px 32px rgba(212,175,55,.12); transform: translateY(-4px); }
-    .testimonial-stars { display: flex; gap: 0.2rem; margin-bottom: 1.25rem; }
-    .star { color: #D4AF37; font-size: 1rem; }
-    .testimonial-quote {
-        font-family: 'Playfair Display', Georgia, serif !important;
-        font-size: 1.05rem;
-        color: #1A1A1A;
-        line-height: 1.65;
-        font-style: italic;
-        margin-bottom: 1.75rem;
-    }
-    .testimonial-quote::before { content: '\201C'; color: #D4AF37; font-size: 1.5rem; line-height: 0; vertical-align: -0.4rem; margin-right: 0.1rem; }
-    .testimonial-quote::after  { content: '\201D'; color: #D4AF37; font-size: 1.5rem; line-height: 0; vertical-align: -0.4rem; margin-left: 0.1rem; }
-    .testimonial-author { display: flex; align-items: center; gap: 0.875rem; }
-    .testimonial-avatar {
-        width: 3rem; height: 3rem; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.1rem; font-weight: 700; color: #fff;
-        flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .testimonial-name { font-weight: 700; font-size: 0.9rem; color: #1A1A1A; }
-    .testimonial-meta { font-size: 0.78rem; color: #9CA3AF; margin-top: 0.1rem; }
-    .testimonial-quote-icon {
-        position: absolute; top: 1.5rem; right: 1.75rem;
-        opacity: 0.07;
-    }
-
-    /* ═══════════════════════════════════════
-       ENGAGEMENTS GLASSMORPHISM (dark)
-    ═══════════════════════════════════════ */
-    .engagements-section {
-        background: #111;
-        position: relative; overflow: hidden;
-    }
-    .engagements-section::before {
-        content: '';
-        position: absolute; inset: 0;
-        background-image:
-            radial-gradient(circle at 20% 80%, rgba(139,92,246,.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(212,175,55,.1) 0%, transparent 50%);
-    }
-    .engagement-glass {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.1);
-        backdrop-filter: blur(12px);
-        border-radius: 1.5rem;
-        padding: 2.5rem 2rem;
-        text-align: center;
-        transition: background 0.3s, border-color 0.3s, transform 0.3s;
-    }
-    .engagement-glass:hover {
-        background: rgba(255,255,255,0.1);
-        border-color: rgba(212,175,55,0.3);
-        transform: translateY(-5px);
-    }
-    .engagement-glass-icon {
-        width: 4rem; height: 4rem; border-radius: 1.25rem;
-        display: flex; align-items: center; justify-content: center;
-        margin: 0 auto 1.5rem;
-        transition: transform .3s;
-    }
-    .engagement-glass:hover .engagement-glass-icon { transform: scale(1.12) rotate(-4deg); }
-    .engagement-glass h3 { color: #fff; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
-    .engagement-glass p { color: rgba(255,255,255,0.55); font-size: 0.875rem; line-height: 1.65; }
-
-    /* ═══════════════════════════════════════
-       CTA FINAL (amélioré)
-    ═══════════════════════════════════════ */
-    .cta-final {
-        position: relative; overflow: hidden;
-    }
-    .cta-final-bg {
-        position: absolute; inset: 0;
-        background-image: url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=85&fit=crop');
-        background-size: cover; background-position: center;
-        filter: brightness(0.25) saturate(0.8);
-    }
-    .cta-final-overlay {
-        position: absolute; inset: 0;
-        background: linear-gradient(135deg, rgba(26,26,26,0.85) 0%, rgba(45,27,61,0.8) 50%, rgba(26,26,26,0.85) 100%);
-    }
-    .cta-badge {
-        display: inline-flex; align-items: center; gap: .5rem;
-        background: rgba(212,175,55,.15); border: 1px solid rgba(212,175,55,.35);
-        color: #D4AF37; font-size: .72rem; font-weight: 700;
-        letter-spacing: .12em; text-transform: uppercase;
-        padding: .45rem 1.1rem; border-radius: 9999px; margin-bottom: 1.5rem;
-    }
-
-    /* ═══════════════════════════════════════
-       MARQUEE TICKER
-    ═══════════════════════════════════════ */
-    .ticker-wrap { overflow: hidden; background: #1A1A1A; border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
-    .ticker-track {
-        display: flex; width: max-content;
-        animation: ticker-scroll 28s linear infinite;
-    }
-    .ticker-wrap:hover .ticker-track { animation-play-state: paused; }
-    @keyframes ticker-scroll {
-        from { transform: translateX(0); }
-        to   { transform: translateX(-50%); }
-    }
-    .ticker-item {
-        display: flex; align-items: center; gap: .75rem;
-        padding: .875rem 2.5rem; white-space: nowrap;
-        color: rgba(255,255,255,.4); font-size: .78rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase;
-    }
-    .ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: #D4AF37; flex-shrink: 0; }
-
-    .section-label-gold { color: #D4AF37; }
-
-    /* Scroll reveal */
-    .js-ready .scroll-reveal {
-        opacity: 0; transform: translateY(24px);
-        transition: opacity .6s ease, transform .6s ease;
-    }
-    .js-ready .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ══════════════════════════════════════════
-     HERO CINÉMATIQUE
-═══════════════════════════════════════════ -->
-<section class="hero-cinematic">
+<!-- Hero -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <div class="hero-bg"></div>
-    <div class="hero-overlay-dark"></div>
-    <div class="hero-overlay-gradient"></div>
-    <div class="hero-overlay-gradient-left"></div>
-
-    <div class="hero-content-cinematic">
-        <div>
-            <span class="badge-premier">
-                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                Plateforme N°1 au Togo
-            </span>
-        </div>
-
-        <h1 class="hero-title">
-            L'événement<br>de votre vie<br>
-            <span class="text-gradient-gold">commence ici</span>
+    <div class="absolute inset-0" style="background:rgba(10,10,10,0.55);"></div>
+    <div class="relative z-10 text-center px-4 sm:px-6 max-w-3xl mx-auto">
+        <h1 style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(2.8rem,7vw,5rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin-bottom:1.5rem;">
+            L'événement de votre vie<br>commence ici
         </h1>
-
-        <p style="font-size:1.15rem; color:rgba(255,255,255,0.65); max-width:560px; margin:0 auto 2.5rem; line-height:1.65;">
-            Trouvez et contactez les meilleurs prestataires événementiels au Togo. Mariages, anniversaires, événements corporate — tout commence par un projet.
+        <p style="font-size:1.1rem; color:rgba(255,255,255,0.65); max-width:520px; margin:0 auto 2.5rem; line-height:1.65;">
+            Trouvez et contactez les meilleurs prestataires événementiels au Togo. Sans inscription.
         </p>
-
-        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem;">
-            <a href="{% url 'projects:project_create' %}" class="btn btn-accent btn-lg" style="font-size:1rem; padding:0.875rem 2rem;">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="{% url 'projects:project_create' %}" class="btn btn-accent btn-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 J'ai un projet
             </a>
-            <a href="{% url 'vendors:vendor_list' %}" class="btn btn-outline btn-lg" style="font-size:1rem; padding:0.875rem 2rem;">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                Explorer les prestataires
+            <a href="{% url 'vendors:vendor_list' %}" class="btn btn-outline btn-lg">
+                Voir les prestataires
             </a>
         </div>
-
-        <div class="hero-promises">
-            <div class="hero-promise-item">
-                <svg class="w-4 h-4 flex-shrink-0" style="color:#D4AF37;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Sans inscription
-            </div>
-            <div class="hero-promise-item">
-                <svg class="w-4 h-4 flex-shrink-0" style="color:#D4AF37;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                Contact direct WhatsApp / Téléphone
-            </div>
-            <div class="hero-promise-item">
-                <svg class="w-4 h-4 flex-shrink-0" style="color:#D4AF37;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                Prestataires vérifiés
-            </div>
-        </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="scroll-indicator-wrap">
-        <div class="scroll-mouse"><div class="scroll-mouse-dot"></div></div>
-        <span>Découvrir</span>
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     TICKER
-═══════════════════════════════════════════ -->
-<div class="ticker-wrap py-1">
-    <div class="ticker-track">
-        <span class="ticker-item">Mariage<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Anniversaire<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Conférence<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Baptême<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Soirée d'entreprise<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Gala<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Séminaire<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Lancement de produit<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Fête privée<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Cérémonie<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Mariage<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Anniversaire<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Conférence<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Baptême<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Soirée d'entreprise<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Gala<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Séminaire<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Lancement de produit<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Fête privée<span class="ticker-dot"></span></span>
-        <span class="ticker-item">Cérémonie<span class="ticker-dot"></span></span>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     STATS BAR
-═══════════════════════════════════════════ -->
-<div class="stats-bar">
-    <div class="max-w-5xl mx-auto px-4">
-        <div class="stats-bar-grid">
-            <div class="stat-item">
-                <span class="stat-number" data-counter="{{ stats.vendors_count }}" data-suffix="+">{{ stats.vendors_count }}+</span>
-                <span class="stat-label">Prestataires vérifiés</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" data-counter="{{ stats.service_types_count }}" data-suffix="">{{ stats.service_types_count }}</span>
-                <span class="stat-label">Types de services</span>
-            </div>
-            <!-- v3.0 : stat dynamique — plus de chiffre inventé -->
-            <div class="stat-item">
-                <span class="stat-number" data-counter="{{ stats.cities_count }}" data-suffix="">{{ stats.cities_count }}</span>
-                <span class="stat-label">Villes couvertes</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     TYPES D'ÉVÉNEMENTS
-═══════════════════════════════════════════ -->
+<!-- Services -->
 <section class="py-16 md:py-24 bg-lily-cream">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14 scroll-reveal">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
             <div>
-                <span class="section-label">Pour chaque occasion</span>
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-lily-dark leading-tight tracking-tight section-headline-decorated">
-                    Quel événement<br class="hidden sm:block"> organisez-vous ?
-                </h2>
+                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Nos catégories</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">Tous les services dont vous avez besoin</h2>
             </div>
-            <p class="text-gray-500 text-base md:text-lg md:max-w-xs md:text-right leading-relaxed">
-                Des prestataires sélectionnés à la main pour chaque type de célébration.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-
-            <a href="{% url 'vendors:vendor_list' %}?event_type=mariage"
-               class="event-card md:col-span-7 scroll-reveal shadow-xl"
-               style="background-image: url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=1920&q=85&fit=crop'); min-height: 540px;">
-                <div class="event-card-inner">
-                    <span class="event-card-tag">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
-                        Mariage
-                    </span>
-                    <h3 style="font-family:'Playfair Display',Georgia,serif!important; font-size:2.25rem; font-weight:700; color:#fff; line-height:1.15; margin-bottom:0.625rem;">Le plus beau<br>jour de votre vie</h3>
-                    <p class="text-white/70 mt-1 text-sm md:text-base max-w-sm">Photographes, traiteurs, décorateurs, DJ… tout ce qu'il faut pour un mariage parfait.</p>
-                    <span class="event-card-cta">
-                        Voir les prestataires
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </span>
-                </div>
+            <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-2 text-lily-purple font-semibold text-sm hover:gap-3 transition-all self-start md:self-end">
+                Voir tous les prestataires
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
-
-            <div class="md:col-span-5 flex flex-col gap-4 md:gap-5">
-                <a href="{% url 'vendors:vendor_list' %}?event_type=conference"
-                   class="event-card scroll-reveal shadow-xl"
-                   style="background-image: url('https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&q=85&fit=crop'); min-height: 260px; flex: 1;">
-                    <div class="event-card-inner">
-                        <span class="event-card-tag">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 14.094A5.973 5.973 0 004 17v1H1v-1a3 3 0 013.75-2.906z"/></svg>
-                            Corporate
-                        </span>
-                        <h3 class="text-2xl font-bold text-white">Événements d'entreprise</h3>
-                        <p class="text-white/65 text-sm mt-1">Conférences, séminaires, lancements de produits.</p>
-                        <span class="event-card-cta">Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></span>
-                    </div>
-                </a>
-
-                <a href="{% url 'vendors:vendor_list' %}?event_type=anniversaire"
-                   class="event-card scroll-reveal shadow-xl"
-                   style="background-image: url('https://images.unsplash.com/photo-1464349095431-e9d86ac86ac?w=1920&q=85&fit=crop'); min-height: 260px; flex: 1;">
-                    <div class="event-card-inner">
-                        <span class="event-card-tag">
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                            Célébrations
-                        </span>
-                        <h3 class="text-2xl font-bold text-white">Fêtes & Célébrations</h3>
-                        <p class="text-white/65 text-sm mt-1">Anniversaires, baptêmes, fêtes privées inoubliables.</p>
-                        <span class="event-card-cta">Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></span>
-                    </div>
-                </a>
-            </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {% for service in service_types %}
+            <a href="{% url 'vendors:vendor_list' %}?service={{ service.id }}" class="service-pill">
+                <span class="service-pill-icon">
+                    {% if 'photo' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {% elif 'vidéo' in service.name|lower or 'vidéaste' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                    {% elif 'déco' in service.name|lower or 'fleur' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                    {% elif 'DJ' in service.name or 'music' in service.name|lower or 'musique' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                    {% elif 'traiteur' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    {% elif 'pâtisserie' in service.name|lower or 'gâteau' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
+                    {% elif 'animation' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {% elif 'salle' in service.name|lower or 'réception' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    {% elif 'maquillage' in service.name|lower or 'coiffure' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    {% elif 'location' in service.name|lower or 'matériel' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    {% elif 'transport' in service.name|lower %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    {% else %}
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    {% endif %}
+                </span>
+                <span class="font-medium text-sm text-lily-dark">{{ service.name }}</span>
+            </a>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     PRESTATAIRES VEDETTES
-═══════════════════════════════════════════ -->
+<!-- Prestataires vedettes -->
 {% if featured_vendors %}
-<section class="featured-section">
-    <div class="relative z-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 scroll-reveal">
-            <div class="flex items-end justify-between gap-4">
-                <div>
-                    <span class="section-label section-label-gold">Sélection premium</span>
-                    <h2 class="text-3xl sm:text-4xl font-bold text-white leading-tight tracking-tight">
-                        Prestataires vedettes
-                    </h2>
-                    <p class="text-white/50 mt-2 text-base">Les profils les plus appréciés de la plateforme.</p>
-                </div>
-                <a href="{% url 'vendors:vendor_list' %}" class="hidden sm:inline-flex items-center gap-2 text-lily-gold font-semibold text-sm hover:gap-3 transition-all duration-200 flex-shrink-0">
-                    Voir tous
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
+<section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between gap-4 mb-10">
+            <div>
+                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Sélection</span>
+                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">Prestataires vedettes</h2>
             </div>
+            <a href="{% url 'vendors:vendor_list' %}" class="hidden sm:inline-flex items-center gap-2 text-lily-purple font-semibold text-sm hover:gap-3 transition-all flex-shrink-0">
+                Voir tous
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
         </div>
-
-        <div class="featured-scroll px-4 sm:px-8 lg:px-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {% for vendor in featured_vendors %}
             <a href="{% url 'vendors:vendor_detail' vendor.pk %}" class="featured-card">
                 <div class="featured-card-img">
@@ -793,13 +184,11 @@
                             <img src="{{ cover.image.url }}" alt="{{ vendor.business_name }}" loading="lazy">
                         {% else %}
                             <div class="featured-card-img-placeholder">
-                                <svg class="w-16 h-16" style="color:rgba(212,175,55,0.3);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <svg class="w-16 h-16" style="color:rgba(212,175,55,0.3);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
                         {% endif %}
                     {% endwith %}
                     <div class="featured-card-overlay"></div>
-
-                    <!-- Badge logo -->
                     <div class="featured-logo-badge">
                         {% if vendor.logo %}
                             <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}">
@@ -807,23 +196,22 @@
                             <div class="featured-logo-initial">{{ vendor.business_name|first|upper }}</div>
                         {% endif %}
                     </div>
-
                     <div class="featured-card-content">
                         <div class="featured-card-services">
-                            {% for service in vendor.service_types.all|slice:":3" %}
+                            {% for service in vendor.service_types.all|slice:":2" %}
                             <span class="featured-pill">{{ service.name }}</span>
                             {% endfor %}
                         </div>
                         <div class="featured-card-name">{{ vendor.business_name }}</div>
                         {% if vendor.city %}
                         <div class="featured-card-city">
-                            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             {{ vendor.city.name }}
                         </div>
                         {% endif %}
                         <div class="featured-card-cta">
                             Voir le profil
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </div>
                     </div>
                 </div>
@@ -834,281 +222,53 @@
 </section>
 {% endif %}
 
-<!-- ══════════════════════════════════════════
-     SERVICES
-═══════════════════════════════════════════ -->
-<section class="py-16 md:py-24 services-section-bg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10 md:mb-14 scroll-reveal">
-            <div>
-                <span class="section-label">Nos catégories</span>
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-lily-dark leading-tight tracking-tight section-headline-decorated">
-                    Tous les services<br class="hidden sm:block"> dont vous avez besoin
-                </h2>
-            </div>
-            <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-2 text-lily-purple font-semibold text-sm hover:gap-3 transition-all duration-200 self-start md:self-end">
-                Voir tous les prestataires
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
-
-        <div class="services-grid">
-            {% for service in service_types %}
-            <a href="{% url 'vendors:vendor_list' %}?service={{ service.id }}" class="service-pill scroll-reveal group">
-                <span class="service-pill-icon">
-                    {% if 'photo' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    {% elif 'vidéo' in service.name|lower or 'vidéaste' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                    {% elif 'déco' in service.name|lower or 'fleur' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
-                    {% elif 'DJ' in service.name or 'music' in service.name|lower or 'musique' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
-                    {% elif 'traiteur' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    {% elif 'pâtisserie' in service.name|lower or 'gâteau' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
-                    {% elif 'animation' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    {% elif 'salle' in service.name|lower or 'réception' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    {% elif 'maquillage' in service.name|lower or 'coiffure' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    {% elif 'location' in service.name|lower or 'matériel' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    {% elif 'transport' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                    {% else %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    {% endif %}
-                </span>
-                <span class="font-medium text-sm text-lily-dark">{{ service.name }}</span>
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     COMMENT ÇA MARCHE
-═══════════════════════════════════════════ -->
+<!-- Comment ça marche -->
 <section class="py-16 md:py-24 bg-lily-cream">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="text-center mb-12 md:mb-16 scroll-reveal">
-            <span class="section-label">Sans inscription · Sans friction</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-lily-dark leading-tight tracking-tight mb-4">
-                De l'idée à la fête<br class="hidden sm:block"> en 3 étapes
-            </h2>
-            <p class="text-gray-500 text-base md:text-lg max-w-lg mx-auto">
-                Pas de compte à créer. Juste votre projet, et on s'occupe du reste.
-            </p>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Sans inscription · Sans friction</span>
+            <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">De l'idée à la fête en 3 étapes</h2>
         </div>
-
-        <div class="steps-wrapper">
-            <div class="steps-connector"></div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-
-                <div class="step-card scroll-reveal text-center">
-                    <span class="step-number">01</span>
-                    <div class="step-icon-wrap mx-auto">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-lily-dark mb-3 mt-1">Explorez librement</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Parcourez les profils, consultez les réalisations et les tarifs. <strong>Aucun compte requis.</strong></p>
-                    <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
-                        Voir les prestataires <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-
-                <div class="step-card scroll-reveal text-center" style="transition-delay:.15s">
-                    <span class="step-number">02</span>
-                    <div class="step-icon-wrap mx-auto">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-lily-dark mb-3 mt-1">Décrivez votre projet</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Nom, email, détails de l'événement. <strong>2 minutes chrono</strong>, et votre demande est envoyée.</p>
-                    <!-- Note accompagnement payant -->
-                    <div style="display:inline-flex; align-items:flex-start; gap:.4rem; margin-top:.875rem; padding:.5rem .75rem; background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.25); border-radius:.625rem;">
-                        <svg style="width:.875rem; height:.875rem; color:#D4AF37; flex-shrink:0; margin-top:.1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        <span style="font-size:.72rem; color:#92400e; line-height:1.4;">L'accompagnement personnalisé est un <strong>service payant</strong>.</span>
-                    </div>
-                    <a href="{% url 'projects:project_create' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
-                        Déposer mon projet <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-
-                <div class="step-card scroll-reveal text-center" style="transition-delay:.3s">
-                    <span class="step-number">03</span>
-                    <div class="step-icon-wrap mx-auto" style="background:linear-gradient(135deg,#D4AF37,#B8941F);">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-lily-dark mb-3 mt-1">Vivez votre événement</h3>
-                    <p class="text-gray-500 text-sm leading-relaxed">Notre équipe vous met en relation avec les prestataires idéaux. Vous n'avez plus qu'à <strong>profiter.</strong></p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     TÉMOIGNAGES
-═══════════════════════════════════════════ -->
-<section class="testimonials-section py-16 md:py-24">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="text-center mb-12 scroll-reveal">
-            <span class="section-label">Ils nous font confiance</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-lily-dark leading-tight tracking-tight">
-                Ce qu'ils disent de nous
-            </h2>
-        </div>
-
-        <!-- Phrase bienveillante — sans faux témoignages -->
-        <div class="max-w-3xl mx-auto text-center scroll-reveal">
-            <div style="display:flex; justify-content:center; gap:.25rem; margin-bottom:1.5rem;">
-                <span class="star" style="font-size:1.5rem;">★</span>
-                <span class="star" style="font-size:1.5rem;">★</span>
-                <span class="star" style="font-size:1.5rem;">★</span>
-                <span class="star" style="font-size:1.5rem;">★</span>
-                <span class="star" style="font-size:1.5rem;">★</span>
-            </div>
-            <blockquote style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(1.25rem,3vw,1.75rem); font-weight:600; color:#1A1A1A; line-height:1.55; font-style:italic; margin-bottom:2rem;">
-                "Tous ceux pour qui nous avons travaillé ont toujours été satisfaits.<br class="hidden md:block">
-                Votre satisfaction est notre engagement."
-            </blockquote>
-            <div style="display:flex; align-items:center; justify-content:center; gap:1rem;">
-                <div style="height:1px; width:3rem; background:linear-gradient(90deg,transparent,#D4AF37);"></div>
-                <span style="font-size:.8rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#D4AF37;">L'équipe LysAngels</span>
-                <div style="height:1px; width:3rem; background:linear-gradient(90deg,#D4AF37,transparent);"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ══════════════════════════════════════════
-     NOS ENGAGEMENTS (glassmorphism dark)
-═══════════════════════════════════════════ -->
-<section class="engagements-section py-16 md:py-24">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-        <div class="text-center mb-10 md:mb-14 scroll-reveal">
-            <span class="section-label section-label-gold">Notre promesse</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Ce qu'on vous garantit</h2>
-        </div>
-
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div class="engagement-glass scroll-reveal">
-                <div class="engagement-glass-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED); box-shadow:0 6px 20px rgba(139,92,246,.35);">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="step-card text-center">
+                <div class="step-icon-wrap mx-auto">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <h3>Réponse sous 24h</h3>
-                <p>Dès que vous déposez votre projet, notre équipe l'analyse et vous revient rapidement avec des prestataires adaptés.</p>
+                <h3 class="text-lg font-bold text-lily-dark mb-2">Explorez librement</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">Parcourez les profils, consultez les réalisations et les tarifs. Aucun compte requis.</p>
+                <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
+                    Voir les prestataires <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
             </div>
 
-            <div class="engagement-glass scroll-reveal" style="transition-delay:.1s">
-                <div class="engagement-glass-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED); box-shadow:0 6px 20px rgba(139,92,246,.35);">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <div class="step-card text-center">
+                <div class="step-icon-wrap mx-auto">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
-                <h3>Prestataires vérifiés</h3>
-                <p>Chaque prestataire est sélectionné à la main. Profils vérifiés, réalisations contrôlées, qualité assurée.</p>
+                <h3 class="text-lg font-bold text-lily-dark mb-2">Décrivez votre projet</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">Nom, email, détails de l'événement. 2 minutes, et votre demande est envoyée.</p>
+                <a href="{% url 'projects:project_create' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
+                    Déposer mon projet <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
             </div>
 
-            <div class="engagement-glass scroll-reveal" style="transition-delay:.2s">
-                <div class="engagement-glass-icon" style="background:linear-gradient(135deg,#D4AF37,#B8941F); box-shadow:0 6px 20px rgba(212,175,55,.35);">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <div class="step-card text-center">
+                <div class="step-icon-wrap mx-auto" style="background:linear-gradient(135deg,#D4AF37,#B8941F);">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                 </div>
-                <h3>Transparence tarifaire</h3>
-                <p>Parcourir les profils et contacter les prestataires est gratuit. L'accompagnement personnalisé par notre équipe est un <strong style="color:#D4AF37;">service payant</strong>.</p>
+                <h3 class="text-lg font-bold text-lily-dark mb-2">Vivez votre événement</h3>
+                <p class="text-gray-500 text-sm leading-relaxed">Notre équipe vous met en relation avec les prestataires idéaux. Vous n'avez plus qu'à profiter.</p>
             </div>
 
         </div>
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     CTA FINAL
-═══════════════════════════════════════════ -->
-<section class="cta-final py-28 md:py-36 text-white">
-    <div class="cta-final-bg"></div>
-    <div class="cta-final-overlay"></div>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+<!-- CTA final -->
+<div class="bg-lily-cream text-center pt-4 pb-16 border-t border-gray-100">
+    <p class="text-gray-500 text-sm mb-4">Prêt à trouver votre prestataire ?</p>
+    <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary">Voir les prestataires</a>
+</div>
 
-        <div class="cta-badge scroll-reveal">
-            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            Plateforme #1 au Togo
-        </div>
-
-        <h2 style="font-family:'Playfair Display',Georgia,serif!important; font-size:clamp(2.4rem,6vw,4.5rem); font-weight:700!important; color:#fff; line-height:1.12; letter-spacing:-0.02em; margin-bottom:1.5rem;" class="scroll-reveal">
-            Votre événement de rêve<br>
-            <span class="text-gradient-gold">commence ici.</span>
-        </h2>
-
-        <p class="text-lg md:text-xl mb-10 text-white/65 max-w-xl mx-auto leading-relaxed scroll-reveal">
-            Des centaines de prestataires qualifiés vous attendent. Décrivez votre projet en 2 minutes.
-        </p>
-
-        <div class="flex flex-col sm:flex-row justify-content items-center gap-4 mb-10 scroll-reveal" style="justify-content:center;">
-            <a href="{% url 'projects:project_create' %}" class="btn btn-accent btn-lg inline-flex items-center gap-2" style="font-size:1rem; padding:0.95rem 2.25rem;">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                J'ai un projet
-            </a>
-            <a href="{% url 'core:how_it_works' %}" class="btn btn-outline btn-lg inline-flex items-center gap-2" style="font-size:1rem; padding:0.95rem 2.25rem;">
-                Comment ça marche
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
-
-        <p class="text-white/30 text-sm scroll-reveal">Sans inscription · Sans engagement · Réponse sous 24h</p>
-
-    </div>
-</section>
-
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Scroll reveal
-    document.documentElement.classList.add('js-ready');
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
-
-    // Animated counters
-    function animateCounter(el, target, duration) {
-        const suffix = el.dataset.suffix || (target >= 10 && target < 200 ? '+' : (target > 50 ? '%' : '+'));
-        let startTime = null;
-        const step = (timestamp) => {
-            if (!startTime) startTime = timestamp;
-            const progress = Math.min((timestamp - startTime) / duration, 1);
-            // easeOutQuart
-            const eased = 1 - Math.pow(1 - progress, 4);
-            const current = Math.floor(eased * target);
-            el.textContent = current + (progress === 1 ? (target >= 98 ? '%' : '+') : (target >= 98 ? '%' : '+'));
-            if (progress < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-    }
-
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                const target = parseInt(el.dataset.counter);
-                animateCounter(el, target, 1600);
-                counterObserver.unobserve(el);
-            }
-        });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
-</script>
 {% endblock %}
