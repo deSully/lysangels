@@ -1,175 +1,156 @@
-{% extends 'base.html' %}
+{% extends 'accounts/admin/base_admin.html' %}
 
 {% block title %}{{ vendor.business_name }} - Admin{% endblock %}
 
-{% block content %}
-<div class="min-h-screen bg-lily-cream py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-lily-dark mb-1">{{ vendor.business_name }}</h1>
-                <p class="text-gray-600">Détails du prestataire</p>
-            </div>
-            <div class="flex gap-3">
-                <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}"
-                   class="px-6 py-3 border-2 border-lily-purple text-lily-purple rounded-lg font-medium hover:bg-lily-purple hover:text-white transition">
-                    Modifier
-                </a>
-                <a href="{% url 'accounts:admin_vendor_list' %}"
-                   class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
-                    Retour
-                </a>
-            </div>
-        </div>
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-xl font-semibold text-gray-900">{{ vendor.business_name }}</h1>
+    <a href="{% url 'accounts:admin_vendor_list' %}"
+       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+</div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Informations principales -->
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <div class="flex items-center mb-6">
-                        {% if vendor.logo %}
-                            <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}"
-                                 class="h-20 w-20 rounded-full object-cover mr-4">
-                        {% else %}
-                            <div class="h-20 w-20 rounded-full bg-lily-purple text-white flex items-center justify-center mr-4 text-2xl font-bold">
-                                {{ vendor.business_name|first|upper }}
-                            </div>
-                        {% endif %}
-                        <div>
-                            <h2 class="text-xl font-semibold text-lily-dark">{{ vendor.business_name }}</h2>
-                            {% if vendor.city %}<p class="text-gray-500">{{ vendor.city.name }}</p>{% endif %}
-                        </div>
-                    </div>
+<div class="grid grid-cols-3 gap-6">
 
-                    <div class="grid grid-cols-2 gap-4">
-                        {% if vendor.whatsapp %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">WhatsApp</p>
-                            <p class="font-medium text-gray-900">{{ vendor.whatsapp }}</p>
-                        </div>
-                        {% endif %}
-                        {% if vendor.website %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Site web</p>
-                            <a href="{{ vendor.website }}" target="_blank" class="font-medium text-lily-purple hover:underline">
-                                {{ vendor.website }}
-                            </a>
-                        </div>
-                        {% endif %}
-                        {% if vendor.facebook %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Facebook</p>
-                            <a href="{{ vendor.facebook }}" target="_blank" class="font-medium text-lily-purple hover:underline">Voir</a>
-                        </div>
-                        {% endif %}
-                        {% if vendor.instagram %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Instagram</p>
-                            <p class="font-medium text-gray-900">{{ vendor.instagram }}</p>
-                        </div>
-                        {% endif %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Ajouté le</p>
-                            <p class="font-medium text-gray-900">{{ vendor.created_at|date:"d/m/Y" }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Modifié le</p>
-                            <p class="font-medium text-gray-900">{{ vendor.updated_at|date:"d/m/Y" }}</p>
-                        </div>
-                    </div>
+    <!-- Colonne gauche -->
+    <div class="col-span-2 space-y-4">
 
-                    {% if vendor.service_types.exists %}
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <p class="text-sm text-gray-500 mb-2">Services</p>
-                        <div class="flex flex-wrap gap-2">
-                            {% for service in vendor.service_types.all %}
-                                <span class="px-3 py-1 bg-lily-purple bg-opacity-10 text-lily-purple rounded-full text-sm">
-                                    {% if service.icon %}{{ service.icon }} {% endif %}{{ service.name }}
-                                </span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if vendor.description %}
-                    <div class="mt-4 pt-4 border-t border-gray-100">
-                        <p class="text-sm text-gray-500 mb-2">Description</p>
-                        <p class="text-gray-800 leading-relaxed">{{ vendor.description }}</p>
-                    </div>
-                    {% endif %}
+        <!-- Identité -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Identité</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Nom</p>
+                    <p class="text-sm text-gray-900">{{ vendor.business_name }}</p>
                 </div>
-
-                <!-- Galerie -->
-                {% if vendor.images.exists %}
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">
-                        Galerie ({{ vendor.images.count }} image{{ vendor.images.count|pluralize }})
-                    </h2>
-                    <div class="grid grid-cols-3 gap-3">
-                        {% for image in vendor.images.all %}
-                            <div class="relative group">
-                                <img src="{{ image.image.url }}" alt="{{ image.caption }}"
-                                     class="w-full h-32 object-cover rounded-lg">
-                                {% if image.is_cover %}
-                                    <span class="absolute top-1 left-1 bg-lily-gold text-white text-xs px-2 py-0.5 rounded">Cover</span>
-                                {% endif %}
-                                <form method="post"
-                                      action="{% url 'accounts:admin_vendor_delete_image' vendor.pk image.pk %}"
-                                      class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition"
-                                      onsubmit="return confirm('Supprimer cette image ?');">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            class="bg-red-500 text-white text-xs px-2 py-0.5 rounded hover:bg-red-600">
-                                        ✕
-                                    </button>
-                                </form>
-                            </div>
-                        {% endfor %}
-                    </div>
+                {% if vendor.whatsapp %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">WhatsApp</p>
+                    <p class="text-sm text-gray-900">{{ vendor.whatsapp }}</p>
+                </div>
+                {% endif %}
+                {% if vendor.website %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Site web</p>
+                    <p class="text-sm text-gray-900">{{ vendor.website }}</p>
+                </div>
+                {% endif %}
+                {% if vendor.facebook %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Facebook</p>
+                    <p class="text-sm text-gray-900">{{ vendor.facebook }}</p>
+                </div>
+                {% endif %}
+                {% if vendor.instagram %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Instagram</p>
+                    <p class="text-sm text-gray-900">{{ vendor.instagram }}</p>
+                </div>
+                {% endif %}
+                {% if vendor.description %}
+                <div class="col-span-2 pt-3 border-t border-gray-100">
+                    <p class="text-xs text-gray-500 mb-1">Description</p>
+                    <p class="text-sm text-gray-700 leading-relaxed">{{ vendor.description }}</p>
                 </div>
                 {% endif %}
             </div>
+        </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Actions -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Actions</h2>
-                    <form method="post" class="mb-3">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="toggle_active">
-                        <button type="submit" class="w-full px-4 py-3 rounded-lg font-medium transition
-                            {% if vendor.is_active %}bg-red-100 text-red-700 hover:bg-red-200{% else %}bg-green-100 text-green-700 hover:bg-green-200{% endif %}">
-                            {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
-                        </button>
-                    </form>
-                    <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}"
-                       class="block w-full px-4 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-purple-dark transition text-center">
-                        Modifier le profil
-                    </a>
+        <!-- Localisation -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Localisation</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Ville</p>
+                    <p class="text-sm text-gray-900">{{ vendor.city.name|default:"—" }}</p>
                 </div>
-
-                <!-- Statut -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Statut</h2>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Profil</span>
-                            <span class="px-3 py-1 text-xs rounded-full {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                                {% if vendor.is_active %}Actif{% else %}Inactif{% endif %}
-                            </span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">Mis en avant</span>
-                            <span class="px-3 py-1 text-xs rounded-full {% if vendor.is_featured %}bg-yellow-100 text-yellow-700{% else %}bg-gray-100 text-gray-700{% endif %}">
-                                {% if vendor.is_featured %}Oui{% else %}Non{% endif %}
-                            </span>
-                        </div>
-                    </div>
+                {% if vendor.city.country %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Pays</p>
+                    <p class="text-sm text-gray-900">{{ vendor.city.country.name }}</p>
                 </div>
+                {% endif %}
             </div>
         </div>
+
+        <!-- Services -->
+        {% if vendor.service_types.exists %}
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-3">Services</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for service in vendor.service_types.all %}
+                <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-2 py-0.5">{{ service.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Images -->
+        {% if vendor.images.exists %}
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-3">Images</h2>
+            <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+            <div class="grid grid-cols-4 gap-3">
+                {% for image in vendor.images.all %}
+                <div class="relative group">
+                    <img src="{{ image.image.url }}" alt=""
+                         class="w-full h-20 object-cover rounded-md border border-gray-200">
+                    <button type="button"
+                            onclick="deleteImage({{ vendor.pk }}, {{ image.pk }})"
+                            class="absolute top-1 right-1 hidden group-hover:flex items-center justify-center w-5 h-5 bg-white border border-gray-200 text-gray-600 rounded text-xs hover:text-red-600">
+                        ✕
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
+
+    <!-- Colonne droite — Actions -->
+    <div class="col-span-1 space-y-3">
+        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-2">
+            <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}"
+               class="block w-full bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium text-center hover:bg-purple-dark transition">
+                Modifier
+            </a>
+            <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="w-full border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
+                    {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
+                </button>
+            </form>
+            <a href="{% url 'vendors:vendor_detail' vendor.pk %}" target="_blank"
+               class="block w-full text-center border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
+                Voir le profil public ↗
+            </a>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <p class="text-xs text-gray-500 mb-2">Statut</p>
+            {% if vendor.is_active %}
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
+            {% else %}
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
+            {% endif %}
+        </div>
+    </div>
+
 </div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function deleteImage(vendorId, imageId) {
+    if (!confirm('Supprimer cette image ?')) return;
+    const csrf = document.getElementById('csrf-token').value;
+    fetch(`/accounts/admin/vendors/${vendorId}/delete-image/${imageId}/`, {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrf}
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+        else alert('Erreur lors de la suppression.');
+    });
+}
+</script>
 {% endblock %}

@@ -86,3 +86,27 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.contact_name}"
+
+
+class ProjectNote(models.Model):
+    TYPE_CHOICES = [
+        ('call', 'Appel'),
+        ('meeting', 'Réunion'),
+        ('other', 'Autre'),
+    ]
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='notes')
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        'accounts.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='project_notes',
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.get_type_display()} — {self.project} ({self.created_at:%d/%m/%Y})"

@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 from apps.core.models import City, Country
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage
-from apps.projects.models import EventType, Project
+from apps.projects.models import EventType, Project, ProjectNote
 
 
 def admin_required(view_func):
@@ -296,7 +296,11 @@ def project_list(request):
 def project_detail(request, pk):
     """Détails d'une demande client"""
     project = get_object_or_404(Project.objects.select_related('event_type'), pk=pk)
-    return render(request, 'accounts/admin/project_detail.html', {'project': project})
+    notes = ProjectNote.objects.filter(project=project).select_related('created_by').order_by('-created_at')
+    return render(request, 'accounts/admin/project_detail.html', {
+        'project': project,
+        'notes': notes,
+    })
 
 
 @admin_required
@@ -312,6 +316,27 @@ def project_update_status(request, pk):
             messages.success(request, 'Statut mis à jour avec succès!')
         else:
             messages.error(request, 'Statut invalide.')
+    return redirect('accounts:admin_project_detail', pk=pk)
+
+
+@admin_required
+def project_add_note(request, pk):
+    """Ajouter un compte rendu (POST uniquement, immuable)"""
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == 'POST':
+        note_type = request.POST.get('type')
+        content = request.POST.get('content', '').strip()
+        valid_types = ['call', 'meeting', 'other']
+        if content and note_type in valid_types:
+            ProjectNote.objects.create(
+                project=project,
+                type=note_type,
+                content=content,
+                created_by=request.user,
+            )
+            messages.success(request, 'Compte rendu enregistré.')
+        else:
+            messages.error(request, 'Le contenu du compte rendu est requis.')
     return redirect('accounts:admin_project_detail', pk=pk)
 
 

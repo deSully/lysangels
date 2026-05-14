@@ -1,258 +1,96 @@
-{% extends 'base.html' %}
+{% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}Gestion des prestataires - Admin{% endblock %}
+{% block title %}Prestataires - Admin{% endblock %}
 
-{% block content %}
-<div class="min-h-screen bg-lily-cream py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-lily-dark mb-2">Gestion des prestataires</h1>
-                <p class="text-gray-600">
-                    {{ vendors.paginator.count }} prestataire{{ vendors.paginator.count|pluralize }}
-                    {% if selected_is_active or selected_service_types or selected_cities %}
-                        trouvé{{ vendors.paginator.count|pluralize }}
-                    {% else %}
-                        au total
-                    {% endif %}
-                </p>
-            </div>
-            <div class="flex gap-4">
-                <a href="{% url 'accounts:admin_dashboard' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
-                    Retour au dashboard
-                </a>
-                <a href="{% url 'accounts:admin_vendor_create' %}" class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
-                    + Créer un prestataire
-                </a>
-            </div>
-        </div>
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-xl font-semibold text-gray-900">Prestataires</h1>
+    <a href="{% url 'accounts:admin_vendor_create' %}"
+       class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+        + Ajouter un prestataire
+    </a>
+</div>
 
-        <!-- Filtres -->
-        <div class="bg-white rounded-xl shadow-sm mb-6">
-            <button type="button" id="toggleFilters" class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition">
-                <div class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                    </svg>
-                    <h3 class="font-medium text-gray-900">Filtres de recherche</h3>
-                    {% if selected_is_active or selected_service_types or selected_cities %}
-                        <span class="px-2 py-1 bg-lily-purple text-white text-xs rounded-full">
-                            Filtres actifs
-                        </span>
-                    {% endif %}
-                </div>
-                <svg id="filterIcon" class="w-5 h-5 text-gray-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
+<!-- Filtres -->
+<div class="mb-4 flex gap-2">
+    <a href="{% url 'accounts:admin_vendor_list' %}"
+       class="px-3 py-1.5 text-sm rounded-md border {% if not selected_is_active %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
+        Tous
+    </a>
+    <a href="?is_active=1"
+       class="px-3 py-1.5 text-sm rounded-md border {% if selected_is_active == '1' %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
+        Actifs
+    </a>
+    <a href="?is_active=0"
+       class="px-3 py-1.5 text-sm rounded-md border {% if selected_is_active == '0' %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
+        Inactifs
+    </a>
+</div>
 
-            <div id="filtersContent" class="hidden border-t border-gray-200">
-                <form method="get" class="p-6 space-y-6">
-                <!-- Statut -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Statut</label>
-                    <div class="flex gap-4">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="is_active" value="" {% if not selected_is_active %}checked{% endif %}
-                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
-                            <span class="ml-2 text-sm text-gray-700">Tous</span>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="is_active" value="1" {% if selected_is_active == '1' %}checked{% endif %}
-                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
-                            <span class="ml-2 text-sm text-gray-700">Actifs uniquement</span>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="is_active" value="0" {% if selected_is_active == '0' %}checked{% endif %}
-                                   class="w-4 h-4 text-lily-purple border-gray-300 focus:ring-lily-purple">
-                            <span class="ml-2 text-sm text-gray-700">Inactifs uniquement</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Services -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Types de services</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        {% for service in service_types %}
-                        <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition
-                               {% if service.id|stringformat:'s' in selected_service_types %}border-lily-purple bg-lily-purple bg-opacity-10{% endif %}">
-                            <input type="checkbox" name="service_types" value="{{ service.id }}"
-                                   {% if service.id|stringformat:'s' in selected_service_types %}checked{% endif %}
-                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
-                            <span class="ml-2 text-sm text-gray-700">{{ service.name }}</span>
-                        </label>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Villes -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-3">Villes</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                        {% for city in cities %}
-                        <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-lily-purple hover:bg-lily-purple hover:bg-opacity-5 transition
-                               {% if city.id|stringformat:'s' in selected_cities %}border-lily-purple bg-lily-purple bg-opacity-10{% endif %}">
-                            <input type="checkbox" name="cities" value="{{ city.id }}"
-                                   {% if city.id|stringformat:'s' in selected_cities %}checked{% endif %}
-                                   class="w-4 h-4 text-lily-purple border-gray-300 rounded focus:ring-lily-purple">
-                            <span class="ml-2 text-sm text-gray-700">{{ city.name }}</span>
-                        </label>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Boutons -->
-                <div class="flex gap-3 pt-4 border-t border-gray-200">
-                    <button type="submit" class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
-                        Appliquer les filtres
-                    </button>
-                    {% if selected_is_active or selected_service_types or selected_cities %}
-                        <a href="{% url 'accounts:admin_vendor_list' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
-                            Réinitialiser tout
-                        </a>
-                    {% endif %}
-                </div>
-            </form>
-        </div>
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('toggleFilters');
-            const filtersContent = document.getElementById('filtersContent');
-            const filterIcon = document.getElementById('filterIcon');
-
-            const filterBadge = document.querySelector('.px-2.py-1.bg-lily-purple.text-white');
-            if (filterBadge) {
-                filtersContent.classList.remove('hidden');
-                filterIcon.classList.add('rotate-180');
-            }
-
-            toggleBtn.addEventListener('click', function() {
-                filtersContent.classList.toggle('hidden');
-                filterIcon.classList.toggle('rotate-180');
-            });
-        });
-        </script>
-
-        <!-- Liste des prestataires -->
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prestataire</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ville</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for vendor in vendors %}
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                {% if vendor.logo %}
-                                    <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" class="h-10 w-10 rounded-full object-cover mr-3">
-                                {% else %}
-                                    <div class="h-10 w-10 rounded-full bg-lily-purple text-white flex items-center justify-center mr-3 font-medium">
-                                        {{ vendor.business_name|first|upper }}
-                                    </div>
-                                {% endif %}
-                                <div class="font-medium text-gray-900">{{ vendor.business_name }}</div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">
-                            {% for service in vendor.service_types.all|slice:":3" %}
-                                <span class="inline-block px-2 py-1 bg-lily-purple bg-opacity-10 text-lily-purple rounded text-xs mr-1 mb-1">
-                                    {{ service.name }}
-                                </span>
-                            {% endfor %}
-                            {% if vendor.service_types.count > 3 %}
-                                <span class="text-xs text-gray-500">+{{ vendor.service_types.count|add:"-3" }}</span>
-                            {% endif %}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ vendor.city.name }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex flex-col gap-1">
-                                <span class="px-2 py-1 text-xs rounded-full text-center {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                                    {% if vendor.is_active %}✓ Actif{% else %}✕ Inactif{% endif %}
-                                </span>
-                                {% if vendor.is_featured %}
-                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 text-center">
-                                        ⭐ Vedette
-                                    </span>
-                                {% endif %}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <div class="flex items-center gap-2">
-                                <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.id %}" class="inline">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            class="px-3 py-1 rounded-lg text-xs font-medium transition {% if vendor.is_active %}bg-red-100 text-red-700 hover:bg-red-200{% else %}bg-green-100 text-green-700 hover:bg-green-200{% endif %}"
-                                            title="{% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}">
-                                        {% if vendor.is_active %}
-                                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                                            </svg>
-                                        {% else %}
-                                            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                        {% endif %}
-                                    </button>
-                                </form>
-
-                                <a href="{% url 'accounts:admin_vendor_detail' vendor.id %}"
-                                   class="text-lily-purple hover:text-lily-gold transition">
-                                    Détails
-                                </a>
-                                <a href="{% url 'accounts:admin_vendor_edit' vendor.id %}"
-                                   class="text-blue-600 hover:text-blue-800 transition">
-                                    Modifier
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                            Aucun prestataire trouvé
-                        </td>
-                    </tr>
+<div class="bg-white border border-gray-200 rounded-lg">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-gray-100">
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Ville</th>
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Services</th>
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Statut</th>
+                <th class="px-5 py-3 text-right text-xs text-gray-500 uppercase tracking-wide font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for vendor in vendors %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-5 py-3 text-gray-900 font-medium">{{ vendor.business_name }}</td>
+                <td class="px-5 py-3 text-gray-500">{{ vendor.city.name|default:"—" }}</td>
+                <td class="px-5 py-3 text-gray-500">
+                    {% for service in vendor.service_types.all|slice:":2" %}
+                        {{ service.name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
+                    {% if vendor.service_types.count > 2 %} …{% endif %}
+                </td>
+                <td class="px-5 py-3">
+                    {% if vendor.is_active %}
+                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
+                    {% else %}
+                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
+                    {% endif %}
+                </td>
+                <td class="px-5 py-3 text-right">
+                    <a href="{% url 'accounts:admin_vendor_detail' vendor.pk %}"
+                       class="text-xs text-lily-purple hover:underline mr-3">Voir</a>
+                    <form method="post"
+                          action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}"
+                          class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-xs text-gray-500 hover:text-gray-900">
+                            {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="px-5 py-6 text-sm text-gray-400 text-center">Aucun prestataire</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if vendors.has_other_pages %}
+    <div class="px-5 py-4 border-t border-gray-100 flex justify-between items-center">
+        <span class="text-xs text-gray-500">Page {{ vendors.number }} / {{ vendors.paginator.num_pages }}</span>
+        <div class="flex gap-2">
+            {% if vendors.has_previous %}
+            <a href="?page={{ vendors.previous_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
+               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">← Précédent</a>
+            {% endif %}
+            {% if vendors.has_next %}
+            <a href="?page={{ vendors.next_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
+               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">Suivant →</a>
+            {% endif %}
         </div>
-
-        <!-- Pagination -->
-        {% if vendors.has_other_pages %}
-        <div class="mt-6 flex justify-center">
-            <nav class="flex gap-2">
-                {% if vendors.has_previous %}
-                    <a href="?page={{ vendors.previous_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}{% for id in selected_service_types %}&service_types={{ id }}{% endfor %}{% for id in selected_cities %}&cities={{ id }}{% endfor %}"
-                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        Précédent
-                    </a>
-                {% endif %}
-
-                <span class="px-4 py-2 text-gray-700">
-                    Page {{ vendors.number }} sur {{ vendors.paginator.num_pages }}
-                </span>
-
-                {% if vendors.has_next %}
-                    <a href="?page={{ vendors.next_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}{% for id in selected_service_types %}&service_types={{ id }}{% endfor %}{% for id in selected_cities %}&cities={{ id }}{% endfor %}"
-                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        Suivant
-                    </a>
-                {% endif %}
-            </nav>
-        </div>
-        {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}

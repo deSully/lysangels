@@ -1,145 +1,104 @@
-{% extends 'base.html' %}
+{% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}Dashboard Admin - LysAngels{% endblock %}
+{% block title %}Tableau de bord - Admin{% endblock %}
 
-{% block content %}
-<div class="min-h-screen bg-lily-cream py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-lily-dark mb-2">Dashboard Administrateur</h1>
-            <p class="text-gray-600">Pilotez l'activité de LysAngels</p>
-        </div>
+{% block admin_content %}
+<div class="mb-6">
+    <h1 class="text-xl font-semibold text-gray-900">Tableau de bord</h1>
+</div>
 
-        <!-- KPIs -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <a href="{% url 'accounts:admin_project_list' %}?status=new"
-               class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-orange-400 hover:shadow-md transition">
-                <p class="text-3xl font-bold text-lily-dark">{{ new_projects }}</p>
-                <p class="text-sm text-gray-500 mt-1">Nouvelles demandes</p>
-                <p class="text-xs text-orange-600 mt-1">À traiter</p>
-            </a>
-            <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-lily-purple">
-                <p class="text-3xl font-bold text-lily-dark">{{ total_projects }}</p>
-                <p class="text-sm text-gray-500 mt-1">Demandes total</p>
-                <p class="text-xs text-gray-400 mt-1">+{{ projects_this_month }} / 30j</p>
-            </div>
-            <a href="{% url 'accounts:admin_vendor_list' %}?is_active=1"
-               class="bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition">
-                <p class="text-3xl font-bold text-lily-dark">{{ active_vendors }}</p>
-                <p class="text-sm text-gray-500 mt-1">Prestataires actifs</p>
-            </a>
-            {% if pending_vendors > 0 %}
-            <a href="{% url 'accounts:admin_vendor_list' %}?is_active=0"
-               class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-red-400 hover:shadow-md transition">
-                <p class="text-3xl font-bold text-lily-dark">{{ pending_vendors }}</p>
-                <p class="text-sm text-gray-500 mt-1">Prestataires inactifs</p>
-                <p class="text-xs text-red-500 mt-1">À activer</p>
-            </a>
-            {% else %}
-            <div class="bg-white rounded-xl shadow-sm p-5">
-                <p class="text-3xl font-bold text-lily-dark">{{ pending_vendors }}</p>
-                <p class="text-sm text-gray-500 mt-1">Prestataires inactifs</p>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-
-            <!-- Nouvelles demandes clients -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-semibold text-lily-dark">Nouvelles demandes</h2>
-                    <a href="{% url 'accounts:admin_project_list' %}" class="text-sm text-lily-purple hover:underline">Voir tout</a>
-                </div>
-                {% if recent_projects %}
-                <div class="space-y-3">
-                    {% for project in recent_projects %}
-                    <a href="{% url 'accounts:admin_project_detail' project.pk %}"
-                       class="flex items-start justify-between p-3 rounded-lg hover:bg-lily-cream transition">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-gray-900 text-sm truncate">{{ project.title }}</p>
-                            <p class="text-xs text-gray-500">{{ project.contact_name }} — {{ project.contact_email }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">{{ project.created_at|date:"d/m/Y à H:i" }}</p>
-                        </div>
-                        <span class="ml-3 px-2 py-0.5 text-xs rounded-full bg-orange-100 text-orange-700 flex-shrink-0">
-                            Nouvelle
-                        </span>
-                    </a>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p class="text-gray-500 text-sm py-4 text-center">Aucune nouvelle demande</p>
-                {% endif %}
-            </div>
-
-            <!-- Derniers prestataires -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-semibold text-lily-dark">Derniers prestataires</h2>
-                    <a href="{% url 'accounts:admin_vendor_list' %}" class="text-sm text-lily-purple hover:underline">Voir tout</a>
-                </div>
-                {% if recent_vendors %}
-                <div class="space-y-3">
-                    {% for vendor in recent_vendors %}
-                    <a href="{% url 'accounts:admin_vendor_detail' vendor.pk %}"
-                       class="flex items-center justify-between p-3 rounded-lg hover:bg-lily-cream transition">
-                        <div>
-                            <p class="font-medium text-gray-900 text-sm">{{ vendor.business_name }}</p>
-                            <p class="text-xs text-gray-500">{{ vendor.city }}</p>
-                        </div>
-                        <span class="px-2 py-0.5 text-xs rounded-full {% if vendor.is_active %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                            {% if vendor.is_active %}Actif{% else %}Inactif{% endif %}
-                        </span>
-                    </a>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <p class="text-gray-500 text-sm py-4 text-center">Aucun prestataire</p>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Navigation rapide -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- Gestion -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-lg font-semibold text-lily-dark mb-4">Gestion</h2>
-                <div class="space-y-2">
-                    <a href="{% url 'accounts:admin_project_list' %}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
-                        <span class="text-sm font-medium text-gray-700">Demandes clients</span>
-                        <span class="text-xs text-lily-purple">{{ total_projects }}</span>
-                    </a>
-                    <a href="{% url 'accounts:admin_vendor_list' %}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
-                        <span class="text-sm font-medium text-gray-700">Prestataires</span>
-                        <span class="text-xs text-lily-purple">{{ active_vendors }} actifs</span>
-                    </a>
-                    <a href="{% url 'accounts:admin_vendor_create' %}" class="flex items-center justify-between p-3 rounded-lg border border-lily-purple bg-lily-purple bg-opacity-5 hover:bg-opacity-10 transition">
-                        <span class="text-sm font-medium text-lily-purple">+ Ajouter un prestataire</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Configuration -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <h2 class="text-lg font-semibold text-lily-dark mb-4">Configuration</h2>
-                <div class="space-y-2">
-                    <a href="{% url 'accounts:admin_service_type_list' %}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
-                        <span class="text-sm font-medium text-gray-700">Types de services</span>
-                        <span class="text-xs text-gray-500">{{ total_service_types }}</span>
-                    </a>
-                    <a href="{% url 'accounts:admin_event_type_list' %}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
-                        <span class="text-sm font-medium text-gray-700">Types d'événements</span>
-                        <span class="text-xs text-gray-500">{{ total_event_types }}</span>
-                    </a>
-                    <a href="{% url 'accounts:admin_country_list' %}" class="flex items-center justify-between p-3 rounded-lg border border-gray-200 hover:border-lily-purple hover:bg-lily-cream transition">
-                        <span class="text-sm font-medium text-gray-700">Pays & Villes</span>
-                        <span class="text-xs text-gray-500">{{ total_countries }} pays, {{ total_cities }} villes</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- Stats -->
+<div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <p class="text-2xl font-semibold text-gray-900">{{ new_projects }}</p>
+        <p class="text-sm text-gray-500 mt-1">Nouvelles demandes</p>
     </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <p class="text-2xl font-semibold text-gray-900">{{ total_projects }}</p>
+        <p class="text-sm text-gray-500 mt-1">Demandes total</p>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <p class="text-2xl font-semibold text-gray-900">{{ active_vendors }}</p>
+        <p class="text-sm text-gray-500 mt-1">Prestataires actifs</p>
+    </div>
+    <div class="bg-white border border-gray-200 rounded-lg p-5">
+        <p class="text-2xl font-semibold text-gray-900">{{ pending_vendors }}</p>
+        <p class="text-sm text-gray-500 mt-1">Prestataires inactifs</p>
+    </div>
+</div>
+
+<!-- Tables -->
+<div class="grid grid-cols-2 gap-6">
+
+    <!-- Nouvelles demandes -->
+    <div class="bg-white border border-gray-200 rounded-lg">
+        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-900">Nouvelles demandes</span>
+            <a href="{% url 'accounts:admin_project_list' %}?status=new"
+               class="text-xs text-lily-purple hover:underline">Voir tout →</a>
+        </div>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-100">
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Email</th>
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Date</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for project in recent_projects %}
+                <tr class="hover:bg-gray-50 cursor-pointer"
+                    onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
+                    <td class="px-5 py-3 text-gray-900">{{ project.contact_name }}</td>
+                    <td class="px-5 py-3 text-gray-500 truncate max-w-xs">{{ project.contact_email }}</td>
+                    <td class="px-5 py-3 text-gray-500 whitespace-nowrap">{{ project.created_at|date:"d/m/Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="px-5 py-4 text-sm text-gray-400">Aucune nouvelle demande</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Prestataires récents -->
+    <div class="bg-white border border-gray-200 rounded-lg">
+        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-900">Prestataires</span>
+            <a href="{% url 'accounts:admin_vendor_list' %}"
+               class="text-xs text-lily-purple hover:underline">Voir tout →</a>
+        </div>
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-gray-100">
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Ville</th>
+                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Statut</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for vendor in recent_vendors %}
+                <tr class="hover:bg-gray-50 cursor-pointer"
+                    onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
+                    <td class="px-5 py-3 text-gray-900">{{ vendor.business_name }}</td>
+                    <td class="px-5 py-3 text-gray-500">{{ vendor.city.name|default:"—" }}</td>
+                    <td class="px-5 py-3">
+                        {% if vendor.is_active %}
+                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
+                        {% else %}
+                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="px-5 py-4 text-sm text-gray-400">Aucun prestataire</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>
 {% endblock %}

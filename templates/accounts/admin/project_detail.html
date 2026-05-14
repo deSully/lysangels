@@ -1,153 +1,194 @@
-{% extends 'base.html' %}
+{% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}{{ project.title }} - Admin{% endblock %}
+{% block title %}{{ project.contact_name }} - Admin{% endblock %}
 
-{% block content %}
-<div class="min-h-screen bg-lily-cream py-8">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-lily-dark mb-1">{{ project.title }}</h1>
-                <p class="text-gray-500 text-sm">Reçue le {{ project.created_at|date:"d/m/Y à H:i" }}</p>
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-xl font-semibold text-gray-900">{{ project.contact_name }}</h1>
+        <p class="text-sm text-gray-500 mt-0.5">Reçue le {{ project.created_at|date:"d/m/Y à H:i" }}</p>
+    </div>
+    <a href="{% url 'accounts:admin_project_list' %}"
+       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+</div>
+
+<div class="grid grid-cols-3 gap-6">
+
+    <!-- Colonne gauche -->
+    <div class="col-span-2 space-y-4">
+
+        <!-- Coordonnées -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Coordonnées</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Nom complet</p>
+                    <p class="text-sm text-gray-900">{{ project.contact_name }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Email</p>
+                    <p class="text-sm text-gray-900">{{ project.contact_email }}</p>
+                </div>
+                {% if project.contact_phone %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Téléphone</p>
+                    <p class="text-sm text-gray-900">{{ project.contact_phone }}</p>
+                </div>
+                {% endif %}
             </div>
-            <a href="{% url 'accounts:admin_project_list' %}"
-               class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
-                Retour à la liste
-            </a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Colonne principale -->
-            <div class="lg:col-span-2 space-y-6">
-
-                <!-- Informations contact -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Informations de contact</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Nom</p>
-                            <p class="font-medium text-gray-900">{{ project.contact_name }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Email</p>
-                            <a href="mailto:{{ project.contact_email }}" class="font-medium text-lily-purple hover:underline">
-                                {{ project.contact_email }}
-                            </a>
-                        </div>
-                        {% if project.contact_phone %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Téléphone</p>
-                            <a href="tel:{{ project.contact_phone }}" class="font-medium text-gray-900">
-                                {{ project.contact_phone }}
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
+        <!-- Événement -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Événement</h2>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                {% if project.event_type %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Type d'événement</p>
+                    <p class="text-sm text-gray-900">{{ project.event_type.name }}</p>
                 </div>
-
-                <!-- Détails du projet -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Détails du projet</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        {% if project.event_type %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Type d'événement</p>
-                            <p class="font-medium text-gray-900">{{ project.event_type.name }}</p>
-                        </div>
-                        {% endif %}
-                        {% if project.city %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Ville</p>
-                            <p class="font-medium text-gray-900">{{ project.city }}</p>
-                        </div>
-                        {% endif %}
-                        {% if project.event_date %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Date de l'événement</p>
-                            <p class="font-medium text-gray-900">{{ project.event_date|date:"d F Y" }}</p>
-                        </div>
-                        {% endif %}
-                        {% if project.guest_count %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Nombre d'invités</p>
-                            <p class="font-medium text-gray-900">{{ project.guest_count }}</p>
-                        </div>
-                        {% endif %}
-                        {% if project.budget_min or project.budget_max %}
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Budget</p>
-                            <p class="font-medium text-gray-900">
-                                {% if project.budget_min %}{{ project.budget_min|floatformat:0 }} FCFA{% endif %}
-                                {% if project.budget_min and project.budget_max %} – {% endif %}
-                                {% if project.budget_max %}{{ project.budget_max|floatformat:0 }} FCFA{% endif %}
-                            </p>
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% if project.description %}
-                    <div class="pt-4 border-t border-gray-100">
-                        <p class="text-sm text-gray-500 mb-2">Description</p>
-                        <p class="text-gray-800 leading-relaxed">{{ project.description }}</p>
-                    </div>
-                    {% endif %}
-                    {% if project.services_needed.exists %}
-                    <div class="pt-4 border-t border-gray-100 mt-4">
-                        <p class="text-sm text-gray-500 mb-2">Services recherchés</p>
-                        <div class="flex flex-wrap gap-2">
-                            {% for service in project.services_needed.all %}
-                                <span class="px-3 py-1 bg-lily-cream text-lily-purple text-sm rounded-full">{{ service.name }}</span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
+                {% endif %}
+                {% if project.city %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Ville</p>
+                    <p class="text-sm text-gray-900">{{ project.city }}</p>
+                </div>
+                {% endif %}
+                {% if project.location %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Lieu précis</p>
+                    <p class="text-sm text-gray-900">{{ project.location }}</p>
+                </div>
+                {% endif %}
+                {% if project.event_date %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Date</p>
+                    <p class="text-sm text-gray-900">
+                        {{ project.event_date|date:"d F Y" }}{% if project.event_time %} à {{ project.event_time|time:"H:i" }}{% endif %}
+                    </p>
+                </div>
+                {% endif %}
+                {% if project.guest_count %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Invités</p>
+                    <p class="text-sm text-gray-900">{{ project.guest_count }}</p>
+                </div>
+                {% endif %}
+                {% if project.budget_min or project.budget_max %}
+                <div>
+                    <p class="text-xs text-gray-500 mb-1">Budget</p>
+                    <p class="text-sm text-gray-900">
+                        {% if project.budget_min %}{{ project.budget_min|floatformat:0 }} FCFA{% endif %}
+                        {% if project.budget_min and project.budget_max %} – {% endif %}
+                        {% if project.budget_max %}{{ project.budget_max|floatformat:0 }} FCFA{% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+            {% if project.description %}
+            <div class="pt-4 border-t border-gray-100">
+                <p class="text-xs text-gray-500 mb-2">Description</p>
+                <p class="text-sm text-gray-700 leading-relaxed">{{ project.description }}</p>
+            </div>
+            {% endif %}
+            {% if project.services_needed.exists %}
+            <div class="pt-4 border-t border-gray-100 mt-4">
+                <p class="text-xs text-gray-500 mb-2">Services recherchés</p>
+                <div class="flex flex-wrap gap-2">
+                    {% for service in project.services_needed.all %}
+                    <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-2 py-0.5">{{ service.name }}</span>
+                    {% endfor %}
                 </div>
             </div>
+            {% endif %}
+        </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Statut et actions -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Statut</h2>
-                    <span class="px-3 py-1 text-sm rounded-full inline-block mb-4
-                        {% if project.status == 'new' %}bg-orange-100 text-orange-700
-                        {% elif project.status == 'contacted' %}bg-blue-100 text-blue-700
-                        {% elif project.status == 'in_progress' %}bg-green-100 text-green-700
-                        {% else %}bg-gray-100 text-gray-700{% endif %}">
-                        {{ project.get_status_display }}
-                    </span>
+        <!-- Statut -->
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Statut</h2>
+            <form method="post" action="{% url 'accounts:admin_project_update_status' project.pk %}">
+                {% csrf_token %}
+                <select name="status"
+                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                    {% for value, label in project.STATUS_CHOICES %}
+                    <option value="{{ value }}" {% if project.status == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit"
+                        class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+                    Mettre à jour
+                </button>
+            </form>
+        </div>
 
-                    <!-- Changer le statut -->
-                    <form method="post" action="{% url 'accounts:admin_project_update_status' project.pk %}">
-                        {% csrf_token %}
-                        <label class="block text-sm text-gray-600 mb-2">Changer le statut</label>
-                        <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm mb-3 focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-                            {% for value, label in project.STATUS_CHOICES %}
-                                <option value="{{ value }}" {% if project.status == value %}selected{% endif %}>{{ label }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="w-full bg-lily-purple text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-dark transition text-sm">
-                            Mettre à jour
-                        </button>
-                    </form>
+    </div>
+
+    <!-- Colonne droite — Suivi -->
+    <div class="col-span-1">
+        <div class="bg-white border border-gray-200 rounded-lg p-5">
+            <h2 class="text-sm font-medium text-gray-900 mb-4">Suivi</h2>
+
+            {% if notes %}
+            <div class="mb-4">
+                {% for note in notes %}
+                <div class="{% if not forloop.first %}border-t border-gray-100 pt-3{% endif %} pb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs text-gray-400 whitespace-nowrap">{{ note.created_at|date:"d/m/Y H:i" }}</span>
+                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                            {{ note.get_type_display }}
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-700 leading-relaxed">{{ note.content }}</p>
                 </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-sm text-gray-400 mb-4">Aucun compte rendu.</p>
+            {% endif %}
 
-                <!-- Contacter le client -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-lily-dark mb-4">Contacter le client</h2>
-                    <a href="mailto:{{ project.contact_email }}?subject=Votre demande LysAngels : {{ project.title }}"
-                       class="block w-full bg-lily-purple text-white px-4 py-3 rounded-lg font-medium hover:bg-purple-dark transition text-center text-sm">
-                        Envoyer un email
-                    </a>
-                    {% if project.contact_phone %}
-                    <a href="tel:{{ project.contact_phone }}"
-                       class="block w-full mt-2 border-2 border-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition text-center text-sm">
-                        Appeler
-                    </a>
-                    {% endif %}
-                </div>
+            <!-- Formulaire ajout CR -->
+            <div class="border-t border-gray-100 pt-4">
+                <form id="note-form" method="post"
+                      action="{% url 'accounts:admin_project_add_note' project.pk %}">
+                    {% csrf_token %}
+                    <select name="type"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 focus:ring-2 focus:ring-lily-purple focus:border-transparent">
+                        <option value="call">Appel</option>
+                        <option value="meeting">Réunion</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <textarea name="content" rows="3" required
+                              placeholder="Contenu du compte rendu…"
+                              class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 resize-none focus:ring-2 focus:ring-lily-purple focus:border-transparent"></textarea>
+                    <button type="button"
+                            onclick="document.getElementById('confirm-modal').showModal()"
+                            class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+                        Enregistrer
+                    </button>
+                </form>
             </div>
         </div>
     </div>
+
 </div>
+
+<!-- Modale de confirmation -->
+<dialog id="confirm-modal"
+        class="rounded-lg border border-gray-200 p-6 w-full max-w-sm backdrop:bg-gray-900/50">
+    <p class="text-sm text-gray-700 mb-5">
+        Une fois enregistré, ce compte rendu ne pourra plus être modifié ni supprimé. Confirmer ?
+    </p>
+    <div class="flex gap-3 justify-end">
+        <button type="button"
+                onclick="document.getElementById('confirm-modal').close()"
+                class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
+            Annuler
+        </button>
+        <button type="button"
+                onclick="document.getElementById('confirm-modal').close(); document.getElementById('note-form').submit();"
+                class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+            Confirmer
+        </button>
+    </div>
+</dialog>
 {% endblock %}

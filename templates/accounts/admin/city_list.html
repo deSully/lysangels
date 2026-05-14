@@ -1,64 +1,42 @@
-{% extends 'base.html' %}
-
-{% block title %}Gestion des villes - Admin{% endblock %}
-
-{% block content %}
-<div class="min-h-screen bg-lily-cream py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-lily-dark mb-2">Gestion des villes</h1>
-                <p class="text-gray-600">{{ cities|length }} villes au total</p>
-            </div>
-            <div class="flex gap-4">
-                <a href="{% url 'accounts:admin_dashboard' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-lily-purple hover:text-lily-purple transition">
-                    Retour au dashboard
-                </a>
-                <a href="{% url 'accounts:admin_city_create' %}" class="bg-lily-purple text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
-                    + Ajouter une ville
-                </a>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prestataires</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for city in cities %}
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="font-medium text-gray-900">{{ city.name }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            {{ city.vendor_count }} prestataire{{ city.vendor_count|pluralize }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 text-xs rounded-full {% if city.is_active %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
-                                {% if city.is_active %}Actif{% else %}Inactif{% endif %}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <a href="{% url 'accounts:admin_city_edit' city.id %}" class="text-lily-purple hover:text-lily-gold mr-4">Modifier</a>
-                            <a href="{% url 'accounts:admin_city_delete' city.id %}" class="text-red-600 hover:text-red-800">Supprimer</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" class="px-6 py-12 text-center text-gray-500">
-                            Aucune ville enregistrée
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+{% extends 'accounts/admin/base_admin.html' %}
+{% block title %}Villes - Admin{% endblock %}
+{% block admin_content %}
+<div class="mb-6 flex justify-between items-center">
+    <h1 class="text-xl font-semibold text-gray-900">Villes</h1>
+    <a href="{% url 'accounts:admin_city_create' %}"
+       class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
+        + Ajouter une ville
+    </a>
+</div>
+<div class="bg-white border border-gray-200 rounded-lg">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-gray-100">
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Pays</th>
+                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Prestataires</th>
+                <th class="px-5 py-3 text-right text-xs text-gray-500 uppercase tracking-wide font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for city in cities %}
+            <tr class="hover:bg-gray-50">
+                <td class="px-5 py-3 text-gray-900 font-medium">{{ city.name }}</td>
+                <td class="px-5 py-3 text-gray-500">{{ city.country.name }}</td>
+                <td class="px-5 py-3 text-gray-500">{{ city.vendor_count }}</td>
+                <td class="px-5 py-3 text-right space-x-3">
+                    <a href="{% url 'accounts:admin_city_edit' city.pk %}"
+                       class="text-xs text-lily-purple hover:underline">Modifier</a>
+                    <a href="{% url 'accounts:admin_city_delete' city.pk %}"
+                       class="text-xs text-gray-400 hover:text-red-600">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="px-5 py-6 text-sm text-gray-400 text-center">Aucune ville</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

@@ -18,7 +18,6 @@ def user_login(request):
             if not remember:
                 request.session.set_expiry(0)
             login(request, user)
-            messages.success(request, f'Bienvenue {user.get_full_name() or user.username}!')
             next_url = request.GET.get('next')
             if next_url:
                 return redirect(next_url)
