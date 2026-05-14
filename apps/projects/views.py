@@ -1,16 +1,16 @@
 from django.shortcuts import render
 from django.contrib import messages
-from .models import EventType
 from .forms import ProjectCreateForm
-from apps.vendors.models import ServiceType
+from apps.core.cache_utils import get_cached_service_types
 
 
 def project_create(request):
-    """Formulaire public 'J'ai besoin d'aide' — aucun compte requis"""
+    """Formulaire public 'J'ai un projet' — aucun compte requis"""
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
         if form.is_valid():
             project = form.save(commit=False)
+            project.title = f"Projet de {project.contact_name}"
             project.status = 'new'
             project.save()
             form.save_m2m()
@@ -22,16 +22,7 @@ def project_create(request):
     else:
         form = ProjectCreateForm()
 
-    event_types = list(EventType.objects.all())
-    service_types = list(ServiceType.objects.all())
-
-    context = {
+    return render(request, 'projects/project_create.html', {
         'form': form,
-        'event_types': event_types,
-        'service_types': service_types,
-        'breadcrumbs': [
-            {'title': 'Accueil', 'url': 'core:home'},
-            {'title': 'J\'ai besoin d\'aide'},
-        ],
-    }
-    return render(request, 'projects/project_create.html', context)
+        'service_types': get_cached_service_types(ordered=True),
+    })

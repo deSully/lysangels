@@ -25,12 +25,6 @@ class ProjectCreateForm(forms.ModelForm):
         label='Votre téléphone (optionnel)',
         widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': '+228 90 00 00 00'})
     )
-    title = forms.CharField(
-        max_length=200,
-        required=True,
-        label='Titre du projet',
-        widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: Mariage de Marie et Jean'})
-    )
     event_type = forms.ModelChoiceField(
         queryset=EventType.objects.all(),
         required=False,
@@ -54,35 +48,37 @@ class ProjectCreateForm(forms.ModelForm):
     )
     event_date = forms.DateField(
         required=False,
-        label='Date de l\'événement (optionnel)',
+        label="Date de l'événement (optionnel)",
         widget=forms.DateInput(attrs={'type': 'date', 'class': INPUT_CLASS})
     )
     event_time = forms.TimeField(
         required=False,
+        label="Heure de l'événement (optionnel)",
         widget=forms.TimeInput(attrs={'type': 'time', 'class': INPUT_CLASS})
     )
     location = forms.CharField(
         max_length=300,
         required=False,
+        label='Lieu précis (optionnel)',
         widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: Hôtel Sarakawa'})
     )
     guest_count = forms.IntegerField(
         required=False,
         min_value=1,
-        label='Nombre d\'invités estimé (optionnel)',
+        label="Nombre d'invités estimé (optionnel)",
         widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: 100', 'min': '1'})
     )
     budget_min = forms.IntegerField(
         required=False,
         min_value=0,
         label='Budget minimum (FCFA)',
-        widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: 500000', 'min': '0'})
+        widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: 500 000', 'min': '0'})
     )
     budget_max = forms.IntegerField(
         required=False,
         min_value=0,
         label='Budget maximum (FCFA)',
-        widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: 2000000', 'min': '0'})
+        widget=forms.NumberInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: 2 000 000', 'min': '0'})
     )
     services_needed = forms.ModelMultipleChoiceField(
         queryset=ServiceType.objects.all(),
@@ -94,7 +90,7 @@ class ProjectCreateForm(forms.ModelForm):
         model = Project
         fields = [
             'contact_name', 'contact_email', 'contact_phone',
-            'title', 'event_type', 'description', 'city', 'location',
+            'event_type', 'description', 'city', 'location',
             'event_date', 'event_time', 'guest_count',
             'budget_min', 'budget_max', 'services_needed',
         ]
@@ -103,10 +99,10 @@ class ProjectCreateForm(forms.ModelForm):
         event_date = self.cleaned_data.get('event_date')
         if event_date:
             if event_date < datetime.date.today():
-                raise ValidationError('La date de l\'événement ne peut pas être dans le passé.')
+                raise ValidationError("La date de l'événement ne peut pas être dans le passé.")
             max_date = datetime.date.today() + datetime.timedelta(days=730)
             if event_date > max_date:
-                raise ValidationError('La date de l\'événement ne peut pas être au-delà de 2 ans.')
+                raise ValidationError("La date de l'événement ne peut pas être au-delà de 2 ans.")
         return event_date
 
     def clean(self):
