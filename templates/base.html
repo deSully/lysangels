@@ -230,6 +230,24 @@
             box-shadow: 0 0 0 4px rgba(181,68,26,.15) !important;
         }
 
+        /* Navbar btn → carré éditorial */
+        .navbar .btn {
+            border-radius: 2px !important;
+            font-size: 0.72rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.08em !important;
+            text-transform: uppercase !important;
+            padding: 0.5rem 1.125rem !important;
+        }
+
+        /* Scroll-to-top → terracotta (override service worker cache) */
+        [aria-label="Retour en haut"] {
+            background: var(--terra) !important;
+        }
+        [aria-label="Retour en haut"]:hover {
+            background: var(--terra-dark) !important;
+        }
+
         /* ── FOOTER éditorial ── */
         .site-footer {
             background: var(--night);
