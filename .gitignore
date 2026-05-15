@@ -36,7 +36,7 @@ ENV/
 local_settings.py
 .env
 .env.*
-.env.example
+!.env.example
 
 # Migrations (optionnel - décommenter si vous ne voulez pas versionner les migrations)
 # */migrations/*.py
