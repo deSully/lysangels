@@ -19,7 +19,7 @@ class Command(BaseCommand):
         admins = [
             {
                 'username': 'admin',
-                'email': 'admin@lysangels.tg',
+                'email': 'admin@lysangels.com',
                 'first_name': 'Super',
                 'last_name': 'Admin',
                 'user_type': 'admin',
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'admin_event',
-                'email': 'admin.event@lysangels.tg',
+                'email': 'admin.event@lysangels.com',
                 'first_name': 'Admin',
                 'last_name': 'Event',
                 'user_type': 'admin',
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         providers = [
             {
                 'username': 'provider_test',
-                'email': 'provider.test@lysangels.tg',
+                'email': 'provider.test@lysangels.com',
                 'first_name': 'Prestataire',
                 'last_name': 'Test',
                 'user_type': 'provider',
@@ -53,7 +53,7 @@ class Command(BaseCommand):
         clients = [
             {
                 'username': 'client_test',
-                'email': 'client.test@lysangels.tg',
+                'email': 'client.test@lysangels.com',
                 'first_name': 'Client',
                 'last_name': 'Test',
                 'user_type': 'client',
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'marie_bride',
-                'email': 'marie.bride@demo.lysangels.tg',
+                'email': 'marie.bride@demo.lysangels.com',
                 'first_name': 'Marie',
                 'last_name': 'Adjovi',
                 'user_type': 'client',
@@ -69,7 +69,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'jean_groom',
-                'email': 'jean.groom@demo.lysangels.tg',
+                'email': 'jean.groom@demo.lysangels.com',
                 'first_name': 'Jean',
                 'last_name': 'Kossi',
                 'user_type': 'client',
@@ -77,7 +77,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'akua_birthday',
-                'email': 'akua.birthday@demo.lysangels.tg',
+                'email': 'akua.birthday@demo.lysangels.com',
                 'first_name': 'Akua',
                 'last_name': 'Mensah',
                 'user_type': 'client',
@@ -85,7 +85,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'kofi_corporate',
-                'email': 'kofi.corporate@demo.lysangels.tg',
+                'email': 'kofi.corporate@demo.lysangels.com',
                 'first_name': 'Kofi',
                 'last_name': 'Amevor',
                 'user_type': 'client',
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'ama_wedding',
-                'email': 'ama.wedding@demo.lysangels.tg',
+                'email': 'ama.wedding@demo.lysangels.com',
                 'first_name': 'Ama',
                 'last_name': 'Tsikata',
                 'user_type': 'client',
@@ -101,7 +101,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'yao_event',
-                'email': 'yao.event@demo.lysangels.tg',
+                'email': 'yao.event@demo.lysangels.com',
                 'first_name': 'Yao',
                 'last_name': 'Agbeko',
                 'user_type': 'client',
@@ -109,7 +109,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'efua_party',
-                'email': 'efua.party@demo.lysangels.tg',
+                'email': 'efua.party@demo.lysangels.com',
                 'first_name': 'Efua',
                 'last_name': 'Lawson',
                 'user_type': 'client',
@@ -117,7 +117,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'kwame_baptism',
-                'email': 'kwame.baptism@demo.lysangels.tg',
+                'email': 'kwame.baptism@demo.lysangels.com',
                 'first_name': 'Kwame',
                 'last_name': 'Assogba',
                 'user_type': 'client',
@@ -125,7 +125,7 @@ class Command(BaseCommand):
             },
             {
                 'username': 'adjoa_gala',
-                'email': 'adjoa.gala@demo.lysangels.tg',
+                'email': 'adjoa.gala@demo.lysangels.com',
                 'first_name': 'Adjoa',
                 'last_name': 'Klu',
                 'user_type': 'client',

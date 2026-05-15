@@ -13,4 +13,4 @@ Disallow: /media/messages/
 Disallow: /static/
 
 # Sitemap
-Sitemap: https://lysangels.tg/sitemap.xml
+Sitemap: https://lysangels.com/sitemap.xml
