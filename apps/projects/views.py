@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from .forms import ProjectCreateForm
 from apps.core.cache_utils import get_cached_service_types
+from .tasks import send_project_confirmation
 
 
 def project_create(request):
@@ -14,6 +15,8 @@ def project_create(request):
             project.status = 'new'
             project.save()
             form.save_m2m()
+            if project.contact_email:
+                send_project_confirmation(project.contact_name, project.contact_email)
             return render(request, 'projects/project_create_success.html', {
                 'contact_name': project.contact_name,
             })
