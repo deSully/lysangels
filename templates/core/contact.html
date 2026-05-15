@@ -2,189 +2,431 @@
 
 {% block title %}Contact - LysAngels{% endblock %}
 
+{% block extra_css %}
+<style>
+:root {
+    --terra: #B5441A;
+    --terra-dark: #8E3313;
+    --gold: #C9973A;
+    --ivory: #FAF7F0;
+    --night: #110D06;
+    --muted: #7A6E63;
+}
+
+/* ── SPLIT LAYOUT ── */
+.contact-wrap {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    min-height: calc(100vh - 64px);
+}
+
+/* ── LEFT PANEL ── */
+.contact-left {
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    background: var(--night);
+    overflow-y: auto;
+    padding: 3.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+.contact-left::before {
+    content: '';
+    position: fixed;
+    top: 64px; left: 0;
+    width: 380px;
+    height: calc(100vh - 64px);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+}
+.contact-left > * { position: relative; z-index: 1; }
+
+.left-eyebrow {
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra);
+}
+.left-title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--ivory);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+}
+.left-sub {
+    font-size: .85rem;
+    color: rgba(250,247,240,.45);
+    line-height: 1.75;
+}
+
+/* Contact rows */
+.contact-rows { display: flex; flex-direction: column; gap: 0; }
+.contact-rows-label {
+    font-size: .55rem;
+    font-weight: 800;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: rgba(250,247,240,.3);
+    margin-bottom: .875rem;
+}
+.crow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .875rem 0;
+    border-bottom: 1px solid rgba(250,247,240,.06);
+    text-decoration: none;
+    transition: background .2s;
+    border-radius: 4px;
+    cursor: default;
+}
+a.crow { cursor: pointer; }
+a.crow:hover .crow-icon { background: var(--terra); }
+a.crow:hover .crow-val { color: var(--ivory); }
+.crow-icon {
+    width: 2.25rem; height: 2.25rem;
+    border-radius: 3px;
+    background: rgba(181,68,26,.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background .2s;
+}
+.crow-label {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(250,247,240,.3);
+    margin-bottom: .1rem;
+}
+.crow-val {
+    font-size: .875rem;
+    font-weight: 600;
+    color: rgba(250,247,240,.75);
+    transition: color .2s;
+}
+
+/* Horaires */
+.horaires { display: flex; flex-direction: column; gap: .5rem; }
+.horaires-label {
+    font-size: .55rem;
+    font-weight: 800;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: rgba(250,247,240,.3);
+    margin-bottom: .375rem;
+}
+.hrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .8rem;
+    color: rgba(250,247,240,.45);
+    padding: .3rem 0;
+    border-bottom: 1px solid rgba(250,247,240,.04);
+}
+.hrow-time {
+    font-weight: 600;
+    color: rgba(250,247,240,.7);
+}
+.hrow-time.closed { color: rgba(250,247,240,.25); }
+
+/* Social */
+.social-row { display: flex; gap: .625rem; }
+.social-btn {
+    width: 2.25rem; height: 2.25rem;
+    border-radius: 3px;
+    background: rgba(250,247,240,.07);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    transition: background .2s;
+}
+.social-btn:hover { background: var(--terra); }
+
+/* ── RIGHT PANEL ── */
+.contact-right {
+    background: var(--ivory);
+    padding: 3.5rem 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 64px);
+}
+.form-header { margin-bottom: 2.5rem; }
+.form-header-eyebrow {
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--terra);
+    display: flex; align-items: center; gap: .75rem;
+    margin-bottom: .875rem;
+}
+.form-header-eyebrow::before {
+    content: '';
+    width: 1.5rem; height: 2px;
+    background: var(--terra);
+    display: block;
+}
+.form-header h2 {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: var(--night);
+    letter-spacing: -.02em;
+}
+
+/* Form fields */
+.contact-form { max-width: 560px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.frow.single { grid-template-columns: 1fr; }
+.fgroup { display: flex; flex-direction: column; gap: .375rem; }
+.fgroup label {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.fgroup label span { color: var(--terra); }
+.fgroup input,
+.fgroup select,
+.fgroup textarea {
+    background: white;
+    border: 1.5px solid rgba(122,110,99,.2);
+    padding: .75rem 1rem;
+    font-size: .9rem;
+    color: var(--night);
+    border-radius: 2px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    width: 100%;
+    font-family: inherit;
+}
+.fgroup input:focus,
+.fgroup select:focus,
+.fgroup textarea:focus {
+    border-color: var(--terra);
+    box-shadow: 0 0 0 3px rgba(181,68,26,.08);
+}
+.fgroup textarea { resize: vertical; min-height: 130px; }
+.field-error {
+    font-size: .75rem;
+    color: #c0392b;
+    margin-top: .2rem;
+}
+
+/* Messages */
+.msg-success {
+    display: flex; align-items: flex-start; gap: .75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(181,68,26,.05);
+    border-left: 3px solid var(--terra);
+    margin-bottom: 1.75rem;
+    font-size: .875rem;
+    color: var(--terra-dark);
+}
+.msg-error {
+    display: flex; align-items: flex-start; gap: .75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(192,57,43,.05);
+    border-left: 3px solid #c0392b;
+    margin-bottom: 1.75rem;
+    font-size: .875rem;
+    color: #c0392b;
+}
+
+/* Submit */
+.btn-submit-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: .625rem;
+    padding: .875rem 2.5rem;
+    background: var(--terra);
+    color: white;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+    margin-top: 1.75rem;
+}
+.btn-submit-contact:hover { background: var(--terra-dark); transform: translateY(-1px); }
+.btn-submit-contact:active { transform: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+    .contact-wrap { grid-template-columns: 1fr; }
+    .contact-left {
+        position: static;
+        height: auto;
+        padding: 3rem 1.5rem;
+    }
+    .contact-left::before { display: none; }
+    .contact-right {
+        padding: 2.5rem 1.5rem 3rem;
+        min-height: auto;
+    }
+    .frow { grid-template-columns: 1fr; gap: 1rem; }
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="bg-lily-cream min-h-screen py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-lily-dark mb-4">Contactez-nous</h1>
-            <p class="text-xl text-gray-600">
-                Une question ? Un projet ? Nous sommes là pour vous accompagner.
+<div class="contact-wrap">
+
+    <!-- PANNEAU GAUCHE -->
+    <aside class="contact-left">
+
+        <div>
+            <p class="left-eyebrow">LysAngels</p>
+            <h1 class="font-display left-title" style="margin-top:.75rem;">
+                Parlons de<br>votre projet.
+            </h1>
+            <p class="left-sub" style="margin-top:.875rem;">
+                Une question, une candidature, un partenariat — nous répondons sous 24h.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Formulaire de contact -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-lg p-8">
-                    <h2 class="text-2xl font-semibold text-lily-dark mb-6">Envoyez-nous un message</h2>
-
-                    {% if messages %}
-                    <div class="mb-6">
-                        {% for message in messages %}
-                        <div class="p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% else %}bg-red-50 border border-red-200 text-red-800{% endif %}">
-                            <div class="flex items-center">
-                                {% if message.tags == 'success' %}
-                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                {% endif %}
-                                {{ message }}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <form method="post" class="space-y-6">
-                        {% csrf_token %}
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Nom -->
-                            <div>
-                                <label for="id_name" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Nom complet <span class="text-red-500">*</span>
-                                </label>
-                                {{ form.name }}
-                                {% if form.name.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.name.errors.0 }}</p>
-                                {% endif %}
-                            </div>
-
-                            <!-- Email -->
-                            <div>
-                                <label for="id_email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Email <span class="text-red-500">*</span>
-                                </label>
-                                {{ form.email }}
-                                {% if form.email.errors %}
-                                <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Téléphone -->
-                            <div>
-                                <label for="id_phone" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Téléphone <span class="text-gray-400">(optionnel)</span>
-                                </label>
-                                {{ form.phone }}
-                            </div>
-
-                            <!-- Sujet -->
-                            <div>
-                                <label for="id_subject" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Sujet <span class="text-red-500">*</span>
-                                </label>
-                                {{ form.subject }}
-                            </div>
-                        </div>
-
-                        <!-- Message -->
-                        <div>
-                            <label for="id_message" class="block text-sm font-medium text-gray-700 mb-2">
-                                Votre message <span class="text-red-500">*</span>
-                            </label>
-                            {{ form.message }}
-                            {% if form.message.errors %}
-                            <p class="mt-1 text-sm text-red-600">{{ form.message.errors.0 }}</p>
-                            {% endif %}
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit" class="btn btn-primary w-full md:w-auto">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                                </svg>
-                                Envoyer le message
-                            </button>
-                        </div>
-                    </form>
+        <div class="contact-rows">
+            <p class="contact-rows-label">Nous joindre</p>
+            <a href="mailto:contact@lysangels.com" class="crow">
+                <div class="crow-icon">
+                    <svg width="14" height="14" fill="none" stroke="rgba(250,247,240,.6)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 </div>
-            </div>
-
-            <!-- Informations de contact -->
-            <div class="space-y-6">
-                <!-- Contact direct -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="font-semibold text-lg text-lily-dark mb-5">Contact direct</h3>
-                    <div class="space-y-4">
-                        <a href="mailto:contact@lysangels.com" class="flex items-center p-3 rounded-xl hover:bg-lily-cream transition group">
-                            <div class="w-10 h-10 bg-lily-purple/10 rounded-xl flex items-center justify-center mr-4 group-hover:bg-lily-purple group-hover:text-white transition">
-                                <svg class="w-5 h-5 text-lily-purple group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Email</p>
-                                <p class="font-medium text-lily-dark">contact@lysangels.com</p>
-                            </div>
-                        </a>
-
-                        <a href="tel:+22891946376" class="flex items-center p-3 rounded-xl hover:bg-lily-cream transition group">
-                            <div class="w-10 h-10 bg-lily-purple/10 rounded-xl flex items-center justify-center mr-4 group-hover:bg-lily-purple group-hover:text-white transition">
-                                <svg class="w-5 h-5 text-lily-purple group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Téléphone</p>
-                                <p class="font-medium text-lily-dark">+228 91 94 63 76</p>
-                            </div>
-                        </a>
-
-                        <div class="flex items-center p-3 rounded-xl">
-                            <div class="w-10 h-10 bg-lily-purple/10 rounded-xl flex items-center justify-center mr-4">
-                                <svg class="w-5 h-5 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Adresse</p>
-                                <p class="font-medium text-lily-dark">Lomé, Togo</p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <p class="crow-label">Email</p>
+                    <p class="crow-val">contact@lysangels.com</p>
                 </div>
-
-                <!-- Horaires -->
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="font-semibold text-lg text-lily-dark mb-5">Horaires</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Lundi - Vendredi</span>
-                            <span class="font-medium text-lily-dark">8h - 18h</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Samedi</span>
-                            <span class="font-medium text-lily-dark">9h - 14h</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Dimanche</span>
-                            <span class="font-medium text-gray-400">Fermé</span>
-                        </div>
-                    </div>
+            </a>
+            <a href="tel:+22891946376" class="crow">
+                <div class="crow-icon">
+                    <svg width="14" height="14" fill="none" stroke="rgba(250,247,240,.6)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 </div>
-
-                <!-- Réseaux sociaux -->
-                <div class="bg-gradient-to-br from-lily-purple to-purple-dark rounded-2xl shadow-lg p-6 text-white">
-                    <h3 class="font-semibold text-lg mb-4">Suivez-nous</h3>
-                    <p class="text-white/80 text-sm mb-4">Restez informé de nos actualités et offres spéciales.</p>
-                    <div class="flex space-x-3">
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
-                        </a>
-                    </div>
+                <div>
+                    <p class="crow-label">Téléphone</p>
+                    <p class="crow-val">+228 91 94 63 76</p>
+                </div>
+            </a>
+            <div class="crow">
+                <div class="crow-icon">
+                    <svg width="14" height="14" fill="none" stroke="rgba(250,247,240,.6)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                    <p class="crow-label">Adresse</p>
+                    <p class="crow-val">Lomé, Togo</p>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="horaires">
+            <p class="horaires-label">Horaires</p>
+            <div class="hrow">
+                <span>Lundi – Vendredi</span>
+                <span class="hrow-time">8h – 18h</span>
+            </div>
+            <div class="hrow">
+                <span>Samedi</span>
+                <span class="hrow-time">9h – 14h</span>
+            </div>
+            <div class="hrow" style="border-bottom:none;">
+                <span>Dimanche</span>
+                <span class="hrow-time closed">Fermé</span>
+            </div>
+        </div>
+
+        <div>
+            <p class="horaires-label" style="margin-bottom:.875rem;">Réseaux</p>
+            <div class="social-row">
+                <a href="#" class="social-btn" aria-label="Facebook">
+                    <svg width="15" height="15" fill="rgba(250,247,240,.55)" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="#" class="social-btn" aria-label="Instagram">
+                    <svg width="15" height="15" fill="rgba(250,247,240,.55)" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="#" class="social-btn" aria-label="TikTok">
+                    <svg width="15" height="15" fill="rgba(250,247,240,.55)" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                </a>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- PANNEAU DROITE -->
+    <main class="contact-right">
+
+        <div class="form-header">
+            <p class="form-header-eyebrow">Formulaire de contact</p>
+            <h2 class="font-display">Envoyez-nous<br>un message</h2>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div class="msg-success">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:.1rem;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>{{ message }}</span>
+                </div>
+                {% else %}
+                <div class="msg-error">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:.1rem;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span>{{ message }}</span>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+
+            <div class="frow">
+                <div class="fgroup">
+                    <label for="id_name">Nom complet <span>*</span></label>
+                    {{ form.name }}
+                    {% if form.name.errors %}<p class="field-error">{{ form.name.errors.0 }}</p>{% endif %}
+                </div>
+                <div class="fgroup">
+                    <label for="id_email">Email <span>*</span></label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<p class="field-error">{{ form.email.errors.0 }}</p>{% endif %}
+                </div>
+            </div>
+
+            <div class="frow">
+                <div class="fgroup">
+                    <label for="id_phone">Téléphone <span style="color:var(--muted);font-weight:400;">(optionnel)</span></label>
+                    {{ form.phone }}
+                </div>
+                <div class="fgroup">
+                    <label for="id_subject">Sujet <span>*</span></label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}<p class="field-error">{{ form.subject.errors.0 }}</p>{% endif %}
+                </div>
+            </div>
+
+            <div class="frow single">
+                <div class="fgroup">
+                    <label for="id_message">Votre message <span>*</span></label>
+                    {{ form.message }}
+                    {% if form.message.errors %}<p class="field-error">{{ form.message.errors.0 }}</p>{% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit-contact">
+                <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                Envoyer le message
+            </button>
+        </form>
+
+    </main>
+
 </div>
 {% endblock %}
