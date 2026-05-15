@@ -5,180 +5,418 @@
 
 {% block extra_css %}
 <style>
-    .step-card {
-        background: #fff;
-        border: 1.5px solid #F4EDE4;
-        border-radius: 1.25rem;
-        padding: 1.5rem 1.75rem;
-        display: flex;
-        gap: 1.25rem;
-        align-items: flex-start;
-        transition: border-color .2s, box-shadow .2s;
+:root {
+    --terra: #B5441A;
+    --terra-dark: #8E3313;
+    --gold: #C9973A;
+    --ivory: #FAF7F0;
+    --night: #110D06;
+    --muted: #7A6E63;
+}
+
+/* ── HERO ── */
+.hiw-hero {
+    position: relative;
+    background: var(--night);
+    padding: 7rem 1.5rem 6rem;
+    text-align: center;
+    overflow: hidden;
+}
+.hiw-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.045;
+    pointer-events: none;
+}
+.hiw-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 56px;
+    background: linear-gradient(to bottom, rgba(181,68,26,.7), transparent);
+}
+.hiw-eyebrow {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra);
+    border: 1px solid rgba(181,68,26,.3);
+    padding: 0.3rem 0.875rem;
+    border-radius: 2px;
+    margin-bottom: 1.75rem;
+    position: relative;
+}
+.hiw-hero h1 {
+    font-size: clamp(2.75rem, 7vw, 5rem);
+    font-weight: 700;
+    color: var(--ivory);
+    line-height: 1.05;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+    position: relative;
+}
+.hiw-hero p {
+    font-size: 1rem;
+    color: rgba(250,247,240,.5);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.75;
+    position: relative;
+}
+
+/* ── SECTION LABEL ── */
+.sec-label {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 2.75rem;
+}
+.sec-label-bar {
+    width: 2rem; height: 2px;
+    background: var(--terra);
+    flex-shrink: 0;
+}
+.sec-label-bar--gold { background: var(--gold); }
+.sec-label span {
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--terra);
+}
+.sec-label span.gold { color: var(--gold); }
+
+/* ── EDITORIAL STEP ROW ── */
+.step-rows { border-top: 1px solid rgba(181,68,26,.1); }
+.step-row {
+    display: grid;
+    grid-template-columns: 5rem 1px 1fr;
+    gap: 0 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(181,68,26,.1);
+    cursor: default;
+}
+.step-row:hover .step-ghost { color: rgba(181,68,26,.22); }
+.step-row:hover .step-rule  { background: var(--terra); }
+.step-ghost {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(181,68,26,.1);
+    text-align: right;
+    padding-top: .05rem;
+    letter-spacing: -.04em;
+    transition: color .3s;
+}
+.step-rule {
+    background: rgba(181,68,26,.18);
+    transition: background .3s;
+}
+.step-body { padding: .2rem 0; }
+.step-body h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--night);
+    margin-bottom: .5rem;
+    line-height: 1.3;
+}
+.step-body p {
+    font-size: .875rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 460px;
+}
+.step-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--terra);
+    text-decoration: none;
+    margin-top: .875rem;
+    transition: gap .2s;
+}
+.step-cta:hover { gap: .625rem; }
+
+/* Night (prestataires) variants */
+.night-rows .step-rows { border-top-color: rgba(201,151,58,.1); }
+.night-rows .step-row  { border-bottom-color: rgba(201,151,58,.1); }
+.night-rows .step-row:hover .step-ghost { color: rgba(201,151,58,.2); }
+.night-rows .step-row:hover .step-rule  { background: var(--gold); }
+.night-rows .step-ghost { color: rgba(201,151,58,.09); }
+.night-rows .step-rule  { background: rgba(201,151,58,.18); }
+.night-rows .step-body h3 { color: var(--ivory); }
+.night-rows .step-body p  { color: rgba(250,247,240,.48); }
+.night-rows .step-cta { color: var(--gold); }
+
+/* ── ENCADRÉ ── */
+.encadre {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.625rem 1.875rem;
+    border-left: 3px solid var(--terra);
+    background: rgba(181,68,26,.04);
+    margin-top: 2.25rem;
+}
+.encadre--gold {
+    border-left-color: var(--gold);
+    background: rgba(201,151,58,.05);
+}
+.encadre-icon {
+    width: 2.25rem; height: 2.25rem;
+    border-radius: 3px;
+    background: var(--terra);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.encadre--gold .encadre-icon { background: var(--gold); }
+.encadre h4 {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--night);
+    margin-bottom: .25rem;
+}
+.night-rows .encadre h4 { color: var(--ivory); }
+.encadre p {
+    font-size: .825rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 440px;
+}
+.night-rows .encadre p { color: rgba(250,247,240,.48); }
+
+/* ── CTA BAND ── */
+.cta-band {
+    position: relative;
+    background: var(--terra);
+    padding: 5.5rem 1.5rem;
+    text-align: center;
+    overflow: hidden;
+}
+.cta-band::before {
+    content: 'LOMÉ';
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(5rem, 20vw, 14rem);
+    font-weight: 700;
+    color: rgba(255,255,255,.055);
+    letter-spacing: .15em;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.cta-band-eyebrow {
+    display: block;
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 1rem;
+}
+.cta-band h2 {
+    font-size: clamp(1.75rem, 4.5vw, 2.875rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: .875rem;
+}
+.cta-band p {
+    color: rgba(255,255,255,.6);
+    font-size: .9rem;
+    line-height: 1.75;
+    max-width: 360px;
+    margin: 0 auto 2.25rem;
+}
+.btn-ivory {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .875rem 2.25rem;
+    background: var(--ivory);
+    color: var(--terra);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+}
+.btn-ivory:hover { background: #fff; transform: translateY(-2px); }
+
+/* ── SCROLL REVEAL ── */
+.rv {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .65s ease, transform .65s ease;
+}
+.rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 600px) {
+    .step-row {
+        grid-template-columns: 3rem 1px 1fr;
+        gap: 0 1.125rem;
     }
-    .step-card:hover {
-        border-color: #8B5CF6;
-        box-shadow: 0 4px 20px rgba(139,92,246,.08);
-    }
-    .step-number {
-        flex-shrink: 0;
-        width: 2.5rem; height: 2.5rem;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: .95rem; color: #fff;
-    }
-    .step-number.gold {
-        background: linear-gradient(135deg, #D4AF37, #B8941F);
-    }
-    .step-card h3 {
-        font-size: 1rem; font-weight: 700; color: #1A1A1A; margin-bottom: .35rem;
-    }
-    .step-card p {
-        font-size: .875rem; color: #6B7280; line-height: 1.65;
-    }
-    .info-box {
-        border-radius: 1.25rem;
-        padding: 1.5rem 1.75rem;
-        display: flex; align-items: flex-start; gap: 1rem;
-    }
-    .info-box-icon {
-        width: 2.25rem; height: 2.25rem; border-radius: .625rem;
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
-    }
-    .info-box h4 { font-size: .95rem; font-weight: 700; color: #1A1A1A; margin-bottom: .25rem; }
-    .info-box p { font-size: .875rem; color: #6B7280; line-height: 1.6; }
-    .info-box--purple {
-        background: rgba(139,92,246,.05);
-        border: 1.5px solid rgba(139,92,246,.2);
-    }
-    .info-box--gold {
-        background: rgba(212,175,55,.05);
-        border: 1.5px solid rgba(212,175,55,.25);
-    }
+    .step-ghost { font-size: 3rem; }
+    .encadre { flex-direction: column; gap: 1rem; }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="bg-lily-cream min-h-screen">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
 
-        <!-- Titre -->
-        <div class="text-center mb-14">
-            <h1 class="text-3xl sm:text-4xl font-bold text-lily-dark mb-3">Comment ça marche</h1>
-            <p class="text-gray-500 text-lg max-w-xl mx-auto">LysAngels met en relation clients et prestataires. Simplement.</p>
+<!-- HERO -->
+<section class="hiw-hero">
+    <div class="hiw-eyebrow rv">Guide de la plateforme</div>
+    <h1 class="font-display rv" style="transition-delay:.1s">Comment<br>ça marche</h1>
+    <p class="rv" style="transition-delay:.2s">LysAngels met en relation clients et prestataires d'événements. Directement, sans intermédiaire.</p>
+</section>
+
+<!-- SECTION CLIENTS -->
+<section style="background: var(--ivory); padding: 5rem 1.5rem;">
+    <div style="max-width: 740px; margin: 0 auto;">
+
+        <div class="sec-label rv">
+            <div class="sec-label-bar"></div>
+            <span>Pour les clients</span>
         </div>
 
-        <!-- POUR LES CLIENTS -->
-        <div class="mb-16">
-            <div class="flex items-center gap-2 mb-6">
-                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Pour les clients</span>
-                <div class="flex-1 h-px bg-lily-purple/15"></div>
-            </div>
+        <div class="step-rows">
 
-            <div class="space-y-4">
-
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <div>
-                        <h3>Parcourez les profils</h3>
-                        <p>Filtrez par type de service ou par ville. Consultez les photos, la description, les tarifs indicatifs. Pas besoin de créer un compte.</p>
-                        <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-1 text-lily-purple font-semibold text-sm mt-3 hover:gap-2 transition-all">
-                            Voir les prestataires
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <div>
-                        <h3>Contactez le prestataire</h3>
-                        <p>Chaque profil affiche un numéro WhatsApp. Un clic suffit pour lui envoyer un message et lui décrire votre événement.</p>
-                    </div>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <div>
-                        <h3>Organisez ensemble</h3>
-                        <p>Vous échangez directement avec lui — dates, détails, budget. LysAngels vous a mis en contact, la suite vous appartient.</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="info-box info-box--purple mt-6">
-                <div class="info-box-icon" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                </div>
-                <div>
-                    <h4>Vous préférez qu'on cherche pour vous ?</h4>
-                    <p>Décrivez votre événement et notre équipe vous propose des prestataires adaptés.</p>
-                    <a href="{% url 'projects:project_create' %}" class="inline-flex items-center gap-1 text-lily-purple font-semibold text-sm mt-2 hover:gap-2 transition-all">
-                        Déposer mon projet
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <div class="step-row rv" style="transition-delay:.05s">
+                <div class="step-ghost font-display">01</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Parcourez les profils</h3>
+                    <p>Filtrez par type de service ou par ville. Consultez les photos, la description, les tarifs indicatifs. Pas besoin de créer un compte.</p>
+                    <a href="{% url 'vendors:vendor_list' %}" class="step-cta">
+                        Voir les prestataires
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                     </a>
                 </div>
             </div>
+
+            <div class="step-row rv" style="transition-delay:.12s">
+                <div class="step-ghost font-display">02</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Contactez le prestataire</h3>
+                    <p>Chaque profil affiche un numéro WhatsApp. Un clic suffit pour lui envoyer un message et lui décrire votre événement.</p>
+                </div>
+            </div>
+
+            <div class="step-row rv" style="transition-delay:.19s">
+                <div class="step-ghost font-display">03</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Organisez ensemble</h3>
+                    <p>Vous échangez directement avec lui — dates, détails, budget. LysAngels vous a mis en contact, la suite vous appartient.</p>
+                </div>
+            </div>
+
         </div>
 
-        <!-- POUR LES PRESTATAIRES -->
-        <div class="mb-16">
-            <div class="flex items-center gap-2 mb-6">
-                <span class="text-xs font-bold tracking-widest uppercase" style="color:#D4AF37;">Pour les prestataires</span>
-                <div class="flex-1 h-px" style="background:rgba(212,175,55,.25);"></div>
+        <div class="encadre rv" style="transition-delay:.26s">
+            <div class="encadre-icon">
+                <svg width="15" height="15" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </div>
-
-            <div class="space-y-4">
-
-                <div class="step-card">
-                    <div class="step-number gold">1</div>
-                    <div>
-                        <h3>Votre profil, votre vitrine</h3>
-                        <p>Notre équipe crée et gère votre profil : photos, description, coordonnées. Vous n'avez pas de compte à gérer.</p>
-                    </div>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number gold">2</div>
-                    <div>
-                        <h3>Les clients vous contactent directement</h3>
-                        <p>Quand un client est intéressé, il vous envoie un message WhatsApp ou vous appelle. Vous recevez tout sur votre téléphone, comme d'habitude.</p>
-                    </div>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number gold">3</div>
-                    <div>
-                        <h3>Vous gérez votre activité</h3>
-                        <p>Prix, contrat, paiement — tout se passe entre vous et votre client. LysAngels vous apporte la visibilité, vous gardez le contrôle.</p>
-                    </div>
-                </div>
-
+            <div>
+                <h4 class="font-display">Vous préférez qu'on cherche pour vous ?</h4>
+                <p>Décrivez votre événement et notre équipe vous propose des prestataires adaptés à votre besoin et à votre budget.</p>
+                <a href="{% url 'projects:project_create' %}" class="step-cta" style="margin-top:.75rem;">
+                    Déposer mon projet
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
             </div>
-
-            <div class="info-box info-box--gold mt-6">
-                <div class="info-box-icon" style="background:linear-gradient(135deg,#D4AF37,#B8941F);">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                </div>
-                <div>
-                    <h4>Vous souhaitez apparaître sur LysAngels ?</h4>
-                    <p>Les profils sont créés et vérifiés par notre équipe. Contactez-nous pour soumettre votre candidature.</p>
-                    <a href="{% url 'core:contact' %}" class="inline-flex items-center gap-1 font-semibold text-sm mt-2 hover:gap-2 transition-all" style="color:#B8941F;">
-                        Nous contacter
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA final -->
-        <div class="text-center pt-4 border-t border-gray-100">
-            <p class="text-gray-500 text-sm mb-4">Prêt à trouver votre prestataire ?</p>
-            <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary">Voir les prestataires</a>
         </div>
 
     </div>
-</div>
+</section>
+
+<!-- SECTION PRESTATAIRES -->
+<section class="night-rows" style="background: var(--night); padding: 5rem 1.5rem;">
+    <div style="max-width: 740px; margin: 0 auto;">
+
+        <div class="sec-label rv">
+            <div class="sec-label-bar sec-label-bar--gold"></div>
+            <span class="gold">Pour les prestataires</span>
+        </div>
+
+        <div class="step-rows">
+
+            <div class="step-row rv" style="transition-delay:.05s">
+                <div class="step-ghost font-display">01</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Votre profil, votre vitrine</h3>
+                    <p>Notre équipe crée et gère votre profil : photos, description, coordonnées. Vous n'avez pas de compte à gérer.</p>
+                </div>
+            </div>
+
+            <div class="step-row rv" style="transition-delay:.12s">
+                <div class="step-ghost font-display">02</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Les clients vous contactent</h3>
+                    <p>Quand un client est intéressé, il vous envoie un message WhatsApp ou vous appelle. Vous recevez tout sur votre téléphone, comme d'habitude.</p>
+                </div>
+            </div>
+
+            <div class="step-row rv" style="transition-delay:.19s">
+                <div class="step-ghost font-display">03</div>
+                <div class="step-rule"></div>
+                <div class="step-body">
+                    <h3 class="font-display">Vous gérez votre activité</h3>
+                    <p>Prix, contrat, paiement — tout se passe entre vous et votre client. LysAngels vous apporte la visibilité, vous gardez le contrôle.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="encadre encadre--gold rv" style="transition-delay:.26s">
+            <div class="encadre-icon">
+                <svg width="15" height="15" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+                <h4 class="font-display">Vous souhaitez apparaître sur LysAngels ?</h4>
+                <p>Les profils sont créés et vérifiés par notre équipe. Contactez-nous pour soumettre votre candidature.</p>
+                <a href="{% url 'core:contact' %}" class="step-cta" style="color:var(--gold); margin-top:.75rem;">
+                    Nous contacter
+                    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-band rv">
+    <span class="cta-band-eyebrow">Prêt à commencer ?</span>
+    <h2 class="font-display">Trouvez votre<br>prestataire idéal</h2>
+    <p>Photographes, traiteurs, DJ, décorateurs — tous les talents de l'événementiel togolais.</p>
+    <a href="{% url 'vendors:vendor_list' %}" class="btn-ivory">
+        Voir les prestataires
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </a>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => revealObs.observe(el));
+</script>
 {% endblock %}
