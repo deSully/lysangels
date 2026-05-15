@@ -1,96 +1,90 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}Prestataires - Admin{% endblock %}
+{% block title %}Prestataires — Admin{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6 flex justify-between items-center">
-    <h1 class="text-xl font-semibold text-gray-900">Prestataires</h1>
-    <a href="{% url 'accounts:admin_vendor_create' %}"
-       class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-        + Ajouter un prestataire
-    </a>
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Prestataires</h1>
+    <p class="a-page-sub">{{ vendors.paginator.count }} professionnel{{ vendors.paginator.count|pluralize }}</p>
+  </div>
+  <a href="{% url 'accounts:admin_vendor_create' %}" class="a-btn a-btn-primary">
+    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+    </svg>
+    Ajouter
+  </a>
 </div>
 
-<!-- Filtres -->
-<div class="mb-4 flex gap-2">
-    <a href="{% url 'accounts:admin_vendor_list' %}"
-       class="px-3 py-1.5 text-sm rounded-md border {% if not selected_is_active %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
-        Tous
-    </a>
-    <a href="?is_active=1"
-       class="px-3 py-1.5 text-sm rounded-md border {% if selected_is_active == '1' %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
-        Actifs
-    </a>
-    <a href="?is_active=0"
-       class="px-3 py-1.5 text-sm rounded-md border {% if selected_is_active == '0' %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
-        Inactifs
-    </a>
+<div class="a-chips">
+  <a href="{% url 'accounts:admin_vendor_list' %}"
+     class="a-chip {% if not selected_is_active %}a-chip-active{% endif %}">Tous</a>
+  <a href="?is_active=1"
+     class="a-chip {% if selected_is_active == '1' %}a-chip-active{% endif %}">Actifs</a>
+  <a href="?is_active=0"
+     class="a-chip {% if selected_is_active == '0' %}a-chip-active{% endif %}">Inactifs</a>
 </div>
 
-<div class="bg-white border border-gray-200 rounded-lg">
-    <table class="w-full text-sm">
-        <thead>
-            <tr class="border-b border-gray-100">
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Ville</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Services</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Statut</th>
-                <th class="px-5 py-3 text-right text-xs text-gray-500 uppercase tracking-wide font-medium">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
-            {% for vendor in vendors %}
-            <tr class="hover:bg-gray-50">
-                <td class="px-5 py-3 text-gray-900 font-medium">{{ vendor.business_name }}</td>
-                <td class="px-5 py-3 text-gray-500">{{ vendor.city.name|default:"—" }}</td>
-                <td class="px-5 py-3 text-gray-500">
-                    {% for service in vendor.service_types.all|slice:":2" %}
-                        {{ service.name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                    {% if vendor.service_types.count > 2 %} …{% endif %}
-                </td>
-                <td class="px-5 py-3">
-                    {% if vendor.is_active %}
-                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
-                    {% else %}
-                    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
-                    {% endif %}
-                </td>
-                <td class="px-5 py-3 text-right">
-                    <a href="{% url 'accounts:admin_vendor_detail' vendor.pk %}"
-                       class="text-xs text-lily-purple hover:underline mr-3">Voir</a>
-                    <form method="post"
-                          action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}"
-                          class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="text-xs text-gray-500 hover:text-gray-900">
-                            {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="px-5 py-6 text-sm text-gray-400 text-center">Aucun prestataire</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="a-card">
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Ville</th>
+        <th>Services</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for vendor in vendors %}
+      <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
+        <td style="font-weight:500;">{{ vendor.business_name }}</td>
+        <td class="a-td-muted">{{ vendor.city.name|default:"—" }}</td>
+        <td class="a-td-muted">
+          {% for service in vendor.service_types.all|slice:":2" %}{{ service.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          {% if vendor.service_types.count > 2 %} …{% endif %}
+        </td>
+        <td>
+          {% if vendor.is_active %}
+          <span class="a-badge a-badge-active">Actif</span>
+          {% else %}
+          <span class="a-badge a-badge-inactive">Inactif</span>
+          {% endif %}
+        </td>
+        <td class="a-td-right" style="white-space:nowrap;">
+          <a href="{% url 'accounts:admin_vendor_detail' vendor.pk %}" class="a-td-link"
+             onclick="event.stopPropagation()">Voir</a>
+          &nbsp;
+          <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}"
+                class="inline" onclick="event.stopPropagation()">
+            {% csrf_token %}
+            <button type="submit" class="a-td-action" style="background:none;border:none;cursor:pointer;font-size:.7rem;font-family:inherit;">
+              {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="a-table-empty">Aucun prestataire</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    {% if vendors.has_other_pages %}
-    <div class="px-5 py-4 border-t border-gray-100 flex justify-between items-center">
-        <span class="text-xs text-gray-500">Page {{ vendors.number }} / {{ vendors.paginator.num_pages }}</span>
-        <div class="flex gap-2">
-            {% if vendors.has_previous %}
-            <a href="?page={{ vendors.previous_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
-               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">← Précédent</a>
-            {% endif %}
-            {% if vendors.has_next %}
-            <a href="?page={{ vendors.next_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
-               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">Suivant →</a>
-            {% endif %}
-        </div>
+  {% if vendors.has_other_pages %}
+  <div class="a-pager">
+    <span class="a-pager-info">Page {{ vendors.number }} / {{ vendors.paginator.num_pages }}</span>
+    <div class="a-pager-btns">
+      {% if vendors.has_previous %}
+      <a href="?page={{ vendors.previous_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
+         class="a-btn a-btn-ghost a-btn-sm">← Précédent</a>
+      {% endif %}
+      {% if vendors.has_next %}
+      <a href="?page={{ vendors.next_page_number }}{% if selected_is_active %}&is_active={{ selected_is_active }}{% endif %}"
+         class="a-btn a-btn-ghost a-btn-sm">Suivant →</a>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

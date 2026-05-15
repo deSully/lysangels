@@ -1,39 +1,33 @@
 {% extends 'accounts/admin/base_admin.html' %}
-{% block title %}{% if event_type %}Modifier{% else %}Nouveau type d'événement{% endif %} - Admin{% endblock %}
+{% block title %}{% if event_type %}Modifier {{ event_type.name }}{% else %}Nouveau type d'événement{% endif %} — Admin{% endblock %}
 {% block admin_content %}
-<div class="mb-6 flex justify-between items-center">
-    <h1 class="text-xl font-semibold text-gray-900">
-        {% if event_type %}Modifier {{ event_type.name }}{% else %}Nouveau type d'événement{% endif %}
-    </h1>
-    <a href="{% url 'accounts:admin_event_type_list' %}"
-       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+<div class="a-page-hd">
+  <h1 class="a-page-title">
+    {% if event_type %}Modifier {{ event_type.name }}{% else %}Nouveau type d'événement{% endif %}
+  </h1>
+  <a href="{% url 'accounts:admin_event_type_list' %}" class="a-btn a-btn-ghost">← Retour</a>
 </div>
-<form method="post">
-    {% csrf_token %}
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6 space-y-4">
-        <div>
-            <label class="block text-xs text-gray-500 mb-1">Nom <span class="text-red-500">*</span></label>
-            <input type="text" name="name" value="{{ event_type.name|default:'' }}" required
-                   class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-        </div>
-        <div>
-            <label class="block text-xs text-gray-500 mb-1">Icône (texte libre, ex: 💒)</label>
-            <input type="text" name="icon" value="{{ event_type.icon|default:'' }}"
-                   class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-        </div>
-        <div>
-            <label class="block text-xs text-gray-500 mb-1">Description</label>
-            <textarea name="description" rows="3"
-                      class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent resize-none">{{ event_type.description|default:'' }}</textarea>
-        </div>
+<form method="post" style="max-width:480px;">
+  {% csrf_token %}
+  <div class="a-card" style="margin-bottom:1.25rem;">
+    <div class="a-card-body" style="display:flex; flex-direction:column; gap:.875rem;">
+      <div>
+        <label class="a-field-label">Nom <span style="color:var(--terra);">*</span></label>
+        <input type="text" name="name" value="{{ event_type.name|default:'' }}" required class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Icône (ex: 💒)</label>
+        <input type="text" name="icon" value="{{ event_type.icon|default:'' }}" class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Description</label>
+        <textarea name="description" rows="3" class="a-textarea">{{ event_type.description|default:'' }}</textarea>
+      </div>
     </div>
-    <div class="flex gap-3">
-        <button type="submit"
-                class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-            Enregistrer
-        </button>
-        <a href="{% url 'accounts:admin_event_type_list' %}"
-           class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">Annuler</a>
-    </div>
+  </div>
+  <div style="display:flex; gap:.625rem;">
+    <button type="submit" class="a-btn a-btn-primary">Enregistrer</button>
+    <a href="{% url 'accounts:admin_event_type_list' %}" class="a-btn a-btn-ghost">Annuler</a>
+  </div>
 </form>
 {% endblock %}

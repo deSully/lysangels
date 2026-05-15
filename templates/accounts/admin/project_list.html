@@ -1,81 +1,77 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}Demandes clients - Admin{% endblock %}
+{% block title %}Demandes clients — Admin{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6">
-    <h1 class="text-xl font-semibold text-gray-900">Demandes clients</h1>
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Demandes clients</h1>
+    <p class="a-page-sub">{{ projects.paginator.count }} demande{{ projects.paginator.count|pluralize }}</p>
+  </div>
 </div>
 
-<!-- Filtres statut -->
-<div class="mb-4 flex gap-2">
-    <a href="{% url 'accounts:admin_project_list' %}"
-       class="px-3 py-1.5 text-sm rounded-md border {% if not selected_status %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
-        Toutes
-    </a>
-    {% for value, label in status_choices %}
-    <a href="?status={{ value }}"
-       class="px-3 py-1.5 text-sm rounded-md border {% if selected_status == value %}bg-gray-900 text-white border-gray-900{% else %}border-gray-200 text-gray-700 hover:bg-gray-50{% endif %}">
-        {{ label }}
-    </a>
-    {% endfor %}
+<div class="a-chips">
+  <a href="{% url 'accounts:admin_project_list' %}"
+     class="a-chip {% if not selected_status %}a-chip-active{% endif %}">Toutes</a>
+  {% for value, label in status_choices %}
+  <a href="?status={{ value }}"
+     class="a-chip {% if selected_status == value %}a-chip-active{% endif %}">{{ label }}</a>
+  {% endfor %}
 </div>
 
-<div class="bg-white border border-gray-200 rounded-lg">
-    <table class="w-full text-sm">
-        <thead>
-            <tr class="border-b border-gray-100">
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Email</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Type événement</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Date dépôt</th>
-                <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Statut</th>
-                <th class="px-5 py-3"></th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
-            {% for project in projects %}
-            <tr class="hover:bg-gray-50">
-                <td class="px-5 py-3 text-gray-900 font-medium">{{ project.contact_name }}</td>
-                <td class="px-5 py-3 text-gray-500">{{ project.contact_email }}</td>
-                <td class="px-5 py-3 text-gray-500">{{ project.event_type.name|default:"—" }}</td>
-                <td class="px-5 py-3 text-gray-500 whitespace-nowrap">{{ project.created_at|date:"d/m/Y" }}</td>
-                <td class="px-5 py-3">
-                    <span class="text-xs font-medium px-2 py-0.5 rounded-full
-                        {% if project.status == 'new' %}bg-orange-100 text-orange-700
-                        {% elif project.status == 'contacted' %}bg-gray-100 text-gray-600
-                        {% elif project.status == 'in_progress' %}bg-gray-200 text-gray-700
-                        {% else %}bg-gray-100 text-gray-400{% endif %}">
-                        {{ project.get_status_display }}
-                    </span>
-                </td>
-                <td class="px-5 py-3 text-right">
-                    <a href="{% url 'accounts:admin_project_detail' project.pk %}"
-                       class="text-xs text-lily-purple hover:underline">Voir →</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="px-5 py-6 text-sm text-gray-400 text-center">Aucune demande</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="a-card">
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Type événement</th>
+        <th>Date dépôt</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+      <tr onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
+        <td style="font-weight:500;">{{ project.contact_name }}</td>
+        <td class="a-td-muted">{{ project.contact_email }}</td>
+        <td class="a-td-muted">{{ project.event_type.name|default:"—" }}</td>
+        <td class="a-td-mono">{{ project.created_at|date:"d/m/Y" }}</td>
+        <td>
+          {% if project.status == 'new' %}
+          <span class="a-badge a-badge-new">{{ project.get_status_display }}</span>
+          {% elif project.status == 'contacted' or project.status == 'in_progress' %}
+          <span class="a-badge a-badge-progress">{{ project.get_status_display }}</span>
+          {% else %}
+          <span class="a-badge a-badge-closed">{{ project.get_status_display }}</span>
+          {% endif %}
+        </td>
+        <td class="a-td-right">
+          <a href="{% url 'accounts:admin_project_detail' project.pk %}" class="a-td-link"
+             onclick="event.stopPropagation()">Voir →</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="a-table-empty">Aucune demande</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    {% if projects.has_other_pages %}
-    <div class="px-5 py-4 border-t border-gray-100 flex justify-between items-center">
-        <span class="text-xs text-gray-500">Page {{ projects.number }} / {{ projects.paginator.num_pages }}</span>
-        <div class="flex gap-2">
-            {% if projects.has_previous %}
-            <a href="?page={{ projects.previous_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}"
-               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">← Précédent</a>
-            {% endif %}
-            {% if projects.has_next %}
-            <a href="?page={{ projects.next_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}"
-               class="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50">Suivant →</a>
-            {% endif %}
-        </div>
+  {% if projects.has_other_pages %}
+  <div class="a-pager">
+    <span class="a-pager-info">Page {{ projects.number }} / {{ projects.paginator.num_pages }}</span>
+    <div class="a-pager-btns">
+      {% if projects.has_previous %}
+      <a href="?page={{ projects.previous_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}"
+         class="a-btn a-btn-ghost a-btn-sm">← Précédent</a>
+      {% endif %}
+      {% if projects.has_next %}
+      <a href="?page={{ projects.next_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}"
+         class="a-btn a-btn-ghost a-btn-sm">Suivant →</a>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

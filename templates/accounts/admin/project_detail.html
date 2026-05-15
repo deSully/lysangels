@@ -1,194 +1,192 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}{{ project.contact_name }} - Admin{% endblock %}
+{% block title %}{{ project.contact_name }} — Admin{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6 flex justify-between items-center">
-    <div>
-        <h1 class="text-xl font-semibold text-gray-900">{{ project.contact_name }}</h1>
-        <p class="text-sm text-gray-500 mt-0.5">Reçue le {{ project.created_at|date:"d/m/Y à H:i" }}</p>
-    </div>
-    <a href="{% url 'accounts:admin_project_list' %}"
-       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">{{ project.contact_name }}</h1>
+    <p class="a-page-sub">Reçue le {{ project.created_at|date:"d/m/Y à H:i" }}</p>
+  </div>
+  <a href="{% url 'accounts:admin_project_list' %}" class="a-btn a-btn-ghost">← Retour</a>
 </div>
 
-<div class="grid grid-cols-3 gap-6">
+<div style="display:grid; grid-template-columns:1fr 280px; gap:1.25rem; align-items:start;">
 
-    <!-- Colonne gauche -->
-    <div class="col-span-2 space-y-4">
+  <!-- Colonne gauche -->
+  <div style="display:flex; flex-direction:column; gap:1rem;">
 
-        <!-- Coordonnées -->
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Coordonnées</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Nom complet</p>
-                    <p class="text-sm text-gray-900">{{ project.contact_name }}</p>
-                </div>
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Email</p>
-                    <p class="text-sm text-gray-900">{{ project.contact_email }}</p>
-                </div>
-                {% if project.contact_phone %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Téléphone</p>
-                    <p class="text-sm text-gray-900">{{ project.contact_phone }}</p>
-                </div>
-                {% endif %}
-            </div>
+    <!-- Coordonnées -->
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Coordonnées</span></div>
+      <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="a-field">
+          <span class="a-field-label">Nom complet</span>
+          <span class="a-field-value">{{ project.contact_name }}</span>
         </div>
-
-        <!-- Événement -->
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Événement</h2>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                {% if project.event_type %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Type d'événement</p>
-                    <p class="text-sm text-gray-900">{{ project.event_type.name }}</p>
-                </div>
-                {% endif %}
-                {% if project.city %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Ville</p>
-                    <p class="text-sm text-gray-900">{{ project.city }}</p>
-                </div>
-                {% endif %}
-                {% if project.location %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Lieu précis</p>
-                    <p class="text-sm text-gray-900">{{ project.location }}</p>
-                </div>
-                {% endif %}
-                {% if project.event_date %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Date</p>
-                    <p class="text-sm text-gray-900">
-                        {{ project.event_date|date:"d F Y" }}{% if project.event_time %} à {{ project.event_time|time:"H:i" }}{% endif %}
-                    </p>
-                </div>
-                {% endif %}
-                {% if project.guest_count %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Invités</p>
-                    <p class="text-sm text-gray-900">{{ project.guest_count }}</p>
-                </div>
-                {% endif %}
-                {% if project.budget_min or project.budget_max %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Budget</p>
-                    <p class="text-sm text-gray-900">
-                        {% if project.budget_min %}{{ project.budget_min|floatformat:0 }} FCFA{% endif %}
-                        {% if project.budget_min and project.budget_max %} – {% endif %}
-                        {% if project.budget_max %}{{ project.budget_max|floatformat:0 }} FCFA{% endif %}
-                    </p>
-                </div>
-                {% endif %}
-            </div>
-            {% if project.description %}
-            <div class="pt-4 border-t border-gray-100">
-                <p class="text-xs text-gray-500 mb-2">Description</p>
-                <p class="text-sm text-gray-700 leading-relaxed">{{ project.description }}</p>
-            </div>
-            {% endif %}
-            {% if project.services_needed.exists %}
-            <div class="pt-4 border-t border-gray-100 mt-4">
-                <p class="text-xs text-gray-500 mb-2">Services recherchés</p>
-                <div class="flex flex-wrap gap-2">
-                    {% for service in project.services_needed.all %}
-                    <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-2 py-0.5">{{ service.name }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
+        <div class="a-field">
+          <span class="a-field-label">Email</span>
+          <a href="mailto:{{ project.contact_email }}" class="a-td-link" style="display:block;">{{ project.contact_email }}</a>
         </div>
-
-        <!-- Statut -->
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Statut</h2>
-            <form method="post" action="{% url 'accounts:admin_project_update_status' project.pk %}">
-                {% csrf_token %}
-                <select name="status"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-                    {% for value, label in project.STATUS_CHOICES %}
-                    <option value="{{ value }}" {% if project.status == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit"
-                        class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-                    Mettre à jour
-                </button>
-            </form>
+        {% if project.contact_phone %}
+        <div class="a-field">
+          <span class="a-field-label">Téléphone</span>
+          <span class="a-field-value-mono">{{ project.contact_phone }}</span>
         </div>
-
+        {% endif %}
+      </div>
     </div>
 
-    <!-- Colonne droite — Suivi -->
-    <div class="col-span-1">
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Suivi</h2>
-
-            {% if notes %}
-            <div class="mb-4">
-                {% for note in notes %}
-                <div class="{% if not forloop.first %}border-t border-gray-100 pt-3{% endif %} pb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="text-xs text-gray-400 whitespace-nowrap">{{ note.created_at|date:"d/m/Y H:i" }}</span>
-                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                            {{ note.get_type_display }}
-                        </span>
-                    </div>
-                    <p class="text-sm text-gray-700 leading-relaxed">{{ note.content }}</p>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <p class="text-sm text-gray-400 mb-4">Aucun compte rendu.</p>
-            {% endif %}
-
-            <!-- Formulaire ajout CR -->
-            <div class="border-t border-gray-100 pt-4">
-                <form id="note-form" method="post"
-                      action="{% url 'accounts:admin_project_add_note' project.pk %}">
-                    {% csrf_token %}
-                    <select name="type"
-                            class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-                        <option value="call">Appel</option>
-                        <option value="meeting">Réunion</option>
-                        <option value="other">Autre</option>
-                    </select>
-                    <textarea name="content" rows="3" required
-                              placeholder="Contenu du compte rendu…"
-                              class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm mb-3 resize-none focus:ring-2 focus:ring-lily-purple focus:border-transparent"></textarea>
-                    <button type="button"
-                            onclick="document.getElementById('confirm-modal').showModal()"
-                            class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-                        Enregistrer
-                    </button>
-                </form>
-            </div>
+    <!-- Événement -->
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Événement</span></div>
+      <div class="a-card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+          {% if project.event_type %}
+          <div class="a-field">
+            <span class="a-field-label">Type d'événement</span>
+            <span class="a-field-value">{{ project.event_type.name }}</span>
+          </div>
+          {% endif %}
+          {% if project.city %}
+          <div class="a-field">
+            <span class="a-field-label">Ville</span>
+            <span class="a-field-value">{{ project.city }}</span>
+          </div>
+          {% endif %}
+          {% if project.location %}
+          <div class="a-field">
+            <span class="a-field-label">Lieu précis</span>
+            <span class="a-field-value">{{ project.location }}</span>
+          </div>
+          {% endif %}
+          {% if project.event_date %}
+          <div class="a-field">
+            <span class="a-field-label">Date</span>
+            <span class="a-field-value">
+              {{ project.event_date|date:"d F Y" }}{% if project.event_time %} à {{ project.event_time|time:"H:i" }}{% endif %}
+            </span>
+          </div>
+          {% endif %}
+          {% if project.guest_count %}
+          <div class="a-field">
+            <span class="a-field-label">Invités</span>
+            <span class="a-field-value-mono">{{ project.guest_count }}</span>
+          </div>
+          {% endif %}
+          {% if project.budget_min or project.budget_max %}
+          <div class="a-field">
+            <span class="a-field-label">Budget</span>
+            <span class="a-field-value-mono">
+              {% if project.budget_min %}{{ project.budget_min|floatformat:0 }} FCFA{% endif %}
+              {% if project.budget_min and project.budget_max %} – {% endif %}
+              {% if project.budget_max %}{{ project.budget_max|floatformat:0 }} FCFA{% endif %}
+            </span>
+          </div>
+          {% endif %}
         </div>
+        {% if project.description %}
+        <div class="a-div"></div>
+        <div class="a-field">
+          <span class="a-field-label">Description</span>
+          <p class="a-field-value" style="line-height:1.7;">{{ project.description }}</p>
+        </div>
+        {% endif %}
+        {% if project.services_needed.exists %}
+        <div class="a-div"></div>
+        <div class="a-field">
+          <span class="a-field-label">Services recherchés</span>
+          <div style="display:flex; flex-wrap:wrap; gap:.375rem; margin-top:.375rem;">
+            {% for service in project.services_needed.all %}
+            <span style="padding:.2rem .625rem; background:rgba(181,68,26,.08); border:1px solid rgba(181,68,26,.15); border-radius:2px; font-size:.65rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--terra);">
+              {{ service.name }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
     </div>
+
+    <!-- Statut -->
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Statut</span></div>
+      <div class="a-card-body">
+        <form method="post" action="{% url 'accounts:admin_project_update_status' project.pk %}"
+              style="display:flex; align-items:center; gap:.75rem;">
+          {% csrf_token %}
+          <select name="status" class="a-select" style="max-width:240px;">
+            {% for value, label in project.STATUS_CHOICES %}
+            <option value="{{ value }}" {% if project.status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="a-btn a-btn-primary">Mettre à jour</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Colonne droite — Suivi -->
+  <div>
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Suivi</span></div>
+      <div class="a-card-body">
+
+        {% if notes %}
+        <div style="margin-bottom:1.25rem; display:flex; flex-direction:column; gap:.875rem;">
+          {% for note in notes %}
+          <div {% if not forloop.first %}style="padding-top:.875rem; border-top:1px solid rgba(0,0,0,.05);"{% endif %}>
+            <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:.375rem;">
+              <span class="a-td-mono">{{ note.created_at|date:"d/m/Y H:i" }}</span>
+              <span style="padding:.15rem .5rem; background:rgba(122,110,99,.08); border-radius:2px; font-size:.6rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);">
+                {{ note.get_type_display }}
+              </span>
+            </div>
+            <p style="font-size:.8rem; color:var(--night); line-height:1.65;">{{ note.content }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p style="font-size:.775rem; color:var(--muted); margin-bottom:1.25rem;">Aucun compte rendu.</p>
+        {% endif %}
+
+        <div class="a-div"></div>
+        <form id="note-form" method="post" action="{% url 'accounts:admin_project_add_note' project.pk %}"
+              style="display:flex; flex-direction:column; gap:.625rem;">
+          {% csrf_token %}
+          <select name="type" class="a-select">
+            <option value="call">Appel</option>
+            <option value="meeting">Réunion</option>
+            <option value="other">Autre</option>
+          </select>
+          <textarea name="content" rows="3" required placeholder="Contenu du compte rendu…"
+                    class="a-textarea"></textarea>
+          <button type="button" onclick="document.getElementById('confirm-modal').showModal()"
+                  class="a-btn a-btn-primary">
+            Enregistrer
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
 
 </div>
 
-<!-- Modale de confirmation -->
+<!-- Modale confirmation -->
 <dialog id="confirm-modal"
-        class="rounded-lg border border-gray-200 p-6 w-full max-w-sm backdrop:bg-gray-900/50">
-    <p class="text-sm text-gray-700 mb-5">
-        Une fois enregistré, ce compte rendu ne pourra plus être modifié ni supprimé. Confirmer ?
-    </p>
-    <div class="flex gap-3 justify-end">
-        <button type="button"
-                onclick="document.getElementById('confirm-modal').close()"
-                class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
-            Annuler
-        </button>
-        <button type="button"
-                onclick="document.getElementById('confirm-modal').close(); document.getElementById('note-form').submit();"
-                class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-            Confirmer
-        </button>
-    </div>
+        style="border:1px solid rgba(0,0,0,.1); border-radius:3px; padding:1.75rem; width:100%; max-width:360px; box-shadow:0 16px 48px rgba(0,0,0,.12);"
+        onclick="if(event.target===this)this.close()">
+  <p style="font-size:.825rem; color:var(--night); margin-bottom:1.25rem; line-height:1.65;">
+    Une fois enregistré, ce compte rendu ne pourra plus être modifié ni supprimé. Confirmer ?
+  </p>
+  <div style="display:flex; gap:.625rem; justify-content:flex-end;">
+    <button type="button" onclick="document.getElementById('confirm-modal').close()"
+            class="a-btn a-btn-ghost">Annuler</button>
+    <button type="button"
+            onclick="document.getElementById('confirm-modal').close(); document.getElementById('note-form').submit();"
+            class="a-btn a-btn-primary">Confirmer</button>
+  </div>
 </dialog>
 {% endblock %}

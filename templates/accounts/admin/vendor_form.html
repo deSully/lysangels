@@ -1,143 +1,127 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}{% if vendor %}Modifier {{ vendor.business_name }}{% else %}Nouveau prestataire{% endif %} - Admin{% endblock %}
+{% block title %}{% if vendor %}Modifier {{ vendor.business_name }}{% else %}Nouveau prestataire{% endif %} — Admin{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6 flex justify-between items-center">
-    <h1 class="text-xl font-semibold text-gray-900">
-        {% if vendor %}Modifier {{ vendor.business_name }}{% else %}Nouveau prestataire{% endif %}
-    </h1>
-    <a href="{% if vendor %}{% url 'accounts:admin_vendor_detail' vendor.pk %}{% else %}{% url 'accounts:admin_vendor_list' %}{% endif %}"
-       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+<div class="a-page-hd">
+  <h1 class="a-page-title">
+    {% if vendor %}Modifier {{ vendor.business_name }}{% else %}Nouveau prestataire{% endif %}
+  </h1>
+  <a href="{% if vendor %}{% url 'accounts:admin_vendor_detail' vendor.pk %}{% else %}{% url 'accounts:admin_vendor_list' %}{% endif %}"
+     class="a-btn a-btn-ghost">← Retour</a>
 </div>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+<form method="post" enctype="multipart/form-data" style="max-width:760px;">
+  {% csrf_token %}
 
-    <!-- Identité -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Identité</h2>
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Nom <span class="text-red-500">*</span></label>
-                <input type="text" name="business_name" value="{{ vendor.business_name|default:'' }}" required
-                       class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Description</label>
-                <textarea name="description" rows="4"
-                          class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent resize-none">{{ vendor.description|default:'' }}</textarea>
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Logo</label>
-                {% if vendor and vendor.logo %}
-                <p class="text-xs text-gray-400 mb-1">Logo actuel enregistré</p>
-                {% endif %}
-                <input type="file" name="logo" accept="image/*" class="text-sm text-gray-700">
-            </div>
-        </div>
+  <!-- Identité -->
+  <div class="a-card" style="margin-bottom:1rem;">
+    <div class="a-card-head"><span class="a-card-label">Identité</span></div>
+    <div class="a-card-body" style="display:flex; flex-direction:column; gap:.875rem;">
+      <div>
+        <label class="a-field-label">Nom <span style="color:var(--terra);">*</span></label>
+        <input type="text" name="business_name" value="{{ vendor.business_name|default:'' }}" required class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Description</label>
+        <textarea name="description" rows="4" class="a-textarea">{{ vendor.description|default:'' }}</textarea>
+      </div>
+      <div>
+        <label class="a-field-label">Logo</label>
+        {% if vendor and vendor.logo %}<p style="font-size:.72rem; color:var(--muted); margin-bottom:.375rem;">Logo actuel enregistré</p>{% endif %}
+        <input type="file" name="logo" accept="image/*"
+               style="font-size:.8rem; color:var(--night); font-family:inherit;">
+      </div>
     </div>
+  </div>
 
-    <!-- Contact -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Contact</h2>
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">WhatsApp</label>
-                <input type="text" name="whatsapp" value="{{ vendor.whatsapp|default:'' }}"
-                       class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Site web</label>
-                <input type="url" name="website" value="{{ vendor.website|default:'' }}"
-                       class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Facebook</label>
-                <input type="text" name="facebook" value="{{ vendor.facebook|default:'' }}"
-                       class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Instagram</label>
-                <input type="text" name="instagram" value="{{ vendor.instagram|default:'' }}"
-                       class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-            </div>
-        </div>
+  <!-- Contact -->
+  <div class="a-card" style="margin-bottom:1rem;">
+    <div class="a-card-head"><span class="a-card-label">Contact</span></div>
+    <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:.875rem;">
+      <div>
+        <label class="a-field-label">WhatsApp</label>
+        <input type="text" name="whatsapp" value="{{ vendor.whatsapp|default:'' }}" class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Site web</label>
+        <input type="url" name="website" value="{{ vendor.website|default:'' }}" class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Facebook</label>
+        <input type="text" name="facebook" value="{{ vendor.facebook|default:'' }}" class="a-input">
+      </div>
+      <div>
+        <label class="a-field-label">Instagram</label>
+        <input type="text" name="instagram" value="{{ vendor.instagram|default:'' }}" class="a-input">
+      </div>
     </div>
+  </div>
 
-    <!-- Localisation -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Localisation</h2>
-        <div class="grid grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Ville</label>
-                <select name="city"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-                    <option value="">— Choisir une ville —</option>
-                    {% for city in cities %}
-                    <option value="{{ city.pk }}" {% if vendor and vendor.city_id == city.pk %}selected{% endif %}>
-                        {{ city.name }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Pays (Ctrl+clic pour plusieurs)</label>
-                <select name="countries" multiple
-                        class="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-lily-purple focus:border-transparent">
-                    {% for country in countries %}
-                    <option value="{{ country.pk }}" {% if vendor and country in vendor.countries.all %}selected{% endif %}>
-                        {{ country.flag_emoji }} {{ country.name }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
+  <!-- Localisation -->
+  <div class="a-card" style="margin-bottom:1rem;">
+    <div class="a-card-head"><span class="a-card-label">Localisation</span></div>
+    <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:.875rem;">
+      <div>
+        <label class="a-field-label">Ville</label>
+        <select name="city" class="a-select">
+          <option value="">— Choisir une ville —</option>
+          {% for city in cities %}
+          <option value="{{ city.pk }}" {% if vendor and vendor.city_id == city.pk %}selected{% endif %}>{{ city.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="a-field-label">Pays <span style="font-weight:400; text-transform:none; letter-spacing:0;">(Ctrl+clic pour plusieurs)</span></label>
+        <select name="countries" multiple class="a-select" style="height:auto; min-height:5rem;">
+          {% for country in countries %}
+          <option value="{{ country.pk }}" {% if vendor and country in vendor.countries.all %}selected{% endif %}>
+            {{ country.flag_emoji }} {{ country.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
+  </div>
 
-    <!-- Services -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-4">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Services</h2>
-        <div class="grid grid-cols-3 gap-2">
-            {% for service in service_types %}
-            <label class="flex items-center gap-2 text-sm text-gray-700">
-                <input type="checkbox" name="service_types" value="{{ service.pk }}"
-                       {% if vendor and service in vendor.service_types.all %}checked{% endif %}
-                       class="rounded border-gray-300 text-lily-purple focus:ring-lily-purple">
-                {{ service.name }}
-            </label>
-            {% endfor %}
-        </div>
+  <!-- Services -->
+  <div class="a-card" style="margin-bottom:1rem;">
+    <div class="a-card-head"><span class="a-card-label">Services</span></div>
+    <div class="a-card-body" style="display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem;">
+      {% for service in service_types %}
+      <label style="display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--night); cursor:pointer; padding:.375rem 0;">
+        <input type="checkbox" name="service_types" value="{{ service.pk }}"
+               {% if vendor and service in vendor.service_types.all %}checked{% endif %}
+               class="a-checkbox">
+        {{ service.name }}
+      </label>
+      {% endfor %}
     </div>
+  </div>
 
-    <!-- Options -->
-    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-        <h2 class="text-sm font-medium text-gray-900 mb-4">Options</h2>
-        <div class="flex gap-6">
-            <label class="flex items-center gap-2 text-sm text-gray-700">
-                <input type="checkbox" name="is_active"
-                       {% if not vendor or vendor.is_active %}checked{% endif %}
-                       class="rounded border-gray-300 text-lily-purple focus:ring-lily-purple">
-                Actif
-            </label>
-            <label class="flex items-center gap-2 text-sm text-gray-700">
-                <input type="checkbox" name="is_featured"
-                       {% if vendor and vendor.is_featured %}checked{% endif %}
-                       class="rounded border-gray-300 text-lily-purple focus:ring-lily-purple">
-                Mis en avant
-            </label>
-        </div>
+  <!-- Options -->
+  <div class="a-card" style="margin-bottom:1.5rem;">
+    <div class="a-card-head"><span class="a-card-label">Options</span></div>
+    <div class="a-card-body" style="display:flex; gap:2rem;">
+      <label style="display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--night); cursor:pointer;">
+        <input type="checkbox" name="is_active"
+               {% if not vendor or vendor.is_active %}checked{% endif %}
+               class="a-checkbox">
+        Actif
+      </label>
+      <label style="display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--night); cursor:pointer;">
+        <input type="checkbox" name="is_featured"
+               {% if vendor and vendor.is_featured %}checked{% endif %}
+               class="a-checkbox">
+        Mis en avant
+      </label>
     </div>
+  </div>
 
-    <div class="flex gap-3">
-        <button type="submit"
-                class="bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-purple-dark transition">
-            Enregistrer
-        </button>
-        <a href="{% if vendor %}{% url 'accounts:admin_vendor_detail' vendor.pk %}{% else %}{% url 'accounts:admin_vendor_list' %}{% endif %}"
-           class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
-            Annuler
-        </a>
-    </div>
+  <div style="display:flex; gap:.625rem;">
+    <button type="submit" class="a-btn a-btn-primary">Enregistrer</button>
+    <a href="{% if vendor %}{% url 'accounts:admin_vendor_detail' vendor.pk %}{% else %}{% url 'accounts:admin_vendor_list' %}{% endif %}"
+       class="a-btn a-btn-ghost">Annuler</a>
+  </div>
 </form>
 {% endblock %}

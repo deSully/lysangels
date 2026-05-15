@@ -1,140 +1,143 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}{{ vendor.business_name }} - Admin{% endblock %}
+{% block title %}{{ vendor.business_name }} — Admin{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6 flex justify-between items-center">
-    <h1 class="text-xl font-semibold text-gray-900">{{ vendor.business_name }}</h1>
-    <a href="{% url 'accounts:admin_vendor_list' %}"
-       class="border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">← Retour</a>
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">{{ vendor.business_name }}</h1>
+    {% if vendor.is_active %}
+    <span class="a-badge a-badge-active" style="margin-top:.375rem; display:inline-flex;">Actif</span>
+    {% else %}
+    <span class="a-badge a-badge-inactive" style="margin-top:.375rem; display:inline-flex;">Inactif</span>
+    {% endif %}
+  </div>
+  <a href="{% url 'accounts:admin_vendor_list' %}" class="a-btn a-btn-ghost">← Retour</a>
 </div>
 
-<div class="grid grid-cols-3 gap-6">
+<div style="display:grid; grid-template-columns:1fr 260px; gap:1.25rem; align-items:start;">
 
-    <!-- Colonne gauche -->
-    <div class="col-span-2 space-y-4">
+  <!-- Colonne gauche -->
+  <div style="display:flex; flex-direction:column; gap:1rem;">
 
-        <!-- Identité -->
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Identité</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Nom</p>
-                    <p class="text-sm text-gray-900">{{ vendor.business_name }}</p>
-                </div>
-                {% if vendor.whatsapp %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">WhatsApp</p>
-                    <p class="text-sm text-gray-900">{{ vendor.whatsapp }}</p>
-                </div>
-                {% endif %}
-                {% if vendor.website %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Site web</p>
-                    <p class="text-sm text-gray-900">{{ vendor.website }}</p>
-                </div>
-                {% endif %}
-                {% if vendor.facebook %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Facebook</p>
-                    <p class="text-sm text-gray-900">{{ vendor.facebook }}</p>
-                </div>
-                {% endif %}
-                {% if vendor.instagram %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Instagram</p>
-                    <p class="text-sm text-gray-900">{{ vendor.instagram }}</p>
-                </div>
-                {% endif %}
-                {% if vendor.description %}
-                <div class="col-span-2 pt-3 border-t border-gray-100">
-                    <p class="text-xs text-gray-500 mb-1">Description</p>
-                    <p class="text-sm text-gray-700 leading-relaxed">{{ vendor.description }}</p>
-                </div>
-                {% endif %}
-            </div>
+    <!-- Identité -->
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Identité</span></div>
+      <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="a-field">
+          <span class="a-field-label">Nom</span>
+          <span class="a-field-value">{{ vendor.business_name }}</span>
         </div>
-
-        <!-- Localisation -->
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-4">Localisation</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Ville</p>
-                    <p class="text-sm text-gray-900">{{ vendor.city.name|default:"—" }}</p>
-                </div>
-                {% if vendor.city.country %}
-                <div>
-                    <p class="text-xs text-gray-500 mb-1">Pays</p>
-                    <p class="text-sm text-gray-900">{{ vendor.city.country.name }}</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Services -->
-        {% if vendor.service_types.exists %}
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-3">Services</h2>
-            <div class="flex flex-wrap gap-2">
-                {% for service in vendor.service_types.all %}
-                <span class="text-xs bg-gray-100 text-gray-700 rounded-full px-2 py-0.5">{{ service.name }}</span>
-                {% endfor %}
-            </div>
+        {% if vendor.whatsapp %}
+        <div class="a-field">
+          <span class="a-field-label">WhatsApp</span>
+          <span class="a-field-value-mono">{{ vendor.whatsapp }}</span>
         </div>
         {% endif %}
-
-        <!-- Images -->
-        {% if vendor.images.exists %}
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <h2 class="text-sm font-medium text-gray-900 mb-3">Images</h2>
-            <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
-            <div class="grid grid-cols-4 gap-3">
-                {% for image in vendor.images.all %}
-                <div class="relative group">
-                    <img src="{{ image.image.url }}" alt=""
-                         class="w-full h-20 object-cover rounded-md border border-gray-200">
-                    <button type="button"
-                            onclick="deleteImage({{ vendor.pk }}, {{ image.pk }})"
-                            class="absolute top-1 right-1 hidden group-hover:flex items-center justify-center w-5 h-5 bg-white border border-gray-200 text-gray-600 rounded text-xs hover:text-red-600">
-                        ✕
-                    </button>
-                </div>
-                {% endfor %}
-            </div>
+        {% if vendor.website %}
+        <div class="a-field">
+          <span class="a-field-label">Site web</span>
+          <a href="{{ vendor.website }}" target="_blank" class="a-td-link" style="display:block;">{{ vendor.website }}</a>
         </div>
         {% endif %}
-
+        {% if vendor.facebook %}
+        <div class="a-field">
+          <span class="a-field-label">Facebook</span>
+          <span class="a-field-value">{{ vendor.facebook }}</span>
+        </div>
+        {% endif %}
+        {% if vendor.instagram %}
+        <div class="a-field">
+          <span class="a-field-label">Instagram</span>
+          <span class="a-field-value">{{ vendor.instagram }}</span>
+        </div>
+        {% endif %}
+        {% if vendor.description %}
+        <div class="a-field" style="grid-column:span 2; padding-top:.875rem; border-top:1px solid rgba(0,0,0,.05);">
+          <span class="a-field-label">Description</span>
+          <p class="a-field-value" style="line-height:1.7; white-space:pre-line;">{{ vendor.description }}</p>
+        </div>
+        {% endif %}
+      </div>
     </div>
 
-    <!-- Colonne droite — Actions -->
-    <div class="col-span-1 space-y-3">
-        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-2">
-            <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}"
-               class="block w-full bg-lily-purple text-white px-4 py-2 rounded-md text-sm font-medium text-center hover:bg-purple-dark transition">
-                Modifier
-            </a>
-            <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}">
-                {% csrf_token %}
-                <button type="submit"
-                        class="w-full border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
-                    {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
-                </button>
-            </form>
-            <a href="{% url 'vendors:vendor_detail' vendor.pk %}" target="_blank"
-               class="block w-full text-center border border-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-50">
-                Voir le profil public ↗
-            </a>
+    <!-- Localisation -->
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Localisation</span></div>
+      <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div class="a-field">
+          <span class="a-field-label">Ville</span>
+          <span class="a-field-value">{{ vendor.city.name|default:"—" }}</span>
         </div>
-        <div class="bg-white border border-gray-200 rounded-lg p-5">
-            <p class="text-xs text-gray-500 mb-2">Statut</p>
-            {% if vendor.is_active %}
-            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
-            {% else %}
-            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
-            {% endif %}
+        {% if vendor.city.country %}
+        <div class="a-field">
+          <span class="a-field-label">Pays</span>
+          <span class="a-field-value">{{ vendor.city.country.name }}</span>
         </div>
+        {% endif %}
+      </div>
     </div>
+
+    <!-- Services -->
+    {% if vendor.service_types.exists %}
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Services</span></div>
+      <div class="a-card-body" style="display:flex; flex-wrap:wrap; gap:.5rem;">
+        {% for service in vendor.service_types.all %}
+        <span style="display:inline-block; padding:.25rem .75rem; background:rgba(181,68,26,.08); border:1px solid rgba(181,68,26,.15); border-radius:2px; font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--terra);">
+          {{ service.name }}
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Images -->
+    {% if vendor.images.exists %}
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Images</span></div>
+      <div class="a-card-body">
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:.75rem;">
+          {% for image in vendor.images.all %}
+          <div style="position:relative; group;">
+            <img src="{{ image.image.url }}" alt=""
+                 style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:2px; border:1px solid rgba(0,0,0,.08);">
+            <button type="button" onclick="deleteImage({{ vendor.pk }}, {{ image.pk }})"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:rgba(250,247,240,.7); font-size:.6rem; transition:background .15s;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">
+              ✕
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Colonne droite — Actions -->
+  <div style="display:flex; flex-direction:column; gap:.75rem;">
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Actions</span></div>
+      <div class="a-card-body" style="display:flex; flex-direction:column; gap:.5rem;">
+        <a href="{% url 'accounts:admin_vendor_edit' vendor.pk %}" class="a-btn a-btn-primary" style="justify-content:center;">
+          Modifier
+        </a>
+        <form method="post" action="{% url 'accounts:admin_vendor_toggle_active' vendor.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="a-btn a-btn-ghost" style="width:100%; justify-content:center;">
+            {% if vendor.is_active %}Désactiver{% else %}Activer{% endif %}
+          </button>
+        </form>
+        <a href="{% url 'vendors:vendor_detail' vendor.pk %}" target="_blank"
+           class="a-btn a-btn-ghost" style="justify-content:center;">
+          Voir le profil public ↗
+        </a>
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock %}
@@ -142,15 +145,14 @@
 {% block admin_js %}
 <script>
 function deleteImage(vendorId, imageId) {
-    if (!confirm('Supprimer cette image ?')) return;
-    const csrf = document.getElementById('csrf-token').value;
-    fetch(`/accounts/admin/vendors/${vendorId}/delete-image/${imageId}/`, {
-        method: 'POST',
-        headers: {'X-CSRFToken': csrf}
-    }).then(r => r.json()).then(data => {
-        if (data.success) location.reload();
-        else alert('Erreur lors de la suppression.');
-    });
+  if (!confirm('Supprimer cette image ?')) return;
+  const csrf = document.getElementById('csrf-token').value;
+  fetch(`/accounts/admin/vendors/${vendorId}/delete-image/${imageId}/`, {
+    method: 'POST', headers: {'X-CSRFToken': csrf}
+  }).then(r => r.json()).then(data => {
+    if (data.success) location.reload();
+    else alert('Erreur lors de la suppression.');
+  });
 }
 </script>
 {% endblock %}

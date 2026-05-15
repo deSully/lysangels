@@ -1,104 +1,100 @@
 {% extends 'accounts/admin/base_admin.html' %}
 
-{% block title %}Tableau de bord - Admin{% endblock %}
+{% block title %}Tableau de bord — Admin LysAngels{% endblock %}
 
 {% block admin_content %}
-<div class="mb-6">
-    <h1 class="text-xl font-semibold text-gray-900">Tableau de bord</h1>
+
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Tableau de bord</h1>
+    <p class="a-page-sub">{{ request.user.get_full_name|default:request.user.username }}</p>
+  </div>
 </div>
 
-<!-- Stats -->
-<div class="grid grid-cols-4 gap-4 mb-8">
-    <div class="bg-white border border-gray-200 rounded-lg p-5">
-        <p class="text-2xl font-semibold text-gray-900">{{ new_projects }}</p>
-        <p class="text-sm text-gray-500 mt-1">Nouvelles demandes</p>
-    </div>
-    <div class="bg-white border border-gray-200 rounded-lg p-5">
-        <p class="text-2xl font-semibold text-gray-900">{{ total_projects }}</p>
-        <p class="text-sm text-gray-500 mt-1">Demandes total</p>
-    </div>
-    <div class="bg-white border border-gray-200 rounded-lg p-5">
-        <p class="text-2xl font-semibold text-gray-900">{{ active_vendors }}</p>
-        <p class="text-sm text-gray-500 mt-1">Prestataires actifs</p>
-    </div>
-    <div class="bg-white border border-gray-200 rounded-lg p-5">
-        <p class="text-2xl font-semibold text-gray-900">{{ pending_vendors }}</p>
-        <p class="text-sm text-gray-500 mt-1">Prestataires inactifs</p>
-    </div>
+<!-- Stat cards -->
+<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem;">
+  <div class="a-stat">
+    <div class="a-stat-num {% if new_projects > 0 %}a-stat-num-accent{% endif %}">{{ new_projects }}</div>
+    <div class="a-stat-label">Nouvelles demandes</div>
+  </div>
+  <div class="a-stat">
+    <div class="a-stat-num">{{ total_projects }}</div>
+    <div class="a-stat-label">Demandes total</div>
+  </div>
+  <div class="a-stat">
+    <div class="a-stat-num">{{ active_vendors }}</div>
+    <div class="a-stat-label">Prestataires actifs</div>
+  </div>
+  <div class="a-stat">
+    <div class="a-stat-num {% if pending_vendors > 0 %}a-stat-num-accent{% endif %}">{{ pending_vendors }}</div>
+    <div class="a-stat-label">Prestataires inactifs</div>
+  </div>
 </div>
 
 <!-- Tables -->
-<div class="grid grid-cols-2 gap-6">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
 
-    <!-- Nouvelles demandes -->
-    <div class="bg-white border border-gray-200 rounded-lg">
-        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
-            <span class="text-sm font-medium text-gray-900">Nouvelles demandes</span>
-            <a href="{% url 'accounts:admin_project_list' %}?status=new"
-               class="text-xs text-lily-purple hover:underline">Voir tout →</a>
-        </div>
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b border-gray-100">
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Email</th>
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Date</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-                {% for project in recent_projects %}
-                <tr class="hover:bg-gray-50 cursor-pointer"
-                    onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
-                    <td class="px-5 py-3 text-gray-900">{{ project.contact_name }}</td>
-                    <td class="px-5 py-3 text-gray-500 truncate max-w-xs">{{ project.contact_email }}</td>
-                    <td class="px-5 py-3 text-gray-500 whitespace-nowrap">{{ project.created_at|date:"d/m/Y" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="px-5 py-4 text-sm text-gray-400">Aucune nouvelle demande</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  <!-- Nouvelles demandes -->
+  <div class="a-card">
+    <div class="a-card-head">
+      <span class="a-card-label">Nouvelles demandes</span>
+      <a href="{% url 'accounts:admin_project_list' %}?status=new" class="a-td-link">Voir tout →</a>
     </div>
+    <table class="a-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in recent_projects %}
+        <tr onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
+          <td style="font-weight:500;">{{ project.contact_name }}</td>
+          <td class="a-td-muted">{{ project.contact_email }}</td>
+          <td class="a-td-mono">{{ project.created_at|date:"d/m/Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="a-table-empty">Aucune nouvelle demande</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Prestataires récents -->
-    <div class="bg-white border border-gray-200 rounded-lg">
-        <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center">
-            <span class="text-sm font-medium text-gray-900">Prestataires</span>
-            <a href="{% url 'accounts:admin_vendor_list' %}"
-               class="text-xs text-lily-purple hover:underline">Voir tout →</a>
-        </div>
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b border-gray-100">
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Nom</th>
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Ville</th>
-                    <th class="px-5 py-3 text-left text-xs text-gray-500 uppercase tracking-wide font-medium">Statut</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-                {% for vendor in recent_vendors %}
-                <tr class="hover:bg-gray-50 cursor-pointer"
-                    onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
-                    <td class="px-5 py-3 text-gray-900">{{ vendor.business_name }}</td>
-                    <td class="px-5 py-3 text-gray-500">{{ vendor.city.name|default:"—" }}</td>
-                    <td class="px-5 py-3">
-                        {% if vendor.is_active %}
-                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Actif</span>
-                        {% else %}
-                        <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-600">Inactif</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="px-5 py-4 text-sm text-gray-400">Aucun prestataire</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  <!-- Prestataires récents -->
+  <div class="a-card">
+    <div class="a-card-head">
+      <span class="a-card-label">Prestataires</span>
+      <a href="{% url 'accounts:admin_vendor_list' %}" class="a-td-link">Voir tout →</a>
     </div>
+    <table class="a-table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Ville</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vendor in recent_vendors %}
+        <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
+          <td style="font-weight:500;">{{ vendor.business_name }}</td>
+          <td class="a-td-muted">{{ vendor.city.name|default:"—" }}</td>
+          <td>
+            {% if vendor.is_active %}
+            <span class="a-badge a-badge-active">Actif</span>
+            {% else %}
+            <span class="a-badge a-badge-inactive">Inactif</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="a-table-empty">Aucun prestataire</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 </div>
 {% endblock %}
