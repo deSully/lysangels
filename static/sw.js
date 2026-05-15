@@ -1,6 +1,6 @@
 // Service Worker pour LysAngels PWA
-const CACHE_NAME = 'lysangels-v1.0.0';
-const RUNTIME_CACHE = 'lysangels-runtime-v1';
+const CACHE_NAME = 'lysangels-v2.0.0';
+const RUNTIME_CACHE = 'lysangels-runtime-v2';
 
 // Assets à mettre en cache au moment de l'installation
 const STATIC_ASSETS = [
