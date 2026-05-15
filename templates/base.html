@@ -291,7 +291,7 @@
         </div>
 
         <!-- Menu mobile complet -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t shadow-lg">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t shadow-lg z-40">
             <div class="px-4 py-3 space-y-1">
                 <!-- Navigation principale -->
                 <a href="{% url 'vendors:vendor_list' %}" class="block py-3 px-2 text-base {% if request.resolver_match.url_name == 'vendor_list' or request.resolver_match.url_name == 'vendor_detail' %}text-lily-purple bg-lily-cream font-semibold{% else %}text-gray-700{% endif %} hover:text-lily-purple hover:bg-lily-cream rounded-lg transition">
@@ -452,6 +452,14 @@
         if (mobileMenuBtn && mobileMenu) {
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') mobileMenu.classList.add('hidden');
             });
         }
 
