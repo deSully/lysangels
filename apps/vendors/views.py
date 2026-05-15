@@ -70,19 +70,22 @@ def vendor_detail(request, pk):
 @require_POST
 def reveal_contact(request, pk):
     """Retourne le numéro WhatsApp et trace le clic en base"""
+    from django.utils import timezone
+    from datetime import timedelta
+
     vendor = get_object_or_404(VendorProfile, pk=pk, is_active=True)
 
     if not vendor.whatsapp:
         return JsonResponse({'error': 'Aucun numéro disponible'}, status=404)
 
-    # Récupérer l'IP réelle (derrière proxy/Nginx)
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0].strip()
-    else:
-        ip = request.META.get('REMOTE_ADDR')
+    ip = x_forwarded_for.split(',')[0].strip() if x_forwarded_for else request.META.get('REMOTE_ADDR')
 
-    # Logger le clic
+    # Rate limit : 10 révélations par IP par heure
+    one_hour_ago = timezone.now() - timedelta(hours=1)
+    if ContactView.objects.filter(ip_address=ip, viewed_at__gte=one_hour_ago).count() >= 10:
+        return JsonResponse({'error': 'Limite atteinte, réessayez dans une heure.'}, status=429)
+
     ContactView.objects.create(
         vendor=vendor,
         ip_address=ip,
@@ -93,6 +96,7 @@ def reveal_contact(request, pk):
     return JsonResponse({
         'whatsapp': vendor.whatsapp,
         'whatsapp_url': f"https://wa.me/{vendor.whatsapp.replace(' ', '').replace('+', '')}",
+        'vendor_name': vendor.business_name,
     })
 
 
