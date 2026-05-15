@@ -1,7 +1,8 @@
 """
 Development settings - for local development only
-Uses SQLite, DEBUG=True, console email backend
+Uses SQLite, DEBUG=True, Resend SMTP email
 """
+import os
 from .base import *
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -25,8 +26,12 @@ DATABASES = {
 }
 
 
-# Email - Console backend (prints to terminal)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'LysAngels <noreply@lysangels.tg>'
+# Email — Resend via SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.resend.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'resend'
+EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', '')
+DEFAULT_FROM_EMAIL = 'LysAngels <susy@lysangels.com>'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
