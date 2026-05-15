@@ -48,6 +48,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'apps.core.context_processors.analytics',
             ],
         },
     },
@@ -88,6 +89,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Media files
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Analytics
+UMAMI_WEBSITE_ID = ''
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.User'

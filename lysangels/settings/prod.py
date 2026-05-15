@@ -6,6 +6,7 @@ import dj_database_url
 import os
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
+UMAMI_WEBSITE_ID = os.environ.get('UMAMI_WEBSITE_ID', '')
 DEBUG = False
 ALLOWED_HOSTS = ["lysangels.com", "www.lysangels.com"]
 SITE_URL = os.environ.get('SITE_URL', 'https://lysangels.com')

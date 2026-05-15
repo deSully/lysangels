@@ -596,5 +596,9 @@
     <script src="{% static 'js/interactions.js' %}" defer></script>
 
     {% block extra_js %}{% endblock %}
+
+    {% if UMAMI_WEBSITE_ID %}
+    <script defer src="https://umami.lysangels.com/script.js" data-website-id="{{ UMAMI_WEBSITE_ID }}"></script>
+    {% endif %}
 </body>
 </html>

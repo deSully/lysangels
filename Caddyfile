@@ -19,3 +19,7 @@ lysangels.com, www.lysangels.com {
         reverse_proxy web:8000
     }
 }
+
+umami.lysangels.com {
+    reverse_proxy umami:3000
+}
