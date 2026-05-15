@@ -6,273 +6,572 @@
 
 {% block extra_css %}
 <style>
-    .hero-bg {
+    :root {
+        --terra: #B5441A;
+        --terra-dark: #8E3313;
+        --gold: #C9973A;
+        --ivory: #FAF7F0;
+        --night: #110D06;
+        --sand: #E8D2B0;
+        --muted: #7A6E63;
+    }
+
+    /* ── GRAIN ── */
+    .grain {
+        position: absolute; inset: 0; pointer-events: none; z-index: 2;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+        background-repeat: repeat; background-size: 200px;
+        mix-blend-mode: multiply;
+    }
+
+    /* ── HERO ── */
+    .hero-wrap {
+        position: relative; min-height: 100svh;
+        display: flex; flex-direction: column; justify-content: flex-end;
+        overflow: hidden;
+    }
+    .hero-photo {
         position: absolute; inset: 0;
         background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=90&fit=crop');
-        background-size: cover; background-position: center 40%;
+        background-size: cover; background-position: center 30%;
+        transform: scale(1.04);
+        transition: transform 7s cubic-bezier(.25,.46,.45,.94);
     }
-    .service-pill {
-        display: flex; align-items: center; gap: .75rem;
-        background: #fff; border: 1.5px solid #F4EDE4; border-radius: .875rem;
-        padding: .875rem 1rem; transition: border-color .2s, box-shadow .2s;
-        text-decoration: none; color: #1A1A1A; min-width: 0;
-    }
-    .service-pill:hover { border-color: #8B5CF6; box-shadow: 0 4px 16px rgba(139,92,246,.1); }
-    .service-pill-icon {
-        width: 2.5rem; height: 2.5rem; border-radius: .625rem;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0; box-shadow: 0 4px 10px rgba(139,92,246,.25);
-    }
-    .featured-card {
-        border-radius: 1.25rem; overflow: hidden; position: relative;
-        transition: transform .3s, box-shadow .3s;
-        text-decoration: none; display: block;
-    }
-    .featured-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.2); }
-    .featured-card-img { height: 300px; position: relative; overflow: hidden; }
-    .featured-card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .featured-card-img-placeholder {
-        width: 100%; height: 100%;
-        background: linear-gradient(135deg, #2D1B3D, #1A1A1A);
-        display: flex; align-items: center; justify-content: center;
-    }
-    .featured-card-overlay {
+    .hero-photo.loaded { transform: scale(1); }
+    .hero-veil {
         position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
+        background: linear-gradient(
+            160deg,
+            rgba(17,13,6,.1) 0%,
+            rgba(17,13,6,.35) 35%,
+            rgba(17,13,6,.88) 100%
+        );
     }
-    .featured-logo-badge {
+    .hero-body {
+        position: relative; z-index: 3;
+        padding: 5rem 1.5rem 3.5rem;
+        max-width: 1280px; margin: 0 auto; width: 100%;
+    }
+    .hero-eyebrow {
+        display: inline-flex; align-items: center; gap: .625rem;
+        font-size: .65rem; font-weight: 700; letter-spacing: .22em;
+        text-transform: uppercase; color: var(--gold);
+        margin-bottom: 1.25rem;
+    }
+    .hero-eyebrow-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: .5; }
+    .hero-h1 {
+        font-size: clamp(3.2rem, 9vw, 6.5rem);
+        font-weight: 600; line-height: 1.0; letter-spacing: -0.02em;
+        color: #fff; margin-bottom: 1.25rem; max-width: 15ch;
+    }
+    .hero-h1 em { font-style: italic; color: var(--gold); }
+    .hero-p {
+        font-size: 1rem; color: rgba(255,255,255,.55);
+        max-width: 42ch; line-height: 1.7; margin-bottom: 2.25rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .875rem; margin-bottom: 3rem; }
+
+    .cta-terra {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .8rem 1.875rem;
+        background: var(--terra); color: #fff;
+        font-size: .825rem; font-weight: 600; letter-spacing: .04em;
+        border-radius: .3rem; text-decoration: none;
+        box-shadow: 0 4px 18px rgba(181,68,26,.45);
+        transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .cta-terra:hover { background: var(--terra-dark); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(181,68,26,.5); }
+
+    .cta-outline-white {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .8rem 1.875rem;
+        border: 1.5px solid rgba(255,255,255,.28); color: rgba(255,255,255,.8);
+        font-size: .825rem; font-weight: 500;
+        border-radius: .3rem; text-decoration: none;
+        backdrop-filter: blur(8px);
+        transition: border-color .2s, color .2s, background .2s;
+    }
+    .cta-outline-white:hover { border-color: rgba(255,255,255,.65); color: #fff; background: rgba(255,255,255,.06); }
+
+    .hero-bar {
+        display: flex; gap: 2.5rem;
+        padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .hero-stat-n {
+        font-size: 2.25rem; font-weight: 700; color: #fff; line-height: 1;
+    }
+    .hero-stat-l {
+        font-size: .62rem; font-weight: 600; letter-spacing: .12em;
+        text-transform: uppercase; color: rgba(255,255,255,.35);
+        margin-top: .2rem;
+    }
+    .hero-scroll-hint {
+        position: absolute; bottom: 2rem; right: 2rem; z-index: 4;
+        display: none; flex-direction: column; align-items: center; gap: .4rem;
+        color: rgba(255,255,255,.3);
+        font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+    }
+    @media (min-width: 640px) { .hero-scroll-hint { display: flex; } }
+    .scroll-line {
+        width: 1px; height: 44px;
+        background: linear-gradient(to bottom, rgba(255,255,255,.35), transparent);
+        animation: drip 2s ease-in-out infinite;
+    }
+    @keyframes drip {
+        0%,100% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+        49%      { transform: scaleY(1); transform-origin: top; opacity: 1; }
+        50%      { transform-origin: bottom; }
+        99%      { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── SECTION COMMONS ── */
+    .s-label {
+        display: inline-flex; align-items: center; gap: .625rem;
+        font-size: .63rem; font-weight: 700; letter-spacing: .2em;
+        text-transform: uppercase; color: var(--terra);
+        margin-bottom: .875rem;
+    }
+    .s-label::before { content: ''; display: block; width: 22px; height: 1.5px; background: var(--terra); }
+    .s-title {
+        font-size: clamp(1.9rem, 4.5vw, 3.25rem);
+        font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+        color: var(--night);
+    }
+    .s-ghost {
+        position: absolute; font-size: 18vw; font-weight: 700; line-height: 1;
+        color: rgba(0,0,0,.03); pointer-events: none; user-select: none;
+        top: -2vw; right: -1vw;
+    }
+
+    /* ── SERVICES ── */
+    .services-bg { background: var(--ivory); padding: 5rem 0; position: relative; overflow: hidden; }
+
+    .tile {
+        display: flex; flex-direction: column; gap: .875rem;
+        padding: 1.375rem 1.25rem; background: #fff;
+        border: 1px solid rgba(0,0,0,.07); border-radius: .4rem;
+        text-decoration: none; color: var(--night);
+        position: relative; overflow: hidden;
+        transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .tile::after {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(135deg, var(--terra), #8E2E10);
+        opacity: 0; transition: opacity .25s;
+    }
+    .tile:hover { border-color: var(--terra); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(181,68,26,.14); }
+    .tile:hover::after { opacity: 1; }
+    .tile-icon { color: var(--terra); position: relative; z-index: 1; transition: color .25s; }
+    .tile-name {
+        font-size: .82rem; font-weight: 600;
+        position: relative; z-index: 1; transition: color .25s;
+    }
+    .tile:hover .tile-icon,
+    .tile:hover .tile-name { color: #fff; }
+
+    /* ── FEATURED ── */
+    .featured-bg { background: var(--night); padding: 5rem 0; position: relative; overflow: hidden; }
+    .featured-bg .s-label { color: var(--gold); }
+    .featured-bg .s-label::before { background: var(--gold); }
+    .featured-bg .s-title { color: #fff; }
+    .featured-bg .s-ghost { color: rgba(255,255,255,.03); }
+
+    .vcard {
+        position: relative; border-radius: .4rem; overflow: hidden;
+        display: block; text-decoration: none;
+        aspect-ratio: 3 / 4; background: #1a1208;
+    }
+    .vcard img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform .65s cubic-bezier(.25,.46,.45,.94); display: block;
+    }
+    .vcard:hover img { transform: scale(1.07); }
+    .vcard-veil {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(17,13,6,.95) 0%, rgba(17,13,6,.25) 55%, transparent 100%);
+    }
+    .vcard-arrow {
         position: absolute; top: 1rem; right: 1rem;
-        width: 2.75rem; height: 2.75rem; border-radius: 50%; overflow: hidden;
-        background: #fff; border: 2px solid rgba(255,255,255,.3);
-        box-shadow: 0 4px 12px rgba(0,0,0,.3);
+        width: 2.25rem; height: 2.25rem; border-radius: 50%;
+        background: rgba(255,255,255,.07); backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,.13);
+        display: flex; align-items: center; justify-content: center;
+        color: rgba(255,255,255,.5);
+        transition: background .2s, border-color .2s, color .2s;
     }
-    .featured-logo-badge img { width: 100%; height: 100%; object-fit: cover; }
-    .featured-logo-initial {
+    .vcard:hover .vcard-arrow { background: var(--terra); border-color: var(--terra); color: #fff; }
+    .vcard-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.375rem; }
+    .vcard-tag {
+        display: inline-block; padding: .175rem .55rem;
+        background: rgba(201,151,58,.12); border: 1px solid rgba(201,151,58,.28);
+        border-radius: 9999px;
+        font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+        text-transform: uppercase; color: var(--gold);
+        margin-bottom: .5rem;
+    }
+    .vcard-name {
+        font-size: 1.4rem; font-weight: 600; line-height: 1.1;
+        color: #fff; margin-bottom: .25rem;
+    }
+    .vcard-city {
+        font-size: .72rem; color: rgba(255,255,255,.4);
+        display: flex; align-items: center; gap: .3rem;
+    }
+    .vcard-placeholder {
         width: 100%; height: 100%;
+        background: linear-gradient(135deg, #1e1408, #2d1e0a);
         display: flex; align-items: center; justify-content: center;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        color: #fff; font-weight: 700; font-size: .95rem;
     }
-    .featured-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.25rem; }
-    .featured-card-services { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .625rem; }
-    .featured-pill {
-        background: rgba(255,255,255,.12); backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.85);
-        font-size: .68rem; font-weight: 600; letter-spacing: .06em;
-        padding: .2rem .55rem; border-radius: 9999px;
+    .vcard-letter { font-size: 5rem; font-weight: 600; color: rgba(201,151,58,.18); }
+
+    /* ── STEPS ── */
+    .steps-bg { background: var(--ivory); padding: 5rem 0; }
+
+    .step-row {
+        display: grid; grid-template-columns: 72px 1fr;
+        gap: 0 1.75rem; align-items: start;
+        padding: 1.875rem 0; border-top: 1px solid rgba(0,0,0,.07);
+        transition: padding-left .25s;
     }
-    .featured-card-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: .25rem; line-height: 1.2; }
-    .featured-card-city {
-        font-size: .75rem; color: rgba(255,255,255,.55);
-        display: flex; align-items: center; gap: .3rem; margin-bottom: .75rem;
+    .step-row:last-child { border-bottom: 1px solid rgba(0,0,0,.07); }
+    .step-row:hover { padding-left: .625rem; }
+
+    .step-n {
+        font-size: 3.25rem; font-weight: 700; line-height: 1;
+        color: rgba(0,0,0,.065); padding-top: .2rem;
+        transition: color .25s;
     }
-    .featured-card-cta {
-        display: inline-flex; align-items: center; gap: .4rem;
-        color: #D4AF37; font-size: .8rem; font-weight: 700; letter-spacing: .04em;
+    .step-row:hover .step-n { color: var(--terra); }
+
+    .step-h {
+        font-size: 1.375rem; font-weight: 600; line-height: 1.2;
+        color: var(--night); margin-bottom: .425rem;
     }
-    .step-card {
-        background: #fff; border-radius: 1.25rem;
-        padding: 2rem 1.75rem; border: 1.5px solid #F4EDE4;
-        transition: border-color .2s, box-shadow .2s;
+    .step-p {
+        font-size: .875rem; color: var(--muted); line-height: 1.7; max-width: 48ch;
     }
-    .step-card:hover { border-color: #8B5CF6; box-shadow: 0 8px 32px rgba(139,92,246,.1); }
-    .step-icon-wrap {
-        width: 3.5rem; height: 3.5rem; border-radius: 50%;
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 1rem; box-shadow: 0 6px 16px rgba(139,92,246,.3);
+    .step-a {
+        display: inline-flex; align-items: center; gap: .45rem;
+        font-size: .78rem; font-weight: 600; color: var(--terra);
+        margin-top: .75rem; text-decoration: none; letter-spacing: .02em;
     }
+    .step-a svg { transition: transform .2s; }
+    .step-row:hover .step-a svg { transform: translateX(4px); }
+
+    /* ── FINAL CTA ── */
+    .cta-band {
+        background: var(--terra); padding: 5rem 1.5rem;
+        text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-ghost {
+        position: absolute; font-size: 28vw; font-weight: 700; line-height: 1;
+        color: rgba(255,255,255,.07); top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap; pointer-events: none; user-select: none;
+    }
+    .cta-h {
+        font-size: clamp(2.25rem, 6vw, 4rem);
+        font-weight: 600; color: #fff; line-height: 1.1;
+        margin-bottom: 1.25rem; position: relative; z-index: 1;
+    }
+    .cta-h em { font-style: italic; }
+    .cta-p {
+        font-size: .95rem; color: rgba(255,255,255,.65);
+        margin-bottom: 2.25rem; position: relative; z-index: 1;
+    }
+    .cta-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: .875rem; }
+    .cta-btn-white {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .825rem 2rem; background: #fff; color: var(--terra);
+        font-size: .825rem; font-weight: 700; border-radius: .3rem;
+        text-decoration: none; position: relative; z-index: 1;
+        box-shadow: 0 4px 20px rgba(0,0,0,.14);
+        transition: transform .15s, box-shadow .2s;
+    }
+    .cta-btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.2); }
+
+    /* ── SCROLL REVEAL ── */
+    .rv { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .rv.in { opacity: 1; transform: none; }
+    .rv-1 { transition-delay: .1s; }
+    .rv-2 { transition-delay: .2s; }
+    .rv-3 { transition-delay: .3s; }
+    .rv-4 { transition-delay: .4s; }
+    .rv-5 { transition-delay: .5s; }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- Hero -->
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="hero-bg"></div>
-    <div class="absolute inset-0" style="background:rgba(10,10,10,0.55);"></div>
-    <div class="relative z-10 text-center px-4 sm:px-6 max-w-3xl mx-auto">
-        <h1 style="font-family:'Playfair Display',Georgia,serif; font-size:clamp(2.8rem,7vw,5rem); font-weight:700; color:#fff; line-height:1.1; letter-spacing:-0.02em; margin-bottom:1.5rem;">
-            L'événement de votre vie<br>commence ici
+<!-- ════════════════════════
+     HERO
+════════════════════════ -->
+<section class="hero-wrap">
+    <div class="hero-photo" id="heroBg"></div>
+    <div class="hero-veil"></div>
+    <div class="grain"></div>
+
+    <div class="hero-body">
+        <div class="hero-eyebrow">
+            <span>Lomé</span><span class="hero-eyebrow-dot"></span>
+            <span>Togo</span><span class="hero-eyebrow-dot"></span>
+            <span>Afrique de l'Ouest</span>
+        </div>
+
+        <h1 class="hero-h1 font-display">
+            L'événement<br>
+            de votre <em>vie</em><br>
+            commence ici
         </h1>
-        <p style="font-size:1.1rem; color:rgba(255,255,255,0.65); max-width:520px; margin:0 auto 2.5rem; line-height:1.65;">
-            Trouvez et contactez les meilleurs prestataires événementiels au Togo. Sans inscription.
+
+        <p class="hero-p">
+            Trouvez et contactez les meilleurs prestataires événementiels au Togo. Photographes, DJ, traiteurs, décorateurs — sans inscription.
         </p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="{% url 'projects:project_create' %}" class="btn btn-accent btn-lg">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+
+        <div class="hero-actions">
+            <a href="{% url 'projects:project_create' %}" class="cta-terra">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
                 J'ai un projet
             </a>
-            <a href="{% url 'vendors:vendor_list' %}" class="btn btn-outline btn-lg">
+            <a href="{% url 'vendors:vendor_list' %}" class="cta-outline-white">
                 Voir les prestataires
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
             </a>
         </div>
+
+        {% if featured_vendors %}
+        <div class="hero-bar">
+            <div>
+                <div class="hero-stat-n font-display">{{ featured_vendors|length }}+</div>
+                <div class="hero-stat-l">Prestataires</div>
+            </div>
+            <div>
+                <div class="hero-stat-n font-display">100%</div>
+                <div class="hero-stat-l">Sans inscription</div>
+            </div>
+            <div>
+                <div class="hero-stat-n font-display">48h</div>
+                <div class="hero-stat-l">Mise en relation</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="hero-scroll-hint">
+        <span>Défiler</span>
+        <div class="scroll-line"></div>
     </div>
 </section>
 
-<!-- Services -->
-<section class="py-12 md:py-24 bg-lily-cream">
+<!-- ════════════════════════
+     SERVICES
+════════════════════════ -->
+<section class="services-bg">
+    <div class="s-ghost font-display" aria-hidden="true">01</div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-            <div>
-                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Nos catégories</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">Tous les services dont vous avez besoin</h2>
+            <div class="rv">
+                <span class="s-label">Nos catégories</span>
+                <h2 class="s-title font-display">Tous les services<br>dont vous avez besoin</h2>
             </div>
-            <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-2 text-lily-purple font-semibold text-sm hover:gap-3 transition-all self-start md:self-end">
+            <a href="{% url 'vendors:vendor_list' %}" class="rv rv-1 inline-flex items-center gap-2 self-start md:self-end" style="color:var(--terra); font-size:.825rem; font-weight:600; text-decoration:none;">
                 Voir tous les prestataires
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
+
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {% for service in service_types %}
-            <a href="{% url 'vendors:vendor_list' %}?service_types={{ service.id }}" class="service-pill">
-                <span class="service-pill-icon">
+            <a href="{% url 'vendors:vendor_list' %}?service_types={{ service.id }}" class="tile rv rv-{% cycle '1' '2' '3' '4' '1' '2' '3' '4' %}">
+                <span class="tile-icon" aria-hidden="true">
                     {% if 'photo' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     {% elif 'vidéo' in service.name|lower or 'vidéaste' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                     {% elif 'déco' in service.name|lower or 'fleur' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
                     {% elif 'DJ' in service.name or 'music' in service.name|lower or 'musique' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
                     {% elif 'traiteur' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     {% elif 'pâtisserie' in service.name|lower or 'gâteau' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
                     {% elif 'animation' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     {% elif 'salle' in service.name|lower or 'réception' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     {% elif 'maquillage' in service.name|lower or 'coiffure' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     {% elif 'location' in service.name|lower or 'matériel' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                     {% elif 'transport' in service.name|lower %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                     {% else %}
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
                     {% endif %}
                 </span>
-                <span class="font-medium text-sm text-lily-dark">{{ service.name }}</span>
+                <span class="tile-name">{{ service.name }}</span>
             </a>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Prestataires vedettes -->
+<!-- ════════════════════════
+     PRESTATAIRES VEDETTES
+════════════════════════ -->
 {% if featured_vendors %}
-<section class="py-12 md:py-24 bg-white">
+<section class="featured-bg">
+    <div class="s-ghost font-display" aria-hidden="true">02</div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div class="flex items-end justify-between gap-4 mb-10">
-            <div>
-                <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Sélection</span>
-                <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">Prestataires vedettes</h2>
+            <div class="rv">
+                <span class="s-label">Sélection</span>
+                <h2 class="s-title font-display">
+                    Prestataires<br><em style="font-style:italic; color:var(--gold);">vedettes</em>
+                </h2>
             </div>
-            <a href="{% url 'vendors:vendor_list' %}" class="hidden sm:inline-flex items-center gap-2 text-lily-purple font-semibold text-sm hover:gap-3 transition-all flex-shrink-0">
+            <a href="{% url 'vendors:vendor_list' %}" class="rv rv-1 hidden sm:inline-flex items-center gap-2 flex-shrink-0" style="color:var(--gold); font-size:.825rem; font-weight:600; text-decoration:none;">
                 Voir tous
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for vendor in featured_vendors %}
-            <a href="{% url 'vendors:vendor_detail' vendor.pk %}" class="featured-card">
-                <div class="featured-card-img">
-                    {% with cover=vendor.images.all|first %}
-                        {% if cover %}
-                            <img src="{{ cover.image.url }}" alt="{{ vendor.business_name }}" loading="lazy">
-                        {% else %}
-                            <div class="featured-card-img-placeholder">
-                                <svg class="w-16 h-16" style="color:rgba(212,175,55,0.3);" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0118.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            </div>
-                        {% endif %}
+            <a href="{% url 'vendors:vendor_detail' vendor.pk %}" class="vcard rv rv-{% cycle '1' '2' '3' %}">
+                {% with cover=vendor.images.all|first %}
+                    {% if cover %}
+                        <img src="{{ cover.image.url }}" alt="{{ vendor.business_name }}" loading="lazy">
+                    {% else %}
+                        <div class="vcard-placeholder">
+                            <span class="vcard-letter font-display">{{ vendor.business_name|first|upper }}</span>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <div class="vcard-veil"></div>
+                <div class="vcard-arrow" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <div class="vcard-body">
+                    {% with service=vendor.service_types.all|first %}
+                        {% if service %}<span class="vcard-tag">{{ service.name }}</span>{% endif %}
                     {% endwith %}
-                    <div class="featured-card-overlay"></div>
-                    <div class="featured-logo-badge">
-                        {% if vendor.logo %}
-                            <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}">
-                        {% else %}
-                            <div class="featured-logo-initial">{{ vendor.business_name|first|upper }}</div>
-                        {% endif %}
+                    <div class="vcard-name font-display">{{ vendor.business_name }}</div>
+                    {% if vendor.city %}
+                    <div class="vcard-city">
+                        <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        {{ vendor.city.name }}
                     </div>
-                    <div class="featured-card-content">
-                        <div class="featured-card-services">
-                            {% for service in vendor.service_types.all|slice:":2" %}
-                            <span class="featured-pill">{{ service.name }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="featured-card-name">{{ vendor.business_name }}</div>
-                        {% if vendor.city %}
-                        <div class="featured-card-city">
-                            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            {{ vendor.city.name }}
-                        </div>
-                        {% endif %}
-                        <div class="featured-card-cta">
-                            Voir le profil
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        </div>
-                    </div>
+                    {% endif %}
                 </div>
             </a>
             {% endfor %}
         </div>
+
     </div>
 </section>
 {% endif %}
 
-<!-- Comment ça marche -->
-<section class="py-12 md:py-24 bg-lily-cream">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <span class="text-xs font-bold tracking-widest uppercase text-lily-purple">Sans inscription · Sans friction</span>
-            <h2 class="text-3xl sm:text-4xl font-bold text-lily-dark mt-2">De l'idée à la fête en 3 étapes</h2>
+<!-- ════════════════════════
+     COMMENT ÇA MARCHE
+════════════════════════ -->
+<section class="steps-bg">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-12 rv">
+            <span class="s-label" style="justify-content:center;">De l'idée à la fête</span>
+            <h2 class="s-title font-display">En 3 étapes simples</h2>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div class="step-card text-center">
-                <div class="step-icon-wrap mx-auto">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <div>
+            <div class="step-row rv">
+                <div class="step-n font-display">01</div>
+                <div>
+                    <div class="step-h font-display">Explorez librement</div>
+                    <p class="step-p">Parcourez les profils, consultez les réalisations et les tarifs. Aucun compte requis.</p>
+                    <a href="{% url 'vendors:vendor_list' %}" class="step-a">
+                        Voir les prestataires
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                 </div>
-                <h3 class="text-lg font-bold text-lily-dark mb-2">Explorez librement</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Parcourez les profils, consultez les réalisations et les tarifs. Aucun compte requis.</p>
-                <a href="{% url 'vendors:vendor_list' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
-                    Voir les prestataires <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
             </div>
 
-            <div class="step-card text-center">
-                <div class="step-icon-wrap mx-auto">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <div class="step-row rv rv-1">
+                <div class="step-n font-display">02</div>
+                <div>
+                    <div class="step-h font-display">Décrivez votre projet</div>
+                    <p class="step-p">Nom, email, détails de l'événement. 2 minutes, et votre demande est envoyée à notre équipe.</p>
+                    <a href="{% url 'projects:project_create' %}" class="step-a">
+                        Déposer mon projet
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                 </div>
-                <h3 class="text-lg font-bold text-lily-dark mb-2">Décrivez votre projet</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Nom, email, détails de l'événement. 2 minutes, et votre demande est envoyée.</p>
-                <a href="{% url 'projects:project_create' %}" class="inline-flex items-center gap-1.5 text-lily-purple font-semibold text-sm mt-4 hover:gap-2.5 transition-all">
-                    Déposer mon projet <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
             </div>
 
-            <div class="step-card text-center">
-                <div class="step-icon-wrap mx-auto" style="background:linear-gradient(135deg,#D4AF37,#B8941F);">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            <div class="step-row rv rv-2">
+                <div class="step-n font-display">03</div>
+                <div>
+                    <div class="step-h font-display">Vivez votre événement</div>
+                    <p class="step-p">Notre équipe vous met en relation avec les prestataires idéaux. Vous n'avez plus qu'à profiter.</p>
                 </div>
-                <h3 class="text-lg font-bold text-lily-dark mb-2">Vivez votre événement</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">Notre équipe vous met en relation avec les prestataires idéaux. Vous n'avez plus qu'à profiter.</p>
             </div>
-
         </div>
+
     </div>
 </section>
 
-<!-- CTA final -->
-<div class="bg-lily-cream text-center pt-4 pb-16 border-t border-gray-100">
-    <p class="text-gray-500 text-sm mb-4">Prêt à trouver votre prestataire ?</p>
-    <a href="{% url 'vendors:vendor_list' %}" class="btn btn-primary">Voir les prestataires</a>
-    <p class="text-gray-400 text-xs mt-6">
-        Vous êtes prestataire événementiel ?
-        <a href="{% url 'vendors:vendor_signup' %}" class="text-lily-purple font-semibold hover:underline">Rejoindre LysAngels →</a>
-    </p>
-</div>
+<!-- ════════════════════════
+     CTA FINAL
+════════════════════════ -->
+<section class="cta-band">
+    <div class="cta-ghost font-display" aria-hidden="true">Lomé</div>
+    <div class="relative" style="z-index:1;">
+        <h2 class="cta-h font-display rv">
+            Prêt à créer<br>
+            <em>quelque chose d'inoubliable&nbsp;?</em>
+        </h2>
+        <p class="cta-p rv rv-1">Trouvez votre prestataire idéal dès aujourd'hui.</p>
+        <div class="cta-btns rv rv-2">
+            <a href="{% url 'vendors:vendor_list' %}" class="cta-btn-white">
+                Voir les prestataires
+            </a>
+            <a href="{% url 'projects:project_create' %}" class="cta-outline-white" style="border-color:rgba(255,255,255,.35);">
+                Déposer un projet
+            </a>
+        </div>
+        <p class="rv rv-3" style="margin-top:2.25rem; font-size:.825rem; color:rgba(255,255,255,.4); position:relative; z-index:1;">
+            Vous êtes prestataire ?
+            <a href="{% url 'vendors:vendor_signup' %}" style="color:rgba(255,255,255,.6); text-decoration:underline;">Rejoindre LysAngels →</a>
+        </p>
+    </div>
+</section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Scroll reveal
+    const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+    document.querySelectorAll('.rv').forEach(el => revealObs.observe(el));
+
+    // Hero parallax zoom on load
+    const heroBg = document.getElementById('heroBg');
+    if (heroBg) window.addEventListener('load', () => heroBg.classList.add('loaded'));
+</script>
 {% endblock %}
