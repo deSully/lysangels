@@ -2,7 +2,7 @@
     email contact@lysangels.com
 }
 
-lysangels.com, www.lysangels.com, alpha.lysangels.com {
+lysangels.com, www.lysangels.com {
     encode gzip
 
     handle /static/* {
