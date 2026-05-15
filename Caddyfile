@@ -1,0 +1,21 @@
+{
+    email contact@lysangels.com
+}
+
+lysangels.com, www.lysangels.com, alpha.lysangels.com {
+    encode gzip
+
+    handle /static/* {
+        root * /srv
+        file_server
+    }
+
+    handle /media/* {
+        root * /srv
+        file_server
+    }
+
+    handle {
+        reverse_proxy web:8000
+    }
+}
