@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -138,8 +138,7 @@ def vendor_signup(request):
             )
             application.service_types.set(service_type_ids)
             send_application_confirmation(name, email)
-            messages.success(request, 'Votre candidature a bien été envoyée ! Nous vous contacterons prochainement.')
-            return redirect('vendors:vendor_signup')
+            return render(request, 'vendors/vendor_signup_success.html', {'name': name})
 
     return render(request, 'vendors/vendor_signup.html', {
         'service_types': service_types,

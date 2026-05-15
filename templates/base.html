@@ -330,18 +330,20 @@
         </div>
     </nav>
 
+    <!-- Messages Flash -->
     {% if messages %}
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        {% for message in messages %}
-        toastManager.show({
-            type: '{% if message.tags == "error" %}error{% elif message.tags == "success" %}success{% elif message.tags == "warning" %}warning{% else %}info{% endif %}',
-            message: '{{ message|escapejs }}',
-            duration: {% if message.tags == "error" %}6000{% else %}5000{% endif %}
-        });
-        {% endfor %}
-    });
-    </script>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            {% for message in messages %}
+                <div class="rounded-lg p-4 mb-4 flex items-start justify-between {% if message.tags == 'error' %}bg-red-50 text-red-800{% elif message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800{% else %}bg-blue-50 text-blue-800{% endif %}" role="alert">
+                    <p class="flex-1 font-light">{{ message }}</p>
+                    <button onclick="this.parentElement.remove()" class="ml-4 flex-shrink-0 text-current opacity-50 hover:opacity-100 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
     <!-- Contenu principal -->
