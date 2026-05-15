@@ -2,144 +2,229 @@
 
 {% block title %}Politique de Confidentialité - LysAngels{% endblock %}
 
+{% block extra_css %}
+<style>
+:root {
+    --terra: #B5441A;
+    --terra-dark: #8E3313;
+    --gold: #C9973A;
+    --ivory: #FAF7F0;
+    --night: #110D06;
+    --muted: #7A6E63;
+}
+.doc-hero {
+    background: var(--night);
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.doc-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04; pointer-events: none;
+}
+.doc-hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(181,68,26,.6), transparent);
+}
+.doc-eyebrow {
+    display: inline-block;
+    font-size: .58rem; font-weight: 800;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: var(--terra);
+    border: 1px solid rgba(181,68,26,.3);
+    padding: .25rem .75rem; border-radius: 2px;
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+.doc-hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--ivory);
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    position: relative;
+}
+.doc-hero-meta {
+    font-size: .78rem;
+    color: rgba(250,247,240,.35);
+    margin-top: .75rem;
+    position: relative;
+}
+.doc-body {
+    background: var(--ivory);
+    padding: 4rem 1.5rem 5rem;
+}
+.doc-inner { max-width: 680px; margin: 0 auto; }
+.doc-section {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(122,110,99,.12);
+}
+.doc-section:last-of-type { border-bottom: none; }
+.doc-section-num {
+    font-size: .6rem; font-weight: 800;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--terra); margin-bottom: .5rem; display: block;
+}
+.doc-section h2 {
+    font-size: 1.125rem; font-weight: 700;
+    color: var(--night); margin-bottom: 1rem; line-height: 1.3;
+}
+.doc-section p {
+    font-size: .9rem; color: var(--muted);
+    line-height: 1.85; margin-bottom: .875rem;
+}
+.doc-section p:last-child { margin-bottom: 0; }
+.doc-section ul {
+    list-style: none; margin: .75rem 0;
+    display: flex; flex-direction: column; gap: .5rem;
+}
+.doc-section ul li {
+    font-size: .875rem; color: var(--muted);
+    line-height: 1.7; padding-left: 1.125rem; position: relative;
+}
+.doc-section ul li::before {
+    content: ''; position: absolute; left: 0; top: .625rem;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--terra); opacity: .5;
+}
+.doc-section a { color: var(--terra); text-decoration: none; }
+.doc-section a:hover { text-decoration: underline; }
+.doc-section strong { font-weight: 700; color: var(--night); }
+.doc-back {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .68rem; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--terra); text-decoration: none;
+    margin-top: 3rem; transition: gap .2s;
+}
+.doc-back:hover { gap: .75rem; }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="bg-lily-cream min-h-screen py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-            <!-- Header -->
-            <div class="text-center mb-12">
-                <h1 class="text-4xl font-bold text-lily-dark mb-4">
-                    Politique de Confidentialité
-                </h1>
-                <p class="text-gray-600">
-                    Dernière mise à jour : {{ "now"|date:"d F Y" }}
-                </p>
-            </div>
 
-            <!-- Contenu -->
-            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-8">
-                
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">1. Introduction</h2>
-                    <p>
-                        LysAngels ("nous", "notre", "nos") s'engage à protéger la vie privée de ses utilisateurs. 
-                        Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et 
-                        protégeons vos informations personnelles lorsque vous utilisez notre plateforme.
-                    </p>
-                </section>
+<header class="doc-hero">
+    <div class="doc-eyebrow">Documents légaux</div>
+    <h1 class="font-display">Politique de<br>Confidentialité</h1>
+    <p class="doc-hero-meta">Dernière mise à jour : {{ "now"|date:"d F Y" }}</p>
+</header>
 
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">2. Données collectées</h2>
-                    <p>Nous collectons les informations suivantes :</p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li><strong>Informations d'identification :</strong> Nom, prénom, email, numéro de téléphone</li>
-                        <li><strong>Informations de profil :</strong> Ville, quartier, type de compte (client/prestataire)</li>
-                        <li><strong>Pour les prestataires :</strong> Nom d'entreprise, services proposés, photos, tarifs, réseaux sociaux</li>
-                        <li><strong>Données d'utilisation :</strong> Projets créés, demandes de devis, propositions, messages</li>
-                        <li><strong>Données techniques :</strong> Adresse IP, type de navigateur, pages visitées</li>
-                    </ul>
-                </section>
+<div class="doc-body">
+    <div class="doc-inner">
 
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">3. Utilisation des données</h2>
-                    <p>Vos données sont utilisées pour :</p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li>Créer et gérer votre compte</li>
-                        <li>Faciliter la mise en relation entre clients et prestataires</li>
-                        <li>Envoyer des notifications relatives à vos projets et demandes</li>
-                        <li>Améliorer nos services et l'expérience utilisateur</li>
-                        <li>Assurer la sécurité de la plateforme</li>
-                        <li>Respecter nos obligations légales</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">4. Partage des données</h2>
-                    <p>Nous ne vendons jamais vos données personnelles. Nous partageons vos informations uniquement dans les cas suivants :</p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li><strong>Avec les prestataires :</strong> Lorsque vous envoyez une demande de devis, vos coordonnées sont partagées avec le prestataire concerné</li>
-                        <li><strong>Avec les clients :</strong> Les prestataires peuvent voir vos informations de contact lors d'échanges commerciaux</li>
-                        <li><strong>Profils publics :</strong> Les informations de profil des prestataires validés sont visibles par tous les utilisateurs connectés</li>
-                        <li><strong>Obligations légales :</strong> Si requis par la loi ou une autorité compétente</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">5. Sécurité des données</h2>
-                    <p>
-                        Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre 
-                        tout accès non autorisé, perte, destruction ou divulgation. Ces mesures incluent :
-                    </p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li>Chiffrement des mots de passe</li>
-                        <li>Connexion sécurisée HTTPS</li>
-                        <li>Limitation d'accès aux données personnelles</li>
-                        <li>Surveillance et audits de sécurité réguliers</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">6. Vos droits</h2>
-                    <p>Conformément à la réglementation en vigueur, vous disposez des droits suivants :</p>
-                    <ul class="list-disc pl-6 space-y-2">
-                        <li><strong>Droit d'accès :</strong> Consulter les données que nous détenons sur vous</li>
-                        <li><strong>Droit de rectification :</strong> Corriger vos informations personnelles</li>
-                        <li><strong>Droit de suppression :</strong> Demander la suppression de votre compte et de vos données</li>
-                        <li><strong>Droit d'opposition :</strong> Vous opposer au traitement de vos données</li>
-                        <li><strong>Droit à la portabilité :</strong> Recevoir vos données dans un format structuré</li>
-                    </ul>
-                    <p class="mt-4">
-                        Pour exercer ces droits, contactez-nous à : <a href="mailto:privacy@lysangels.com" class="text-lily-purple hover:text-lily-gold">privacy@lysangels.com</a>
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">7. Cookies</h2>
-                    <p>
-                        Notre site utilise des cookies essentiels pour le bon fonctionnement de la plateforme (session utilisateur, authentification). 
-                        Nous n'utilisons pas de cookies publicitaires ou de tracking tiers.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">8. Conservation des données</h2>
-                    <p>
-                        Vos données personnelles sont conservées aussi longtemps que votre compte est actif. 
-                        Après suppression de votre compte, vos données sont supprimées sous 30 jours, sauf obligation légale de conservation.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">9. Modifications de la politique</h2>
-                    <p>
-                        Nous nous réservons le droit de modifier cette politique de confidentialité. 
-                        Toute modification sera publiée sur cette page avec une nouvelle date de mise à jour. 
-                        Nous vous encourageons à consulter régulièrement cette page.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-medium text-lily-dark mb-4">10. Contact</h2>
-                    <p>
-                        Pour toute question concernant cette politique de confidentialité, contactez-nous :
-                    </p>
-                    <ul class="list-none space-y-2 mt-4">
-                        <li><strong>Email :</strong> <a href="mailto:privacy@lysangels.com" class="text-lily-purple hover:text-lily-gold">privacy@lysangels.com</a></li>
-                        <li><strong>Téléphone :</strong> +228 91 94 63 76</li>
-                        <li><strong>Adresse :</strong> Lomé, Togo</li>
-                    </ul>
-                </section>
-
-            </div>
-
-            <!-- Bouton retour -->
-            <div class="mt-12 text-center">
-                <a href="{% url 'core:home' %}" 
-                   class="inline-block px-6 py-3 bg-lily-purple text-white rounded-lg font-medium hover:bg-opacity-90 transition">
-                    ← Retour à l'accueil
-                </a>
-            </div>
+        <div class="doc-section">
+            <span class="doc-section-num">01</span>
+            <h2 class="font-display">Introduction</h2>
+            <p>LysAngels ("nous", "notre", "nos") s'engage à protéger la vie privée de ses utilisateurs. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations personnelles lorsque vous utilisez notre plateforme.</p>
         </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">02</span>
+            <h2 class="font-display">Données collectées</h2>
+            <p>Nous collectons les informations suivantes :</p>
+            <ul>
+                <li><strong>Informations d'identification :</strong> Nom, prénom, email, numéro de téléphone</li>
+                <li><strong>Informations de profil :</strong> Ville, quartier, type de compte (client/prestataire)</li>
+                <li><strong>Pour les prestataires :</strong> Nom d'entreprise, services proposés, photos, tarifs, réseaux sociaux</li>
+                <li><strong>Données d'utilisation :</strong> Projets créés, demandes de devis, propositions, messages</li>
+                <li><strong>Données techniques :</strong> Adresse IP, type de navigateur, pages visitées</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">03</span>
+            <h2 class="font-display">Utilisation des données</h2>
+            <p>Vos données sont utilisées pour :</p>
+            <ul>
+                <li>Créer et gérer votre compte</li>
+                <li>Faciliter la mise en relation entre clients et prestataires</li>
+                <li>Envoyer des notifications relatives à vos projets et demandes</li>
+                <li>Améliorer nos services et l'expérience utilisateur</li>
+                <li>Assurer la sécurité de la plateforme</li>
+                <li>Respecter nos obligations légales</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">04</span>
+            <h2 class="font-display">Partage des données</h2>
+            <p>Nous ne vendons jamais vos données personnelles. Nous partageons vos informations uniquement dans les cas suivants :</p>
+            <ul>
+                <li><strong>Avec les prestataires :</strong> Lorsque vous envoyez une demande de devis, vos coordonnées sont partagées avec le prestataire concerné</li>
+                <li><strong>Avec les clients :</strong> Les prestataires peuvent voir vos informations de contact lors d'échanges commerciaux</li>
+                <li><strong>Profils publics :</strong> Les informations de profil des prestataires validés sont visibles par tous les visiteurs</li>
+                <li><strong>Obligations légales :</strong> Si requis par la loi ou une autorité compétente</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">05</span>
+            <h2 class="font-display">Sécurité des données</h2>
+            <p>Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre tout accès non autorisé, perte, destruction ou divulgation :</p>
+            <ul>
+                <li>Chiffrement des mots de passe</li>
+                <li>Connexion sécurisée HTTPS</li>
+                <li>Limitation d'accès aux données personnelles</li>
+                <li>Surveillance et audits de sécurité réguliers</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">06</span>
+            <h2 class="font-display">Vos droits</h2>
+            <p>Conformément à la réglementation en vigueur, vous disposez des droits suivants :</p>
+            <ul>
+                <li><strong>Droit d'accès :</strong> Consulter les données que nous détenons sur vous</li>
+                <li><strong>Droit de rectification :</strong> Corriger vos informations personnelles</li>
+                <li><strong>Droit de suppression :</strong> Demander la suppression de votre compte et de vos données</li>
+                <li><strong>Droit d'opposition :</strong> Vous opposer au traitement de vos données</li>
+                <li><strong>Droit à la portabilité :</strong> Recevoir vos données dans un format structuré</li>
+            </ul>
+            <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:privacy@lysangels.com">privacy@lysangels.com</a></p>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">07</span>
+            <h2 class="font-display">Cookies</h2>
+            <p>Notre site utilise des cookies essentiels pour le bon fonctionnement de la plateforme (session utilisateur, authentification). Nous n'utilisons pas de cookies publicitaires ou de tracking tiers.</p>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">08</span>
+            <h2 class="font-display">Conservation des données</h2>
+            <p>Vos données personnelles sont conservées aussi longtemps que votre compte est actif. Après suppression de votre compte, vos données sont supprimées sous 30 jours, sauf obligation légale de conservation.</p>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">09</span>
+            <h2 class="font-display">Modifications de la politique</h2>
+            <p>Nous nous réservons le droit de modifier cette politique de confidentialité. Toute modification sera publiée sur cette page avec une nouvelle date de mise à jour. Nous vous encourageons à consulter régulièrement cette page.</p>
+        </div>
+
+        <div class="doc-section">
+            <span class="doc-section-num">10</span>
+            <h2 class="font-display">Contact</h2>
+            <p>Pour toute question concernant cette politique de confidentialité :</p>
+            <ul>
+                <li><strong>Email :</strong> <a href="mailto:privacy@lysangels.com">privacy@lysangels.com</a></li>
+                <li><strong>Téléphone :</strong> +228 91 94 63 76</li>
+                <li><strong>Adresse :</strong> Lomé, Togo</li>
+            </ul>
+        </div>
+
+        <a href="{% url 'core:home' %}" class="doc-back">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+            Retour à l'accueil
+        </a>
+
     </div>
 </div>
+
 {% endblock %}
