@@ -118,10 +118,6 @@ THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.filters',
 )
 
-THUMBNAIL_HIGH_RESOLUTION = True
-THUMBNAIL_PRESERVE_FORMAT = True
-THUMBNAIL_QUALITY = 90
-
 # Cache configuration (default: local memory)
 CACHES = {
     'default': {

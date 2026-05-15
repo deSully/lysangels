@@ -118,134 +118,6 @@ const toastManager = new ToastManager();
 
 
 // ============================================
-// BUTTON LOADING & SUCCESS STATES
-// ============================================
-
-function setButtonLoading(button, loading = true) {
-    if (loading) {
-        button.dataset.originalText = button.innerHTML;
-        button.classList.add('btn-loading');
-        button.disabled = true;
-    } else {
-        button.classList.remove('btn-loading');
-        button.disabled = false;
-        if (button.dataset.originalText) {
-            button.innerHTML = button.dataset.originalText;
-        }
-    }
-}
-
-function setButtonSuccess(button, duration = 2000) {
-    const originalText = button.innerHTML;
-    button.classList.remove('btn-loading');
-    button.classList.add('btn-success-check');
-    button.style.backgroundColor = 'var(--color-success)';
-
-    setTimeout(() => {
-        button.classList.remove('btn-success-check');
-        button.style.backgroundColor = '';
-        button.innerHTML = originalText;
-        button.disabled = false;
-    }, duration);
-}
-
-
-// ============================================
-// SCROLL REVEAL ANIMATIONS
-// ============================================
-
-class ScrollReveal {
-    constructor() {
-        this.elements = [];
-        this.init();
-    }
-
-    init() {
-        // Observer les éléments avec les classes scroll-reveal
-        const revealElements = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    // Optionnel: arrêter d'observer après révélation
-                    // observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        revealElements.forEach(el => {
-            observer.observe(el);
-            this.elements.push(el);
-        });
-    }
-}
-
-
-// ============================================
-// ANIMATED COUNTERS
-// ============================================
-
-function animateCounter(element, start, end, duration = 2000) {
-    const range = end - start;
-    const increment = range / (duration / 16); // 60fps
-    let current = start;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            current = end;
-            clearInterval(timer);
-        }
-        element.textContent = Math.round(current).toLocaleString('fr-FR');
-    }, 16);
-}
-
-// Observer pour détecter quand les compteurs entrent dans le viewport
-function initCounters() {
-    const counters = document.querySelectorAll('.counter');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.dataset.animated) {
-                entry.target.dataset.animated = 'true';
-                const end = parseInt(entry.target.dataset.count || entry.target.textContent.replace(/\s/g, ''));
-                const duration = parseInt(entry.target.dataset.duration || 2000);
-                animateCounter(entry.target, 0, end, duration);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    counters.forEach(counter => observer.observe(counter));
-}
-
-
-// ============================================
-// CARD ENTRANCE ANIMATIONS
-// ============================================
-
-function initCardAnimations() {
-    const cards = document.querySelectorAll('.card-base, .card-image, .card-featured');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting && !entry.target.classList.contains('card-animate-enter')) {
-                entry.target.classList.add('card-animate-enter');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    });
-
-    cards.forEach(card => observer.observe(card));
-}
-
-
-// ============================================
 // FORM ENHANCEMENTS
 // ============================================
 
@@ -377,57 +249,6 @@ function initSmoothScroll() {
 
 
 // ============================================
-// IMAGE LAZY LOADING AVEC BLUR EFFECT
-// ============================================
-
-function initLazyImages() {
-    const images = document.querySelectorAll('img[data-src]');
-
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.add('fade-in');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-
-    images.forEach(img => imageObserver.observe(img));
-}
-
-
-// ============================================
-// COPY TO CLIPBOARD
-// ============================================
-
-async function copyToClipboard(text, button) {
-    try {
-        await navigator.clipboard.writeText(text);
-
-        // Animation de succès
-        const originalContent = button.innerHTML;
-        button.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-        `;
-        button.classList.add('btn-success-check');
-
-        setTimeout(() => {
-            button.innerHTML = originalContent;
-            button.classList.remove('btn-success-check');
-        }, 2000);
-
-        toastManager.success('Copié !', 'Le texte a été copié dans le presse-papier', 2000);
-    } catch (err) {
-        toastManager.error('Erreur', 'Impossible de copier le texte', 3000);
-    }
-}
-
-
-// ============================================
 // BACK TO TOP BUTTON
 // ============================================
 
@@ -541,33 +362,6 @@ function throttle(func, limit) {
     };
 }
 
-// Preload critical images
-function preloadImages() {
-    const criticalImages = document.querySelectorAll('[data-preload]');
-    criticalImages.forEach(img => {
-        const image = new Image();
-        image.src = img.dataset.src || img.src;
-    });
-}
-
-// Lazy load non-critical resources
-function lazyLoadResources() {
-    // Defer non-critical CSS
-    const deferredStyles = document.querySelectorAll('link[data-defer]');
-    deferredStyles.forEach(link => {
-        link.rel = 'stylesheet';
-    });
-
-    // Defer non-critical scripts
-    const deferredScripts = document.querySelectorAll('script[data-defer]');
-    deferredScripts.forEach(script => {
-        const newScript = document.createElement('script');
-        newScript.src = script.dataset.src;
-        newScript.defer = true;
-        document.body.appendChild(newScript);
-    });
-}
-
 // Connection-aware loading
 function checkConnection() {
     if ('connection' in navigator) {
@@ -635,29 +429,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mark body as JS-ready so scroll-reveal CSS activates
     document.body.classList.add('js-ready');
 
-    // Performance optimizations
-    preloadImages();
     checkConnection();
-
-    // Initialize all systems
-    new ScrollReveal();
-    initCounters();
-    initCardAnimations();
     initFormEnhancements();
     initRippleEffect();
     initSmoothScroll();
-    initLazyImages();
     initBackToTop();
     initAccessibility();
     initOfflineSupport();
     initErrorTracking();
-
-    // Lazy load non-critical resources after initial load
-    setTimeout(() => {
-        lazyLoadResources();
-    }, 2000);
-
-    console.log('✨ LysAngels initialized with performance & accessibility enhancements');
 });
 
 
@@ -667,8 +446,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.LysAngels = {
     toast: toastManager,
-    setButtonLoading,
-    setButtonSuccess,
-    animateCounter,
-    copyToClipboard
 };

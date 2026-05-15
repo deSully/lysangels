@@ -11,7 +11,7 @@ import os
 # ==============================================================================
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-dev-key-change-me-in-production')
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
-ALLOWED_HOSTS = ["alpha.lysangels.com"]
+ALLOWED_HOSTS = ["lysangels.com", "www.lysangels.com", "alpha.lysangels.com"]
 
 # Site URL
 SITE_URL = os.environ.get('SITE_URL', 'https://lysangels.tg')
@@ -42,11 +42,6 @@ else:
 # ==============================================================================
 # SECURITY SETTINGS
 # ==============================================================================
-# Force HTTPS
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
 # HSTS (HTTP Strict Transport Security)
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -105,24 +100,6 @@ MEDIA_URL = '/media/'
 
 
 # ==============================================================================
-# CACHE (optional - Redis recommended for production)
-# ==============================================================================
-REDIS_URL = os.environ.get('REDIS_URL', None)
-if REDIS_URL:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-            'LOCATION': REDIS_URL,
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            },
-            'KEY_PREFIX': 'lysangels',
-            'TIMEOUT': 3600,  # 1 hour default
-        }
-    }
-
-
-# ==============================================================================
 # LOGGING
 # ==============================================================================
 LOGGING = {
@@ -159,29 +136,11 @@ LOGGING = {
 }
 
 
-# ==============================================================================
-# SENTRY (optional - for error tracking)
-# ==============================================================================
-SENTRY_DSN = os.environ.get('SENTRY_DSN', None)
-if SENTRY_DSN:
-    import sentry_sdk
-    from sentry_sdk.integrations.django import DjangoIntegration
-    
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-        traces_sample_rate=0.1,
-        send_default_pii=False,
-        environment='production',
-    )
-
-
 # 1. Indique à Django qu'il est derrière un proxy (Railway) qui gère le HTTPS
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # 2. Désactive la redirection SSL forcée par Django (car Railway s'en occupe déjà)
 SECURE_SSL_REDIRECT = False
 
-# 3. Paramètres recommandés pour la prod sur Railway
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
