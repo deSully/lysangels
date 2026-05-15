@@ -254,7 +254,8 @@ function initSmoothScroll() {
 
 function initBackToTop() {
     const button = document.createElement('button');
-    button.className = 'fixed bottom-8 right-8 w-12 h-12 bg-lily-purple text-white rounded-full shadow-lg hover:bg-purple-dark transition-all duration-300 opacity-0 pointer-events-none z-50';
+    button.className = 'fixed bottom-8 right-8 w-12 h-12 text-white rounded-full shadow-lg transition-all duration-300 opacity-0 pointer-events-none z-50';
+    button.style.cssText = 'background:#B5441A;';
     button.innerHTML = `
         <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
