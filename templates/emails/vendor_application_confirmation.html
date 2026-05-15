@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidature reçue — LysAngels</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #F5F3FF;
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      color: #1A1A1A;
+    }
+    .wrapper {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(139, 92, 246, 0.12);
+    }
+    .header {
+      background: linear-gradient(135deg, #8B5CF6 0%, #D4AF37 100%);
+      padding: 48px 40px 40px;
+      text-align: center;
+    }
+    .header-brand {
+      color: rgba(255,255,255,0.9);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+    }
+    .header-title {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      color: rgba(255,255,255,0.8);
+      font-size: 15px;
+      margin: 0;
+    }
+    .content {
+      padding: 40px 40px 32px;
+    }
+    .greeting {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1A1A1A;
+      margin: 0 0 20px;
+    }
+    .body-text {
+      font-size: 16px;
+      line-height: 1.75;
+      color: #4B4B4B;
+      margin: 0 0 20px;
+    }
+    .highlight-box {
+      background: #F5F3FF;
+      border-left: 4px solid #8B5CF6;
+      border-radius: 0 8px 8px 0;
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .highlight-box p {
+      margin: 0;
+      font-size: 15px;
+      color: #5B21B6;
+      line-height: 1.7;
+    }
+    .steps {
+      margin: 28px 0;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .step-number {
+      background: #8B5CF6;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-right: 14px;
+      margin-top: 2px;
+    }
+    .step-text {
+      font-size: 15px;
+      color: #4B4B4B;
+      line-height: 1.6;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, #8B5CF6, #D4AF37);
+      margin: 32px 0;
+      border: none;
+    }
+    .signature {
+      margin-top: 0;
+    }
+    .signature p {
+      margin: 0 0 4px;
+      font-size: 15px;
+      color: #4B4B4B;
+      line-height: 1.6;
+    }
+    .signature .name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #8B5CF6;
+      margin-top: 8px;
+    }
+    .signature .role {
+      font-size: 13px;
+      color: #9CA3AF;
+    }
+    .footer {
+      background: #1A1A1A;
+      padding: 24px 40px;
+      text-align: center;
+    }
+    .footer p {
+      margin: 0 0 6px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+    }
+    .footer a {
+      color: #D4AF37;
+      text-decoration: none;
+    }
+    @media (max-width: 640px) {
+      .wrapper { margin: 0; border-radius: 0; }
+      .header, .content, .footer { padding-left: 24px; padding-right: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <div class="header">
+      <p class="header-brand">LysAngels</p>
+      <p class="header-title">Candidature reçue ✨</p>
+      <p class="header-sub">La marketplace des événements au Togo</p>
+    </div>
+
+    <div class="content">
+      <p class="greeting">Bonjour {{ name }} 👋</p>
+
+      <p class="body-text">
+        Je viens de recevoir ta candidature pour rejoindre LysAngels, et je suis vraiment ravie
+        que tu aies franchi le premier pas ! 🎉
+      </p>
+
+      <div class="highlight-box">
+        <p>
+          Ton dossier est bien enregistré. Notre équipe va l'étudier avec attention
+          et tu peux t'attendre à avoir de nos nouvelles très prochainement pour finaliser ton inscription.
+        </p>
+      </div>
+
+      <p class="body-text">Voici comment les choses vont se passer :</p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-number">1</span>
+          <span class="step-text">Notre équipe examine ta candidature et tes activités.</span>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <span class="step-text">On te contacte par WhatsApp ou par email pour valider les détails de ton profil.</span>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <span class="step-text">Ton profil est mis en ligne et tu commences à recevoir des demandes clients !</span>
+        </div>
+      </div>
+
+      <p class="body-text">
+        En attendant, si tu as la moindre question, n'hésite pas à m'écrire directement — je suis là pour t'aider.
+      </p>
+
+      <hr class="divider">
+
+      <div class="signature">
+        <p>À très bientôt,</p>
+        <p class="name">Susy</p>
+        <p class="role">Fondatrice de LysAngels</p>
+        <p style="margin-top: 6px;">
+          <a href="mailto:susy@lysangels.com" style="color: #8B5CF6; font-size: 14px;">susy@lysangels.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 LysAngels — Lomé, Togo</p>
+      <p><a href="https://lysangels.com">lysangels.com</a></p>
+    </div>
+
+  </div>
+</body>
+</html>

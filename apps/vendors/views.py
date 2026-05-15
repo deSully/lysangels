@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
+from .tasks import send_application_confirmation
 
 
 def vendor_list(request):
@@ -136,6 +137,7 @@ def vendor_signup(request):
                 facebook=facebook,
             )
             application.service_types.set(service_type_ids)
+            send_application_confirmation(name, email)
             messages.success(request, 'Votre candidature a bien été envoyée ! Nous vous contacterons prochainement.')
             return redirect('vendors:vendor_signup')
 
