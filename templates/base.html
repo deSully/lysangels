@@ -200,8 +200,13 @@
             --muted: #7A6E63;
         }
 
-        /* Navigation active state — terracotta */
+        /* User menu button hover */
+        .nav-user-btn:hover { color: var(--terra) !important; }
+
+        /* Navigation — terracotta partout */
         .nav-link { position: relative; padding-bottom: 0.25rem; }
+        .nav-link:hover { color: var(--terra) !important; }
+        .nav-link::after { background-color: var(--terra) !important; }
         .nav-link-active { color: var(--terra) !important; font-weight: 600; }
         .nav-link-active::after {
             content: '';
@@ -392,7 +397,7 @@
                             </a>
                         {% endif %}
                         <div class="relative">
-                            <button id="user-menu-btn" class="flex items-center space-x-2 text-sm text-gray-700 hover:text-lily-purple transition font-medium">
+                            <button id="user-menu-btn" class="flex items-center space-x-2 text-sm text-gray-700 transition font-medium nav-user-btn">
                                 <span>{{ user.get_full_name|default:user.username }}</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
