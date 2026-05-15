@@ -27,8 +27,8 @@
         border-color: #8B5CF6; background: #8B5CF6; color: #fff;
     }
     .stepper-label {
-        font-size: .65rem; font-weight: 600; color: #9CA3AF;
-        text-transform: uppercase; letter-spacing: .05em;
+        font-size: clamp(0.5rem, 2.5vw, 0.65rem); font-weight: 600; color: #9CA3AF;
+        text-transform: uppercase; letter-spacing: .03em;
         white-space: nowrap;
     }
     .stepper-step.active .stepper-label,
@@ -58,7 +58,7 @@
             <p class="text-gray-600">Décrivez votre événement et notre équipe vous contactera rapidement.</p>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-8">
 
             {% if messages %}
                 {% for message in messages %}
