@@ -9,14 +9,6 @@ services:
     expose:
       - "8000"
 
-  worker:
-    build: .
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - media:/app/media
-    command: python manage.py process_tasks
-
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped

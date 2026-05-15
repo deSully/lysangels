@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third party
     'easy_thumbnails',
-    'background_task',
     # LysAngels apps
     'apps.accounts',
     'apps.vendors',
