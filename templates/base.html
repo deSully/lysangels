@@ -84,33 +84,13 @@
         }
     </script>
     
-    <!-- Service Worker Registration -->
+    <!-- Service Worker — désactivé, désinscription automatique des anciens SW -->
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/static/sw.js')
-                    .then((registration) => {
-                        console.log('✅ Service Worker enregistré:', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.error('❌ Erreur Service Worker:', error);
-                    });
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                registrations.forEach(r => r.unregister());
             });
         }
-        
-        // Détecter si l'app est installée
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            window.deferredPrompt = e;
-            // Afficher un bouton d'installation personnalisé si souhaité
-            console.log('💡 PWA peut être installée');
-        });
-        
-        // Notification d'installation réussie
-        window.addEventListener('appinstalled', () => {
-            console.log('🎉 PWA installée avec succès!');
-            window.deferredPrompt = null;
-        });
     </script>
 
     <!-- Google Fonts - Inter + Playfair Display -->
