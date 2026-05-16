@@ -341,7 +341,7 @@
                         <div class="cat-hdr-bar"></div>
                         <div>
                             <span class="cat-hdr-name font-display">{{ category.service_type.name }}</span>
-                            <span class="cat-hdr-count"> — {{ category.vendors|length }} professionnel{{ category.vendors|length|pluralize }}</span>
+                            <span class="cat-hdr-count"> · {{ category.vendors|length }} professionnel{{ category.vendors|length|pluralize }}</span>
                         </div>
                     </div>
                     <a href="?service_types={{ category.service_type.id }}{% if search_query %}&search={{ search_query }}{% endif %}" class="cat-hdr-link">
@@ -412,10 +412,10 @@
 
                     {% if search_query %}
                     <h3 class="empty-title font-display">Pas de résultat<br>pour «&nbsp;{{ search_query }}&nbsp;»</h3>
-                    <p class="empty-sub">Décrivez-nous votre projet — notre équipe se charge de trouver le bon prestataire pour vous.</p>
+                    <p class="empty-sub">Décrivez-nous votre projet. Notre équipe se charge de trouver le bon prestataire pour vous.</p>
                     {% else %}
                     <h3 class="empty-title font-display">Bientôt,<br>tout commence.</h3>
-                    <p class="empty-sub">Nos premiers prestataires sont en cours de vérification. En attendant, décrivez votre projet — nous nous chargeons de la mise en relation.</p>
+                    <p class="empty-sub">Nos premiers prestataires sont en cours de vérification. En attendant, décrivez votre projet, nous nous chargeons de la mise en relation.</p>
                     {% endif %}
 
                     <a href="{% url 'projects:project_create' %}" class="empty-cta-primary">
