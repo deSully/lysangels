@@ -169,7 +169,20 @@ class VendorApplication(models.Model):
     name = models.CharField(max_length=200, verbose_name='Nom complet')
     email = models.EmailField(verbose_name='Email')
     whatsapp = models.CharField(max_length=30, verbose_name='WhatsApp')
-    city = models.CharField(max_length=100, verbose_name='Ville')
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        verbose_name='Pays',
+        related_name='applications',
+    )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        verbose_name='Ville',
+        related_name='applications',
+    )
     service_types = models.ManyToManyField(
         ServiceType,
         related_name='applications',
@@ -196,7 +209,8 @@ class VendorApplication(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name} — {self.city} ({self.get_status_display()})"
+        city_name = self.city.name if self.city else '—'
+        return f"{self.name} — {city_name} ({self.get_status_display()})"
 
 
 class ContactView(models.Model):
