@@ -11,7 +11,7 @@ def home(request):
     featured_vendors = VendorProfile.objects.filter(
         is_active=True,
         is_featured=True
-    ).prefetch_related('service_types', 'images').select_related('city')[:6]
+    ).prefetch_related('cities', 'service_types', 'images')[:6]
     return render(request, 'core/home.html', {
         'service_types': service_types,
         'featured_vendors': featured_vendors,
