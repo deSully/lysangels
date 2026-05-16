@@ -99,7 +99,7 @@ class ProjectCreateForm(forms.ModelForm):
         model = Project
         fields = [
             'contact_name', 'contact_email', 'contact_phone',
-            'event_type', 'country', 'city', 'location',
+            'event_type', 'description', 'country', 'city', 'location',
             'event_date', 'event_time', 'guest_count',
             'budget_min', 'budget_max', 'services_needed',
         ]
