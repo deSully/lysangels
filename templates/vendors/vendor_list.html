@@ -224,6 +224,26 @@
     .rv-1 { transition-delay: .08s; }
     .rv-2 { transition-delay: .16s; }
     .rv-3 { transition-delay: .24s; }
+
+    /* ── FILTRE LOCALISATION ── */
+    .location-filter {
+        display: flex; gap: .625rem; align-items: center; flex-wrap: wrap;
+        padding: .5rem 0 .25rem;
+    }
+    .location-select {
+        appearance: none;
+        background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237A6E63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .75rem center;
+        border: 1.5px solid rgba(0,0,0,.1); border-radius: .35rem;
+        padding: .5rem 2rem .5rem .75rem;
+        font-size: .8rem; color: var(--night);
+        cursor: pointer; transition: border-color .2s;
+    }
+    .location-select:focus { outline: none; border-color: var(--terra); }
+    .location-filter-reset {
+        font-size: .75rem; color: var(--muted); text-decoration: none;
+        padding: .25rem .5rem;
+    }
+    .location-filter-reset:hover { color: var(--terra); }
 </style>
 {% endblock %}
 
@@ -271,6 +291,41 @@
                 </a>
                 {% endfor %}
             </div>
+        </div>
+
+        <!-- Filtre localisation -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 pb-3">
+            <form method="get" class="location-filter" id="location-filter">
+                {% for st in selected_service_types %}
+                <input type="hidden" name="service_types" value="{{ st }}">
+                {% endfor %}
+                {% if search_query %}
+                <input type="hidden" name="search" value="{{ search_query }}">
+                {% endif %}
+
+                <select name="country_id" id="filter_country" class="location-select">
+                    <option value="">Tous les pays</option>
+                    {% for country in countries %}
+                    <option value="{{ country.id }}" {% if country.id|stringformat:'s' == selected_country_id %}selected{% endif %}>
+                        {{ country }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <select name="city_id" id="filter_city" class="location-select">
+                    <option value="">Toutes les villes</option>
+                </select>
+
+                <button type="submit" class="chip" style="border:1.5px solid var(--terra); color:var(--terra); background:#fff; cursor:pointer;">
+                    Filtrer
+                </button>
+
+                {% if selected_country_id or selected_city_id %}
+                <a href="?{% for st in selected_service_types %}service_types={{ st }}&{% endfor %}{% if search_query %}search={{ search_query }}{% endif %}" class="location-filter-reset">
+                    ✕ Effacer localisation
+                </a>
+                {% endif %}
+            </form>
         </div>
     </header>
 
@@ -396,5 +451,30 @@
         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
     }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
     document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+<script>
+(function() {
+    var CITIES = {{ cities_json|safe }};
+    var countryEl = document.getElementById('filter_country');
+    var cityEl    = document.getElementById('filter_city');
+    var selectedCity = '{{ selected_city_id }}';
+
+    function populate() {
+        var cities = CITIES[countryEl.value] || [];
+        cityEl.innerHTML = '<option value="">Toutes les villes</option>';
+        cities.forEach(function(c) {
+            var opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.name;
+            if (String(c.id) === selectedCity) opt.selected = true;
+            cityEl.appendChild(opt);
+        });
+    }
+
+    if (countryEl) {
+        countryEl.addEventListener('change', populate);
+        if (countryEl.value) populate();
+    }
+})();
 </script>
 {% endblock %}
