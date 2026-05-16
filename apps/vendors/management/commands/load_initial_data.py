@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from apps.vendors.models import ServiceType
 from apps.projects.models import EventType
+from apps.core.models import Country, City
 
 
 class Command(BaseCommand):
@@ -64,5 +65,82 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f'✓ Événement créé: {event.name}'))
             else:
                 self.stdout.write(f'  Événement existant: {event.name}')
+
+        self.stdout.write('\nChargement des pays d\'Afrique de l\'Ouest...')
+
+        countries_data = [
+            {'name': 'Togo',          'code': 'TG', 'flag_emoji': '🇹🇬', 'display_order': 1},
+            {'name': 'Bénin',         'code': 'BJ', 'flag_emoji': '🇧🇯', 'display_order': 2},
+            {'name': 'Ghana',         'code': 'GH', 'flag_emoji': '🇬🇭', 'display_order': 3},
+            {'name': 'Côte d\'Ivoire','code': 'CI', 'flag_emoji': '🇨🇮', 'display_order': 4},
+            {'name': 'Sénégal',       'code': 'SN', 'flag_emoji': '🇸🇳', 'display_order': 5},
+            {'name': 'Nigeria',       'code': 'NG', 'flag_emoji': '🇳🇬', 'display_order': 6},
+            {'name': 'Burkina Faso',  'code': 'BF', 'flag_emoji': '🇧🇫', 'display_order': 7},
+            {'name': 'Mali',          'code': 'ML', 'flag_emoji': '🇲🇱', 'display_order': 8},
+            {'name': 'Niger',         'code': 'NE', 'flag_emoji': '🇳🇪', 'display_order': 9},
+            {'name': 'Guinée',        'code': 'GN', 'flag_emoji': '🇬🇳', 'display_order': 10},
+            {'name': 'Cameroun',      'code': 'CM', 'flag_emoji': '🇨🇲', 'display_order': 11},
+        ]
+
+        country_objects = {}
+        for c in countries_data:
+            country, created = Country.objects.get_or_create(
+                code=c['code'],
+                defaults={'name': c['name'], 'flag_emoji': c['flag_emoji'], 'display_order': c['display_order']}
+            )
+            country_objects[c['code']] = country
+            if created:
+                self.stdout.write(self.style.SUCCESS(f'✓ Pays créé: {c["flag_emoji"]} {country.name}'))
+            else:
+                self.stdout.write(f'  Pays existant: {country.name}')
+
+        self.stdout.write('\nChargement des villes...')
+
+        cities_data = [
+            # Togo
+            ('TG', 'Lomé'), ('TG', 'Kpalimé'), ('TG', 'Sokodé'),
+            ('TG', 'Kara'), ('TG', 'Atakpamé'), ('TG', 'Tsévié'),
+            # Bénin
+            ('BJ', 'Cotonou'), ('BJ', 'Porto-Novo'), ('BJ', 'Parakou'),
+            ('BJ', 'Abomey-Calavi'), ('BJ', 'Bohicon'), ('BJ', 'Natitingou'),
+            # Ghana
+            ('GH', 'Accra'), ('GH', 'Kumasi'), ('GH', 'Tamale'),
+            ('GH', 'Cape Coast'), ('GH', 'Tema'), ('GH', 'Sekondi-Takoradi'),
+            # Côte d'Ivoire
+            ('CI', 'Abidjan'), ('CI', 'Yamoussoukro'), ('CI', 'Bouaké'),
+            ('CI', 'Daloa'), ('CI', 'San-Pédro'), ('CI', 'Korhogo'),
+            # Sénégal
+            ('SN', 'Dakar'), ('SN', 'Saint-Louis'), ('SN', 'Thiès'),
+            ('SN', 'Ziguinchor'), ('SN', 'Touba'), ('SN', 'Mbour'),
+            # Nigeria
+            ('NG', 'Lagos'), ('NG', 'Abuja'), ('NG', 'Ibadan'),
+            ('NG', 'Kano'), ('NG', 'Port Harcourt'), ('NG', 'Benin City'),
+            # Burkina Faso
+            ('BF', 'Ouagadougou'), ('BF', 'Bobo-Dioulasso'), ('BF', 'Koudougou'),
+            ('BF', 'Banfora'), ('BF', 'Ouahigouya'),
+            # Mali
+            ('ML', 'Bamako'), ('ML', 'Sikasso'), ('ML', 'Mopti'),
+            ('ML', 'Ségou'), ('ML', 'Kayes'),
+            # Niger
+            ('NE', 'Niamey'), ('NE', 'Zinder'), ('NE', 'Maradi'),
+            ('NE', 'Agadez'), ('NE', 'Dosso'),
+            # Guinée
+            ('GN', 'Conakry'), ('GN', 'Kankan'), ('GN', 'Labé'),
+            ('GN', 'N\'Zérékoré'), ('GN', 'Kindia'),
+            # Cameroun
+            ('CM', 'Yaoundé'), ('CM', 'Douala'), ('CM', 'Garoua'),
+            ('CM', 'Bamenda'), ('CM', 'Bafoussam'),
+        ]
+
+        for code, city_name in cities_data:
+            country = country_objects.get(code)
+            if not country:
+                continue
+            _, created = City.objects.get_or_create(
+                country=country,
+                name=city_name,
+            )
+            if created:
+                self.stdout.write(self.style.SUCCESS(f'  ✓ {city_name} ({code})'))
 
         self.stdout.write(self.style.SUCCESS('\n✅ Données initiales chargées avec succès!'))
