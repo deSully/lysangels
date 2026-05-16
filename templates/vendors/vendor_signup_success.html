@@ -6,8 +6,8 @@
 <div class="min-h-screen bg-lily-cream py-20">
     <div class="max-w-xl mx-auto px-4 text-center">
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12">
-            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-8 h-8 text-lily-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style="background:rgba(181,68,26,.1);">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--terra,#B5441A);">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
@@ -18,7 +18,7 @@
             <p class="text-gray-500 text-sm mb-8">
                 Notre équipe va étudier ton dossier et te contactera prochainement pour finaliser ton inscription.
             </p>
-            <a href="{% url 'core:home' %}" class="inline-block bg-lily-purple text-white px-8 py-3 rounded-xl font-medium hover:bg-purple-dark transition">
+            <a href="{% url 'core:home' %}" class="inline-block text-white px-8 py-3 rounded-xl font-medium transition" style="background:var(--terra,#B5441A);" onmouseover="this.style.background='var(--terra-dark,#8E3313)'" onmouseout="this.style.background='var(--terra,#B5441A)'">
                 Retour à l'accueil
             </a>
         </div>
