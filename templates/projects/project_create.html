@@ -440,9 +440,18 @@
                             {{ form.event_type }}
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="id_city">Ville</label>
-                            {{ form.city }}
+                            <label class="form-label" for="id_country">Pays</label>
+                            {{ form.country }}
                         </div>
+                    </div>
+                    <div class="form-group" style="margin-top:1rem;">
+                        <label class="form-label" for="id_city">Ville</label>
+                        <select name="city" id="id_city" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition">
+                            <option value="">— Sélectionner une ville —</option>
+                        </select>
+                        {% if form.city.errors %}
+                            <p class="inline-error visible">{{ form.city.errors.0 }}</p>
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
@@ -637,6 +646,31 @@
     }
 
     function goNext(n) { if (validateStep(n)) goTo(n + 1); }
+
+    // Cascade pays → ville
+    (function() {
+        var CITIES = {{ cities_json|safe }};
+        var countryEl = document.getElementById('id_country');
+        var cityEl    = document.getElementById('id_city');
+        var selectedCity = '{{ form.city.value|default:"" }}';
+
+        function populate() {
+            var cities = CITIES[countryEl.value] || [];
+            cityEl.innerHTML = '<option value="">— Sélectionner une ville —</option>';
+            cities.forEach(function(c) {
+                var opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.name;
+                if (String(c.id) === selectedCity) opt.selected = true;
+                cityEl.appendChild(opt);
+            });
+        }
+
+        if (countryEl) {
+            countryEl.addEventListener('change', populate);
+            if (countryEl.value) populate();
+        }
+    })();
 
     // Jump to first step with server-side errors
     (function () {
