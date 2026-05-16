@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from apps.projects.models import Project, EventType
 from apps.vendors.models import ServiceType
+from apps.core.models import Country, City
 import datetime
 
 INPUT_CLASS = 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition'
@@ -40,11 +41,19 @@ class ProjectCreateForm(forms.ModelForm):
             'placeholder': 'Décrivez votre événement, vos attentes, vos préférences...'
         })
     )
-    city = forms.CharField(
-        max_length=100,
+    country = forms.ModelChoiceField(
+        queryset=Country.objects.filter(is_active=True).order_by('display_order', 'name'),
         required=False,
+        empty_label='— Sélectionner un pays —',
+        label='Pays',
+        widget=forms.Select(attrs={'class': INPUT_CLASS, 'id': 'id_country'}),
+    )
+    city = forms.ModelChoiceField(
+        queryset=City.objects.filter(is_active=True).select_related('country').order_by('name'),
+        required=False,
+        empty_label='— Sélectionner une ville —',
         label='Ville',
-        widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: Lomé'})
+        widget=forms.Select(attrs={'class': INPUT_CLASS, 'id': 'id_city'}),
     )
     event_date = forms.DateField(
         required=False,
@@ -90,7 +99,7 @@ class ProjectCreateForm(forms.ModelForm):
         model = Project
         fields = [
             'contact_name', 'contact_email', 'contact_phone',
-            'event_type', 'description', 'city', 'location',
+            'event_type', 'country', 'city', 'location',
             'event_date', 'event_time', 'guest_count',
             'budget_min', 'budget_max', 'services_needed',
         ]
@@ -107,6 +116,10 @@ class ProjectCreateForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        country = cleaned_data.get('country')
+        city = cleaned_data.get('city')
+        if city and country and city.country != country:
+            self.add_error('city', "Cette ville n'appartient pas au pays sélectionné.")
         budget_min = cleaned_data.get('budget_min') or 0
         budget_max = cleaned_data.get('budget_max') or 0
         cleaned_data['budget_min'] = budget_min
