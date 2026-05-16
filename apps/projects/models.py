@@ -1,5 +1,6 @@
 from django.db import models
 from apps.vendors.models import ServiceType
+from apps.core.models import City, Country
 
 
 class EventType(models.Model):
@@ -47,7 +48,20 @@ class Project(models.Model):
     # Informations de l'événement
     event_date = models.DateField(null=True, blank=True, verbose_name='Date de l\'événement')
     event_time = models.TimeField(null=True, blank=True, verbose_name='Heure de l\'événement')
-    city = models.CharField(max_length=100, blank=True, verbose_name='Ville')
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        verbose_name='Pays',
+        related_name='projects',
+    )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.PROTECT,
+        null=True, blank=True,
+        verbose_name='Ville',
+        related_name='projects',
+    )
     location = models.CharField(max_length=300, blank=True, verbose_name='Lieu précis')
     guest_count = models.IntegerField(null=True, blank=True, verbose_name='Nombre d\'invités estimé')
 
