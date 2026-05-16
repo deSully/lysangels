@@ -18,6 +18,13 @@ def _build_cities_json():
     return json.dumps(cities_by_country)
 
 
+def _build_countries_list_json():
+    return json.dumps([
+        {'id': c.id, 'name': str(c)}
+        for c in Country.objects.filter(is_active=True).order_by('display_order', 'name')
+    ])
+
+
 def vendor_list(request):
     """Liste publique des prestataires — layout catégories unique"""
     service_type_ids = request.GET.getlist('service_types')
@@ -40,12 +47,12 @@ def vendor_list(request):
                 Q(business_name__icontains=search) | Q(description__icontains=search)
             )
         if city_id:
-            qs = qs.filter(city_id=city_id)
+            qs = qs.filter(cities__id=city_id)
         elif country_id:
-            qs = qs.filter(city__country_id=country_id)
-        qs = qs.select_related('city').prefetch_related(
-            'service_types', 'images'
-        ).order_by('-is_featured', '-created_at')[:6]
+            qs = qs.filter(cities__country_id=country_id)
+        qs = qs.prefetch_related(
+            'cities', 'service_types', 'images'
+        ).order_by('-is_featured', '-created_at').distinct()[:6]
         if qs.exists():
             vendors_by_category.append({'service_type': service_type, 'vendors': qs})
 
@@ -70,8 +77,8 @@ def vendor_list(request):
 def vendor_detail(request, pk):
     """Détails publics d'un prestataire"""
     vendor = get_object_or_404(
-        VendorProfile.objects.select_related('city').prefetch_related(
-            'service_types', 'countries', 'images'
+        VendorProfile.objects.prefetch_related(
+            'cities', 'service_types', 'countries', 'images'
         ),
         pk=pk,
         is_active=True
@@ -123,19 +130,25 @@ def reveal_contact(request, pk):
 def vendor_signup(request):
     """Formulaire public de candidature prestataire"""
     service_types = ServiceType.objects.all().order_by('name')
-    countries = Country.objects.filter(is_active=True).order_by('display_order', 'name')
     cities_json = _build_cities_json()
+    countries_list_json = _build_countries_list_json()
+
+    locations_json_val = '[]'
 
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip()
         whatsapp = request.POST.get('whatsapp', '').strip()
-        country_id = request.POST.get('country_id', '').strip()
-        city_id = request.POST.get('city_id', '').strip()
+        locations_json_val = request.POST.get('locations_json', '[]')
         description = request.POST.get('description', '').strip()
         instagram = request.POST.get('instagram', '').strip()
         facebook = request.POST.get('facebook', '').strip()
         service_type_ids = request.POST.getlist('service_types')
+
+        try:
+            groups = json.loads(locations_json_val)
+        except (ValueError, TypeError):
+            groups = []
 
         errors = []
         if not name:
@@ -144,10 +157,8 @@ def vendor_signup(request):
             errors.append("L'email est requis.")
         if not whatsapp:
             errors.append('Le numéro WhatsApp est requis.')
-        if not country_id:
-            errors.append('Le pays est requis.')
-        if not city_id:
-            errors.append('La ville est requise.')
+        if not groups or not any(g.get('city_ids') for g in groups):
+            errors.append('Sélectionne au moins un pays et une ville.')
         if not description:
             errors.append("La description de l'activité est requise.")
         if not service_type_ids:
@@ -161,20 +172,23 @@ def vendor_signup(request):
                 name=name,
                 email=email,
                 whatsapp=whatsapp,
-                country_id=country_id,
-                city_id=city_id,
                 description=description,
                 instagram=instagram,
                 facebook=facebook,
             )
             application.service_types.set(service_type_ids)
+            country_ids = [g['country_id'] for g in groups if g.get('country_id')]
+            city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
+            application.countries.set(country_ids)
+            application.cities.set(city_ids)
             send_application_confirmation(name, email)
             return render(request, 'vendors/vendor_signup_success.html', {'name': name})
 
     return render(request, 'vendors/vendor_signup.html', {
         'service_types': service_types,
-        'countries': countries,
         'cities_json': cities_json,
+        'countries_list_json': countries_list_json,
+        'locations_json': locations_json_val,
         'breadcrumbs': [
             {'title': 'Accueil', 'url': 'core:home'},
             {'title': 'Devenir prestataire'},

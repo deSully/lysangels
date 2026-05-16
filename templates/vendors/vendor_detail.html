@@ -349,13 +349,13 @@
                 </div>
                 <h1 class="detail-hero-name font-display">{{ vendor.business_name }}</h1>
                 <div class="detail-hero-meta">
-                    {% if vendor.city %}
+                    {% if vendor.cities.exists %}
                     <span class="detail-hero-city">
                         <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        {{ vendor.city }}
+                        {% for city in vendor.cities.all %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
                     </span>
                     {% endif %}
                     {% if vendor.is_active %}
@@ -462,7 +462,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     <span style="font-size:.875rem; color:var(--muted);">
-                        {% if vendor.address %}{{ vendor.address }}, {% endif %}{{ vendor.city }}
+                        {% if vendor.address %}{{ vendor.address }}, {% endif %}{% for city in vendor.cities.all %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
                     </span>
                 </div>
                 <div class="map-wrap">
@@ -555,7 +555,7 @@
                             </div>
                         </div>
 
-                        {% if vendor.city %}
+                        {% if vendor.cities.exists %}
                         <div class="sidebar-item">
                             <div class="sidebar-item-icon">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -564,7 +564,7 @@
                             </div>
                             <div>
                                 <div class="sidebar-item-label">Localisation</div>
-                                <div class="sidebar-item-val">{{ vendor.city }}{% if vendor.address %}, {{ vendor.address }}{% endif %}</div>
+                                <div class="sidebar-item-val">{% for city in vendor.cities.all %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% if vendor.address %}, {{ vendor.address }}{% endif %}</div>
                             </div>
                         </div>
                         {% endif %}

@@ -60,13 +60,11 @@ class VendorProfile(models.Model):
         blank=True,
         verbose_name='Lien Google Maps',
     )
-    city = models.ForeignKey(
+    cities = models.ManyToManyField(
         City,
-        on_delete=models.PROTECT,
-        related_name='vendors',
-        verbose_name='Ville',
-        null=True,
-        blank=True
+        related_name='vendor_profiles',
+        verbose_name='Villes d\'intervention',
+        blank=True,
     )
 
     website = models.URLField(blank=True, verbose_name='Site web')
@@ -169,18 +167,16 @@ class VendorApplication(models.Model):
     name = models.CharField(max_length=200, verbose_name='Nom complet')
     email = models.EmailField(verbose_name='Email')
     whatsapp = models.CharField(max_length=30, verbose_name='WhatsApp')
-    country = models.ForeignKey(
+    countries = models.ManyToManyField(
         Country,
-        on_delete=models.PROTECT,
-        null=True, blank=True,
+        blank=True,
         verbose_name='Pays',
         related_name='applications',
     )
-    city = models.ForeignKey(
+    cities = models.ManyToManyField(
         City,
-        on_delete=models.PROTECT,
-        null=True, blank=True,
-        verbose_name='Ville',
+        blank=True,
+        verbose_name='Villes',
         related_name='applications',
     )
     service_types = models.ManyToManyField(
@@ -209,8 +205,7 @@ class VendorApplication(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        city_name = self.city.name if self.city else '—'
-        return f"{self.name} — {city_name} ({self.get_status_display()})"
+        return f"{self.name} ({self.get_status_display()})"
 
 
 class ContactView(models.Model):

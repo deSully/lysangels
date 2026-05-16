@@ -1,6 +1,7 @@
 """
 Vues d'administration pour LysAngels
 """
+import json
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -11,6 +12,23 @@ from django.http import JsonResponse
 from apps.core.models import City, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
 from apps.projects.models import EventType, Project, ProjectNote
+
+
+def _admin_build_cities_json():
+    from apps.core.models import City
+    cities_by_country = {}
+    for c in City.objects.filter(is_active=True).select_related('country').order_by('name'):
+        if c.country_id:
+            cities_by_country.setdefault(str(c.country_id), []).append({'id': c.id, 'name': c.name})
+    return json.dumps(cities_by_country)
+
+
+def _admin_build_countries_list_json():
+    from apps.core.models import Country
+    return json.dumps([
+        {'id': c.id, 'name': str(c)}
+        for c in Country.objects.filter(is_active=True).order_by('display_order', 'name')
+    ])
 
 
 def admin_required(view_func):
@@ -56,7 +74,7 @@ def admin_dashboard(request):
         status='new'
     ).order_by('-created_at')[:10]
 
-    recent_vendors = VendorProfile.objects.select_related('city').order_by('-created_at')[:5]
+    recent_vendors = VendorProfile.objects.prefetch_related('cities').order_by('-created_at')[:5]
 
     context = {
         'pending_vendors': pending_vendors,
@@ -345,7 +363,7 @@ def project_add_note(request, pk):
 @admin_required
 def vendor_list(request):
     """Liste des prestataires"""
-    vendors = VendorProfile.objects.select_related('city').prefetch_related('service_types').order_by('-created_at')
+    vendors = VendorProfile.objects.prefetch_related('cities', 'service_types').order_by('-created_at')
     is_active = request.GET.get('is_active')
     if is_active == '1':
         vendors = vendors.filter(is_active=True)
@@ -367,7 +385,7 @@ def vendor_list(request):
 def vendor_detail(request, pk):
     """Détails d'un prestataire"""
     vendor = get_object_or_404(
-        VendorProfile.objects.select_related('city').prefetch_related('service_types', 'images'),
+        VendorProfile.objects.prefetch_related('cities', 'countries', 'service_types', 'images'),
         pk=pk
     )
     if request.method == 'POST':
@@ -378,19 +396,30 @@ def vendor_detail(request, pk):
             status = 'activé' if vendor.is_active else 'désactivé'
             messages.success(request, f'Prestataire {status} avec succès!')
         return redirect('accounts:admin_vendor_detail', pk=pk)
-    return render(request, 'accounts/admin/vendor_detail.html', {'vendor': vendor})
+
+    cities_by_country = {}
+    for country in vendor.countries.order_by('display_order', 'name'):
+        cities_by_country[country] = list(vendor.cities.filter(country=country).order_by('name'))
+
+    return render(request, 'accounts/admin/vendor_detail.html', {
+        'vendor': vendor,
+        'cities_by_country': cities_by_country,
+    })
 
 
 @admin_required
 def vendor_create(request):
     """Créer un nouveau prestataire"""
     if request.method == 'POST':
-        city_id = request.POST.get('city')
-        city = get_object_or_404(City, pk=city_id) if city_id else None
+        locations_json_val = request.POST.get('locations_json', '[]')
+        try:
+            groups = json.loads(locations_json_val)
+        except (ValueError, TypeError):
+            groups = []
+
         vendor = VendorProfile.objects.create(
             business_name=request.POST.get('business_name'),
             description=request.POST.get('description', ''),
-            city=city,
             website=request.POST.get('website', ''),
             whatsapp=request.POST.get('whatsapp', ''),
             facebook=request.POST.get('facebook', ''),
@@ -404,33 +433,34 @@ def vendor_create(request):
         service_type_ids = request.POST.getlist('service_types')
         if service_type_ids:
             vendor.service_types.set(service_type_ids)
-        country_ids = request.POST.getlist('countries')
-        if country_ids:
-            vendor.countries.set(country_ids)
-        elif Country.objects.filter(code='TG').exists():
-            vendor.countries.set([Country.objects.get(code='TG')])
+        country_ids = [g['country_id'] for g in groups if g.get('country_id')]
+        city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
+        vendor.countries.set(country_ids)
+        vendor.cities.set(city_ids)
         messages.success(request, 'Prestataire créé avec succès!')
         return redirect('accounts:admin_vendor_detail', pk=vendor.pk)
 
-    cities = City.objects.filter(is_active=True).order_by('name')
     service_types = ServiceType.objects.all().order_by('name')
     countries = Country.objects.filter(is_active=True).order_by('display_order', 'name')
     return render(request, 'accounts/admin/vendor_form.html', {
-        'cities': cities,
         'service_types': service_types,
         'countries': countries,
+        'cities_json': _admin_build_cities_json(),
+        'countries_list_json': _admin_build_countries_list_json(),
+        'existing_locations_json': '[]',
     })
 
 
 @admin_required
 def vendor_edit(request, pk):
     """Modifier un prestataire"""
-    vendor = get_object_or_404(VendorProfile.objects.select_related('city'), pk=pk)
+    vendor = get_object_or_404(
+        VendorProfile.objects.prefetch_related('cities', 'countries', 'service_types'),
+        pk=pk
+    )
     if request.method == 'POST':
         vendor.business_name = request.POST.get('business_name')
         vendor.description = request.POST.get('description', '')
-        city_id = request.POST.get('city')
-        vendor.city = get_object_or_404(City, pk=city_id) if city_id else None
         vendor.website = request.POST.get('website', '')
         vendor.whatsapp = request.POST.get('whatsapp', '')
         vendor.facebook = request.POST.get('facebook', '')
@@ -443,20 +473,33 @@ def vendor_edit(request, pk):
         service_type_ids = request.POST.getlist('service_types')
         if service_type_ids:
             vendor.service_types.set(service_type_ids)
-        country_ids = request.POST.getlist('countries')
-        if country_ids:
-            vendor.countries.set(country_ids)
+
+        locations_json_val = request.POST.get('locations_json', '[]')
+        try:
+            groups = json.loads(locations_json_val)
+        except (ValueError, TypeError):
+            groups = []
+        country_ids = [g['country_id'] for g in groups if g.get('country_id')]
+        city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
+        vendor.countries.set(country_ids)
+        vendor.cities.set(city_ids)
         messages.success(request, 'Prestataire modifié avec succès!')
         return redirect('accounts:admin_vendor_detail', pk=pk)
 
-    cities = City.objects.filter(is_active=True).order_by('name')
+    existing_groups = []
+    for country in vendor.countries.order_by('display_order', 'name'):
+        city_ids = list(vendor.cities.filter(country=country).values_list('id', flat=True))
+        existing_groups.append({'country_id': country.id, 'city_ids': city_ids})
+
     service_types = ServiceType.objects.all().order_by('name')
     countries = Country.objects.filter(is_active=True).order_by('display_order', 'name')
     return render(request, 'accounts/admin/vendor_form.html', {
         'vendor': vendor,
-        'cities': cities,
         'service_types': service_types,
         'countries': countries,
+        'cities_json': _admin_build_cities_json(),
+        'countries_list_json': _admin_build_countries_list_json(),
+        'existing_locations_json': json.dumps(existing_groups),
     })
 
 

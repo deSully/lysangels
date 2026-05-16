@@ -63,17 +63,19 @@
 
     <!-- Localisation -->
     <div class="a-card">
-      <div class="a-card-head"><span class="a-card-label">Localisation</span></div>
-      <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-        <div class="a-field">
-          <span class="a-field-label">Ville</span>
-          <span class="a-field-value">{{ vendor.city.name|default:"—" }}</span>
-        </div>
-        {% if vendor.city.country %}
-        <div class="a-field">
-          <span class="a-field-label">Pays</span>
-          <span class="a-field-value">{{ vendor.city.country.name }}</span>
-        </div>
+      <div class="a-card-head"><span class="a-card-label">Zones d'intervention</span></div>
+      <div class="a-card-body">
+        {% if cities_by_country %}
+          {% for country, cities in cities_by_country.items %}
+          <div style="margin-bottom:.5rem;">
+            <span style="font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);">{{ country }}</span>
+            <span class="a-field-value" style="display:block; margin-top:.25rem;">
+              {% for city in cities %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            </span>
+          </div>
+          {% endfor %}
+        {% else %}
+          <span class="a-field-value">—</span>
         {% endif %}
       </div>
     </div>

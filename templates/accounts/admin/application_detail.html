@@ -35,15 +35,11 @@
             {{ application.whatsapp }}
           </a>
         </div>
-        {% if application.country %}
         <div class="a-field">
-          <span class="a-field-label">Pays</span>
-          <span class="a-field-value">{{ application.country }}</span>
-        </div>
-        {% endif %}
-        <div class="a-field">
-          <span class="a-field-label">Ville</span>
-          <span class="a-field-value">{{ application.city.name|default:"—" }}</span>
+          <span class="a-field-label">Zones déclarées</span>
+          <span class="a-field-value">
+            {% for city in application.cities.all %}{{ city.name }} ({{ city.country.code }}){% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}
+          </span>
         </div>
         {% if application.instagram %}
         <div class="a-field">

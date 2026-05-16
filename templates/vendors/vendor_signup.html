@@ -260,6 +260,50 @@
     /* ── MESSAGES ── */
     .form-msg { padding: .875rem 1rem; border-radius: .35rem; font-size: .875rem; margin-bottom: 1.5rem; }
     .form-msg-error { background: rgba(220,38,38,.06); color: #991B1B; border: 1px solid rgba(220,38,38,.15); }
+
+    /* ── LOCATION GROUPS ── */
+    .location-group {
+        border: 1.5px solid rgba(0,0,0,.08); border-radius: .35rem;
+        background: #fff; padding: .875rem 1rem; margin-bottom: .5rem;
+        position: relative;
+    }
+    .group-country {
+        width: calc(100% - 2rem); padding: .625rem .875rem;
+        background: #fff; color: var(--night);
+        border: 1.5px solid rgba(0,0,0,.1); border-radius: .25rem;
+        font-size: .875rem; appearance: none; outline: none; cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237A6E63' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right .75rem center;
+        padding-right: 2.25rem; transition: border-color .2s, box-shadow .2s;
+    }
+    .group-country:focus { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(181,68,26,.08); }
+    .group-remove {
+        position: absolute; top: .75rem; right: .875rem;
+        width: 1.5rem; height: 1.5rem; background: rgba(0,0,0,.06);
+        border: none; border-radius: .2rem; cursor: pointer;
+        color: var(--muted); font-size: 1rem; line-height: 1; display: flex;
+        align-items: center; justify-content: center; transition: background .15s, color .15s;
+    }
+    .group-remove:hover { background: rgba(220,38,38,.1); color: #DC2626; }
+    .city-checkboxes { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; }
+    .city-checkboxes label {
+        display: inline-flex; align-items: center; gap: .3rem; font-size: .8rem;
+        color: var(--night); cursor: pointer; padding: .275rem .55rem;
+        background: rgba(0,0,0,.03); border: 1px solid rgba(0,0,0,.07);
+        border-radius: .25rem; transition: background .15s, border-color .15s;
+    }
+    .city-checkboxes label:hover { background: rgba(181,68,26,.05); border-color: rgba(181,68,26,.2); }
+    .city-checkboxes input[type="checkbox"] { width: .8rem; height: .8rem; accent-color: var(--terra); cursor: pointer; }
+    .city-checkboxes label:has(input:checked) { background: rgba(181,68,26,.08); border-color: rgba(181,68,26,.3); }
+    #add-location-group {
+        display: inline-flex; align-items: center; gap: .375rem;
+        padding: .45rem .875rem; margin-top: .375rem;
+        background: rgba(181,68,26,.06); color: var(--terra);
+        border: 1.5px dashed rgba(181,68,26,.25); border-radius: .35rem;
+        font-size: .78rem; font-weight: 600; cursor: pointer;
+        transition: background .15s, border-color .15s;
+    }
+    #add-location-group:hover { background: rgba(181,68,26,.11); border-color: rgba(181,68,26,.4); }
 </style>
 {% endblock %}
 
@@ -370,24 +414,13 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" style="margin-top:1.25rem;">
-                        <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">Pays<span class="form-required">*</span></label>
-                            <select name="country_id" id="id_country" required>
-                                <option value="">— Pays —</option>
-                                {% for country in countries %}
-                                <option value="{{ country.id }}" {% if request.POST.country_id == country.id|stringformat:'s' %}selected{% endif %}>{{ country }}</option>
-                                {% endfor %}
-                            </select>
-                            <p class="inline-error" id="err-country">Ce champ est requis.</p>
-                        </div>
-                        <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">Ville<span class="form-required">*</span></label>
-                            <select name="city_id" id="id_city" required>
-                                <option value="">— Ville —</option>
-                            </select>
-                            <p class="inline-error" id="err-city">Ce champ est requis.</p>
-                        </div>
+                    <div class="form-group" style="margin-top:1.25rem;">
+                        <label class="form-label">Zones d'intervention<span class="form-required">*</span></label>
+                        <div id="location-container"></div>
+                        <button type="button" id="add-location-group">+ Ajouter un pays</button>
+                        <input type="hidden" name="locations_json" id="id_locations_json"
+                               value="{{ locations_json|default:'[]' }}">
+                        <p class="inline-error" id="err-locations">Sélectionne au moins un pays et une ville.</p>
                     </div>
 
                     <div class="form-nav">
@@ -519,14 +552,12 @@
     function validateStep(n) {
         var valid = true;
         if (n === 1) {
-            var fields = [
+            var basicFields = [
                 { el: document.getElementById('id_name'), err: 'err-name', check: function(v) { return v.trim().length > 0; } },
                 { el: document.getElementById('id_email'), err: 'err-email', check: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
                 { el: document.getElementById('id_whatsapp'), err: 'err-whatsapp', check: function(v) { return v.trim().length > 0; } },
-                { el: document.getElementById('id_country'), err: 'err-country', check: function(v) { return v.trim().length > 0; } },
-                { el: document.getElementById('id_city'),    err: 'err-city',    check: function(v) { return v.trim().length > 0; } },
             ];
-            fields.forEach(function(f) {
+            basicFields.forEach(function(f) {
                 if (!f.check(f.el.value)) {
                     f.el.classList.add('field-error');
                     document.getElementById(f.err).classList.add('visible');
@@ -536,6 +567,16 @@
                     document.getElementById(f.err).classList.remove('visible');
                 }
             });
+            var locEl = document.getElementById('id_locations_json');
+            var locErr = document.getElementById('err-locations');
+            var locGroups = [];
+            try { locGroups = JSON.parse(locEl.value || '[]'); } catch(e) {}
+            var hasCity = locGroups.some(function(g) { return g.city_ids && g.city_ids.length > 0; });
+            if (!hasCity) {
+                locErr.classList.add('visible'); valid = false;
+            } else {
+                locErr.classList.remove('visible');
+            }
         }
         if (n === 2) {
             var checked = document.querySelectorAll('input[name="service_types"]:checked').length;
@@ -558,25 +599,82 @@
 </script>
 <script>
 (function() {
-    var CITIES = {{ cities_json|safe }};
-    var countryEl = document.getElementById('id_country');
-    var cityEl    = document.getElementById('id_city');
-    var selectedCity = '{{ request.POST.city_id|default:"" }}';
+    var CITIES_BY_COUNTRY = {{ cities_json|safe }};
+    var COUNTRIES = {{ countries_list_json|safe }};
 
-    function populate() {
-        var cities = CITIES[countryEl.value] || [];
-        cityEl.innerHTML = '<option value="">— Ville —</option>';
-        cities.forEach(function(c) {
-            var opt = document.createElement('option');
-            opt.value = c.id;
-            opt.textContent = c.name;
-            if (String(c.id) === selectedCity) opt.selected = true;
-            cityEl.appendChild(opt);
+    function serialize() {
+        var result = [];
+        document.querySelectorAll('#location-container .location-group').forEach(function(group) {
+            var countryId = group.querySelector('.group-country').value;
+            var cityIds = Array.from(group.querySelectorAll('.group-city:checked')).map(function(cb) { return parseInt(cb.value); });
+            if (countryId) result.push({ country_id: parseInt(countryId), city_ids: cityIds });
         });
+        document.getElementById('id_locations_json').value = JSON.stringify(result);
     }
 
-    countryEl.addEventListener('change', populate);
-    if (countryEl.value) populate();
+    function buildCountrySelect(selectedId) {
+        var select = document.createElement('select');
+        select.className = 'group-country';
+        var defaultOpt = document.createElement('option');
+        defaultOpt.value = ''; defaultOpt.textContent = '— Pays —';
+        select.appendChild(defaultOpt);
+        COUNTRIES.forEach(function(c) {
+            var opt = document.createElement('option');
+            opt.value = c.id; opt.textContent = c.name;
+            if (String(c.id) === String(selectedId)) opt.selected = true;
+            select.appendChild(opt);
+        });
+        return select;
+    }
+
+    function renderCities(group, countryId, selectedIds) {
+        var existing = group.querySelector('.city-checkboxes');
+        if (existing) existing.remove();
+        var wrap = document.createElement('div');
+        wrap.className = 'city-checkboxes';
+        (CITIES_BY_COUNTRY[String(countryId)] || []).forEach(function(city) {
+            var label = document.createElement('label');
+            var cb = document.createElement('input');
+            cb.type = 'checkbox'; cb.className = 'group-city';
+            cb.value = city.id;
+            cb.checked = selectedIds.map(String).indexOf(String(city.id)) !== -1;
+            cb.addEventListener('change', serialize);
+            label.appendChild(cb);
+            label.appendChild(document.createTextNode(' ' + city.name));
+            wrap.appendChild(label);
+        });
+        group.appendChild(wrap);
+        serialize();
+    }
+
+    function addGroup(countryId, cityIds) {
+        var group = document.createElement('div');
+        group.className = 'location-group';
+
+        var select = buildCountrySelect(countryId);
+        select.addEventListener('change', function() {
+            renderCities(group, select.value, []);
+        });
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button'; removeBtn.className = 'group-remove';
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', function() { group.remove(); serialize(); });
+
+        group.appendChild(select);
+        group.appendChild(removeBtn);
+        document.getElementById('location-container').appendChild(group);
+
+        if (countryId) renderCities(group, countryId, cityIds || []);
+    }
+
+    document.getElementById('add-location-group').addEventListener('click', function(e) {
+        e.preventDefault(); addGroup(null, []);
+    });
+
+    var initial = {{ locations_json|default:"[]"|safe }};
+    initial.forEach(function(g) { addGroup(g.country_id, g.city_ids); });
+    if (!initial.length) addGroup(null, []);
 })();
 </script>
 {% endblock %}

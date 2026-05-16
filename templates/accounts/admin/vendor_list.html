@@ -40,7 +40,10 @@
       {% for vendor in vendors %}
       <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
         <td style="font-weight:500;">{{ vendor.business_name }}</td>
-        <td class="a-td-muted">{{ vendor.city.name|default:"—" }}</td>
+        <td class="a-td-muted">
+          {% for city in vendor.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          {% if not vendor.cities.exists %}—{% endif %}
+        </td>
         <td class="a-td-muted">
           {% for service in vendor.service_types.all|slice:":2" %}{{ service.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
           {% if vendor.service_types.count > 2 %} …{% endif %}

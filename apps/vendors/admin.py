@@ -15,10 +15,10 @@ class VendorImageInline(admin.TabularInline):
 
 @admin.register(VendorProfile)
 class VendorProfileAdmin(admin.ModelAdmin):
-    list_display = ['business_name', 'city', 'is_active', 'is_featured', 'created_at']
-    list_filter = ['is_active', 'is_featured', 'city']
+    list_display = ['business_name', 'is_active', 'is_featured', 'created_at']
+    list_filter = ['is_active', 'is_featured']
     search_fields = ['business_name']
-    filter_horizontal = ['service_types', 'countries']
+    filter_horizontal = ['service_types', 'countries', 'cities']
     inlines = [VendorImageInline]
 
 
