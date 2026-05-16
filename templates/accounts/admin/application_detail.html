@@ -35,9 +35,15 @@
             {{ application.whatsapp }}
           </a>
         </div>
+        {% if application.country %}
+        <div class="a-field">
+          <span class="a-field-label">Pays</span>
+          <span class="a-field-value">{{ application.country }}</span>
+        </div>
+        {% endif %}
         <div class="a-field">
           <span class="a-field-label">Ville</span>
-          <span class="a-field-value">{{ application.city }}</span>
+          <span class="a-field-value">{{ application.city.name|default:"—" }}</span>
         </div>
         {% if application.instagram %}
         <div class="a-field">

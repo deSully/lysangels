@@ -35,7 +35,7 @@
       {% for app in applications %}
       <tr onclick="location.href='{% url 'accounts:admin_application_detail' app.pk %}'">
         <td style="font-weight:500;">{{ app.name }}</td>
-        <td class="a-td-muted">{{ app.city }}</td>
+        <td class="a-td-muted">{{ app.city.name|default:"—" }}{% if app.country %} ({{ app.country.code }}){% endif %}</td>
         <td class="a-td-muted">
           {% for st in app.service_types.all|slice:":2" %}{{ st.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
           {% if app.service_types.count > 2 %} …{% endif %}

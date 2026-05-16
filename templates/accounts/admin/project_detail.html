@@ -48,10 +48,16 @@
             <span class="a-field-value">{{ project.event_type.name }}</span>
           </div>
           {% endif %}
+          {% if project.country %}
+          <div class="a-field">
+            <span class="a-field-label">Pays</span>
+            <span class="a-field-value">{{ project.country }}</span>
+          </div>
+          {% endif %}
           {% if project.city %}
           <div class="a-field">
             <span class="a-field-label">Ville</span>
-            <span class="a-field-value">{{ project.city }}</span>
+            <span class="a-field-value">{{ project.city.name }}</span>
           </div>
           {% endif %}
           {% if project.location %}
