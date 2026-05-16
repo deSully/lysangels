@@ -5,156 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande reçue — LysAngels</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #F5F3FF;
-      font-family: 'Inter', -apple-system, system-ui, sans-serif;
-      color: #1A1A1A;
-    }
-    .wrapper {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: #ffffff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(139, 92, 246, 0.12);
-    }
-    .header {
-      background: linear-gradient(135deg, #8B5CF6 0%, #D4AF37 100%);
-      padding: 48px 40px 40px;
-      text-align: center;
-    }
-    .header-brand {
-      color: rgba(255,255,255,0.9);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 0 0 16px;
-    }
-    .header-title {
-      color: #ffffff;
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0 0 8px;
-      letter-spacing: -0.3px;
-    }
-    .header-sub {
-      color: rgba(255,255,255,0.8);
-      font-size: 15px;
-      margin: 0;
-    }
-    .content {
-      padding: 40px 40px 32px;
-    }
-    .greeting {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1A1A1A;
-      margin: 0 0 20px;
-    }
-    .body-text {
-      font-size: 16px;
-      line-height: 1.75;
-      color: #4B4B4B;
-      margin: 0 0 20px;
-    }
-    .highlight-box {
-      background: #F5F3FF;
-      border-left: 4px solid #8B5CF6;
-      border-radius: 0 8px 8px 0;
-      padding: 20px 24px;
-      margin: 28px 0;
-    }
-    .highlight-box p {
-      margin: 0;
-      font-size: 15px;
-      color: #5B21B6;
-      line-height: 1.7;
-    }
-    .promise-box {
-      background: #FFFBEB;
-      border: 1px solid #D4AF37;
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin: 28px 0;
-      text-align: center;
-    }
-    .promise-box p {
-      margin: 0;
-      font-size: 15px;
-      color: #92400E;
-      font-weight: 600;
-    }
-    .steps {
-      margin: 28px 0;
-    }
-    .step {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-    .step-number {
-      background: #8B5CF6;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 700;
-      width: 28px;
-      height: 28px;
-      line-height: 28px;
-      border-radius: 50%;
-      display: inline-block;
-      text-align: center;
-      flex-shrink: 0;
-      margin-right: 14px;
-      margin-top: 2px;
-    }
-    .step-text {
-      font-size: 15px;
-      color: #4B4B4B;
-      line-height: 1.6;
-    }
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, #8B5CF6, #D4AF37);
-      margin: 32px 0;
-      border: none;
-    }
-    .signature p {
-      margin: 0 0 4px;
-      font-size: 15px;
-      color: #4B4B4B;
-      line-height: 1.6;
-    }
-    .signature .name {
-      font-size: 18px;
-      font-weight: 700;
-      color: #8B5CF6;
-      margin-top: 8px;
-    }
-    .signature .role {
-      font-size: 13px;
-      color: #9CA3AF;
-    }
-    .footer {
-      background: #1A1A1A;
-      padding: 24px 40px;
-      text-align: center;
-    }
-    .footer p {
-      margin: 0 0 6px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.6;
-    }
-    .footer a {
-      color: #D4AF37;
-      text-decoration: none;
-    }
-    @media (max-width: 640px) {
-      .wrapper { margin: 0; border-radius: 0; }
-      .header, .content, .footer { padding-left: 24px; padding-right: 24px; }
+    body { margin:0; padding:0; background:#F0EDE6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#110D06; }
+    .wrapper { max-width:580px; margin:40px auto; background:#ffffff; border-radius:4px; overflow:hidden; box-shadow:0 2px 16px rgba(17,13,6,.1); }
+    .header { background:#110D06; padding:44px 40px 36px; text-align:center; position:relative; }
+    .header-brand { color:rgba(201,151,58,.8); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin:0 0 20px; }
+    .header-rule { width:32px; height:2px; background:#B5441A; margin:0 auto 20px; }
+    .header-title { color:#ffffff; font-size:24px; font-weight:700; margin:0 0 8px; letter-spacing:-0.3px; line-height:1.2; }
+    .header-sub { color:rgba(255,255,255,.45); font-size:13px; margin:0; letter-spacing:.04em; }
+    .content { padding:40px 40px 32px; }
+    .greeting { font-size:20px; font-weight:700; color:#110D06; margin:0 0 16px; }
+    .body-text { font-size:15px; line-height:1.8; color:#4A3F35; margin:0 0 20px; }
+    .highlight-box { background:#FAF7F0; border-left:3px solid #B5441A; padding:18px 22px; margin:28px 0; }
+    .highlight-box p { margin:0; font-size:14px; color:#6B5344; line-height:1.75; }
+    .promise-box { border:1px solid rgba(181,68,26,.2); border-radius:3px; padding:18px 22px; margin:28px 0; text-align:center; background:rgba(181,68,26,.03); }
+    .promise-box p { margin:0; font-size:14px; color:#8E3313; font-weight:600; }
+    .steps { margin:24px 0; display:flex; flex-direction:column; gap:14px; }
+    .step { display:flex; align-items:flex-start; gap:14px; }
+    .step-number { background:#B5441A; color:#ffffff; font-size:11px; font-weight:800; width:26px; height:26px; line-height:26px; border-radius:50%; display:inline-block; text-align:center; flex-shrink:0; margin-top:1px; }
+    .step-text { font-size:14px; color:#4A3F35; line-height:1.65; padding-top:3px; }
+    .divider { height:1px; background:rgba(17,13,6,.08); margin:32px 0; border:none; }
+    .signature p { margin:0 0 4px; font-size:14px; color:#4A3F35; line-height:1.6; }
+    .signature .name { font-size:17px; font-weight:700; color:#110D06; margin-top:8px; }
+    .signature .role { font-size:12px; color:#7A6E63; letter-spacing:.04em; }
+    .signature a { color:#B5441A; text-decoration:none; font-size:13px; }
+    .footer { background:#110D06; padding:22px 40px; text-align:center; }
+    .footer p { margin:0 0 4px; font-size:12px; color:rgba(255,255,255,.3); line-height:1.6; }
+    .footer a { color:#C9973A; text-decoration:none; }
+    @media (max-width:600px) {
+      .wrapper { margin:0; border-radius:0; }
+      .header, .content, .footer { padding-left:24px; padding-right:24px; }
     }
   </style>
 </head>
@@ -163,22 +42,23 @@
 
     <div class="header">
       <p class="header-brand">LysAngels</p>
-      <p class="header-title">Demande bien reçue ! 🎉</p>
-      <p class="header-sub">La marketplace des événements au Togo</p>
+      <div class="header-rule"></div>
+      <p class="header-title">Demande bien reçue</p>
+      <p class="header-sub">Votre projet événementiel est entre de bonnes mains</p>
     </div>
 
     <div class="content">
-      <p class="greeting">Bonjour {{ contact_name }} 👋</p>
+      <p class="greeting">Bonjour {{ contact_name }},</p>
 
       <p class="body-text">
-        Super nouvelle — ta demande est entre de bonnes mains ! On est vraiment contents
-        que tu nous aies fait confiance pour ton événement.
+        Votre demande a bien été enregistrée. Notre équipe va se mettre au travail
+        pour trouver les prestataires qui correspondent le mieux à votre projet.
       </p>
 
       <div class="highlight-box">
         <p>
-          Notre équipe a bien reçu ta demande et va immédiatement se mettre au travail
-          pour trouver les prestataires qui correspondent le mieux à ton projet.
+          Nous avons bien reçu votre demande et allons l'analyser dans les plus brefs délais
+          pour vous proposer les meilleures options disponibles.
         </p>
       </div>
 
@@ -187,24 +67,24 @@
       <div class="steps">
         <div class="step">
           <span class="step-number">1</span>
-          <span class="step-text">On analyse ta demande et on identifie les meilleurs prestataires disponibles.</span>
+          <span class="step-text">Nous analysons votre demande et identifions les meilleurs prestataires disponibles.</span>
         </div>
         <div class="step">
           <span class="step-number">2</span>
-          <span class="step-text">On te contacte par email ou par téléphone pour affiner les détails de ton projet.</span>
+          <span class="step-text">Nous vous contactons par email ou par téléphone pour affiner les détails de votre projet.</span>
         </div>
         <div class="step">
           <span class="step-number">3</span>
-          <span class="step-text">On te met en relation avec les prestataires sélectionnés — et ton événement prend vie !</span>
+          <span class="step-text">Nous vous mettons en relation avec les prestataires sélectionnés.</span>
         </div>
       </div>
 
       <div class="promise-box">
-        <p>⏱ On revient vers toi sous 48h ouvrées.</p>
+        <p>Nous revenons vers vous sous 48h ouvrées.</p>
       </div>
 
       <p class="body-text">
-        Des questions d'ici là ? Écris-moi directement, je réponds vite.
+        Des questions d'ici là ? Écrivez-nous directement, nous répondons rapidement.
       </p>
 
       <hr class="divider">
@@ -212,15 +92,13 @@
       <div class="signature">
         <p>À très bientôt,</p>
         <p class="name">Susy</p>
-        <p class="role">Fondatrice de LysAngels</p>
-        <p style="margin-top: 6px;">
-          <a href="mailto:susy@lysangels.com" style="color: #8B5CF6; font-size: 14px;">susy@lysangels.com</a>
-        </p>
+        <p class="role">Fondatrice — LysAngels</p>
+        <p style="margin-top:6px;"><a href="mailto:susy@lysangels.com">susy@lysangels.com</a></p>
       </div>
     </div>
 
     <div class="footer">
-      <p>© 2025 LysAngels — Lomé, Togo</p>
+      <p>© 2025 LysAngels</p>
       <p><a href="https://lysangels.com">lysangels.com</a></p>
     </div>
 

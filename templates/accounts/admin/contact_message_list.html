@@ -1,0 +1,68 @@
+{% extends 'accounts/admin/base_admin.html' %}
+{% block title %}Messages de contact — Admin{% endblock %}
+{% block admin_content %}
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Messages de contact</h1>
+    {% if unread_count > 0 %}
+    <p class="a-page-sub">{{ unread_count }} non lu{{ unread_count|pluralize }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="a-chips" style="margin-bottom:1.25rem;">
+  <a href="{% url 'accounts:admin_contact_message_list' %}" class="a-chip {% if not selected_status %}a-chip-active{% endif %}">Tous</a>
+  {% for value, label in status_choices %}
+  <a href="?status={{ value }}" class="a-chip {% if selected_status == value %}a-chip-active{% endif %}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+<div class="a-card">
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Sujet</th>
+        <th>Email</th>
+        <th>Reçu le</th>
+        <th>Statut</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for msg in messages_list %}
+      <tr>
+        <td style="font-weight:{% if msg.status == 'new' %}600{% else %}400{% endif %};">{{ msg.name }}</td>
+        <td>{{ msg.get_subject_display }}</td>
+        <td class="a-td-mono">{{ msg.email }}</td>
+        <td class="a-td-mono">{{ msg.created_at|date:"d/m/Y H:i" }}</td>
+        <td>
+          {% if msg.status == 'new' %}<span class="a-badge a-badge-new">Nouveau</span>
+          {% elif msg.status == 'read' %}<span class="a-badge a-badge-active">Lu</span>
+          {% elif msg.status == 'replied' %}<span class="a-badge" style="background:rgba(34,197,94,.1);color:#166534;">Répondu</span>
+          {% else %}<span class="a-badge" style="background:rgba(0,0,0,.05);color:var(--muted);">Archivé</span>{% endif %}
+        </td>
+        <td class="a-td-right">
+          <a href="{% url 'accounts:admin_contact_message_detail' msg.pk %}" class="a-td-link">Voir</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="a-table-empty">Aucun message</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if messages_list.has_other_pages %}
+<div style="display:flex; justify-content:center; gap:.5rem; margin-top:1.25rem;">
+  {% if messages_list.has_previous %}
+  <a href="?page={{ messages_list.previous_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" class="a-btn a-btn-ghost">←</a>
+  {% endif %}
+  <span style="padding:.5rem .875rem; font-size:.8rem; color:var(--muted);">{{ messages_list.number }} / {{ messages_list.paginator.num_pages }}</span>
+  {% if messages_list.has_next %}
+  <a href="?page={{ messages_list.next_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" class="a-btn a-btn-ghost">→</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

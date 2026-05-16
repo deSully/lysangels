@@ -45,6 +45,10 @@ urlpatterns = [
     path('admin/applications/', admin_views.application_list, name='admin_application_list'),
     path('admin/applications/<int:pk>/', admin_views.application_detail, name='admin_application_detail'),
 
+    # Messages de contact
+    path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),
+    path('admin/contact-messages/<int:pk>/', admin_views.contact_message_detail, name='admin_contact_message_detail'),
+
     # Gestion des prestataires
     path('admin/vendors/', admin_views.vendor_list, name='admin_vendor_list'),
     path('admin/vendors/create/', admin_views.vendor_create, name='admin_vendor_create'),

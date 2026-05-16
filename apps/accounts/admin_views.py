@@ -8,7 +8,7 @@ from django.db.models import Count
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 
-from apps.core.models import City, Country
+from apps.core.models import City, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
 from apps.projects.models import EventType, Project, ProjectNote
 
@@ -510,6 +510,44 @@ def application_detail(request, pk):
     return render(request, 'accounts/admin/application_detail.html', {
         'application': application,
     })
+
+
+# ========== MESSAGES DE CONTACT ==========
+
+@admin_required
+def contact_message_list(request):
+    msgs = ContactMessage.objects.order_by('-created_at')
+    status = request.GET.get('status')
+    if status:
+        msgs = msgs.filter(status=status)
+    paginator = Paginator(msgs, 25)
+    msgs = paginator.get_page(request.GET.get('page'))
+    unread_count = ContactMessage.objects.filter(status='new').count()
+    return render(request, 'accounts/admin/contact_message_list.html', {
+        'messages_list': msgs,
+        'selected_status': status,
+        'status_choices': ContactMessage.STATUS_CHOICES,
+        'unread_count': unread_count,
+    })
+
+
+@admin_required
+def contact_message_detail(request, pk):
+    msg = get_object_or_404(ContactMessage, pk=pk)
+    if msg.status == 'new':
+        msg.status = 'read'
+        msg.save()
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        admin_notes = request.POST.get('admin_notes', '').strip()
+        valid_statuses = [s[0] for s in ContactMessage.STATUS_CHOICES]
+        if new_status in valid_statuses:
+            msg.status = new_status
+            msg.admin_notes = admin_notes
+            msg.save()
+            messages.success(request, 'Message mis à jour.')
+        return redirect('accounts:admin_contact_message_detail', pk=pk)
+    return render(request, 'accounts/admin/contact_message_detail.html', {'msg': msg})
 
 
 @admin_required
