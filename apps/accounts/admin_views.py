@@ -656,6 +656,59 @@ def application_add_image(request, pk):
     return JsonResponse({'success': False, 'error': 'Maximum 5 images atteint'}, status=400)
 
 
+@admin_required
+def application_edit(request, pk):
+    """Édite les champs texte d'une candidature"""
+    if request.method != 'POST':
+        return redirect('accounts:admin_application_detail', pk=pk)
+    application = get_object_or_404(VendorApplication, pk=pk)
+    name = request.POST.get('name', '').strip()
+    if name:
+        application.name = name
+    application.email = request.POST.get('email', '').strip()
+    application.whatsapp = request.POST.get('whatsapp', '').strip()
+    application.address = request.POST.get('address', '').strip()
+    description = request.POST.get('description', '').strip()
+    if description:
+        application.description = description
+    application.instagram = request.POST.get('instagram', '').strip()
+    application.facebook = request.POST.get('facebook', '').strip()
+    application.save(update_fields=[
+        'name', 'email', 'whatsapp', 'address',
+        'description', 'instagram', 'facebook', 'updated_at',
+    ])
+    messages.success(request, 'Candidature mise à jour.')
+    return redirect('accounts:admin_application_detail', pk=pk)
+
+
+@admin_required
+def vendor_add_image(request, vendor_id):
+    """Ajoute une image à un profil prestataire"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+    vendor = get_object_or_404(VendorProfile, pk=vendor_id)
+    img = request.FILES.get('image')
+    if not img:
+        return JsonResponse({'success': False, 'error': 'Aucune image fournie'}, status=400)
+    vi = VendorImage(vendor=vendor)
+    vi.image = img
+    vi.save()
+    return JsonResponse({'success': True, 'image_id': vi.pk, 'url': vi.image.url})
+
+
+@admin_required
+def vendor_set_cover_image(request, vendor_id, image_id):
+    """Définit une image comme couverture du profil"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+    vendor = get_object_or_404(VendorProfile, pk=vendor_id)
+    if not VendorImage.objects.filter(pk=image_id, vendor=vendor).exists():
+        return JsonResponse({'success': False, 'error': 'Image introuvable'}, status=404)
+    VendorImage.objects.filter(vendor=vendor).update(is_cover=False)
+    VendorImage.objects.filter(pk=image_id).update(is_cover=True)
+    return JsonResponse({'success': True})
+
+
 # ========== MESSAGES DE CONTACT ==========
 
 @admin_required
