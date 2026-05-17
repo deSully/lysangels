@@ -388,7 +388,7 @@
                 {% endfor %}
             {% endif %}
 
-            <form method="post" novalidate id="signupForm">
+            <form method="post" enctype="multipart/form-data" novalidate id="signupForm">
                 {% csrf_token %}
 
                 <!-- ── ÉTAPE 1 : COORDONNÉES ── -->
@@ -492,6 +492,36 @@
                     <div class="form-group">
                         <label class="form-label">Facebook</label>
                         <input type="text" name="facebook" value="{{ request.POST.facebook|default:'' }}" placeholder="Lien ou nom de page">
+                    </div>
+
+                    <!-- Portfolio images -->
+                    <div style="margin-top:1.5rem; margin-bottom:1.5rem;">
+                        <p class="form-label" style="margin-bottom:.35rem;">
+                            Photos de vos réalisations
+                            <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel — jusqu'à 5 photos)</span>
+                        </p>
+                        <p style="font-size:.75rem; color:var(--muted); margin-bottom:.875rem; line-height:1.6;">
+                            JPEG, PNG ou WebP · 5 Mo max par photo. Ces images seront visibles sur votre profil.
+                        </p>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:.625rem;">
+                            {% for i in "12345" %}
+                            <label style="
+                                display:flex; flex-direction:column; align-items:center; justify-content:center;
+                                border: 1.5px dashed rgba(0,0,0,.15); border-radius:.5rem;
+                                padding:.875rem .5rem; cursor:pointer; gap:.375rem;
+                                font-size:.7rem; color:var(--muted); text-align:center;
+                                transition: border-color .15s, background .15s;
+                                background: rgba(255,255,255,.6);
+                            " onmouseover="this.style.borderColor='rgba(181,68,26,.4)'; this.style.background='rgba(181,68,26,.03)'"
+                               onmouseout="this.style.borderColor='rgba(0,0,0,.15)'; this.style.background='rgba(255,255,255,.6)'">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span id="label-image-{{ i }}">Photo {{ i }}</span>
+                                <input type="file" name="image_{{ i }}" accept="image/jpeg,image/png,image/webp"
+                                       style="display:none;" id="input-image-{{ i }}"
+                                       onchange="updateImageLabel({{ i }}, this)">
+                            </label>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div style="margin: 1.25rem 0;">
@@ -613,6 +643,16 @@
     }
 
     function goNext(n) { if (validateStep(n)) goTo(n + 1); }
+
+    function updateImageLabel(i, input) {
+        var label = document.getElementById('label-image-' + i);
+        if (input.files && input.files[0]) {
+            label.textContent = input.files[0].name.length > 16
+                ? input.files[0].name.substring(0, 14) + '…'
+                : input.files[0].name;
+            label.style.color = 'var(--terra)';
+        }
+    }
 </script>
 <script>
 (function() {
