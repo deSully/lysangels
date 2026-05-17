@@ -279,7 +279,7 @@
                 {% for service in service_types %}
                 <a href="?service_types={{ service.id }}{% if search_query %}&search={{ search_query }}{% endif %}"
                    class="chip {% if service.id|stringformat:'s' in selected_service_types %}active{% endif %}">
-                    {% if service.icon %}{{ service.icon }} {% endif %}{{ service.name }}
+                    {{ service.name }}
                 </a>
                 {% endfor %}
             </div>
