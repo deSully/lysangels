@@ -184,10 +184,8 @@ def vendor_signup(request):
                     instagram=instagram,
                     facebook=facebook,
                 )
-                for i in range(1, 6):
-                    img = request.FILES.get(f'image_{i}')
-                    if img:
-                        create_kwargs[f'image_{i}'] = img
+                for i, img in enumerate(request.FILES.getlist('images')[:5], start=1):
+                    create_kwargs[f'image_{i}'] = img
                 application = VendorApplication.objects.create(**create_kwargs)
                 application.service_types.set(service_type_ids)
                 country_ids = [g['country_id'] for g in groups if g.get('country_id')]
