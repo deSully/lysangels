@@ -45,6 +45,9 @@ urlpatterns = [
     path('admin/applications/', admin_views.application_list, name='admin_application_list'),
     path('admin/applications/<int:pk>/', admin_views.application_detail, name='admin_application_detail'),
     path('admin/applications/<int:pk>/create-profile/', admin_views.application_create_profile, name='admin_application_create_profile'),
+    path('admin/applications/<int:pk>/edit/', admin_views.application_edit, name='admin_application_edit'),
+    path('admin/applications/<int:pk>/delete-image/<int:n>/', admin_views.application_delete_image, name='admin_application_delete_image'),
+    path('admin/applications/<int:pk>/add-image/', admin_views.application_add_image, name='admin_application_add_image'),
 
     # Messages de contact
     path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),
@@ -57,4 +60,6 @@ urlpatterns = [
     path('admin/vendors/<int:pk>/edit/', admin_views.vendor_edit, name='admin_vendor_edit'),
     path('admin/vendors/<int:pk>/toggle-active/', admin_views.vendor_toggle_active, name='admin_vendor_toggle_active'),
     path('admin/vendors/<int:vendor_id>/delete-image/<int:image_id>/', admin_views.vendor_delete_image, name='admin_vendor_delete_image'),
+    path('admin/vendors/<int:vendor_id>/add-image/', admin_views.vendor_add_image, name='admin_vendor_add_image'),
+    path('admin/vendors/<int:vendor_id>/set-cover-image/<int:image_id>/', admin_views.vendor_set_cover_image, name='admin_vendor_set_cover_image'),
 ]
