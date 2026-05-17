@@ -18,13 +18,9 @@
    ============================================ */
 
 :root {
-  /* PRIMARY - Identité forte */
+  /* PRIMARY — héritage palette violet (encore référencé dans components.css) */
   --color-lily-purple: #8B5CF6;
   --color-purple-dark: #7C3AED;
-  --color-purple-light: #A78BFA;
-  --color-purple-50: rgba(139, 92, 246, 0.05);
-  --color-purple-100: rgba(139, 92, 246, 0.1);
-  --color-purple-200: rgba(139, 92, 246, 0.2);
 
   /* ACCENT - Élégance & Premium */
   --color-lily-gold: #D4AF37;

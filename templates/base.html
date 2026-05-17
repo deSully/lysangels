@@ -70,17 +70,10 @@
 
     <!-- CSS Global — v3.0 : Inter partout SAUF Playfair Display protégé -->
     <style>
-        /*
-         * v3.0 FIX : On applique Inter sur tout SAUF les éléments
-         * qui utilisent explicitement Playfair Display (titres hero,
-         * stats, citations). Le sélecteur :not() protège ces éléments.
-         */
-        *:not([style*="Playfair"]):not(.hero-title):not(.stat-number):not(.stat-num):not(.step-number):not(.testimonial-quote):not(.font-display) {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+        /* Typographie — Inter par défaut, Playfair Display sur les éléments display */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
-
-        /* Playfair Display explicitement restauré sur les éléments display */
-        [style*="Playfair"],
         .hero-title,
         .stat-number,
         .stat-num,
@@ -88,7 +81,7 @@
         .testimonial-quote,
         .font-display,
         .font-display * {
-            font-family: 'Playfair Display', Georgia, serif !important;
+            font-family: 'Playfair Display', Georgia, serif;
         }
 
         /* Hiérarchie typographique premium - Style Inter */
@@ -143,6 +136,8 @@
             --ivory: #FAF7F0;
             --night: #110D06;
             --muted: #7A6E63;
+            --sand: #E8D2B0;
+            --border: rgba(0,0,0,.08);
         }
 
         /* User menu button hover */
