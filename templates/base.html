@@ -569,5 +569,31 @@
     {% if UMAMI_WEBSITE_ID %}
     <script defer src="https://umami.lysangels.com/script.js" data-website-id="{{ UMAMI_WEBSITE_ID }}"></script>
     {% endif %}
+
+    <script>
+(function() {
+  var rotators = document.querySelectorAll('.ad-rotator');
+  rotators.forEach(function(rotator) {
+    var slides = rotator.querySelectorAll('.ad-slide');
+    if (slides.length < 2) return;
+    var current = 0;
+    setInterval(function() {
+      slides[current].style.opacity = '0';
+      var prev = current;
+      current = (current + 1) % slides.length;
+      setTimeout(function() {
+        slides[prev].style.display = 'none';
+        slides[current].style.display = 'block';
+        slides[current].style.opacity = '0';
+        setTimeout(function() { slides[current].style.opacity = '1'; }, 20);
+      }, 400);
+    }, 15000);
+    slides.forEach(function(s, i) {
+      s.style.transition = 'opacity 0.4s ease';
+      if (i > 0) s.style.display = 'none';
+    });
+  });
+})();
+</script>
 </body>
 </html>
