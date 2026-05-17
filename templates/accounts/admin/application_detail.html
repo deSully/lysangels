@@ -88,6 +88,42 @@
       </div>
     </div>
 
+    <!-- Portfolio -->
+    {% if application.image_1 or application.image_2 or application.image_3 or application.image_4 or application.image_5 %}
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Photos portfolio</span></div>
+      <div class="a-card-body">
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap:.5rem;">
+          {% if application.image_1 %}
+          <a href="{{ application.image_1.url }}" target="_blank">
+            <img src="{{ application.image_1.url }}" alt="Photo 1" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+          </a>
+          {% endif %}
+          {% if application.image_2 %}
+          <a href="{{ application.image_2.url }}" target="_blank">
+            <img src="{{ application.image_2.url }}" alt="Photo 2" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+          </a>
+          {% endif %}
+          {% if application.image_3 %}
+          <a href="{{ application.image_3.url }}" target="_blank">
+            <img src="{{ application.image_3.url }}" alt="Photo 3" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+          </a>
+          {% endif %}
+          {% if application.image_4 %}
+          <a href="{{ application.image_4.url }}" target="_blank">
+            <img src="{{ application.image_4.url }}" alt="Photo 4" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+          </a>
+          {% endif %}
+          {% if application.image_5 %}
+          <a href="{{ application.image_5.url }}" target="_blank">
+            <img src="{{ application.image_5.url }}" alt="Photo 5" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
   </div>
 
   <!-- Colonne droite -->
@@ -130,14 +166,27 @@
     {% if application.status == 'approved' %}
     <div class="a-card" style="border-color:rgba(17,13,6,.15); background:rgba(17,13,6,.03);">
       <div class="a-card-body">
+        {% if application.vendor_profile %}
+        <p style="font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--night); margin-bottom:.375rem;">Profil créé</p>
+        <p style="font-size:.775rem; color:var(--muted); margin-bottom:1rem; line-height:1.65;">
+          Le profil prestataire a déjà été créé depuis cette candidature.
+        </p>
+        <a href="{% url 'accounts:admin_vendor_detail' pk=application.vendor_profile.pk %}"
+           class="a-btn a-btn-ghost" style="width:100%; justify-content:center;">
+          Voir le profil →
+        </a>
+        {% else %}
         <p style="font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--night); margin-bottom:.375rem;">Approuvé</p>
         <p style="font-size:.775rem; color:var(--muted); margin-bottom:1rem; line-height:1.65;">
-          Créez maintenant le profil prestataire à partir de cette demande.
+          Crée le profil prestataire depuis cette candidature. Les photos portfolio seront transférées automatiquement.
         </p>
-        <a href="{% url 'accounts:admin_vendor_create' %}?from_application={{ application.pk }}&name={{ application.name|urlencode }}&whatsapp={{ application.whatsapp|urlencode }}&address={{ application.address|urlencode }}&description={{ application.description|urlencode }}&instagram={{ application.instagram|urlencode }}&facebook={{ application.facebook|urlencode }}"
-           class="a-btn a-btn-primary" style="width:100%; justify-content:center;">
-          Créer le profil →
-        </a>
+        <form method="post" action="{% url 'accounts:admin_application_create_profile' pk=application.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="a-btn a-btn-primary" style="width:100%; justify-content:center;">
+            Créer le profil →
+          </button>
+        </form>
+        {% endif %}
       </div>
     </div>
     {% endif %}
