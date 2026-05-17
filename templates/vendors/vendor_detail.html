@@ -799,4 +799,23 @@ const heroImg = document.getElementById('heroImg');
 if (heroImg) heroImg.addEventListener('load', () => heroImg.classList.add('loaded'));
 </script>
 
+{% if ads.vendor_detail %}
+<div style="max-width:900px; margin:2rem auto; padding:0 1rem; text-align:center;">
+  <div class="ad-rotator" role="region" aria-label="Publicités">
+    {% for ad in ads.vendor_detail %}
+    <div class="ad-slide" {% if not forloop.first %}style="display:none; opacity:0;"{% endif %}>
+      <span style="display:block; font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:.375rem;">Sponsorisé</span>
+      {% if ad.link_url %}
+      <a href="{{ ad.link_url }}" target="_blank" rel="noopener sponsored">
+        <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+      </a>
+      {% else %}
+      <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 {% endblock %}

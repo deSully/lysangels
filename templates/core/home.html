@@ -359,6 +359,27 @@
     </div>
 </section>
 
+{% if ads.hero %}
+<div style="background:var(--ivory); padding:.75rem 0;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="ad-rotator" role="region" aria-label="Publicités" style="text-align:center;">
+      {% for ad in ads.hero %}
+      <div class="ad-slide" {% if not forloop.first %}style="display:none; opacity:0;"{% endif %}>
+        <span style="display:block; font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:.375rem;">Sponsorisé</span>
+        {% if ad.link_url %}
+        <a href="{{ ad.link_url }}" target="_blank" rel="noopener sponsored">
+          <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+        </a>
+        {% else %}
+        <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <!-- Bandeau prestataire -->
 <div style="background:var(--night); padding:.6rem 1.5rem; text-align:center; display:flex; align-items:center; justify-content:center; gap:.625rem; flex-wrap:wrap;">
     <span style="color:rgba(255,255,255,.5); font-size:.8125rem;">Vous êtes prestataire ?</span>
@@ -487,6 +508,27 @@
 
     </div>
 </section>
+{% endif %}
+
+{% if ads.between_sections %}
+<div style="background:var(--lily-cream, #FDFCFB); padding:.75rem 0; border-top:1px solid rgba(0,0,0,.05); border-bottom:1px solid rgba(0,0,0,.05);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="ad-rotator" role="region" aria-label="Publicités" style="text-align:center;">
+      {% for ad in ads.between_sections %}
+      <div class="ad-slide" {% if not forloop.first %}style="display:none; opacity:0;"{% endif %}>
+        <span style="display:block; font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:.375rem;">Sponsorisé</span>
+        {% if ad.link_url %}
+        <a href="{{ ad.link_url }}" target="_blank" rel="noopener sponsored">
+          <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+        </a>
+        {% else %}
+        <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}" style="max-width:100%; height:auto; border-radius:4px;">
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 {% endif %}
 
 <!-- ════════════════════════
