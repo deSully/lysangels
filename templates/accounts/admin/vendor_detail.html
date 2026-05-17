@@ -52,6 +52,12 @@
           <span class="a-field-value">{{ vendor.instagram }}</span>
         </div>
         {% endif %}
+        {% if vendor.address %}
+        <div class="a-field">
+          <span class="a-field-label">Adresse / Quartier</span>
+          <span class="a-field-value">{{ vendor.address }}</span>
+        </div>
+        {% endif %}
         {% if vendor.description %}
         <div class="a-field" style="grid-column:span 2; padding-top:.875rem; border-top:1px solid rgba(0,0,0,.05);">
           <span class="a-field-label">Description</span>

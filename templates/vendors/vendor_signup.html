@@ -415,6 +415,11 @@
                     </div>
 
                     <div class="form-group" style="margin-top:1.25rem;">
+                        <label class="form-label">Adresse / Quartier</label>
+                        <input type="text" name="address" value="{{ request.POST.address|default:'' }}" placeholder="Ex : Quartier Agbalépédogan, Lomé">
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Zones d'intervention<span class="form-required">*</span></label>
                         <div id="location-container"></div>
                         <button type="button" id="add-location-group">+ Ajouter un pays</button>

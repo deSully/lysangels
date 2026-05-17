@@ -146,6 +146,7 @@ def vendor_signup(request):
             name = request.POST.get('name', '').strip()
             email = request.POST.get('email', '').strip()
             whatsapp = request.POST.get('whatsapp', '').strip()
+            address = request.POST.get('address', '').strip()
             description = request.POST.get('description', '').strip()
             instagram = request.POST.get('instagram', '').strip()
             facebook = request.POST.get('facebook', '').strip()
@@ -178,6 +179,7 @@ def vendor_signup(request):
                     name=name,
                     email=email,
                     whatsapp=whatsapp,
+                    address=address,
                     description=description,
                     instagram=instagram,
                     facebook=facebook,

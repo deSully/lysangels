@@ -422,6 +422,7 @@ def vendor_create(request):
             description=request.POST.get('description', ''),
             website=request.POST.get('website', ''),
             whatsapp=request.POST.get('whatsapp', ''),
+            address=request.POST.get('address', ''),
             facebook=request.POST.get('facebook', ''),
             instagram=request.POST.get('instagram', ''),
             is_active=request.POST.get('is_active') == 'on',
@@ -463,6 +464,7 @@ def vendor_edit(request, pk):
         vendor.description = request.POST.get('description', '')
         vendor.website = request.POST.get('website', '')
         vendor.whatsapp = request.POST.get('whatsapp', '')
+        vendor.address = request.POST.get('address', '')
         vendor.facebook = request.POST.get('facebook', '')
         vendor.instagram = request.POST.get('instagram', '')
         vendor.is_active = request.POST.get('is_active') == 'on'

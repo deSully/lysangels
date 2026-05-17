@@ -185,6 +185,11 @@ class VendorApplication(models.Model):
         verbose_name='Types de prestation',
         blank=True,
     )
+    address = models.CharField(
+        max_length=300,
+        blank=True,
+        verbose_name='Adresse / Quartier (optionnel)',
+    )
     description = models.TextField(verbose_name='Description de l\'activité')
     instagram = models.CharField(max_length=200, blank=True, verbose_name='Instagram')
     facebook = models.CharField(max_length=200, blank=True, verbose_name='Facebook')
