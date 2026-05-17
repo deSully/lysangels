@@ -58,6 +58,16 @@
           <span class="a-field-value">{{ vendor.address }}</span>
         </div>
         {% endif %}
+        {% if vendor.min_budget or vendor.max_budget %}
+        <div class="a-field">
+          <span class="a-field-label">Fourchette de prix</span>
+          <span class="a-field-value">
+            {% if vendor.min_budget %}{{ vendor.min_budget|floatformat:0 }} FCFA{% endif %}
+            {% if vendor.min_budget and vendor.max_budget %} – {% endif %}
+            {% if vendor.max_budget %}{{ vendor.max_budget|floatformat:0 }} FCFA{% endif %}
+          </span>
+        </div>
+        {% endif %}
         {% if vendor.description %}
         <div class="a-field" style="grid-column:span 2; padding-top:.875rem; border-top:1px solid rgba(0,0,0,.05);">
           <span class="a-field-label">Description</span>
