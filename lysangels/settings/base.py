@@ -2,6 +2,7 @@
 Common settings shared between dev and production
 """
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -17,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third party
     'easy_thumbnails',
+    'hcaptcha',
     # LysAngels apps
     'apps.accounts',
     'apps.vendors',
@@ -129,4 +131,8 @@ CACHES = {
         'LOCATION': 'lysangels-cache',
     }
 }
+
+# hCaptcha anti-bot
+HCAPTCHA_SITEKEY = config('HCAPTCHA_SITEKEY')
+HCAPTCHA_SECRET = config('HCAPTCHA_SECRET')
 
