@@ -109,6 +109,48 @@
     </div>
   </div>
 
+  <!-- Galerie images (édition uniquement) -->
+  {% if vendor %}
+  <div class="a-card" style="margin-bottom:1rem;">
+    <div class="a-card-head"><span class="a-card-label">Photos</span></div>
+    <div class="a-card-body">
+      <input type="hidden" id="vendor-csrf" value="{{ csrf_token }}">
+
+      {% if vendor.images.exists %}
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(110px,1fr)); gap:.625rem; margin-bottom:1rem;">
+        {% for image in vendor.images.all %}
+        <div style="position:relative;">
+          <img src="{{ image.image.url }}" alt=""
+               style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:2px; border:2px solid {% if image.is_cover %}var(--terra){% else %}rgba(0,0,0,.08){% endif %};">
+          <div style="position:absolute; top:4px; right:4px; display:flex; gap:3px;">
+            <button type="button" onclick="setCoverImg({{ vendor.pk }}, {{ image.pk }})"
+                    title="Définir comme couverture"
+                    style="width:1.375rem; height:1.375rem; background:rgba(17,13,6,.65); border:none; border-radius:2px; cursor:pointer; color:{% if image.is_cover %}#f0c040{% else %}rgba(250,247,240,.6){% endif %}; font-size:.7rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='rgba(17,13,6,.9)'" onmouseout="this.style.background='rgba(17,13,6,.65)'">★</button>
+            <button type="button" onclick="deleteVendorImg({{ vendor.pk }}, {{ image.pk }})"
+                    style="width:1.375rem; height:1.375rem; background:rgba(17,13,6,.65); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.8); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.65)'">✕</button>
+          </div>
+          {% if image.is_cover %}
+          <span style="position:absolute; bottom:4px; left:4px; font-size:.55rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; background:var(--terra); color:#fff; padding:.1rem .35rem; border-radius:2px;">Cover</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div>
+        <label class="a-field-label">Ajouter des photos</label>
+        <p style="font-size:.72rem; color:var(--muted); margin-bottom:.5rem;">JPEG, PNG ou WebP · 5 Mo max · sélection multiple possible</p>
+        <input type="file" id="vendor-image-input" accept="image/jpeg,image/png,image/webp" multiple
+               style="font-size:.8rem; color:var(--night); font-family:inherit;"
+               onchange="uploadVendorImgs({{ vendor.pk }}, this)">
+        <p id="upload-status" style="font-size:.75rem; color:var(--muted); margin-top:.375rem; display:none;">Upload en cours…</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <div style="display:flex; gap:.625rem;">
     <button type="submit" class="a-btn a-btn-primary">Enregistrer</button>
     <a href="{% if vendor %}{% url 'accounts:admin_vendor_detail' vendor.pk %}{% else %}{% url 'accounts:admin_vendor_list' %}{% endif %}"
@@ -219,5 +261,48 @@
     initial.forEach(function(g) { addGroup(g.country_id, g.city_ids); });
     if (!initial.length) addGroup(null, []);
 })();
+
+function getVendorCsrf() {
+    var el = document.getElementById('vendor-csrf');
+    return el ? el.value : document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+function deleteVendorImg(vendorId, imageId) {
+    if (!confirm('Supprimer cette image ?')) return;
+    fetch('/accounts/admin/vendors/' + vendorId + '/delete-image/' + imageId + '/', {
+        method: 'POST',
+        headers: {'X-CSRFToken': getVendorCsrf()}
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+        else alert('Erreur lors de la suppression.');
+    });
+}
+
+function setCoverImg(vendorId, imageId) {
+    fetch('/accounts/admin/vendors/' + vendorId + '/set-cover-image/' + imageId + '/', {
+        method: 'POST',
+        headers: {'X-CSRFToken': getVendorCsrf()}
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+        else alert('Erreur lors de la mise à jour.');
+    });
+}
+
+function uploadVendorImgs(vendorId, input) {
+    var files = Array.from(input.files);
+    if (!files.length) return;
+    var status = document.getElementById('upload-status');
+    status.style.display = 'block';
+    var csrf = getVendorCsrf();
+    var promises = files.map(function(file) {
+        var form = new FormData();
+        form.append('image', file);
+        return fetch('/accounts/admin/vendors/' + vendorId + '/add-image/', {
+            method: 'POST', body: form,
+            headers: {'X-CSRFToken': csrf}
+        }).then(function(r) { return r.json(); });
+    });
+    Promise.all(promises).then(function() { location.reload(); });
+}
 </script>
 {% endblock %}
