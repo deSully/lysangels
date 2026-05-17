@@ -259,6 +259,19 @@
 
   </div>
 </div>
+
+<!-- Modale confirmation suppression image -->
+<div id="delete-img-modal" style="display:none; position:fixed; inset:0; background:rgba(17,13,6,.45); z-index:100; align-items:center; justify-content:center; padding:1rem;">
+  <div style="background:#fff; border-radius:3px; border:1px solid rgba(0,0,0,.09); padding:1.5rem; width:100%; max-width:340px; box-shadow:0 8px 32px rgba(17,13,6,.12);">
+    <p style="font-size:.875rem; font-weight:600; color:var(--night); margin:0 0 .375rem;">Supprimer cette image ?</p>
+    <p style="font-size:.775rem; color:var(--muted); margin:0 0 1.25rem; line-height:1.6;">Cette action est irréversible.</p>
+    <div style="display:flex; justify-content:flex-end; gap:.5rem;">
+      <button type="button" onclick="closeDeleteImgModal()" class="a-btn a-btn-ghost">Annuler</button>
+      <button type="button" id="delete-img-confirm" class="a-btn a-btn-danger">Supprimer</button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block admin_js %}
@@ -267,14 +280,35 @@ function getCsrfApp() {
     return document.getElementById('app-csrf').value;
 }
 
+var _deleteImgCallback = null;
+
+function showDeleteImgModal(callback) {
+    _deleteImgCallback = callback;
+    var m = document.getElementById('delete-img-modal');
+    m.style.display = 'flex';
+}
+function closeDeleteImgModal() {
+    document.getElementById('delete-img-modal').style.display = 'none';
+    _deleteImgCallback = null;
+}
+document.getElementById('delete-img-confirm').addEventListener('click', function() {
+    var cb = _deleteImgCallback;
+    closeDeleteImgModal();
+    if (cb) cb();
+});
+document.getElementById('delete-img-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteImgModal();
+});
+
 function deleteAppImage(pk, n) {
-    if (!confirm('Supprimer cette image ?')) return;
-    fetch('/accounts/admin/applications/' + pk + '/delete-image/' + n + '/', {
-        method: 'POST',
-        headers: {'X-CSRFToken': getCsrfApp()}
-    }).then(r => r.json()).then(data => {
-        if (data.success) location.reload();
-        else alert('Erreur lors de la suppression.');
+    showDeleteImgModal(function() {
+        fetch('/accounts/admin/applications/' + pk + '/delete-image/' + n + '/', {
+            method: 'POST',
+            headers: {'X-CSRFToken': getCsrfApp()}
+        }).then(r => r.json()).then(data => {
+            if (data.success) location.reload();
+            else alert('Erreur lors de la suppression.');
+        });
     });
 }
 
