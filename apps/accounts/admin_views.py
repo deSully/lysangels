@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from apps.core.models import City, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
 from apps.projects.models import EventType, Project, ProjectNote
+from apps.ads.models import Advertisement
 
 
 def _admin_build_cities_json():
@@ -777,3 +778,114 @@ def vendor_delete_image(request, vendor_id, image_id):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=400)
     return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+
+
+# ── PUBLICITÉS ────────────────────────────────────────────────
+
+@admin_required
+def ad_list(request):
+    ads = Advertisement.objects.all().order_by('zone', '-created_at')
+    return render(request, 'accounts/admin/ad_list.html', {'ads': ads})
+
+
+@admin_required
+def ad_create(request):
+    if request.method == 'POST':
+        zone = request.POST.get('zone')
+        link_url = request.POST.get('link_url', '').strip()
+        alt_text = request.POST.get('alt_text', '').strip()
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        is_active = request.POST.get('is_active') == 'on'
+        image = request.FILES.get('image')
+
+        if not all([zone, alt_text, start_date, end_date, image]):
+            messages.error(request, 'Tous les champs obligatoires doivent être remplis.')
+            return render(request, 'accounts/admin/ad_form.html', {
+                'zone_choices': Advertisement.ZONE_CHOICES,
+                'form_data': request.POST,
+            })
+
+        from datetime import date as date_type
+        try:
+            sd = date_type.fromisoformat(start_date)
+            ed = date_type.fromisoformat(end_date)
+            if ed < sd:
+                messages.error(request, 'La date de fin doit être postérieure à la date de début.')
+                return render(request, 'accounts/admin/ad_form.html', {
+                    'zone_choices': Advertisement.ZONE_CHOICES,
+                    'form_data': request.POST,
+                })
+        except ValueError:
+            messages.error(request, 'Format de date invalide.')
+            return render(request, 'accounts/admin/ad_form.html', {
+                'zone_choices': Advertisement.ZONE_CHOICES,
+                'form_data': request.POST,
+            })
+
+        Advertisement.objects.create(
+            zone=zone,
+            image=image,
+            link_url=link_url,
+            alt_text=alt_text,
+            start_date=start_date,
+            end_date=end_date,
+            is_active=is_active,
+        )
+        messages.success(request, 'Publicité créée avec succès.')
+        return redirect('accounts:admin_ad_list')
+
+    return render(request, 'accounts/admin/ad_form.html', {
+        'zone_choices': Advertisement.ZONE_CHOICES,
+    })
+
+
+@admin_required
+def ad_edit(request, pk):
+    ad = get_object_or_404(Advertisement, pk=pk)
+    if request.method == 'POST':
+        ad.zone = request.POST.get('zone')
+        ad.link_url = request.POST.get('link_url', '').strip()
+        ad.alt_text = request.POST.get('alt_text', '').strip()
+        ad.start_date = request.POST.get('start_date')
+        ad.end_date = request.POST.get('end_date')
+        ad.is_active = request.POST.get('is_active') == 'on'
+        if request.FILES.get('image'):
+            if ad.image:
+                ad.image.delete(save=False)
+            ad.image = request.FILES['image']
+        from datetime import date as date_type
+        try:
+            sd = date_type.fromisoformat(str(ad.start_date))
+            ed = date_type.fromisoformat(str(ad.end_date))
+            if ed < sd:
+                messages.error(request, 'La date de fin doit être postérieure à la date de début.')
+                return render(request, 'accounts/admin/ad_form.html', {
+                    'ad': ad,
+                    'zone_choices': Advertisement.ZONE_CHOICES,
+                })
+        except (ValueError, TypeError):
+            messages.error(request, 'Format de date invalide.')
+            return render(request, 'accounts/admin/ad_form.html', {
+                'ad': ad,
+                'zone_choices': Advertisement.ZONE_CHOICES,
+            })
+        ad.save()
+        messages.success(request, 'Publicité mise à jour.')
+        return redirect('accounts:admin_ad_list')
+
+    return render(request, 'accounts/admin/ad_form.html', {
+        'ad': ad,
+        'zone_choices': Advertisement.ZONE_CHOICES,
+    })
+
+
+@admin_required
+def ad_delete(request, pk):
+    ad = get_object_or_404(Advertisement, pk=pk)
+    if request.method == 'POST':
+        ad.image.delete(save=False)
+        ad.delete()
+        messages.success(request, 'Publicité supprimée.')
+        return redirect('accounts:admin_ad_list')
+    return render(request, 'accounts/admin/ad_list.html', {'ads': Advertisement.objects.all()})

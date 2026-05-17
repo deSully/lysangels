@@ -62,4 +62,10 @@ urlpatterns = [
     path('admin/vendors/<int:vendor_id>/delete-image/<int:image_id>/', admin_views.vendor_delete_image, name='admin_vendor_delete_image'),
     path('admin/vendors/<int:vendor_id>/add-image/', admin_views.vendor_add_image, name='admin_vendor_add_image'),
     path('admin/vendors/<int:vendor_id>/set-cover-image/<int:image_id>/', admin_views.vendor_set_cover_image, name='admin_vendor_set_cover_image'),
+
+    # Publicités
+    path('admin/ads/', admin_views.ad_list, name='admin_ad_list'),
+    path('admin/ads/create/', admin_views.ad_create, name='admin_ad_create'),
+    path('admin/ads/<int:pk>/edit/', admin_views.ad_edit, name='admin_ad_edit'),
+    path('admin/ads/<int:pk>/delete/', admin_views.ad_delete, name='admin_ad_delete'),
 ]
