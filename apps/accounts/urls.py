@@ -44,6 +44,7 @@ urlpatterns = [
     # Gestion des candidatures prestataires
     path('admin/applications/', admin_views.application_list, name='admin_application_list'),
     path('admin/applications/<int:pk>/', admin_views.application_detail, name='admin_application_detail'),
+    path('admin/applications/<int:pk>/create-profile/', admin_views.application_create_profile, name='admin_application_create_profile'),
 
     # Messages de contact
     path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),

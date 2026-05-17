@@ -547,7 +547,7 @@ def application_detail(request, pk):
         if new_status in valid_statuses:
             application.status = new_status
             application.admin_notes = admin_notes
-            application.save()
+            application.save(update_fields=['status', 'admin_notes', 'updated_at'])
             messages.success(request, 'Candidature mise à jour.')
         else:
             messages.error(request, 'Statut invalide.')
@@ -555,6 +555,59 @@ def application_detail(request, pk):
     return render(request, 'accounts/admin/application_detail.html', {
         'application': application,
     })
+
+
+@admin_required
+def application_create_profile(request, pk):
+    """Crée un VendorProfile depuis une candidature approuvée et transfère les images"""
+    import os
+    from django.core.files.base import ContentFile
+
+    if request.method != 'POST':
+        return redirect('accounts:admin_application_detail', pk=pk)
+
+    application = get_object_or_404(
+        VendorApplication.objects.prefetch_related(
+            'service_types', 'countries', 'cities'
+        ),
+        pk=pk,
+    )
+
+    if application.vendor_profile_id:
+        messages.info(request, 'Un profil existe déjà pour cette candidature.')
+        return redirect('accounts:admin_vendor_detail', pk=application.vendor_profile_id)
+
+    vendor = VendorProfile.objects.create(
+        business_name=application.name,
+        description=application.description,
+        whatsapp=application.whatsapp,
+        address=application.address,
+        instagram=application.instagram,
+        facebook=application.facebook,
+        is_active=False,
+    )
+    vendor.service_types.set(application.service_types.all())
+    vendor.countries.set(application.countries.all())
+    vendor.cities.set(application.cities.all())
+
+    for i in range(1, 6):
+        img_field = getattr(application, f'image_{i}')
+        if img_field:
+            try:
+                img_field.open('rb')
+                content = img_field.read()
+                img_field.close()
+                vi = VendorImage(vendor=vendor)
+                vi.image = ContentFile(content, name=os.path.basename(img_field.name))
+                vi.save()
+            except Exception:
+                pass
+
+    application.vendor_profile = vendor
+    application.save(update_fields=['vendor_profile', 'updated_at'])
+
+    messages.success(request, f'Profil de {application.name} créé avec succès. Il est inactif — activez-le quand il est prêt.')
+    return redirect('accounts:admin_vendor_detail', pk=vendor.pk)
 
 
 # ========== MESSAGES DE CONTACT ==========
