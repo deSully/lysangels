@@ -420,6 +420,13 @@ a.crow:hover .crow-val { color: var(--ivory); }
                 </div>
             </div>
 
+            <div style="margin: 1.25rem 0;">
+                {{ form.h_captcha }}
+                {% if form.h_captcha.errors %}
+                <p class="field-error" style="margin-top:.5rem;">{{ form.h_captcha.errors|first }}</p>
+                {% endif %}
+            </div>
+
             <button type="submit" class="btn-submit-contact">
                 <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                 Envoyer le message
