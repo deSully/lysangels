@@ -83,7 +83,15 @@
 
     <!-- Portfolio -->
     <div class="a-card">
-      <div class="a-card-head"><span class="a-card-label">Photos portfolio</span></div>
+      <div class="a-card-head">
+        <span class="a-card-label">Photos portfolio</span>
+        {% if not application.image_1 or not application.image_2 or not application.image_3 or not application.image_4 or not application.image_5 %}
+        <label style="display:inline-flex; align-items:center; gap:.375rem; padding:.25rem .875rem; background:rgba(181,68,26,.08); color:var(--terra); border:1px solid rgba(181,68,26,.2); border-radius:.25rem; font-size:.72rem; font-weight:600; cursor:pointer; letter-spacing:.03em;">
+          + Ajouter une photo
+          <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+        </label>
+        {% endif %}
+      </div>
       <div class="a-card-body">
         <input type="hidden" id="app-csrf" value="{{ csrf_token }}">
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap:.5rem;">
