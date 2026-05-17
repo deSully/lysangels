@@ -421,10 +421,7 @@ a.crow:hover .crow-val { color: var(--ivory); }
             </div>
 
             <div style="margin: 1.25rem 0;">
-                {{ form.h_captcha }}
-                {% if form.h_captcha.errors %}
-                <p class="field-error" style="margin-top:.5rem;">{{ form.h_captcha.errors|first }}</p>
-                {% endif %}
+                <div class="cf-turnstile" data-sitekey="{{ turnstile_sitekey }}"></div>
             </div>
 
             <button type="submit" class="btn-submit-contact">

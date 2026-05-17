@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 from apps.vendors.models import VendorProfile
 from apps.core.models import TermsOfService, ContactMessage
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.forms import ContactForm
+from apps.core.turnstile import verify_turnstile
 from django.contrib import messages
 
 
@@ -24,14 +26,22 @@ def about(request):
 
 def contact(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.')
-            return redirect('core:contact')
+        token = request.POST.get('cf-turnstile-response', '')
+        if not verify_turnstile(token):
+            messages.error(request, "Veuillez confirmer que vous n'êtes pas un robot.")
+            form = ContactForm(request.POST)
+        else:
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.')
+                return redirect('core:contact')
     else:
         form = ContactForm()
-    return render(request, 'core/contact.html', {'form': form})
+    return render(request, 'core/contact.html', {
+        'form': form,
+        'turnstile_sitekey': settings.TURNSTILE_SITEKEY,
+    })
 
 
 def how_it_works(request):

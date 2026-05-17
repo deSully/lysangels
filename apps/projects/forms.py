@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from apps.projects.models import Project, EventType
 from apps.vendors.models import ServiceType
 from apps.core.models import Country, City
-from hcaptcha.fields import hCaptchaField
 import datetime
 
 INPUT_CLASS = 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lily-purple focus:border-transparent transition'
@@ -95,8 +94,6 @@ class ProjectCreateForm(forms.ModelForm):
         required=False,
         widget=forms.CheckboxSelectMultiple()
     )
-    h_captcha = hCaptchaField(label='')
-
     class Meta:
         model = Project
         fields = [

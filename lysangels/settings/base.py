@@ -18,7 +18,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third party
     'easy_thumbnails',
-    'hcaptcha',
     # LysAngels apps
     'apps.accounts',
     'apps.vendors',
@@ -132,7 +131,7 @@ CACHES = {
     }
 }
 
-# hCaptcha anti-bot
-HCAPTCHA_SITEKEY = config('HCAPTCHA_SITEKEY')
-HCAPTCHA_SECRET = config('HCAPTCHA_SECRET')
+# Cloudflare Turnstile anti-bot
+TURNSTILE_SITEKEY = config('TURNSTILE_SITEKEY')
+TURNSTILE_SECRET  = config('TURNSTILE_SECRET')
 

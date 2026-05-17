@@ -4,9 +4,11 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.conf import settings
 from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.models import City, Country
+from apps.core.turnstile import verify_turnstile
 from .tasks import send_application_confirmation
 
 
@@ -136,59 +138,64 @@ def vendor_signup(request):
     locations_json_val = '[]'
 
     if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        email = request.POST.get('email', '').strip()
-        whatsapp = request.POST.get('whatsapp', '').strip()
-        locations_json_val = request.POST.get('locations_json', '[]')
-        description = request.POST.get('description', '').strip()
-        instagram = request.POST.get('instagram', '').strip()
-        facebook = request.POST.get('facebook', '').strip()
-        service_type_ids = request.POST.getlist('service_types')
-
-        try:
-            groups = json.loads(locations_json_val)
-        except (ValueError, TypeError):
-            groups = []
-
-        errors = []
-        if not name:
-            errors.append('Le nom est requis.')
-        if not email:
-            errors.append("L'email est requis.")
-        if not whatsapp:
-            errors.append('Le numéro WhatsApp est requis.')
-        if not groups or not any(g.get('city_ids') for g in groups):
-            errors.append('Sélectionne au moins un pays et une ville.')
-        if not description:
-            errors.append("La description de l'activité est requise.")
-        if not service_type_ids:
-            errors.append('Veuillez sélectionner au moins un type de prestation.')
-
-        if errors:
-            for error in errors:
-                messages.error(request, error)
+        locations_json_val = request.POST.get('locations_json', '[]')  # lu avant le check pour le re-render
+        token = request.POST.get('cf-turnstile-response', '')
+        if not verify_turnstile(token):
+            messages.error(request, "Veuillez confirmer que vous n'êtes pas un robot.")
         else:
-            application = VendorApplication.objects.create(
-                name=name,
-                email=email,
-                whatsapp=whatsapp,
-                description=description,
-                instagram=instagram,
-                facebook=facebook,
-            )
-            application.service_types.set(service_type_ids)
-            country_ids = [g['country_id'] for g in groups if g.get('country_id')]
-            city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
-            application.countries.set(country_ids)
-            application.cities.set(city_ids)
-            send_application_confirmation(name, email)
-            return render(request, 'vendors/vendor_signup_success.html', {'name': name})
+            name = request.POST.get('name', '').strip()
+            email = request.POST.get('email', '').strip()
+            whatsapp = request.POST.get('whatsapp', '').strip()
+            description = request.POST.get('description', '').strip()
+            instagram = request.POST.get('instagram', '').strip()
+            facebook = request.POST.get('facebook', '').strip()
+            service_type_ids = request.POST.getlist('service_types')
+
+            try:
+                groups = json.loads(locations_json_val)
+            except (ValueError, TypeError):
+                groups = []
+
+            errors = []
+            if not name:
+                errors.append('Le nom est requis.')
+            if not email:
+                errors.append("L'email est requis.")
+            if not whatsapp:
+                errors.append('Le numéro WhatsApp est requis.')
+            if not groups or not any(g.get('city_ids') for g in groups):
+                errors.append('Sélectionne au moins un pays et une ville.')
+            if not description:
+                errors.append("La description de l'activité est requise.")
+            if not service_type_ids:
+                errors.append('Veuillez sélectionner au moins un type de prestation.')
+
+            if errors:
+                for error in errors:
+                    messages.error(request, error)
+            else:
+                application = VendorApplication.objects.create(
+                    name=name,
+                    email=email,
+                    whatsapp=whatsapp,
+                    description=description,
+                    instagram=instagram,
+                    facebook=facebook,
+                )
+                application.service_types.set(service_type_ids)
+                country_ids = [g['country_id'] for g in groups if g.get('country_id')]
+                city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
+                application.countries.set(country_ids)
+                application.cities.set(city_ids)
+                send_application_confirmation(name, email)
+                return render(request, 'vendors/vendor_signup_success.html', {'name': name})
 
     return render(request, 'vendors/vendor_signup.html', {
         'service_types': service_types,
         'cities_json': cities_json,
         'countries_list_json': countries_list_json,
         'locations_json': locations_json_val,
+        'turnstile_sitekey': settings.TURNSTILE_SITEKEY,
         'breadcrumbs': [
             {'title': 'Accueil', 'url': 'core:home'},
             {'title': 'Devenir prestataire'},

@@ -1,12 +1,9 @@
 from django import forms
 from .models import ContactMessage
-from hcaptcha.fields import hCaptchaField
 
 
 class ContactForm(forms.ModelForm):
     """Formulaire de contact"""
-
-    h_captcha = hCaptchaField(label='')
 
     class Meta:
         model = ContactMessage

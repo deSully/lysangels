@@ -553,10 +553,7 @@
                     {% endif %}
 
                     <div style="margin: 1.25rem 0;">
-                        {{ form.h_captcha }}
-                        {% if form.h_captcha.errors %}
-                        <p class="inline-error" style="margin-top:.5rem;">{{ form.h_captcha.errors|first }}</p>
-                        {% endif %}
+                        <div class="cf-turnstile" data-sitekey="{{ turnstile_sitekey }}"></div>
                     </div>
 
                     <div class="form-nav">
