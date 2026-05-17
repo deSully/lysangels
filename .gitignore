@@ -47,3 +47,7 @@ docs
 
 # Scripts locaux (seed, utilitaires non commitables)
 scripts/
+
+# Node
+node_modules/
+package-lock.json
