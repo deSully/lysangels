@@ -51,6 +51,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'apps.core.context_processors.analytics',
+                'apps.ads.context_processors.ads',
             ],
         },
     },
