@@ -175,7 +175,7 @@ def vendor_signup(request):
                 for error in errors:
                     messages.error(request, error)
             else:
-                application = VendorApplication.objects.create(
+                create_kwargs = dict(
                     name=name,
                     email=email,
                     whatsapp=whatsapp,
@@ -184,6 +184,11 @@ def vendor_signup(request):
                     instagram=instagram,
                     facebook=facebook,
                 )
+                for i in range(1, 6):
+                    img = request.FILES.get(f'image_{i}')
+                    if img:
+                        create_kwargs[f'image_{i}'] = img
+                application = VendorApplication.objects.create(**create_kwargs)
                 application.service_types.set(service_type_ids)
                 country_ids = [g['country_id'] for g in groups if g.get('country_id')]
                 city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
