@@ -16,7 +16,7 @@ class ProjectCreateForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': 'Ex: Marie Dupont'})
     )
     contact_email = forms.EmailField(
-        required=True,
+        required=False,
         label='Votre email',
         widget=forms.EmailInput(attrs={'class': INPUT_CLASS, 'placeholder': 'marie@exemple.com'})
     )

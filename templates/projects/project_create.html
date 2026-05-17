@@ -406,13 +406,13 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="form-group" style="margin-bottom:0;">
                             <label class="form-label" for="id_contact_email">
-                                Email<span class="form-required">*</span>
+                                Email <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel)</span>
                             </label>
                             {{ form.contact_email }}
                             {% if form.contact_email.errors %}
                                 <p class="inline-error visible">{{ form.contact_email.errors.0 }}</p>
                             {% else %}
-                                <p class="inline-error" id="err-contact_email">Email invalide.</p>
+                                <p class="inline-error" id="err-contact_email">Format email invalide.</p>
                             {% endif %}
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
@@ -631,7 +631,7 @@
                 name.classList.remove('field-error'); nameErr.classList.remove('visible');
             }
             var ev = email.value.trim();
-            if (!ev || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev)) {
+            if (ev && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev)) {
                 email.classList.add('field-error'); emailErr.classList.add('visible'); valid = false;
             } else {
                 email.classList.remove('field-error'); emailErr.classList.remove('visible');

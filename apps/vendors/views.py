@@ -160,10 +160,8 @@ def vendor_signup(request):
             errors = []
             if not name:
                 errors.append('Le nom est requis.')
-            if not email:
-                errors.append("L'email est requis.")
-            if not whatsapp:
-                errors.append('Le numéro WhatsApp est requis.')
+            if email and '@' not in email:
+                errors.append("L'adresse email n'est pas valide.")
             if not groups or not any(g.get('city_ids') for g in groups):
                 errors.append('Sélectionne au moins un pays et une ville.')
             if not description:
@@ -189,7 +187,8 @@ def vendor_signup(request):
                 city_ids = [cid for g in groups for cid in g.get('city_ids', [])]
                 application.countries.set(country_ids)
                 application.cities.set(city_ids)
-                send_application_confirmation(name, email)
+                if email:
+                    send_application_confirmation(name, email)
                 return render(request, 'vendors/vendor_signup_success.html', {'name': name})
 
     return render(request, 'vendors/vendor_signup.html', {

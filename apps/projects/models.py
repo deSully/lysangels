@@ -30,7 +30,7 @@ class Project(models.Model):
 
     # Informations de contact
     contact_name = models.CharField(max_length=200, verbose_name='Nom complet', default='')
-    contact_email = models.EmailField(verbose_name='Email', default='')
+    contact_email = models.EmailField(blank=True, verbose_name='Email', default='')
     contact_phone = models.CharField(max_length=30, blank=True, verbose_name='Téléphone')
 
     # Informations du projet

@@ -403,14 +403,13 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">Email<span class="form-required">*</span></label>
-                            <input type="email" name="email" value="{{ request.POST.email|default:'' }}" required placeholder="jean@exemple.com" id="id_email">
-                            <p class="inline-error" id="err-email">Email invalide.</p>
+                            <label class="form-label">Email <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel)</span></label>
+                            <input type="email" name="email" value="{{ request.POST.email|default:'' }}" placeholder="jean@exemple.com" id="id_email">
+                            <p class="inline-error" id="err-email">Format email invalide.</p>
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">WhatsApp<span class="form-required">*</span></label>
-                            <input type="text" name="whatsapp" value="{{ request.POST.whatsapp|default:'' }}" required placeholder="+228 90 00 00 00" id="id_whatsapp">
-                            <p class="inline-error" id="err-whatsapp">Ce champ est requis.</p>
+                            <label class="form-label">WhatsApp <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel)</span></label>
+                            <input type="text" name="whatsapp" value="{{ request.POST.whatsapp|default:'' }}" placeholder="+228 90 00 00 00" id="id_whatsapp">
                         </div>
                     </div>
 
@@ -561,21 +560,21 @@
     function validateStep(n) {
         var valid = true;
         if (n === 1) {
-            var basicFields = [
-                { el: document.getElementById('id_name'), err: 'err-name', check: function(v) { return v.trim().length > 0; } },
-                { el: document.getElementById('id_email'), err: 'err-email', check: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
-                { el: document.getElementById('id_whatsapp'), err: 'err-whatsapp', check: function(v) { return v.trim().length > 0; } },
-            ];
-            basicFields.forEach(function(f) {
-                if (!f.check(f.el.value)) {
-                    f.el.classList.add('field-error');
-                    document.getElementById(f.err).classList.add('visible');
-                    valid = false;
-                } else {
-                    f.el.classList.remove('field-error');
-                    document.getElementById(f.err).classList.remove('visible');
-                }
-            });
+            var nameEl = document.getElementById('id_name');
+            var nameErr = document.getElementById('err-name');
+            if (!nameEl.value.trim()) {
+                nameEl.classList.add('field-error'); nameErr.classList.add('visible'); valid = false;
+            } else {
+                nameEl.classList.remove('field-error'); nameErr.classList.remove('visible');
+            }
+            var emailEl = document.getElementById('id_email');
+            var emailErr = document.getElementById('err-email');
+            var ev = emailEl.value.trim();
+            if (ev && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ev)) {
+                emailEl.classList.add('field-error'); emailErr.classList.add('visible'); valid = false;
+            } else {
+                emailEl.classList.remove('field-error'); emailErr.classList.remove('visible');
+            }
             var locEl = document.getElementById('id_locations_json');
             var locErr = document.getElementById('err-locations');
             var locGroups = [];
