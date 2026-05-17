@@ -23,6 +23,7 @@ class Command(BaseCommand):
             {'name': 'Location matériel', 'description': 'Tables, chaises, vaisselle, etc.', 'icon': 'box'},
             {'name': 'Transport', 'description': 'Véhicules pour mariés et invités', 'icon': 'car'},
             {'name': 'Fleuriste', 'description': 'Compositions florales', 'icon': 'flower'},
+            {'name': 'Communication / Marketing', 'description': 'Agences de communication et marketing événementiel', 'icon': '📣'},
         ]
 
         for service_data in services:
