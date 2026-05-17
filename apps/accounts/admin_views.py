@@ -610,6 +610,52 @@ def application_create_profile(request, pk):
     return redirect('accounts:admin_vendor_detail', pk=vendor.pk)
 
 
+@admin_required
+def application_delete_image(request, pk, n):
+    """Supprime l'image_N d'une candidature (n = 1..5)"""
+    import os
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+    if n not in range(1, 6):
+        return JsonResponse({'success': False, 'error': 'Slot invalide'}, status=400)
+    application = get_object_or_404(VendorApplication, pk=pk)
+    field_name = f'image_{n}'
+    img_field = getattr(application, field_name)
+    if img_field:
+        try:
+            if os.path.isfile(img_field.path):
+                os.remove(img_field.path)
+        except Exception:
+            pass
+        setattr(application, field_name, None)
+        application.save(update_fields=[field_name, 'updated_at'])
+    return JsonResponse({'success': True})
+
+
+@admin_required
+def application_add_image(request, pk):
+    """Ajoute une image dans le premier slot libre d'une candidature"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+    application = get_object_or_404(VendorApplication, pk=pk)
+    img = request.FILES.get('image')
+    if not img:
+        return JsonResponse({'success': False, 'error': 'Aucune image fournie'}, status=400)
+    for i in range(1, 6):
+        field_name = f'image_{i}'
+        if not getattr(application, field_name):
+            from apps.vendors.models import VendorImage as VI
+            resized = VI._resize_image(img)
+            setattr(application, field_name, resized)
+            application.save(update_fields=[field_name, 'updated_at'])
+            return JsonResponse({
+                'success': True,
+                'slot': i,
+                'url': getattr(application, field_name).url,
+            })
+    return JsonResponse({'success': False, 'error': 'Maximum 5 images atteint'}, status=400)
+
+
 # ========== MESSAGES DE CONTACT ==========
 
 @admin_required
