@@ -1,0 +1,91 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}Publicités — Admin LysAngels{% endblock %}
+
+{% block admin_content %}
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem;">
+  <div>
+    <h1 style="font-size:1.25rem; font-weight:600; color:var(--night); margin:0 0 .25rem;">Publicités</h1>
+    <p style="font-size:.8rem; color:var(--muted); margin:0;">Bannières publicitaires diffusées sur le site</p>
+  </div>
+  <a href="{% url 'accounts:admin_ad_create' %}" class="a-btn a-btn-primary">+ Nouvelle publicité</a>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div style="padding:.75rem 1rem; margin-bottom:1rem; border-radius:3px; font-size:.8rem; font-weight:500;
+     background:{% if message.tags == 'success' %}rgba(22,163,74,.08){% else %}rgba(181,68,26,.08){% endif %};
+     color:{% if message.tags == 'success' %}#166534{% else %}var(--terra){% endif %};
+     border:1px solid {% if message.tags == 'success' %}rgba(22,163,74,.2){% else %}rgba(181,68,26,.2){% endif %};">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if ads %}
+<div style="margin-bottom:1rem;">
+  <p style="font-size:.8rem; color:var(--muted); margin:0;">{{ ads|length }} publicité{{ ads|length|pluralize }}</p>
+</div>
+
+{% regroup ads by get_zone_display as ads_by_zone %}
+{% for zone_group in ads_by_zone %}
+<div class="a-card">
+  <div class="a-card-head"><span class="a-card-label">{{ zone_group.grouper }}</span></div>
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:.8rem;">
+      <thead>
+        <tr style="border-bottom:1px solid rgba(0,0,0,.07);">
+          <th style="padding:.625rem 1rem; text-align:left; font-weight:600; color:var(--muted); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;">Image</th>
+          <th style="padding:.625rem 1rem; text-align:left; font-weight:600; color:var(--muted); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;">Période</th>
+          <th style="padding:.625rem 1rem; text-align:left; font-weight:600; color:var(--muted); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;">Statut</th>
+          <th style="padding:.625rem 1rem; text-align:right; font-weight:600; color:var(--muted); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ad in zone_group.list %}
+        <tr style="border-bottom:1px solid rgba(0,0,0,.04);">
+          <td style="padding:.625rem 1rem;">
+            {% if ad.image %}
+            <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}"
+                 style="width:80px; height:40px; object-fit:cover; border-radius:3px; border:1px solid rgba(0,0,0,.08);">
+            {% else %}
+            <span style="display:inline-block; width:80px; height:40px; background:rgba(0,0,0,.04); border-radius:3px; border:1px solid rgba(0,0,0,.08);"></span>
+            {% endif %}
+          </td>
+          <td style="padding:.625rem 1rem; color:var(--muted);">{{ ad.start_date }} → {{ ad.end_date }}</td>
+          <td style="padding:.625rem 1rem;">
+            {% if ad.status == 'active' %}
+            <span style="display:inline-flex; align-items:center; gap:.3rem; padding:.2rem .6rem; background:rgba(22,163,74,.08); color:#166534; border:1px solid rgba(22,163,74,.2); border-radius:3px; font-size:.7rem; font-weight:600;">Actif</span>
+            {% elif ad.status == 'planned' %}
+            <span style="display:inline-flex; align-items:center; gap:.3rem; padding:.2rem .6rem; background:rgba(201,151,58,.08); color:var(--gold); border:1px solid rgba(201,151,58,.2); border-radius:3px; font-size:.7rem; font-weight:600;">Planifié</span>
+            {% elif ad.status == 'expired' %}
+            <span style="display:inline-flex; align-items:center; gap:.3rem; padding:.2rem .6rem; background:rgba(0,0,0,.04); color:var(--muted); border:1px solid rgba(0,0,0,.08); border-radius:3px; font-size:.7rem; font-weight:600;">Expiré</span>
+            {% else %}
+            <span style="display:inline-flex; align-items:center; gap:.3rem; padding:.2rem .6rem; background:rgba(181,68,26,.06); color:var(--terra); border:1px solid rgba(181,68,26,.15); border-radius:3px; font-size:.7rem; font-weight:600;">Inactif</span>
+            {% endif %}
+          </td>
+          <td style="padding:.625rem 1rem; text-align:right;">
+            <div style="display:flex; justify-content:flex-end; gap:.5rem;">
+              <a href="{% url 'accounts:admin_ad_edit' ad.pk %}" class="a-btn a-btn-ghost" style="font-size:.75rem; padding:.25rem .75rem;">Modifier</a>
+              <form method="post" action="{% url 'accounts:admin_ad_delete' ad.pk %}" style="display:inline;"
+                    onsubmit="return confirm('Supprimer cette publicité ?');">
+                {% csrf_token %}
+                <button type="submit" class="a-btn a-btn-danger" style="font-size:.75rem; padding:.25rem .75rem;">Supprimer</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="a-card">
+  <div class="a-card-body" style="text-align:center; padding:2.5rem; color:var(--muted); font-size:.875rem;">
+    Aucune publicité configurée. <a href="{% url 'accounts:admin_ad_create' %}" style="color:var(--terra);">Créer la première</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

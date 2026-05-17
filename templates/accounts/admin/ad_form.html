@@ -1,0 +1,110 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}{% if ad %}Modifier{% else %}Nouvelle{% endif %} publicité — Admin LysAngels{% endblock %}
+
+{% block admin_content %}
+<div style="margin-bottom:1.5rem;">
+  <a href="{% url 'accounts:admin_ad_list' %}" style="font-size:.8rem; color:var(--muted); text-decoration:none;">← Publicités</a>
+  <h1 style="font-size:1.25rem; font-weight:600; color:var(--night); margin:.5rem 0 0;">
+    {% if ad %}Modifier la publicité{% else %}Nouvelle publicité{% endif %}
+  </h1>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div style="padding:.75rem 1rem; margin-bottom:1rem; border-radius:3px; font-size:.8rem; font-weight:500;
+     background:{% if message.tags == 'success' %}rgba(22,163,74,.08){% else %}rgba(181,68,26,.08){% endif %};
+     color:{% if message.tags == 'success' %}#166534{% else %}var(--terra){% endif %};
+     border:1px solid {% if message.tags == 'success' %}rgba(22,163,74,.2){% else %}rgba(181,68,26,.2){% endif %};">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="a-card" style="margin-bottom:1.5rem;">
+    <div class="a-card-head"><span class="a-card-label">Contenu</span></div>
+    <div class="a-card-body" style="display:grid; gap:1rem;">
+
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Zone d'affichage *</label>
+        <select name="zone" class="a-input" style="width:100%;" required>
+          <option value="">— Choisir une zone —</option>
+          {% for value, label in zone_choices %}
+          <option value="{{ value }}" {% if ad and ad.zone == value %}selected{% elif form_data and form_data.zone == value %}selected{% endif %}>
+            {{ label }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Image *</label>
+        {% if ad and ad.image %}
+        <div style="margin-bottom:.5rem;">
+          <img src="{{ ad.image.url }}" alt="{{ ad.alt_text }}"
+               style="max-width:300px; height:auto; border-radius:4px; border:1px solid rgba(0,0,0,.08);">
+          <p style="font-size:.75rem; color:var(--muted); margin:.375rem 0 0;">Laisser vide pour conserver l'image actuelle.</p>
+        </div>
+        {% endif %}
+        <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
+               class="a-input" style="width:100%;" {% if not ad %}required{% endif %}>
+        <p style="font-size:.72rem; color:var(--muted); margin:.25rem 0 0;">Formats : JPEG, PNG, WebP. Tailles recommandées : hero 1200×300px, inter-sections 1200×120px, liste/fiche 900×200px.</p>
+      </div>
+
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Texte alternatif *</label>
+        <input type="text" name="alt_text" class="a-input" style="width:100%;" required
+               placeholder="ex : Traiteur Lomé Excellence — Buffets sur mesure"
+               value="{% if ad %}{{ ad.alt_text }}{% elif form_data %}{{ form_data.alt_text }}{% endif %}">
+      </div>
+
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Lien (optionnel)</label>
+        <input type="url" name="link_url" class="a-input" style="width:100%;"
+               placeholder="https://..."
+               value="{% if ad %}{{ ad.link_url }}{% elif form_data %}{{ form_data.link_url }}{% endif %}">
+        <p style="font-size:.72rem; color:var(--muted); margin:.25rem 0 0;">Si vide, la bannière ne sera pas cliquable.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="a-card" style="margin-bottom:1.5rem;">
+    <div class="a-card-head"><span class="a-card-label">Période de diffusion</span></div>
+    <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Date de début *</label>
+        <input type="date" name="start_date" class="a-input" style="width:100%;" required
+               value="{% if ad %}{{ ad.start_date|date:'Y-m-d' }}{% elif form_data %}{{ form_data.start_date }}{% endif %}">
+      </div>
+      <div>
+        <label class="a-label" style="margin-bottom:.375rem; display:block;">Date de fin *</label>
+        <input type="date" name="end_date" class="a-input" style="width:100%;" required
+               value="{% if ad %}{{ ad.end_date|date:'Y-m-d' }}{% elif form_data %}{{ form_data.end_date }}{% endif %}">
+      </div>
+    </div>
+  </div>
+
+  <div class="a-card" style="margin-bottom:1.5rem;">
+    <div class="a-card-head"><span class="a-card-label">Options</span></div>
+    <div class="a-card-body">
+      <label style="display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--night); cursor:pointer;">
+        <input type="checkbox" name="is_active" class="a-checkbox"
+               {% if not ad or ad.is_active %}checked{% endif %}>
+        Actif
+      </label>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:.75rem; justify-content:flex-end;">
+    <a href="{% url 'accounts:admin_ad_list' %}" class="a-btn a-btn-ghost">Annuler</a>
+    <button type="submit" class="a-btn a-btn-primary">
+      {% if ad %}Enregistrer les modifications{% else %}Créer la publicité{% endif %}
+    </button>
+  </div>
+
+</form>
+{% endblock %}
