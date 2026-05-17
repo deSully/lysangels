@@ -16,55 +16,56 @@
   <!-- Colonne gauche -->
   <div style="display:flex; flex-direction:column; gap:1rem;">
 
-    <!-- Coordonnées -->
-    <div class="a-card">
-      <div class="a-card-head"><span class="a-card-label">Coordonnées</span></div>
-      <div class="a-card-body" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-        <div class="a-field">
-          <span class="a-field-label">Nom complet</span>
-          <span class="a-field-value">{{ application.name }}</span>
+    <!-- Coordonnées éditables -->
+    <form method="post" action="{% url 'accounts:admin_application_edit' pk=application.pk %}">
+      {% csrf_token %}
+      <div class="a-card">
+        <div class="a-card-head">
+          <span class="a-card-label">Coordonnées</span>
+          <button type="submit" class="a-btn a-btn-primary" style="padding:.25rem .875rem; font-size:.72rem;">
+            Enregistrer
+          </button>
         </div>
-        <div class="a-field">
-          <span class="a-field-label">Email</span>
-          {% if application.email %}
-          <a href="mailto:{{ application.email }}" class="a-td-link" style="display:block;">{{ application.email }}</a>
-          {% else %}<span class="a-field-value">—</span>{% endif %}
+        <div class="a-card-body" style="display:flex; flex-direction:column; gap:.75rem;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem;">
+            <div>
+              <label class="a-field-label">Nom complet <span style="color:var(--terra);">*</span></label>
+              <input type="text" name="name" value="{{ application.name }}" required class="a-input">
+            </div>
+            <div>
+              <label class="a-field-label">Email</label>
+              <input type="email" name="email" value="{{ application.email|default:'' }}" class="a-input">
+            </div>
+            <div>
+              <label class="a-field-label">WhatsApp</label>
+              <input type="text" name="whatsapp" value="{{ application.whatsapp|default:'' }}" class="a-input" placeholder="+228 90 00 00 00">
+            </div>
+            <div>
+              <label class="a-field-label">Adresse / Quartier</label>
+              <input type="text" name="address" value="{{ application.address|default:'' }}" class="a-input">
+            </div>
+            <div>
+              <label class="a-field-label">Instagram</label>
+              <input type="text" name="instagram" value="{{ application.instagram|default:'' }}" class="a-input">
+            </div>
+            <div>
+              <label class="a-field-label">Facebook</label>
+              <input type="text" name="facebook" value="{{ application.facebook|default:'' }}" class="a-input">
+            </div>
+          </div>
+          <div>
+            <label class="a-field-label">Description <span style="color:var(--terra);">*</span></label>
+            <textarea name="description" rows="5" required class="a-textarea">{{ application.description }}</textarea>
+          </div>
+          <div>
+            <span class="a-field-label">Zones déclarées</span>
+            <span class="a-field-value" style="display:block; margin-top:.25rem; font-size:.8rem;">
+              {% for city in application.cities.all %}{{ city.name }} ({{ city.country.code }}){% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}
+            </span>
+          </div>
         </div>
-        <div class="a-field">
-          <span class="a-field-label">WhatsApp</span>
-          {% if application.whatsapp %}
-          <a href="https://wa.me/{{ application.whatsapp|cut:' '|cut:'+' }}" target="_blank"
-             class="a-td-link" style="display:block; font-family:'DM Mono',monospace; font-size:.775rem;">
-            {{ application.whatsapp }}
-          </a>
-          {% else %}<span class="a-field-value">—</span>{% endif %}
-        </div>
-        {% if application.address %}
-        <div class="a-field">
-          <span class="a-field-label">Adresse / Quartier</span>
-          <span class="a-field-value">{{ application.address }}</span>
-        </div>
-        {% endif %}
-        <div class="a-field">
-          <span class="a-field-label">Zones déclarées</span>
-          <span class="a-field-value">
-            {% for city in application.cities.all %}{{ city.name }} ({{ city.country.code }}){% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}
-          </span>
-        </div>
-        {% if application.instagram %}
-        <div class="a-field">
-          <span class="a-field-label">Instagram</span>
-          <span class="a-field-value">{{ application.instagram }}</span>
-        </div>
-        {% endif %}
-        {% if application.facebook %}
-        <div class="a-field">
-          <span class="a-field-label">Facebook</span>
-          <span class="a-field-value">{{ application.facebook }}</span>
-        </div>
-        {% endif %}
       </div>
-    </div>
+    </form>
 
     <!-- Services -->
     {% if application.service_types.exists %}
@@ -80,49 +81,106 @@
     </div>
     {% endif %}
 
-    <!-- Description -->
-    <div class="a-card">
-      <div class="a-card-head"><span class="a-card-label">Description de l'activité</span></div>
-      <div class="a-card-body">
-        <p style="font-size:.825rem; color:var(--night); line-height:1.75; white-space:pre-line;">{{ application.description }}</p>
-      </div>
-    </div>
-
     <!-- Portfolio -->
-    {% if application.image_1 or application.image_2 or application.image_3 or application.image_4 or application.image_5 %}
     <div class="a-card">
       <div class="a-card-head"><span class="a-card-label">Photos portfolio</span></div>
       <div class="a-card-body">
+        <input type="hidden" id="app-csrf" value="{{ csrf_token }}">
         <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap:.5rem;">
+
           {% if application.image_1 %}
-          <a href="{{ application.image_1.url }}" target="_blank">
-            <img src="{{ application.image_1.url }}" alt="Photo 1" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
-          </a>
+          <div style="position:relative;">
+            <a href="{{ application.image_1.url }}" target="_blank">
+              <img src="{{ application.image_1.url }}" alt="Photo 1" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+            </a>
+            <button type="button" onclick="deleteAppImage({{ application.pk }}, 1)"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.85); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">✕</button>
+          </div>
+          {% else %}
+          <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:1.5px dashed rgba(0,0,0,.12); border-radius:.35rem; aspect-ratio:4/3; cursor:pointer; gap:.25rem; font-size:.65rem; color:var(--muted);"
+                 onmouseover="this.style.borderColor='rgba(181,68,26,.4)'" onmouseout="this.style.borderColor='rgba(0,0,0,.12)'">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+          </label>
           {% endif %}
+
           {% if application.image_2 %}
-          <a href="{{ application.image_2.url }}" target="_blank">
-            <img src="{{ application.image_2.url }}" alt="Photo 2" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
-          </a>
+          <div style="position:relative;">
+            <a href="{{ application.image_2.url }}" target="_blank">
+              <img src="{{ application.image_2.url }}" alt="Photo 2" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+            </a>
+            <button type="button" onclick="deleteAppImage({{ application.pk }}, 2)"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.85); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">✕</button>
+          </div>
+          {% else %}
+          <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:1.5px dashed rgba(0,0,0,.12); border-radius:.35rem; aspect-ratio:4/3; cursor:pointer; gap:.25rem; font-size:.65rem; color:var(--muted);"
+                 onmouseover="this.style.borderColor='rgba(181,68,26,.4)'" onmouseout="this.style.borderColor='rgba(0,0,0,.12)'">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+          </label>
           {% endif %}
+
           {% if application.image_3 %}
-          <a href="{{ application.image_3.url }}" target="_blank">
-            <img src="{{ application.image_3.url }}" alt="Photo 3" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
-          </a>
+          <div style="position:relative;">
+            <a href="{{ application.image_3.url }}" target="_blank">
+              <img src="{{ application.image_3.url }}" alt="Photo 3" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+            </a>
+            <button type="button" onclick="deleteAppImage({{ application.pk }}, 3)"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.85); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">✕</button>
+          </div>
+          {% else %}
+          <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:1.5px dashed rgba(0,0,0,.12); border-radius:.35rem; aspect-ratio:4/3; cursor:pointer; gap:.25rem; font-size:.65rem; color:var(--muted);"
+                 onmouseover="this.style.borderColor='rgba(181,68,26,.4)'" onmouseout="this.style.borderColor='rgba(0,0,0,.12)'">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+          </label>
           {% endif %}
+
           {% if application.image_4 %}
-          <a href="{{ application.image_4.url }}" target="_blank">
-            <img src="{{ application.image_4.url }}" alt="Photo 4" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
-          </a>
+          <div style="position:relative;">
+            <a href="{{ application.image_4.url }}" target="_blank">
+              <img src="{{ application.image_4.url }}" alt="Photo 4" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+            </a>
+            <button type="button" onclick="deleteAppImage({{ application.pk }}, 4)"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.85); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">✕</button>
+          </div>
+          {% else %}
+          <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:1.5px dashed rgba(0,0,0,.12); border-radius:.35rem; aspect-ratio:4/3; cursor:pointer; gap:.25rem; font-size:.65rem; color:var(--muted);"
+                 onmouseover="this.style.borderColor='rgba(181,68,26,.4)'" onmouseout="this.style.borderColor='rgba(0,0,0,.12)'">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+          </label>
           {% endif %}
+
           {% if application.image_5 %}
-          <a href="{{ application.image_5.url }}" target="_blank">
-            <img src="{{ application.image_5.url }}" alt="Photo 5" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
-          </a>
+          <div style="position:relative;">
+            <a href="{{ application.image_5.url }}" target="_blank">
+              <img src="{{ application.image_5.url }}" alt="Photo 5" style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:.35rem; border:1px solid rgba(0,0,0,.08);">
+            </a>
+            <button type="button" onclick="deleteAppImage({{ application.pk }}, 5)"
+                    style="position:absolute; top:4px; right:4px; width:1.375rem; height:1.375rem; background:rgba(17,13,6,.7); border:none; border-radius:2px; cursor:pointer; color:rgba(250,247,240,.85); font-size:.6rem; display:flex; align-items:center; justify-content:center;"
+                    onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='rgba(17,13,6,.7)'">✕</button>
+          </div>
+          {% else %}
+          <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; border:1.5px dashed rgba(0,0,0,.12); border-radius:.35rem; aspect-ratio:4/3; cursor:pointer; gap:.25rem; font-size:.65rem; color:var(--muted);"
+                 onmouseover="this.style.borderColor='rgba(181,68,26,.4)'" onmouseout="this.style.borderColor='rgba(0,0,0,.12)'">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+            <span>Ajouter</span>
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="addAppImage({{ application.pk }}, this)">
+          </label>
           {% endif %}
+
         </div>
       </div>
     </div>
-    {% endif %}
 
   </div>
 
@@ -193,4 +251,36 @@
 
   </div>
 </div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+function getCsrfApp() {
+    return document.getElementById('app-csrf').value;
+}
+
+function deleteAppImage(pk, n) {
+    if (!confirm('Supprimer cette image ?')) return;
+    fetch('/accounts/admin/applications/' + pk + '/delete-image/' + n + '/', {
+        method: 'POST',
+        headers: {'X-CSRFToken': getCsrfApp()}
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+        else alert('Erreur lors de la suppression.');
+    });
+}
+
+function addAppImage(pk, input) {
+    if (!input.files[0]) return;
+    var form = new FormData();
+    form.append('image', input.files[0]);
+    form.append('csrfmiddlewaretoken', getCsrfApp());
+    fetch('/accounts/admin/applications/' + pk + '/add-image/', {
+        method: 'POST', body: form
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+        else alert(data.error || 'Erreur lors de l\'upload.');
+    });
+}
+</script>
 {% endblock %}
