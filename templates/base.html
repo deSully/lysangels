@@ -366,6 +366,9 @@
                     <a href="{% url 'core:about' %}" class="nav-link {% if request.resolver_match.url_name == 'about' %}nav-link-active{% endif %}">
                         À propos
                     </a>
+                    <a href="{% url 'vendors:vendor_signup' %}" class="nav-link {% if request.resolver_match.url_name == 'vendor_signup' %}nav-link-active{% endif %}">
+                        Devenir prestataire
+                    </a>
                     <!-- Bouton principal J'ai un projet -->
                     <a href="{% url 'projects:project_create' %}" class="btn btn-primary btn-sm">
                         J'ai un projet
@@ -421,6 +424,9 @@
                 </a>
                 <a href="{% url 'core:about' %}" class="block py-3 px-2 text-base rounded-lg transition {% if request.resolver_match.url_name == 'about' %}font-semibold{% else %}text-gray-700{% endif %}" {% if request.resolver_match.url_name == 'about' %}style="color:var(--terra);background:rgba(181,68,26,.06);"{% endif %}>
                     À propos
+                </a>
+                <a href="{% url 'vendors:vendor_signup' %}" class="block py-3 px-2 text-base rounded-lg transition {% if request.resolver_match.url_name == 'vendor_signup' %}font-semibold{% else %}text-gray-700{% endif %}" {% if request.resolver_match.url_name == 'vendor_signup' %}style="color:var(--terra);background:rgba(181,68,26,.06);"{% endif %}>
+                    Devenir prestataire
                 </a>
                 <!-- Bouton principal mobile -->
                 <a href="{% url 'projects:project_create' %}" class="block text-white px-6 py-3 rounded-lg text-center font-medium text-base mt-2 transition shadow-md" style="background:var(--terra);">
