@@ -162,6 +162,8 @@ def vendor_signup(request):
                 errors.append('Le nom est requis.')
             if email and '@' not in email:
                 errors.append("L'adresse email n'est pas valide.")
+            if not email and not whatsapp:
+                errors.append('Veuillez renseigner au moins un moyen de contact : email ou WhatsApp.')
             if not groups or not any(g.get('city_ids') for g in groups):
                 errors.append('Sélectionne au moins un pays et une ville.')
             if not description:

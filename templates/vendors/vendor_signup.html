@@ -412,6 +412,7 @@
                             <input type="text" name="whatsapp" value="{{ request.POST.whatsapp|default:'' }}" placeholder="+228 90 00 00 00" id="id_whatsapp">
                         </div>
                     </div>
+                    <p class="inline-error" id="err-contact-required" style="margin-top:.5rem;">Renseignez au moins un moyen de contact : email ou WhatsApp.</p>
 
                     <div class="form-group" style="margin-top:1.25rem;">
                         <label class="form-label">Adresse / Quartier</label>
@@ -574,6 +575,14 @@
                 emailEl.classList.add('field-error'); emailErr.classList.add('visible'); valid = false;
             } else {
                 emailEl.classList.remove('field-error'); emailErr.classList.remove('visible');
+            }
+            var whatsappEl = document.getElementById('id_whatsapp');
+            var contactErr = document.getElementById('err-contact-required');
+            if (!ev && !whatsappEl.value.trim()) {
+                emailEl.classList.add('field-error'); whatsappEl.classList.add('field-error');
+                contactErr.classList.add('visible'); valid = false;
+            } else {
+                contactErr.classList.remove('visible');
             }
             var locEl = document.getElementById('id_locations_json');
             var locErr = document.getElementById('err-locations');

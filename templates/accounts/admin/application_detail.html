@@ -26,15 +26,25 @@
         </div>
         <div class="a-field">
           <span class="a-field-label">Email</span>
+          {% if application.email %}
           <a href="mailto:{{ application.email }}" class="a-td-link" style="display:block;">{{ application.email }}</a>
+          {% else %}<span class="a-field-value">—</span>{% endif %}
         </div>
         <div class="a-field">
           <span class="a-field-label">WhatsApp</span>
+          {% if application.whatsapp %}
           <a href="https://wa.me/{{ application.whatsapp|cut:' '|cut:'+' }}" target="_blank"
              class="a-td-link" style="display:block; font-family:'DM Mono',monospace; font-size:.775rem;">
             {{ application.whatsapp }}
           </a>
+          {% else %}<span class="a-field-value">—</span>{% endif %}
         </div>
+        {% if application.address %}
+        <div class="a-field">
+          <span class="a-field-label">Adresse / Quartier</span>
+          <span class="a-field-value">{{ application.address }}</span>
+        </div>
+        {% endif %}
         <div class="a-field">
           <span class="a-field-label">Zones déclarées</span>
           <span class="a-field-value">
@@ -124,7 +134,7 @@
         <p style="font-size:.775rem; color:var(--muted); margin-bottom:1rem; line-height:1.65;">
           Créez maintenant le profil prestataire à partir de cette demande.
         </p>
-        <a href="{% url 'accounts:admin_vendor_create' %}?from_application={{ application.pk }}&name={{ application.name|urlencode }}&whatsapp={{ application.whatsapp|urlencode }}&description={{ application.description|urlencode }}&instagram={{ application.instagram|urlencode }}&facebook={{ application.facebook|urlencode }}"
+        <a href="{% url 'accounts:admin_vendor_create' %}?from_application={{ application.pk }}&name={{ application.name|urlencode }}&whatsapp={{ application.whatsapp|urlencode }}&address={{ application.address|urlencode }}&description={{ application.description|urlencode }}&instagram={{ application.instagram|urlencode }}&facebook={{ application.facebook|urlencode }}"
            class="a-btn a-btn-primary" style="width:100%; justify-content:center;">
           Créer le profil →
         </a>
