@@ -109,6 +109,29 @@
     </div>
   </div>
 
+  <!-- Fourchette de prix -->
+  <div class="a-card" style="margin-bottom:1.5rem;">
+    <div class="a-card-head"><span class="a-card-label">Fourchette de prix <span style="font-weight:400; color:var(--muted); font-size:.7rem;">(optionnel)</span></span></div>
+    <div class="a-card-body">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div>
+          <label class="a-label" style="margin-bottom:.375rem; display:block;">Budget minimum (FCFA)</label>
+          <input type="number" name="min_budget" min="0" step="1000"
+                 value="{% if vendor and vendor.min_budget %}{{ vendor.min_budget|floatformat:0 }}{% endif %}"
+                 placeholder="ex : 150000"
+                 class="a-input" style="width:100%;">
+        </div>
+        <div>
+          <label class="a-label" style="margin-bottom:.375rem; display:block;">Budget maximum (FCFA)</label>
+          <input type="number" name="max_budget" min="0" step="1000"
+                 value="{% if vendor and vendor.max_budget %}{{ vendor.max_budget|floatformat:0 }}{% endif %}"
+                 placeholder="ex : 500000"
+                 class="a-input" style="width:100%;">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Galerie images (édition uniquement) -->
   {% if vendor %}
   <div class="a-card" style="margin-bottom:1rem;">

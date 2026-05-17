@@ -417,6 +417,12 @@ def vendor_create(request):
         except (ValueError, TypeError):
             groups = []
 
+        def _parse_budget(val):
+            try:
+                return float(val) if val and val.strip() else None
+            except (ValueError, TypeError):
+                return None
+
         vendor = VendorProfile.objects.create(
             business_name=request.POST.get('business_name'),
             description=request.POST.get('description', ''),
@@ -427,6 +433,8 @@ def vendor_create(request):
             instagram=request.POST.get('instagram', ''),
             is_active=request.POST.get('is_active') == 'on',
             is_featured=request.POST.get('is_featured') == 'on',
+            min_budget=_parse_budget(request.POST.get('min_budget')),
+            max_budget=_parse_budget(request.POST.get('max_budget')),
         )
         if 'logo' in request.FILES:
             vendor.logo = request.FILES['logo']
@@ -469,6 +477,13 @@ def vendor_edit(request, pk):
         vendor.instagram = request.POST.get('instagram', '')
         vendor.is_active = request.POST.get('is_active') == 'on'
         vendor.is_featured = request.POST.get('is_featured') == 'on'
+        def _parse_budget(val):
+            try:
+                return float(val) if val and val.strip() else None
+            except (ValueError, TypeError):
+                return None
+        vendor.min_budget = _parse_budget(request.POST.get('min_budget'))
+        vendor.max_budget = _parse_budget(request.POST.get('max_budget'))
         if 'logo' in request.FILES:
             vendor.logo = request.FILES['logo']
         vendor.save()
