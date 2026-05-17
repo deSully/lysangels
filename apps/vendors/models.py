@@ -193,6 +193,39 @@ class VendorApplication(models.Model):
     description = models.TextField(verbose_name='Description de l\'activité')
     instagram = models.CharField(max_length=200, blank=True, verbose_name='Instagram')
     facebook = models.CharField(max_length=200, blank=True, verbose_name='Facebook')
+    vendor_profile = models.OneToOneField(
+        'VendorProfile',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='source_application',
+        verbose_name='Profil créé',
+    )
+    image_1 = models.ImageField(
+        upload_to='applications/', blank=True, null=True,
+        validators=[validate_image_file],
+        verbose_name='Photo portfolio 1',
+    )
+    image_2 = models.ImageField(
+        upload_to='applications/', blank=True, null=True,
+        validators=[validate_image_file],
+        verbose_name='Photo portfolio 2',
+    )
+    image_3 = models.ImageField(
+        upload_to='applications/', blank=True, null=True,
+        validators=[validate_image_file],
+        verbose_name='Photo portfolio 3',
+    )
+    image_4 = models.ImageField(
+        upload_to='applications/', blank=True, null=True,
+        validators=[validate_image_file],
+        verbose_name='Photo portfolio 4',
+    )
+    image_5 = models.ImageField(
+        upload_to='applications/', blank=True, null=True,
+        validators=[validate_image_file],
+        verbose_name='Photo portfolio 5',
+    )
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
@@ -208,6 +241,15 @@ class VendorApplication(models.Model):
         verbose_name = 'Candidature prestataire'
         verbose_name_plural = 'Candidatures prestataires'
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        update_fields = kwargs.get('update_fields')
+        if not update_fields:
+            for field_name in ['image_1', 'image_2', 'image_3', 'image_4', 'image_5']:
+                raw = self.__dict__.get(field_name)
+                if raw and not isinstance(raw, str):
+                    setattr(self, field_name, VendorImage._resize_image(raw))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} ({self.get_status_display()})"
