@@ -760,7 +760,7 @@ def application_create_profile(request, pk):
         return redirect('accounts:admin_vendor_detail', pk=application.vendor_profile_id)
 
     vendor = VendorProfile.objects.create(
-        business_name=application.name,
+        business_name=application.business_name or application.name,
         description=application.description,
         whatsapp=application.whatsapp,
         address=application.address,
@@ -847,6 +847,7 @@ def application_edit(request, pk):
     name = request.POST.get('name', '').strip()
     if name:
         application.name = name
+    application.business_name = request.POST.get('business_name', '').strip()
     application.email = request.POST.get('email', '').strip()
     application.whatsapp = request.POST.get('whatsapp', '').strip()
     application.address = request.POST.get('address', '').strip()
@@ -856,7 +857,7 @@ def application_edit(request, pk):
     application.instagram = request.POST.get('instagram', '').strip()
     application.facebook = request.POST.get('facebook', '').strip()
     application.save(update_fields=[
-        'name', 'email', 'whatsapp', 'address',
+        'name', 'business_name', 'email', 'whatsapp', 'address',
         'description', 'instagram', 'facebook', 'updated_at',
     ])
     messages.success(request, 'Candidature mise à jour.')

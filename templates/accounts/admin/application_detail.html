@@ -33,6 +33,10 @@
               <input type="text" name="name" value="{{ application.name }}" required class="a-input">
             </div>
             <div>
+              <label class="a-field-label">Nom de l'entreprise / marque</label>
+              <input type="text" name="business_name" value="{{ application.business_name|default:'' }}" class="a-input" placeholder="Studio, marque…">
+            </div>
+            <div>
               <label class="a-field-label">Email</label>
               <input type="email" name="email" value="{{ application.email|default:'' }}" class="a-input">
             </div>

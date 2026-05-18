@@ -144,6 +144,7 @@ def vendor_signup(request):
             messages.error(request, "Veuillez confirmer que vous n'êtes pas un robot.")
         else:
             name = request.POST.get('name', '').strip()
+            business_name = request.POST.get('business_name', '').strip()
             email = request.POST.get('email', '').strip()
             whatsapp = request.POST.get('whatsapp', '').strip()
             address = request.POST.get('address', '').strip()
@@ -177,6 +178,7 @@ def vendor_signup(request):
             else:
                 create_kwargs = dict(
                     name=name,
+                    business_name=business_name,
                     email=email,
                     whatsapp=whatsapp,
                     address=address,

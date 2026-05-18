@@ -389,10 +389,16 @@
                 <div class="step-panel active" id="step-1">
                     <div class="form-step-title font-display">Vos coordonnées</div>
 
-                    <div class="form-group">
-                        <label class="form-label">Nom complet<span class="form-required">*</span></label>
-                        <input type="text" name="name" value="{{ request.POST.name|default:'' }}" required placeholder="Jean Dupont" id="id_name">
-                        <p class="inline-error" id="err-name">Ce champ est requis.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">Nom complet<span class="form-required">*</span></label>
+                            <input type="text" name="name" value="{{ request.POST.name|default:'' }}" required placeholder="Jean Dupont" id="id_name">
+                            <p class="inline-error" id="err-name">Ce champ est requis.</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nom de l'entreprise / marque</label>
+                            <input type="text" name="business_name" value="{{ request.POST.business_name|default:'' }}" placeholder="Studio Lumière, Élégance Events…" id="id_business_name">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -34,7 +34,10 @@
     <tbody>
       {% for app in applications %}
       <tr onclick="location.href='{% url 'accounts:admin_application_detail' app.pk %}'">
-        <td style="font-weight:500;">{{ app.name }}</td>
+        <td style="font-weight:500;">
+          {{ app.name }}
+          {% if app.business_name %}<br><span class="a-td-muted" style="font-weight:400;font-size:.78rem;">{{ app.business_name }}</span>{% endif %}
+        </td>
         <td class="a-td-muted">
           {% for city in app.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
           {% if app.cities.count > 2 %} …{% endif %}

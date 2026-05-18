@@ -165,6 +165,7 @@ class VendorApplication(models.Model):
         ('rejected', 'Refusé'),
     ]
     name = models.CharField(max_length=200, verbose_name='Nom complet')
+    business_name = models.CharField(max_length=200, blank=True, verbose_name="Nom de l'entreprise / marque")
     email = models.EmailField(blank=True, verbose_name='Email')
     whatsapp = models.CharField(max_length=30, blank=True, verbose_name='WhatsApp')
     countries = models.ManyToManyField(
