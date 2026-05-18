@@ -23,7 +23,7 @@ class ProjectCreateForm(forms.ModelForm):
     contact_phone = forms.CharField(
         max_length=30,
         required=False,
-        label='Votre téléphone (optionnel)',
+        label='Votre téléphone',
         widget=forms.TextInput(attrs={'class': INPUT_CLASS, 'placeholder': '+228 90 00 00 00'})
     )
     event_type = forms.ModelChoiceField(
@@ -125,4 +125,8 @@ class ProjectCreateForm(forms.ModelForm):
         cleaned_data['budget_max'] = budget_max
         if budget_min and budget_max and budget_max < budget_min:
             raise ValidationError('Le budget maximum doit être supérieur ou égal au budget minimum.')
+        email = cleaned_data.get('contact_email')
+        phone = cleaned_data.get('contact_phone')
+        if not email and not phone:
+            raise ValidationError('Veuillez renseigner au moins un moyen de contact : email ou téléphone.')
         return cleaned_data
