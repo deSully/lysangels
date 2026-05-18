@@ -403,19 +403,6 @@ function initOfflineSupport() {
 // ============================================
 
 function initErrorTracking() {
-    // Global error handler
-    window.addEventListener('error', (event) => {
-        console.error('Error caught:', event.error);
-
-        // User-friendly error message
-        if (!navigator.onLine) {
-            toastManager.error('Erreur', 'Vérifiez votre connexion Internet', 5000);
-        } else {
-            toastManager.error('Erreur', 'Une erreur est survenue. Veuillez réessayer.', 5000);
-        }
-    });
-
-    // Unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
         console.error('Unhandled promise rejection:', event.reason);
     });
