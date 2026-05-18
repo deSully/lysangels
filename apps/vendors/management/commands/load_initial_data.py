@@ -11,19 +11,29 @@ class Command(BaseCommand):
         self.stdout.write('Chargement des types de services...')
 
         services = [
-            {'name': 'Salle de réception', 'description': 'Location de salles pour événements', 'icon': 'building'},
-            {'name': 'Traiteur', 'description': 'Services de restauration et buffet', 'icon': 'utensils'},
-            {'name': 'Décoration', 'description': 'Décoration et aménagement d\'espace', 'icon': 'palette'},
-            {'name': 'Photographe', 'description': 'Photographie professionnelle', 'icon': 'camera'},
-            {'name': 'Vidéaste', 'description': 'Vidéographie et montage', 'icon': 'video'},
-            {'name': 'DJ / Musique', 'description': 'Animation musicale et sonorisation', 'icon': 'music'},
-            {'name': 'Animation', 'description': 'Animateurs et spectacles', 'icon': 'star'},
-            {'name': 'Maquillage / Coiffure', 'description': 'Services beauté pour mariées et invités', 'icon': 'brush'},
-            {'name': 'Pâtisserie', 'description': 'Gâteaux et desserts sur mesure', 'icon': 'cake'},
-            {'name': 'Location matériel', 'description': 'Tables, chaises, vaisselle, etc.', 'icon': 'box'},
-            {'name': 'Transport', 'description': 'Véhicules pour mariés et invités', 'icon': 'car'},
-            {'name': 'Fleuriste', 'description': 'Compositions florales', 'icon': 'flower'},
-            {'name': 'Communication / Marketing', 'description': 'Agences de communication et marketing événementiel', 'icon': 'megaphone'},
+            # ── Groupe 1 : services de base ──
+            {'name': 'Salle de réception',         'description': 'Location de salles pour événements',                     'icon': 'building'},
+            {'name': 'Traiteur',                   'description': 'Services de restauration et buffet',                     'icon': 'utensils'},
+            {'name': 'Décoration',                 'description': "Décoration et aménagement d'espace",                     'icon': 'palette'},
+            {'name': 'Photographe',                'description': 'Photographie professionnelle',                           'icon': 'camera'},
+            {'name': 'Vidéaste',                   'description': 'Vidéographie et montage',                                'icon': 'video'},
+            {'name': 'DJ / Musique',               'description': 'Animation musicale et sonorisation',                     'icon': 'music'},
+            {'name': 'Animation',                  'description': 'Animateurs et spectacles',                               'icon': 'star'},
+            {'name': 'Maquillage / Coiffure',      'description': 'Services beauté pour mariées et invités',                'icon': 'brush'},
+            {'name': 'Pâtisserie',                'description': 'Gâteaux et desserts sur mesure',                         'icon': 'cake'},
+            {'name': 'Location matériel',          'description': 'Tables, chaises, vaisselle, etc.',                       'icon': 'box'},
+            {'name': 'Transport',                  'description': 'Véhicules pour mariés et invités',                       'icon': 'car'},
+            {'name': 'Fleuriste',                  'description': 'Compositions florales',                                  'icon': 'flower'},
+            {'name': 'Communication / Marketing',  'description': 'Agences de communication et marketing événementiel',    'icon': 'megaphone'},
+            # ── Groupe 2 : services spécialisés ──
+            {'name': 'Tenue & Couture',            'description': 'Création et location de tenues de cérémonie',           'icon': 'shirt'},
+            {'name': 'Sono & Éclairage',           'description': 'Location et installation de matériel son et lumière',   'icon': 'speaker'},
+            {'name': 'Sécurité événementielle',    'description': 'Service de sécurité pour événements',                   'icon': 'shield'},
+            {'name': 'Planification & Coordination','description': "Wedding planner et coordinateur d'événements",         'icon': 'clipboard'},
+            {'name': 'Impression & Faire-part',    'description': 'Faire-part, menus et supports imprimés personnalisés',  'icon': 'printer'},
+            {'name': 'Bijouterie & Accessoires',   'description': 'Bijoux et accessoires pour mariées et cérémonies',      'icon': 'gem'},
+            {'name': 'Location mobilier',          'description': 'Location de mobilier événementiel',                     'icon': 'armchair'},
+            {'name': 'Photobooth & Divertissement','description': 'Photobooth et animations interactives',                 'icon': 'camera'},
         ]
 
         for service_data in services:
