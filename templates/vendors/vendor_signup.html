@@ -403,16 +403,17 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">Email <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel)</span></label>
+                            <label class="form-label">Email</label>
                             <input type="email" name="email" value="{{ request.POST.email|default:'' }}" placeholder="jean@exemple.com" id="id_email">
                             <p class="inline-error" id="err-email">Format email invalide.</p>
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
-                            <label class="form-label">WhatsApp <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.7rem;">(optionnel)</span></label>
+                            <label class="form-label">WhatsApp</label>
                             <input type="text" name="whatsapp" value="{{ request.POST.whatsapp|default:'' }}" placeholder="+228 90 00 00 00" id="id_whatsapp">
                         </div>
                     </div>
-                    <p class="inline-error" id="err-contact-required" style="margin-top:.5rem;">Renseignez au moins un moyen de contact : email ou WhatsApp.</p>
+                    <p style="font-size:.72rem; color:var(--muted); margin-top:.5rem;">Au moins l'un des deux nous permettra de vous recontacter.</p>
+                    <p class="inline-error" id="err-contact-required" style="margin-top:.25rem;">Renseignez au moins un moyen de contact : email ou WhatsApp.</p>
 
                     <div class="form-group" style="margin-top:1.25rem;">
                         <label class="form-label">Adresse / Quartier</label>
