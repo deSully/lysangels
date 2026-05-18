@@ -536,7 +536,7 @@
                         {% for service in service_types %}
                         <label class="service-tile-label">
                             <input type="checkbox" name="services_needed" value="{{ service.pk }}">
-                            <span class="service-tile-text">{% if service.icon %}{{ service.icon }} {% endif %}{{ service.name }}</span>
+                            <span class="service-tile-text">{% if service.icon %}<i data-lucide="{{ service.icon }}" style="width:1rem;height:1rem;flex-shrink:0;"></i> {% endif %}{{ service.name }}</span>
                         </label>
                         {% endfor %}
                     </div>
