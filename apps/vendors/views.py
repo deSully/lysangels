@@ -1,6 +1,5 @@
 import json
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -28,7 +27,7 @@ def _build_countries_list_json():
 
 
 def vendor_list(request):
-    """Liste publique des prestataires — layout catégories unique"""
+    """Liste publique des prestataires — catégories ou résultats de recherche"""
     service_type_ids = request.GET.getlist('service_types')
     search = request.GET.get('search', '').strip()
     country_id = request.GET.get('country_id', '').strip()
@@ -36,30 +35,7 @@ def vendor_list(request):
 
     all_service_types = get_cached_service_types(ordered=True)
 
-    if service_type_ids:
-        active_service_types = [s for s in all_service_types if str(s.id) in service_type_ids]
-    else:
-        active_service_types = all_service_types
-
-    vendors_by_category = []
-    for service_type in active_service_types:
-        qs = VendorProfile.objects.filter(is_active=True, service_types=service_type)
-        if search:
-            qs = qs.filter(
-                Q(business_name__icontains=search) | Q(description__icontains=search)
-            )
-        if city_id:
-            qs = qs.filter(cities__id=city_id)
-        elif country_id:
-            qs = qs.filter(cities__country_id=country_id)
-        qs = qs.prefetch_related(
-            'cities', 'service_types', 'images'
-        ).order_by('-is_featured', '-created_at').distinct()[:6]
-        if qs.exists():
-            vendors_by_category.append({'service_type': service_type, 'vendors': qs})
-
-    context = {
-        'vendors_by_category': vendors_by_category,
+    base_context = {
         'service_types': all_service_types,
         'selected_service_types': service_type_ids,
         'search_query': search,
@@ -73,7 +49,39 @@ def vendor_list(request):
             {'title': 'Prestataires'},
         ],
     }
-    return render(request, 'vendors/vendor_list.html', context)
+
+    if search:
+        from .search import semantic_search
+        results = semantic_search(search, limit=20)
+        return render(request, 'vendors/vendor_list.html', {
+            **base_context,
+            'search_results': results,
+            'is_search': True,
+        })
+
+    if service_type_ids:
+        active_service_types = [s for s in all_service_types if str(s.id) in service_type_ids]
+    else:
+        active_service_types = all_service_types
+
+    vendors_by_category = []
+    for service_type in active_service_types:
+        qs = VendorProfile.objects.filter(is_active=True, service_types=service_type)
+        if city_id:
+            qs = qs.filter(cities__id=city_id)
+        elif country_id:
+            qs = qs.filter(cities__country_id=country_id)
+        qs = qs.prefetch_related(
+            'cities', 'service_types', 'images'
+        ).order_by('-is_featured', '-created_at').distinct()[:6]
+        if qs.exists():
+            vendors_by_category.append({'service_type': service_type, 'vendors': qs})
+
+    return render(request, 'vendors/vendor_list.html', {
+        **base_context,
+        'vendors_by_category': vendors_by_category,
+        'is_search': False,
+    })
 
 
 def vendor_detail(request, pk):

@@ -324,6 +324,77 @@
     <!-- ── GRILLE ── -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
+        {% if is_search %}
+        <!-- ── RÉSULTATS DE RECHERCHE ── -->
+        <div class="mb-6">
+            <h2 style="font-size:1.1rem; font-weight:700; color:var(--night); letter-spacing:-.01em;">
+                {% if search_results %}
+                    {{ search_results|length }} résultat{% if search_results|length != 1 %}s{% endif %} pour <em style="font-style:normal; color:var(--terra);">« {{ search_query }} »</em>
+                {% else %}
+                    Aucun résultat pour <em style="font-style:normal; color:var(--terra);">« {{ search_query }} »</em>
+                {% endif %}
+            </h2>
+        </div>
+        {% if search_results %}
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-14">
+            {% for vendor in search_results %}
+            <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="vcard">
+                {% if vendor.logo %}
+                    <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
+                {% elif vendor.images.first %}
+                    <img src="{% thumbnail_url vendor.images.first.image 'medium' %}"
+                         alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
+                {% else %}
+                    <div class="vcard-placeholder">
+                        <span class="vcard-letter font-display">{{ vendor.business_name|first|upper }}</span>
+                    </div>
+                {% endif %}
+                <div class="vcard-veil"></div>
+                <div class="vcard-arrow" aria-hidden="true">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </div>
+                <div class="vcard-body">
+                    <div class="vcard-tags">
+                        {% for service in vendor.service_types.all|slice:":2" %}
+                        <span class="vcard-tag">{{ service.name|truncatewords:2 }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="vcard-name font-display">{{ vendor.business_name }}</div>
+                    {% with vendor.cities.first as city %}
+                    {% if city %}
+                    <div class="vcard-city">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        {{ city.name }}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-wrap">
+            <div class="empty-inner">
+                <div class="empty-icon">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <h3 class="empty-title font-display">Aucun résultat</h3>
+                <p class="empty-sub">Aucun prestataire ne correspond à votre recherche. Parcourez les catégories pour trouver ce dont vous avez besoin.</p>
+                <a href="{% url 'vendors:vendor_list' %}" class="empty-cta-primary">
+                    Voir tous les prestataires
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+
         {% if vendors_by_category %}
             {% if ads.vendor_list_top %}
 <div style="margin-bottom:1.5rem; text-align:center;">
@@ -440,6 +511,7 @@
                     {% endif %}
                 </div>
             </div>
+        {% endif %}
         {% endif %}
 
         <!-- CTA bas de page -->
