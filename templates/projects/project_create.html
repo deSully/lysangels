@@ -200,31 +200,31 @@
     .inline-error { color: #DC2626; font-size: .78rem; margin-top: .35rem; display: none; }
     .inline-error.visible { display: block; }
 
-    /* ── SERVICE TILES ── */
-    .service-tile-label {
-        display: flex; align-items: center; gap: .625rem;
-        padding: .75rem .875rem;
-        background: #fff; border: 1.5px solid rgba(0,0,0,.08);
-        border-radius: .35rem; cursor: pointer;
-        transition: border-color .2s, background .2s;
-        user-select: none;
+    /* ── SERVICE PILLS ── */
+    .service-pills {
+        display: flex; flex-wrap: wrap; gap: .5rem;
     }
-    .service-tile-label:hover {
+    .service-pill {
+        display: inline-flex; align-items: center; gap: .35rem;
+        padding: .4rem .875rem;
+        background: #fff; border: 1.5px solid rgba(0,0,0,.1);
+        border-radius: 2rem; cursor: pointer;
+        font-size: .78rem; font-weight: 500; color: var(--night);
+        transition: border-color .15s, background .15s, color .15s, box-shadow .15s;
+        user-select: none; white-space: nowrap;
+    }
+    .service-pill:hover {
         border-color: var(--terra);
-        background: rgba(181,68,26,.03);
+        background: rgba(181,68,26,.04);
+        color: var(--terra);
     }
-    .service-tile-label input[type="checkbox"] {
-        width: 1rem; height: 1rem; flex-shrink: 0;
-        accent-color: var(--terra);
-        border-radius: 3px; cursor: pointer;
+    .service-pill input[type="checkbox"] { display: none; }
+    .service-pill:has(input:checked) {
+        background: var(--terra); border-color: var(--terra);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(181,68,26,.3);
     }
-    .service-tile-label:has(input:checked) {
-        border-color: var(--terra);
-        background: rgba(181,68,26,.06);
-    }
-    .service-tile-text {
-        font-size: .825rem; font-weight: 500; color: var(--night);
-    }
+    .service-pill svg { width: .85rem; height: .85rem; flex-shrink: 0; }
 
     /* ── STEP PANELS ── */
     .step-panel { display: none; }
@@ -532,11 +532,12 @@
                     </p>
 
                     {% if service_types %}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-6" style="gap:.625rem;">
+                    <div class="service-pills mb-6">
                         {% for service in service_types %}
-                        <label class="service-tile-label">
+                        <label class="service-pill">
                             <input type="checkbox" name="services_needed" value="{{ service.pk }}">
-                            <span class="service-tile-text">{% if service.icon %}<i data-lucide="{{ service.icon }}" style="width:1rem;height:1rem;flex-shrink:0;"></i> {% endif %}{{ service.name }}</span>
+                            {% if service.icon %}<i data-lucide="{{ service.icon }}"></i>{% endif %}
+                            {{ service.name }}
                         </label>
                         {% endfor %}
                     </div>
