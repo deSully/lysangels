@@ -141,29 +141,18 @@
         }
 
         /* ── Selects — thème global ── */
+        /* !important uniquement sur les props décoratives pour battre les classes Tailwind */
         select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-color: #fff;
-            border: 1px solid rgba(0,0,0,.13);
-            border-radius: 8px;
-            padding: .6rem 2.25rem .6rem .85rem;
-            font-size: .875rem;
-            color: #2a2016;
-            line-height: 1.5;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23B5441A' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right .75rem center !important;
+            background-size: 1rem 1rem !important;
             cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23B5441A' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right .7rem center;
-            background-size: 1rem 1rem;
-            transition: border-color .18s, box-shadow .18s;
+            padding-right: 2.25rem !important;
         }
-        select:hover:not(:focus) { border-color: rgba(0,0,0,.25); }
-        select:focus {
-            outline: none;
-            border-color: var(--terra);
-            box-shadow: 0 0 0 3px rgba(181,68,26,.1);
-        }
+        select:focus { outline: none !important; }
 
         /* User menu button hover */
         .nav-user-btn:hover { color: var(--terra) !important; }
