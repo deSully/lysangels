@@ -854,11 +854,12 @@ def application_edit(request, pk):
     description = request.POST.get('description', '').strip()
     if description:
         application.description = description
+    application.other_service = request.POST.get('other_service', '').strip()
     application.instagram = request.POST.get('instagram', '').strip()
     application.facebook = request.POST.get('facebook', '').strip()
     application.save(update_fields=[
         'name', 'business_name', 'email', 'whatsapp', 'address',
-        'description', 'instagram', 'facebook', 'updated_at',
+        'description', 'other_service', 'instagram', 'facebook', 'updated_at',
     ])
     messages.success(request, 'Candidature mise à jour.')
     return redirect('accounts:admin_application_detail', pk=pk)

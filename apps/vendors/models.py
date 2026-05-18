@@ -186,6 +186,12 @@ class VendorApplication(models.Model):
         verbose_name='Types de prestation',
         blank=True,
     )
+    other_service = models.CharField(
+        max_length=300,
+        blank=True,
+        verbose_name='Autre prestation (non listée)',
+        help_text='Si votre activité ne figure pas dans la liste, précisez-la ici.',
+    )
     address = models.CharField(
         max_length=300,
         blank=True,

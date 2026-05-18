@@ -145,6 +145,7 @@ def vendor_signup(request):
         else:
             name = request.POST.get('name', '').strip()
             business_name = request.POST.get('business_name', '').strip()
+            other_service = request.POST.get('other_service', '').strip()
             email = request.POST.get('email', '').strip()
             whatsapp = request.POST.get('whatsapp', '').strip()
             address = request.POST.get('address', '').strip()
@@ -169,8 +170,8 @@ def vendor_signup(request):
                 errors.append('Sélectionne au moins un pays et une ville.')
             if not description:
                 errors.append("La description de l'activité est requise.")
-            if not service_type_ids:
-                errors.append('Veuillez sélectionner au moins un type de prestation.')
+            if not service_type_ids and not other_service:
+                errors.append('Veuillez sélectionner au moins un type de prestation ou préciser votre activité.')
 
             if errors:
                 for error in errors:
@@ -179,6 +180,7 @@ def vendor_signup(request):
                 create_kwargs = dict(
                     name=name,
                     business_name=business_name,
+                    other_service=other_service,
                     email=email,
                     whatsapp=whatsapp,
                     address=address,

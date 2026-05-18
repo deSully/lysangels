@@ -58,6 +58,10 @@
             </div>
           </div>
           <div>
+            <label class="a-field-label">Autre prestation (si absente de la liste)</label>
+            <input type="text" name="other_service" value="{{ application.other_service|default:'' }}" class="a-input" placeholder="Ex : Wedding planner, location décor…" maxlength="300">
+          </div>
+          <div>
             <label class="a-field-label">Description <span style="color:var(--terra);">*</span></label>
             <textarea name="description" rows="5" required class="a-textarea">{{ application.description }}</textarea>
           </div>

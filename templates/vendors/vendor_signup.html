@@ -458,6 +458,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label" for="id_other_service">Autre prestation (si absente de la liste)</label>
+                        <input type="text" id="id_other_service" name="other_service"
+                               value="{{ request.POST.other_service|default:'' }}"
+                               placeholder="Précisez votre activité si elle ne figure pas dans la liste ci-dessus…"
+                               maxlength="300">
+                        <p style="font-size:.72rem; color:var(--muted); margin-top:.25rem;">L'équipe LysAngels examinera votre demande et ajoutera la catégorie si pertinente.</p>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Décrivez votre activité<span class="form-required">*</span></label>
                         <textarea name="description" rows="6" required id="id_description"
                                   placeholder="Parlez-nous de votre expérience, vos spécialités, la zone que vous couvrez…">{{ request.POST.description|default:'' }}</textarea>

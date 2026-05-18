@@ -46,6 +46,8 @@
         <td class="a-td-muted">
           {% for st in app.service_types.all|slice:":2" %}{{ st.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
           {% if app.service_types.count > 2 %} …{% endif %}
+          {% if not app.service_types.exists and app.other_service %}{{ app.other_service }}{% endif %}
+          {% if app.service_types.exists and app.other_service %} + {{ app.other_service }}{% endif %}
         </td>
         <td class="a-td-mono">{{ app.created_at|date:"d/m/Y" }}</td>
         <td>
