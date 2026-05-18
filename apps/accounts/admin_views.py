@@ -48,45 +48,154 @@ def admin_required(view_func):
 
 @admin_required
 def admin_dashboard(request):
-    """Dashboard administrateur"""
+    """Dashboard administrateur — statistiques et graphiques analytiques."""
     from datetime import timedelta
     from django.utils import timezone
+    from django.db.models.functions import TruncMonth
 
     now = timezone.now()
-    last_30_days = now - timedelta(days=30)
+    today = now.date()
 
-    # Stats prestataires
-    pending_vendors = VendorProfile.objects.filter(is_active=False).count()
-    active_vendors = VendorProfile.objects.filter(is_active=True).count()
+    # Sélecteur de période
+    try:
+        period_days = int(request.GET.get('period', 30))
+    except (ValueError, TypeError):
+        period_days = 30
+    if period_days not in (7, 30, 90, 365):
+        period_days = 30
 
-    # Stats demandes clients
-    total_projects = Project.objects.count()
-    new_projects = Project.objects.filter(status='new').count()
-    projects_this_month = Project.objects.filter(created_at__gte=last_30_days).count()
+    period_start = now - timedelta(days=period_days)
+    prev_start = period_start - timedelta(days=period_days)
 
-    # Stats configuration
-    total_countries = Country.objects.filter(is_active=True).count()
-    total_cities = City.objects.filter(is_active=True).count()
-    total_service_types = ServiceType.objects.count()
-    total_event_types = EventType.objects.count()
+    # KPI 1 : Nouvelles demandes en attente
+    kpi_new_requests = Project.objects.filter(status='new').count()
 
-    # Nouvelles demandes récentes
-    recent_projects = Project.objects.filter(
-        status='new'
-    ).order_by('-created_at')[:10]
+    # KPI 2 : Demandes reçues sur la période (avec delta)
+    total_period = Project.objects.filter(created_at__gte=period_start).count()
+    kpi_received = total_period  # alias for context
+    kpi_received_prev = Project.objects.filter(
+        created_at__gte=prev_start, created_at__lt=period_start
+    ).count()
+    kpi_received_delta = kpi_received - kpi_received_prev
 
+    # KPI 3 : Prestataires actifs
+    kpi_active_vendors = VendorProfile.objects.filter(is_active=True).count()
+
+    # KPI 4 : Taux de traitement (clôturés / total sur la période)
+    closed_period = Project.objects.filter(created_at__gte=period_start, status='closed').count()
+    kpi_rate = round(closed_period / total_period * 100) if total_period > 0 else 0
+
+    total_prev = Project.objects.filter(
+        created_at__gte=prev_start, created_at__lt=period_start
+    ).count()
+    closed_prev = Project.objects.filter(
+        created_at__gte=prev_start, created_at__lt=period_start, status='closed'
+    ).count()
+    kpi_rate_prev = round(closed_prev / total_prev * 100) if total_prev > 0 else 0
+    kpi_rate_delta = kpi_rate - kpi_rate_prev
+
+    # Section 2 : Courbe 12 mois (indépendante du sélecteur)
+    twelve_months_ago = now - timedelta(days=365)
+    monthly_qs = (
+        Project.objects
+        .filter(created_at__gte=twelve_months_ago)
+        .annotate(month=TruncMonth('created_at'))
+        .values('month')
+        .annotate(count=Count('id'))
+        .order_by('month')
+    )
+    monthly_dict = {item['month'].strftime('%Y-%m'): item['count'] for item in monthly_qs}
+
+    FR_MONTHS = ['jan.', 'fév.', 'mar.', 'avr.', 'mai', 'juin',
+                 'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.']
+    trend_labels, trend_values = [], []
+    for i in range(12):
+        months_back = 11 - i
+        m = today.month - months_back
+        y = today.year
+        while m <= 0:
+            m += 12
+            y -= 1
+        key = f'{y}-{m:02d}'
+        trend_labels.append(FR_MONTHS[m - 1] + ' ' + str(y))
+        trend_values.append(monthly_dict.get(key, 0))
+
+    chart_trends = {'labels': trend_labels, 'values': trend_values}
+
+    # Section 3 : Services demandés vs couverts (toute la vie de la plateforme)
+    from django.db.models import Q
+    service_stats_qs = list(
+        ServiceType.objects
+        .annotate(
+            demanded=Count('projects', distinct=True),
+            covered=Count('vendors', filter=Q(vendors__is_active=True), distinct=True),
+        )
+        .values('name', 'demanded', 'covered')
+        .order_by('-demanded')
+    )
+    chart_services = {
+        'labels': [s['name'] for s in service_stats_qs],
+        'demanded': [s['demanded'] for s in service_stats_qs],
+        'covered': [s['covered'] for s in service_stats_qs],
+    }
+
+    # Section 4 : Types d'événements (période)
+    events_qs = (
+        Project.objects
+        .filter(created_at__gte=period_start, event_type__isnull=False)
+        .values('event_type__name')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+    chart_events = {
+        'labels': [e['event_type__name'] for e in events_qs],
+        'values': [e['count'] for e in events_qs],
+    }
+
+    # Section 5 : Pipeline CSS
+    status_map = [
+        ('new', 'Nouvelle demande', 'var(--terra)'),
+        ('contacted', 'Contacté', '#3B82F6'),
+        ('in_progress', 'En cours', '#16A34A'),
+        ('closed', 'Clôturé', 'var(--muted)'),
+    ]
+    pipeline_display = []
+    for status, label, color in status_map:
+        count = Project.objects.filter(created_at__gte=period_start, status=status).count()
+        pct = round(count / total_period * 100) if total_period > 0 else 0
+        pipeline_display.append({'label': label, 'count': count, 'pct': pct, 'color': color})
+
+    # Section 6 : Top 5 villes (période)
+    cities_qs = (
+        Project.objects
+        .filter(created_at__gte=period_start, city__isnull=False)
+        .values('city__name')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:5]
+    )
+    chart_cities = {
+        'labels': [c['city__name'] for c in cities_qs],
+        'values': [c['count'] for c in cities_qs],
+    }
+
+    # Tables existantes
+    recent_projects = Project.objects.filter(status='new').order_by('-created_at')[:10]
     recent_vendors = VendorProfile.objects.prefetch_related('cities').order_by('-created_at')[:5]
 
     context = {
-        'pending_vendors': pending_vendors,
-        'active_vendors': active_vendors,
-        'total_projects': total_projects,
-        'new_projects': new_projects,
-        'projects_this_month': projects_this_month,
-        'total_countries': total_countries,
-        'total_cities': total_cities,
-        'total_service_types': total_service_types,
-        'total_event_types': total_event_types,
+        'periods': [(7, '7 jours'), (30, '30 jours'), (90, '90 jours'), (365, '12 mois')],
+        'period_days': period_days,
+        'kpi_new_requests': kpi_new_requests,
+        'kpi_received': kpi_received,
+        'kpi_received_delta': kpi_received_delta,
+        'kpi_active_vendors': kpi_active_vendors,
+        'kpi_rate': kpi_rate,
+        'kpi_rate_delta': kpi_rate_delta,
+        'chart_trends': chart_trends,
+        'chart_services': chart_services,
+        'chart_events': chart_events,
+        'chart_cities': chart_cities,
+        'pipeline_display': pipeline_display,
         'recent_projects': recent_projects,
         'recent_vendors': recent_vendors,
     }
