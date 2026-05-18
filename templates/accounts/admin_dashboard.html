@@ -4,6 +4,11 @@
 
 {% block admin_content %}
 
+{{ chart_trends|json_script:"data-trends" }}
+{{ chart_services|json_script:"data-services" }}
+{{ chart_events|json_script:"data-events" }}
+{{ chart_cities|json_script:"data-cities" }}
+
 <div class="a-page-hd">
   <div>
     <h1 class="a-page-title">Tableau de bord</h1>
@@ -11,30 +16,136 @@
   </div>
 </div>
 
-<!-- Stat cards -->
-<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem;">
+<!-- Sélecteur de période -->
+<div style="display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+  {% for p, label in periods %}
+  <a href="?period={{ p }}"
+     style="padding:.375rem .875rem; border-radius:4px; font-size:.8rem; font-weight:600; text-decoration:none; border:1px solid;
+            {% if period_days == p %}background:var(--terra); color:#fff; border-color:var(--terra);
+            {% else %}background:#fff; color:var(--muted); border-color:rgba(0,0,0,.12);{% endif %}">
+    {{ label }}
+  </a>
+  {% endfor %}
+</div>
+
+<!-- KPI Cards -->
+<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem;">
+
   <div class="a-stat">
-    <div class="a-stat-num {% if new_projects > 0 %}a-stat-num-accent{% endif %}">{{ new_projects }}</div>
+    <div class="a-stat-num {% if kpi_new_requests > 0 %}a-stat-num-accent{% endif %}">{{ kpi_new_requests }}</div>
     <div class="a-stat-label">Nouvelles demandes</div>
+    <div style="font-size:.7rem; color:var(--muted); margin-top:.25rem;">En attente de traitement</div>
   </div>
+
   <div class="a-stat">
-    <div class="a-stat-num">{{ total_projects }}</div>
-    <div class="a-stat-label">Demandes total</div>
+    <div class="a-stat-num">{{ kpi_received }}</div>
+    <div class="a-stat-label">Demandes reçues</div>
+    {% if kpi_received_delta != 0 %}
+    <div style="font-size:.72rem; font-weight:600; margin-top:.25rem;
+                color:{% if kpi_received_delta > 0 %}#16A34A{% else %}var(--terra){% endif %};">
+      {% if kpi_received_delta > 0 %}+{% endif %}{{ kpi_received_delta }} vs période préc.
+    </div>
+    {% else %}
+    <div style="font-size:.72rem; color:var(--muted); margin-top:.25rem;">= période préc.</div>
+    {% endif %}
   </div>
+
   <div class="a-stat">
-    <div class="a-stat-num">{{ active_vendors }}</div>
+    <div class="a-stat-num">{{ kpi_active_vendors }}</div>
     <div class="a-stat-label">Prestataires actifs</div>
+    <div style="font-size:.7rem; color:var(--muted); margin-top:.25rem;">Sur la plateforme</div>
   </div>
+
   <div class="a-stat">
-    <div class="a-stat-num {% if pending_vendors > 0 %}a-stat-num-accent{% endif %}">{{ pending_vendors }}</div>
-    <div class="a-stat-label">Prestataires inactifs</div>
+    <div class="a-stat-num">{{ kpi_rate }}<span style="font-size:.875rem; font-weight:400;">%</span></div>
+    <div class="a-stat-label">Taux de traitement</div>
+    {% if kpi_rate_delta != 0 %}
+    <div style="font-size:.72rem; font-weight:600; margin-top:.25rem;
+                color:{% if kpi_rate_delta > 0 %}#16A34A{% else %}var(--terra){% endif %};">
+      {% if kpi_rate_delta > 0 %}+{% endif %}{{ kpi_rate_delta }}pts vs période préc.
+    </div>
+    {% else %}
+    <div style="font-size:.72rem; color:var(--muted); margin-top:.25rem;">= période préc.</div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- Courbe 12 mois (pleine largeur) -->
+<div class="a-card" style="margin-bottom:1.5rem;">
+  <div class="a-card-head"><span class="a-card-label">Demandes sur 12 mois</span></div>
+  <div class="a-card-body">
+    <canvas id="chart-trends" height="80"></canvas>
   </div>
 </div>
 
-<!-- Tables -->
+<!-- Services demandés vs couverts + Donut types d'événements -->
+<div style="display:grid; grid-template-columns:2fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+
+  <div class="a-card">
+    <div class="a-card-head"><span class="a-card-label">Services demandés vs prestataires couverts</span></div>
+    <div class="a-card-body">
+      {% if chart_services.labels %}
+      <canvas id="chart-services" height="160"></canvas>
+      {% else %}
+      <p style="text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 0;">Aucun type de service configuré</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-card-head"><span class="a-card-label">Types d'événements</span></div>
+    <div class="a-card-body">
+      {% if chart_events.labels %}
+      <canvas id="chart-events" height="200"></canvas>
+      {% else %}
+      <p style="text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 0;">Aucune donnée sur cette période</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<!-- Pipeline statuts + Top 5 villes -->
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+
+  <div class="a-card">
+    <div class="a-card-head"><span class="a-card-label">Pipeline — statuts</span></div>
+    <div class="a-card-body" style="display:flex; flex-direction:column; gap:.875rem;">
+      {% if pipeline_display %}
+      {% for row in pipeline_display %}
+      <div>
+        <div style="display:flex; justify-content:space-between; font-size:.8rem; margin-bottom:.375rem;">
+          <span style="color:var(--night); font-weight:500;">{{ row.label }}</span>
+          <span style="color:var(--muted);">{{ row.count }}&nbsp;({{ row.pct }}%)</span>
+        </div>
+        <div style="height:6px; background:rgba(0,0,0,.06); border-radius:3px; overflow:hidden;">
+          <div style="height:100%; width:{{ row.pct }}%; background:{{ row.color }}; border-radius:3px;"></div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p style="text-align:center; color:var(--muted); font-size:.8rem; padding:1.5rem 0;">Aucune donnée sur cette période</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-card-head"><span class="a-card-label">Top 5 villes</span></div>
+    <div class="a-card-body">
+      {% if chart_cities.labels %}
+      <canvas id="chart-cities" height="180"></canvas>
+      {% else %}
+      <p style="text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 0;">Aucune donnée sur cette période</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<!-- Tables existantes -->
 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
 
-  <!-- Nouvelles demandes -->
   <div class="a-card">
     <div class="a-card-head">
       <span class="a-card-label">Nouvelles demandes</span>
@@ -62,7 +173,6 @@
     </table>
   </div>
 
-  <!-- Prestataires récents -->
   <div class="a-card">
     <div class="a-card-head">
       <span class="a-card-label">Prestataires</span>
@@ -81,8 +191,9 @@
         <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
           <td style="font-weight:500;">{{ vendor.business_name }}</td>
           <td class="a-td-muted">
-            {% for city in vendor.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-            {% if not vendor.cities.exists %}—{% endif %}
+            {% for city in vendor.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}—
+            {% endfor %}
           </td>
           <td>
             {% if vendor.is_active %}
@@ -100,4 +211,124 @@
   </div>
 
 </div>
+
+{% endblock %}
+
+{% block admin_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+  var COLORS = ['#B5441A','#C9973A','#3B82F6','#16A34A','#8B5CF6','#EC4899','#06B6D4','#F59E0B','#10B981','#6366F1'];
+
+  function parseData(id) {
+    var el = document.getElementById(id);
+    return el ? JSON.parse(el.textContent) : null;
+  }
+
+  // Courbe 12 mois
+  var trends = parseData('data-trends');
+  if (trends) {
+    new Chart(document.getElementById('chart-trends'), {
+      type: 'line',
+      data: {
+        labels: trends.labels,
+        datasets: [{
+          label: 'Demandes',
+          data: trends.values,
+          borderColor: '#B5441A',
+          backgroundColor: 'rgba(181,68,26,.08)',
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
+  // Services demandés vs couverts (horizontal grouped bar)
+  var svc = parseData('data-services');
+  var svcEl = document.getElementById('chart-services');
+  if (svc && svcEl && svc.labels.length > 0) {
+    new Chart(svcEl, {
+      type: 'bar',
+      data: {
+        labels: svc.labels,
+        datasets: [
+          {
+            label: 'Demandés',
+            data: svc.demanded,
+            backgroundColor: 'rgba(181,68,26,.75)',
+            borderRadius: 3
+          },
+          {
+            label: 'Couverts (actifs)',
+            data: svc.covered,
+            backgroundColor: 'rgba(22,163,74,.75)',
+            borderRadius: 3
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+        scales: { x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+
+  // Donut types d'événements
+  var evData = parseData('data-events');
+  var evEl = document.getElementById('chart-events');
+  if (evData && evEl && evData.labels.length > 0) {
+    new Chart(evEl, {
+      type: 'doughnut',
+      data: {
+        labels: evData.labels,
+        datasets: [{
+          data: evData.values,
+          backgroundColor: COLORS.slice(0, evData.labels.length),
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 10 } } }
+      }
+    });
+  }
+
+  // Top 5 villes (horizontal bar)
+  var citData = parseData('data-cities');
+  var citEl = document.getElementById('chart-cities');
+  if (citData && citEl && citData.labels.length > 0) {
+    new Chart(citEl, {
+      type: 'bar',
+      data: {
+        labels: citData.labels,
+        datasets: [{
+          label: 'Demandes',
+          data: citData.values,
+          backgroundColor: 'rgba(59,130,246,.75)',
+          borderRadius: 3
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}
