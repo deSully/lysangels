@@ -51,7 +51,25 @@
         {% endif %}
         <input type="file" name="image" accept="image/jpeg,image/png,image/webp"
                class="a-input" style="width:100%;" {% if not ad %}required{% endif %}>
-        <p style="font-size:.72rem; color:var(--muted); margin:.25rem 0 0;">Formats : JPEG, PNG, WebP. Tailles recommandées : hero 1200×300px, inter-sections 1200×120px, liste/fiche 900×200px.</p>
+        <p id="img-hint" style="font-size:.72rem; color:var(--muted); margin:.25rem 0 0;">Formats : JPEG, PNG, WebP.</p>
+        <script>
+          (function() {
+            var dims = {
+              'hero': '1200 × 300 px',
+              'between_sections': '1200 × 120 px',
+              'vendor_list_top': '900 × 200 px',
+              'vendor_detail': '900 × 200 px'
+            };
+            var hint = document.getElementById('img-hint');
+            var sel = document.querySelector('select[name="zone"]');
+            function update() {
+              var d = dims[sel.value];
+              hint.textContent = 'Formats : JPEG, PNG, WebP.' + (d ? ' Taille recommandée : ' + d + '.' : '');
+            }
+            sel.addEventListener('change', update);
+            update();
+          })();
+        </script>
       </div>
 
       <div>
