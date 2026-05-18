@@ -89,6 +89,14 @@ class VendorProfile(models.Model):
 
     is_active = models.BooleanField(default=False, verbose_name='Profil actif', db_index=True)
     is_featured = models.BooleanField(default=False, verbose_name='Prestataire mis en avant', db_index=True)
+    embedding = models.JSONField(
+        null=True, blank=True,
+        help_text='Vecteur d\'embedding (768 floats). Null = pas encore vectorisé.'
+    )
+    embedding_updated_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name='Vectorisé le'
+    )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
