@@ -49,81 +49,133 @@ def admin_required(view_func):
 @admin_required
 def admin_dashboard(request):
     """Dashboard administrateur — statistiques et graphiques analytiques."""
-    from datetime import timedelta
+    from datetime import timedelta, datetime
     from django.utils import timezone
-    from django.db.models.functions import TruncMonth
+    from django.db.models.functions import TruncMonth, TruncWeek, TruncDate
+    from django.db.models import Q
 
     now = timezone.now()
-    today = now.date()
 
-    # Sélecteur de période
-    try:
-        period_days = int(request.GET.get('period', 30))
-    except (ValueError, TypeError):
-        period_days = 30
-    if period_days not in (7, 30, 90, 365):
-        period_days = 30
+    # --- Période ---
+    date_from_str = request.GET.get('date_from', '')
+    date_to_str = request.GET.get('date_to', '')
+    custom_period = False
+    period_days = 365
 
-    period_start = now - timedelta(days=period_days)
-    prev_start = period_start - timedelta(days=period_days)
+    if date_from_str and date_to_str:
+        try:
+            date_from_dt = timezone.make_aware(datetime.strptime(date_from_str, '%Y-%m-%d'))
+            date_to_dt = timezone.make_aware(
+                datetime.strptime(date_to_str, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+            )
+            if date_from_dt <= date_to_dt:
+                period_start = date_from_dt
+                period_end = date_to_dt
+                period_days = max((date_to_dt.date() - date_from_dt.date()).days + 1, 1)
+                custom_period = True
+        except (ValueError, TypeError):
+            pass
+
+    if not custom_period:
+        try:
+            period_days = int(request.GET.get('period', 365))
+        except (ValueError, TypeError):
+            period_days = 365
+        if period_days not in (7, 30, 90, 365):
+            period_days = 365
+        period_start = now - timedelta(days=period_days)
+        period_end = now
+
+    period_duration = period_end - period_start
+    prev_start = period_start - period_duration
+    prev_end = period_start
 
     # KPI 1 : Nouvelles demandes en attente
     kpi_new_requests = Project.objects.filter(status='new').count()
 
     # KPI 2 : Demandes reçues sur la période (avec delta)
-    total_period = Project.objects.filter(created_at__gte=period_start).count()
-    kpi_received = total_period  # alias for context
+    total_period = Project.objects.filter(
+        created_at__gte=period_start, created_at__lte=period_end
+    ).count()
+    kpi_received = total_period
     kpi_received_prev = Project.objects.filter(
-        created_at__gte=prev_start, created_at__lt=period_start
+        created_at__gte=prev_start, created_at__lt=prev_end
     ).count()
     kpi_received_delta = kpi_received - kpi_received_prev
 
     # KPI 3 : Prestataires actifs
     kpi_active_vendors = VendorProfile.objects.filter(is_active=True).count()
 
-    # KPI 4 : Taux de traitement (clôturés / total sur la période)
-    closed_period = Project.objects.filter(created_at__gte=period_start, status='closed').count()
+    # KPI 4 : Taux de traitement
+    closed_period = Project.objects.filter(
+        created_at__gte=period_start, created_at__lte=period_end, status='closed'
+    ).count()
     kpi_rate = round(closed_period / total_period * 100) if total_period > 0 else 0
 
     total_prev = Project.objects.filter(
-        created_at__gte=prev_start, created_at__lt=period_start
+        created_at__gte=prev_start, created_at__lt=prev_end
     ).count()
     closed_prev = Project.objects.filter(
-        created_at__gte=prev_start, created_at__lt=period_start, status='closed'
+        created_at__gte=prev_start, created_at__lt=prev_end, status='closed'
     ).count()
     kpi_rate_prev = round(closed_prev / total_prev * 100) if total_prev > 0 else 0
     kpi_rate_delta = kpi_rate - kpi_rate_prev
 
-    # Section 2 : Courbe 12 mois (indépendante du sélecteur)
-    twelve_months_ago = now - timedelta(days=365)
-    monthly_qs = (
-        Project.objects
-        .filter(created_at__gte=twelve_months_ago)
-        .annotate(month=TruncMonth('created_at'))
-        .values('month')
-        .annotate(count=Count('id'))
-        .order_by('month')
-    )
-    monthly_dict = {item['month'].strftime('%Y-%m'): item['count'] for item in monthly_qs}
+    # Courbe de tendance (granularité adaptée à la période)
+    base_qs = Project.objects.filter(created_at__gte=period_start, created_at__lte=period_end)
 
-    FR_MONTHS = ['jan.', 'fév.', 'mar.', 'avr.', 'mai', 'juin',
-                 'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.']
-    trend_labels, trend_values = [], []
-    for i in range(12):
-        months_back = 11 - i
-        m = today.month - months_back
-        y = today.year
-        while m <= 0:
-            m += 12
-            y -= 1
-        key = f'{y}-{m:02d}'
-        trend_labels.append(FR_MONTHS[m - 1] + ' ' + str(y))
-        trend_values.append(monthly_dict.get(key, 0))
+    if period_days <= 30:
+        trend_qs = (
+            base_qs.annotate(bucket=TruncDate('created_at'))
+            .values('bucket').annotate(count=Count('id')).order_by('bucket')
+        )
+        bucket_dict = {item['bucket'].strftime('%Y-%m-%d'): item['count'] for item in trend_qs}
+        trend_labels, trend_values = [], []
+        cur = period_start.date()
+        end_d = period_end.date()
+        while cur <= end_d:
+            trend_labels.append(cur.strftime('%d/%m'))
+            trend_values.append(bucket_dict.get(cur.strftime('%Y-%m-%d'), 0))
+            cur += timedelta(days=1)
+
+    elif period_days <= 180:
+        trend_qs = (
+            base_qs.annotate(bucket=TruncWeek('created_at'))
+            .values('bucket').annotate(count=Count('id')).order_by('bucket')
+        )
+        bucket_dict = {item['bucket'].strftime('%Y-%m-%d'): item['count'] for item in trend_qs}
+        trend_labels, trend_values = [], []
+        cur = period_start.date()
+        cur -= timedelta(days=cur.weekday())  # lundi de la semaine
+        end_d = period_end.date()
+        while cur <= end_d:
+            trend_labels.append(cur.strftime('%d/%m'))
+            trend_values.append(bucket_dict.get(cur.strftime('%Y-%m-%d'), 0))
+            cur += timedelta(weeks=1)
+
+    else:
+        trend_qs = (
+            base_qs.annotate(month=TruncMonth('created_at'))
+            .values('month').annotate(count=Count('id')).order_by('month')
+        )
+        monthly_dict = {item['month'].strftime('%Y-%m'): item['count'] for item in trend_qs}
+        FR_MONTHS = ['jan.', 'fév.', 'mar.', 'avr.', 'mai', 'juin',
+                     'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.']
+        trend_labels, trend_values = [], []
+        cur = period_start.date().replace(day=1)
+        end_month = period_end.date().replace(day=1)
+        while cur <= end_month:
+            key = cur.strftime('%Y-%m')
+            trend_labels.append(FR_MONTHS[cur.month - 1] + ' ' + str(cur.year))
+            trend_values.append(monthly_dict.get(key, 0))
+            m, y = cur.month + 1, cur.year
+            if m > 12:
+                m, y = 1, y + 1
+            cur = cur.replace(year=y, month=m)
 
     chart_trends = {'labels': trend_labels, 'values': trend_values}
 
-    # Section 3 : Services demandés vs couverts (toute la vie de la plateforme)
-    from django.db.models import Q
+    # Services demandés vs couverts (toute la vie de la plateforme)
     service_stats_qs = list(
         ServiceType.objects
         .annotate(
@@ -139,10 +191,10 @@ def admin_dashboard(request):
         'covered': [s['covered'] for s in service_stats_qs],
     }
 
-    # Section 4 : Types d'événements (période)
+    # Types d'événements (période)
     events_qs = (
         Project.objects
-        .filter(created_at__gte=period_start, event_type__isnull=False)
+        .filter(created_at__gte=period_start, created_at__lte=period_end, event_type__isnull=False)
         .values('event_type__name')
         .annotate(count=Count('id'))
         .order_by('-count')
@@ -152,7 +204,7 @@ def admin_dashboard(request):
         'values': [e['count'] for e in events_qs],
     }
 
-    # Section 5 : Pipeline CSS
+    # Pipeline CSS
     status_map = [
         ('new', 'Nouvelle demande', 'var(--terra)'),
         ('contacted', 'Contacté', '#3B82F6'),
@@ -161,14 +213,16 @@ def admin_dashboard(request):
     ]
     pipeline_display = []
     for status, label, color in status_map:
-        count = Project.objects.filter(created_at__gte=period_start, status=status).count()
+        count = Project.objects.filter(
+            created_at__gte=period_start, created_at__lte=period_end, status=status
+        ).count()
         pct = round(count / total_period * 100) if total_period > 0 else 0
         pipeline_display.append({'label': label, 'count': count, 'pct': pct, 'color': color})
 
-    # Section 6 : Top 5 villes (période)
+    # Top 5 villes (période)
     cities_qs = (
         Project.objects
-        .filter(created_at__gte=period_start, city__isnull=False)
+        .filter(created_at__gte=period_start, created_at__lte=period_end, city__isnull=False)
         .values('city__name')
         .annotate(count=Count('id'))
         .order_by('-count')[:5]
@@ -178,13 +232,16 @@ def admin_dashboard(request):
         'values': [c['count'] for c in cities_qs],
     }
 
-    # Tables existantes
+    # Aperçu opérationnel
     recent_projects = Project.objects.filter(status='new').order_by('-created_at')[:10]
     recent_vendors = VendorProfile.objects.prefetch_related('cities').order_by('-created_at')[:5]
 
     context = {
         'periods': [(7, '7 jours'), (30, '30 jours'), (90, '90 jours'), (365, '12 mois')],
-        'period_days': period_days,
+        'period_days': None if custom_period else period_days,
+        'custom_period': custom_period,
+        'date_from': date_from_str,
+        'date_to': date_to_str,
         'kpi_new_requests': kpi_new_requests,
         'kpi_received': kpi_received,
         'kpi_received_delta': kpi_received_delta,

@@ -16,18 +16,6 @@
   </div>
 </div>
 
-<!-- Sélecteur de période -->
-<div style="display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap;">
-  {% for p, label in periods %}
-  <a href="?period={{ p }}"
-     style="padding:.375rem .875rem; border-radius:4px; font-size:.8rem; font-weight:600; text-decoration:none; border:1px solid;
-            {% if period_days == p %}background:var(--terra); color:#fff; border-color:var(--terra);
-            {% else %}background:#fff; color:var(--muted); border-color:rgba(0,0,0,.12);{% endif %}">
-    {{ label }}
-  </a>
-  {% endfor %}
-</div>
-
 <!-- KPI Cards -->
 <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem;">
 
@@ -71,9 +59,100 @@
 
 </div>
 
-<!-- Courbe 12 mois (pleine largeur) -->
+<!-- Aperçu opérationnel -->
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2rem;">
+
+  <div class="a-card">
+    <div class="a-card-head">
+      <span class="a-card-label">Nouvelles demandes</span>
+      <a href="{% url 'accounts:admin_project_list' %}?status=new" class="a-td-link">Voir tout →</a>
+    </div>
+    <table class="a-table">
+      <thead>
+        <tr><th>Nom</th><th>Email</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        {% for project in recent_projects %}
+        <tr onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
+          <td style="font-weight:500;">{{ project.contact_name }}</td>
+          <td class="a-td-muted">{{ project.contact_email }}</td>
+          <td class="a-td-mono">{{ project.created_at|date:"d/m/Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="a-table-empty">Aucune nouvelle demande</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="a-card">
+    <div class="a-card-head">
+      <span class="a-card-label">Prestataires récents</span>
+      <a href="{% url 'accounts:admin_vendor_list' %}" class="a-td-link">Voir tout →</a>
+    </div>
+    <table class="a-table">
+      <thead>
+        <tr><th>Nom</th><th>Ville</th><th>Statut</th></tr>
+      </thead>
+      <tbody>
+        {% for vendor in recent_vendors %}
+        <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
+          <td style="font-weight:500;">{{ vendor.business_name }}</td>
+          <td class="a-td-muted">
+            {% for city in vendor.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}—
+            {% endfor %}
+          </td>
+          <td>
+            {% if vendor.is_active %}
+            <span class="a-badge a-badge-active">Actif</span>
+            {% else %}
+            <span class="a-badge a-badge-inactive">Inactif</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" class="a-table-empty">Aucun prestataire</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Sélecteur de période + plage personnalisée -->
+<div style="display:flex; align-items:center; gap:.75rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+  <span style="font-size:.75rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;">Période</span>
+
+  {% for p, label in periods %}
+  <a href="?period={{ p }}"
+     style="padding:.35rem .8rem; border-radius:4px; font-size:.8rem; font-weight:600; text-decoration:none; border:1px solid;
+            {% if not custom_period and period_days == p %}background:var(--terra); color:#fff; border-color:var(--terra);
+            {% else %}background:#fff; color:var(--muted); border-color:rgba(0,0,0,.12);{% endif %}">
+    {{ label }}
+  </a>
+  {% endfor %}
+
+  <span style="color:rgba(0,0,0,.15); font-size:.9rem;">|</span>
+
+  <form method="get" style="display:inline-flex; align-items:center; gap:.5rem;">
+    <input type="date" name="date_from" value="{{ date_from }}"
+           style="padding:.3rem .6rem; border:1px solid {% if custom_period %}var(--terra){% else %}rgba(0,0,0,.15){% endif %}; border-radius:4px; font-size:.78rem; color:var(--night);">
+    <span style="font-size:.8rem; color:var(--muted);">→</span>
+    <input type="date" name="date_to" value="{{ date_to }}"
+           style="padding:.3rem .6rem; border:1px solid {% if custom_period %}var(--terra){% else %}rgba(0,0,0,.15){% endif %}; border-radius:4px; font-size:.78rem; color:var(--night);">
+    <button type="submit"
+            style="padding:.3rem .75rem; border-radius:4px; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid;
+                   {% if custom_period %}background:var(--terra); color:#fff; border-color:var(--terra);
+                   {% else %}background:#fff; color:var(--muted); border-color:rgba(0,0,0,.15);{% endif %}">
+      Appliquer
+    </button>
+  </form>
+</div>
+
+<!-- Courbe de tendance (suit la période) -->
 <div class="a-card" style="margin-bottom:1.5rem;">
-  <div class="a-card-head"><span class="a-card-label">Demandes sur 12 mois</span></div>
+  <div class="a-card-head"><span class="a-card-label">Tendance des demandes</span></div>
   <div class="a-card-body">
     <canvas id="chart-trends" height="80"></canvas>
   </div>
@@ -107,7 +186,7 @@
 </div>
 
 <!-- Pipeline statuts + Top 5 villes -->
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.5rem;">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
 
   <div class="a-card">
     <div class="a-card-head"><span class="a-card-label">Pipeline — statuts</span></div>
@@ -143,75 +222,6 @@
 
 </div>
 
-<!-- Tables existantes -->
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-
-  <div class="a-card">
-    <div class="a-card-head">
-      <span class="a-card-label">Nouvelles demandes</span>
-      <a href="{% url 'accounts:admin_project_list' %}?status=new" class="a-td-link">Voir tout →</a>
-    </div>
-    <table class="a-table">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for project in recent_projects %}
-        <tr onclick="location.href='{% url 'accounts:admin_project_detail' project.pk %}'">
-          <td style="font-weight:500;">{{ project.contact_name }}</td>
-          <td class="a-td-muted">{{ project.contact_email }}</td>
-          <td class="a-td-mono">{{ project.created_at|date:"d/m/Y" }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3" class="a-table-empty">Aucune nouvelle demande</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="a-card">
-    <div class="a-card-head">
-      <span class="a-card-label">Prestataires</span>
-      <a href="{% url 'accounts:admin_vendor_list' %}" class="a-td-link">Voir tout →</a>
-    </div>
-    <table class="a-table">
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Ville</th>
-          <th>Statut</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for vendor in recent_vendors %}
-        <tr onclick="location.href='{% url 'accounts:admin_vendor_detail' vendor.pk %}'">
-          <td style="font-weight:500;">{{ vendor.business_name }}</td>
-          <td class="a-td-muted">
-            {% for city in vendor.cities.all|slice:":2" %}{{ city.name }}{% if not forloop.last %}, {% endif %}
-            {% empty %}—
-            {% endfor %}
-          </td>
-          <td>
-            {% if vendor.is_active %}
-            <span class="a-badge a-badge-active">Actif</span>
-            {% else %}
-            <span class="a-badge a-badge-inactive">Inactif</span>
-            {% endif %}
-          </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3" class="a-table-empty">Aucun prestataire</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
 {% endblock %}
 
 {% block admin_js %}
@@ -225,7 +235,7 @@
     return el ? JSON.parse(el.textContent) : null;
   }
 
-  // Courbe 12 mois
+  // Courbe de tendance
   var trends = parseData('data-trends');
   if (trends) {
     new Chart(document.getElementById('chart-trends'), {
@@ -238,8 +248,8 @@
           borderColor: '#B5441A',
           backgroundColor: 'rgba(181,68,26,.08)',
           borderWidth: 2,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointRadius: 3,
+          pointHoverRadius: 5,
           fill: true,
           tension: 0.3
         }]
@@ -252,7 +262,7 @@
     });
   }
 
-  // Services demandés vs couverts (horizontal grouped bar)
+  // Services demandés vs couverts
   var svc = parseData('data-services');
   var svcEl = document.getElementById('chart-services');
   if (svc && svcEl && svc.labels.length > 0) {
@@ -261,18 +271,8 @@
       data: {
         labels: svc.labels,
         datasets: [
-          {
-            label: 'Demandés',
-            data: svc.demanded,
-            backgroundColor: 'rgba(181,68,26,.75)',
-            borderRadius: 3
-          },
-          {
-            label: 'Couverts (actifs)',
-            data: svc.covered,
-            backgroundColor: 'rgba(22,163,74,.75)',
-            borderRadius: 3
-          }
+          { label: 'Demandés', data: svc.demanded, backgroundColor: 'rgba(181,68,26,.75)', borderRadius: 3 },
+          { label: 'Couverts (actifs)', data: svc.covered, backgroundColor: 'rgba(22,163,74,.75)', borderRadius: 3 }
         ]
       },
       options: {
@@ -292,12 +292,7 @@
       type: 'doughnut',
       data: {
         labels: evData.labels,
-        datasets: [{
-          data: evData.values,
-          backgroundColor: COLORS.slice(0, evData.labels.length),
-          borderWidth: 2,
-          borderColor: '#fff'
-        }]
+        datasets: [{ data: evData.values, backgroundColor: COLORS.slice(0, evData.labels.length), borderWidth: 2, borderColor: '#fff' }]
       },
       options: {
         responsive: true,
@@ -306,7 +301,7 @@
     });
   }
 
-  // Top 5 villes (horizontal bar)
+  // Top 5 villes
   var citData = parseData('data-cities');
   var citEl = document.getElementById('chart-cities');
   if (citData && citEl && citData.labels.length > 0) {
@@ -314,12 +309,7 @@
       type: 'bar',
       data: {
         labels: citData.labels,
-        datasets: [{
-          label: 'Demandes',
-          data: citData.values,
-          backgroundColor: 'rgba(59,130,246,.75)',
-          borderRadius: 3
-        }]
+        datasets: [{ label: 'Demandes', data: citData.values, backgroundColor: 'rgba(59,130,246,.75)', borderRadius: 3 }]
       },
       options: {
         indexAxis: 'y',
