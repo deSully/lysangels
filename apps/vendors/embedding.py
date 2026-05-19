@@ -14,7 +14,7 @@ def _get_model():
     if _model is None:
         try:
             from sentence_transformers import SentenceTransformer
-            _model = SentenceTransformer(EMBEDDING_MODEL)
+            _model = SentenceTransformer(EMBEDDING_MODEL, local_files_only=True)
         except Exception as e:
             raise EmbedError(f'Impossible de charger le modèle d\'embedding : {e}') from e
     return _model
