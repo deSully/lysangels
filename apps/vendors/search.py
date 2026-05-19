@@ -1,5 +1,5 @@
 from django.db.models import Q
-from .embedding import embed_text
+from .embedding import embed_text, EmbedError
 from .models import VendorProfile
 
 
@@ -25,7 +25,10 @@ def semantic_search(query, limit=20):
 
     Retourne une liste de VendorProfile (pas un QuerySet).
     """
-    query_vec = embed_text(query)
+    try:
+        query_vec = embed_text(query)
+    except EmbedError:
+        query_vec = None
 
     if query_vec is None:
         return list(

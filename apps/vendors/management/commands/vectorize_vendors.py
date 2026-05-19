@@ -1,3 +1,4 @@
+import time
 from django.core.management.base import BaseCommand
 from apps.vendors.embedding import vectorize_vendor
 from apps.vendors.models import VendorProfile
@@ -29,17 +30,16 @@ class Command(BaseCommand):
         done = 0
         failed = 0
         for i, vendor in enumerate(qs, 1):
-            success = vectorize_vendor(vendor.pk)
+            success, error = vectorize_vendor(vendor.pk)
             if success:
                 done += 1
                 self.stdout.write(f'{i}/{total} — {vendor.business_name[:50]} ... OK')
             else:
                 failed += 1
                 self.stdout.write(
-                    self.style.WARNING(
-                        f'{i}/{total} — {vendor.business_name[:50]} ... ÉCHEC (clé absente ou erreur API)'
-                    )
+                    self.style.WARNING(f'{i}/{total} — {vendor.business_name[:50]} ... ÉCHEC : {error}')
                 )
+            time.sleep(5)
 
         self.stdout.write('')
         self.stdout.write(

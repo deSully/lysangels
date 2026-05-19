@@ -916,11 +916,11 @@ def vectorize_all_vendors_view(request):
 def vectorize_single_vendor_view(request, pk):
     """Vectorise un profil prestataire spécifique."""
     from apps.vendors.embedding import vectorize_vendor
-    success = vectorize_vendor(pk)
+    success, error = vectorize_vendor(pk)
     if success:
         messages.success(request, 'Profil vectorisé avec succès.')
     else:
-        messages.error(request, 'Vectorisation échouée. Vérifiez que GROQ_API_KEY est configurée.')
+        messages.error(request, f'Vectorisation échouée : {error}')
     return redirect('accounts:admin_vendor_detail', pk=pk)
 
 
