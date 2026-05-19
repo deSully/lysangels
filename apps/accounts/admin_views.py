@@ -732,6 +732,26 @@ def vendor_toggle_active(request, pk):
 
 @require_POST
 @admin_required
+def application_resize_images(request, pk):
+    """Redimensionne les images portfolio d'une candidature"""
+    application = get_object_or_404(VendorApplication, pk=pk)
+    count = 0
+    for i in range(1, 6):
+        img = getattr(application, f'image_{i}')
+        if img:
+            resized = VendorImage._resize_image(img)
+            setattr(application, f'image_{i}', resized)
+            count += 1
+    if count:
+        application.save(update_fields=[f'image_{i}' for i in range(1, 6)] + ['updated_at'])
+        messages.success(request, f'{count} image{"s" if count > 1 else ""} redimensionnée{"s" if count > 1 else ""}.')
+    else:
+        messages.info(request, 'Aucune image à redimensionner.')
+    return redirect('accounts:admin_application_detail', pk=pk)
+
+
+@require_POST
+@admin_required
 def application_delete(request, pk):
     """Supprime une candidature et ses images du disque"""
     import os
