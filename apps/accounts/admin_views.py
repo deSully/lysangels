@@ -2,15 +2,17 @@
 Vues d'administration pour LysAngels
 """
 import json
+from datetime import timedelta
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.utils import timezone
 
 from apps.core.models import City, Country, ContactMessage
-from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
+from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication, ContactView
 from apps.projects.models import EventType, Project, ProjectNote
 from apps.ads.models import Advertisement
 
@@ -234,7 +236,14 @@ def admin_dashboard(request):
 
     # Aperçu opérationnel
     recent_projects = Project.objects.filter(status='new').order_by('-created_at')[:10]
-    recent_vendors = VendorProfile.objects.prefetch_related('cities').order_by('-created_at')[:5]
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    top_contacted_vendors = (
+        VendorProfile.objects
+        .filter(is_active=True)
+        .annotate(views_7d=Count('contact_views', filter=Q(contact_views__viewed_at__gte=seven_days_ago)))
+        .filter(views_7d__gt=0)
+        .order_by('-views_7d')[:5]
+    )
 
     context = {
         'periods': [(7, '7 jours'), (30, '30 jours'), (90, '90 jours'), (365, '12 mois')],
@@ -254,7 +263,7 @@ def admin_dashboard(request):
         'chart_cities': chart_cities,
         'pipeline_display': pipeline_display,
         'recent_projects': recent_projects,
-        'recent_vendors': recent_vendors,
+        'top_contacted_vendors': top_contacted_vendors,
     }
     return render(request, 'accounts/admin_dashboard.html', context)
 
@@ -570,9 +579,15 @@ def vendor_detail(request, pk):
     for country in vendor.countries.order_by('display_order', 'name'):
         cities_by_country[country] = list(vendor.cities.filter(country=country).order_by('name'))
 
+    thirty_days_ago = timezone.now() - timedelta(days=30)
+    contact_views_total = vendor.contact_views.count()
+    contact_views_30d = vendor.contact_views.filter(viewed_at__gte=thirty_days_ago).count()
+
     return render(request, 'accounts/admin/vendor_detail.html', {
         'vendor': vendor,
         'cities_by_country': cities_by_country,
+        'contact_views_total': contact_views_total,
+        'contact_views_30d': contact_views_30d,
     })
 
 
