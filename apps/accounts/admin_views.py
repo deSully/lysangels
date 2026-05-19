@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 from apps.core.models import City, Country, ContactMessage
@@ -809,12 +810,11 @@ def application_create_profile(request, pk):
     return redirect('accounts:admin_vendor_detail', pk=vendor.pk)
 
 
+@require_POST
 @admin_required
 def application_delete_image(request, pk, n):
     """Supprime l'image_N d'une candidature (n = 1..5)"""
     import os
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
     if n not in range(1, 6):
         return JsonResponse({'success': False, 'error': 'Slot invalide'}, status=400)
     application = get_object_or_404(VendorApplication, pk=pk)
@@ -831,11 +831,10 @@ def application_delete_image(request, pk, n):
     return JsonResponse({'success': True})
 
 
+@require_POST
 @admin_required
 def application_add_image(request, pk):
     """Ajoute une image dans le premier slot libre d'une candidature"""
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
     application = get_object_or_404(VendorApplication, pk=pk)
     img = request.FILES.get('image')
     if not img:
@@ -855,11 +854,10 @@ def application_add_image(request, pk):
     return JsonResponse({'success': False, 'error': 'Maximum 5 images atteint'}, status=400)
 
 
+@require_POST
 @admin_required
 def application_edit(request, pk):
     """Édite les champs texte d'une candidature"""
-    if request.method != 'POST':
-        return redirect('accounts:admin_application_detail', pk=pk)
     application = get_object_or_404(VendorApplication, pk=pk)
     name = request.POST.get('name', '').strip()
     if name:
@@ -882,11 +880,10 @@ def application_edit(request, pk):
     return redirect('accounts:admin_application_detail', pk=pk)
 
 
+@require_POST
 @admin_required
 def vendor_add_image(request, vendor_id):
     """Ajoute une image à un profil prestataire"""
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
     vendor = get_object_or_404(VendorProfile, pk=vendor_id)
     img = request.FILES.get('image')
     if not img:
@@ -948,21 +945,20 @@ def contact_message_detail(request, pk):
     return render(request, 'accounts/admin/contact_message_detail.html', {'msg': msg})
 
 
+@require_POST
 @admin_required
 def vendor_delete_image(request, vendor_id, image_id):
     """Supprimer une image d'un prestataire"""
     import os
-    if request.method == 'POST':
-        try:
-            vendor = get_object_or_404(VendorProfile, pk=vendor_id)
-            image = get_object_or_404(VendorImage, pk=image_id, vendor=vendor)
-            if image.image and os.path.isfile(image.image.path):
-                os.remove(image.image.path)
-            image.delete()
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
-    return JsonResponse({'success': False, 'error': 'Méthode non autorisée'}, status=405)
+    try:
+        vendor = get_object_or_404(VendorProfile, pk=vendor_id)
+        image = get_object_or_404(VendorImage, pk=image_id, vendor=vendor)
+        if image.image and os.path.isfile(image.image.path):
+            os.remove(image.image.path)
+        image.delete()
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
 
 
 # ── PUBLICITÉS ────────────────────────────────────────────────
