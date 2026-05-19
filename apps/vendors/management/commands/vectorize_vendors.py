@@ -1,4 +1,3 @@
-import time
 from django.core.management.base import BaseCommand
 from apps.vendors.embedding import vectorize_vendor
 from apps.vendors.models import VendorProfile
@@ -39,7 +38,6 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.WARNING(f'{i}/{total} — {vendor.business_name[:50]} ... ÉCHEC : {error}')
                 )
-            time.sleep(5)
 
         self.stdout.write('')
         self.stdout.write(

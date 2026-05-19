@@ -137,6 +137,4 @@ CACHES = {
 TURNSTILE_SITEKEY = config('TURNSTILE_SITEKEY')
 TURNSTILE_SECRET  = config('TURNSTILE_SECRET')
 
-# Groq API (recherche sémantique)
-GROQ_API_KEY = config('GROQ_API_KEY', default='')
 

@@ -1,18 +1,26 @@
-import requests
-from django.conf import settings
 from django.utils import timezone
 
+EMBEDDING_MODEL = 'paraphrase-multilingual-MiniLM-L12-v2'
 
-GROQ_API_URL = "https://api.groq.com/openai/v1/embeddings"
-GROQ_MODEL = "nomic-embed-text-v1.5"
+_model = None
 
 
 class EmbedError(Exception):
     pass
 
 
+def _get_model():
+    global _model
+    if _model is None:
+        try:
+            from sentence_transformers import SentenceTransformer
+            _model = SentenceTransformer(EMBEDDING_MODEL)
+        except Exception as e:
+            raise EmbedError(f'Impossible de charger le modèle d\'embedding : {e}') from e
+    return _model
+
+
 def build_vendor_text(vendor):
-    """Construit le texte à vectoriser pour un profil prestataire."""
     parts = [vendor.business_name]
     if vendor.description:
         parts.append(vendor.description)
@@ -23,29 +31,12 @@ def build_vendor_text(vendor):
 
 
 def embed_text(text):
-    """Appelle l'API Groq pour obtenir un vecteur d'embedding.
-    Retourne une liste de 768 floats.
-    Lève EmbedError avec un message explicite en cas de problème.
+    """Génère un vecteur d'embedding pour un texte. Retourne une liste de floats.
+    Lève EmbedError si le modèle ne peut pas être chargé ou si l'encodage échoue.
     """
-    api_key = getattr(settings, 'GROQ_API_KEY', '')
-    if not api_key:
-        raise EmbedError('GROQ_API_KEY non configurée dans les settings')
     try:
-        resp = requests.post(
-            GROQ_API_URL,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json={"model": GROQ_MODEL, "input": text},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        return resp.json()["data"][0]["embedding"]
-    except requests.exceptions.HTTPError as e:
-        raise EmbedError(f'HTTP {e.response.status_code} — {e.response.text[:300]}') from e
-    except requests.exceptions.Timeout:
-        raise EmbedError('Timeout Groq API (> 10s)') from None
+        model = _get_model()
+        return model.encode(text).tolist()
     except EmbedError:
         raise
     except Exception as e:
