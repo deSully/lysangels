@@ -13,6 +13,12 @@ class ServiceType(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Nom du service')
     description = models.TextField(blank=True, verbose_name='Description')
     icon = models.CharField(max_length=50, blank=True, help_text='Nom de l\'icône (ex: camera, music, cake)')
+    search_keywords = models.TextField(
+        blank=True,
+        default='',
+        verbose_name='Mots-clés de recherche',
+        help_text='Mots-clés séparés par des virgules (ex: gateau, gâteau, cake, dessert)',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

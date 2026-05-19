@@ -7,7 +7,7 @@
   </h1>
   <a href="{% url 'accounts:admin_service_type_list' %}" class="a-btn a-btn-ghost">← Retour</a>
 </div>
-<form method="post" style="max-width:480px;">
+<form method="post" style="max-width:540px;">
   {% csrf_token %}
   <div class="a-card" style="margin-bottom:1.25rem;">
     <div class="a-card-body" style="display:flex; flex-direction:column; gap:.875rem;">
@@ -23,6 +23,21 @@
         <label class="a-field-label">Description</label>
         <textarea name="description" rows="3" class="a-textarea">{{ service_type.description|default:'' }}</textarea>
       </div>
+
+      <!-- Mots-clés de recherche (tag input) -->
+      <div>
+        <label class="a-field-label">Mots-clés de recherche</label>
+        <p style="font-size:.68rem; color:var(--muted); margin:.125rem 0 .5rem;">
+          Entrée ou virgule pour ajouter · Retour arrière pour supprimer le dernier
+        </p>
+        <input type="hidden" name="search_keywords" id="kw-hidden" value="{{ service_type.search_keywords|default:'' }}">
+        <div id="kw-container"
+             style="display:flex; flex-wrap:wrap; align-items:center; gap:.375rem; padding:.4rem .5rem; border:1px solid rgba(0,0,0,.15); border-radius:3px; background:#fff; min-height:2.5rem; cursor:text;"
+             onclick="document.getElementById('kw-input').focus()">
+          <input type="text" id="kw-input" placeholder="Ajouter un mot-clé…"
+                 style="border:none; outline:none; font-size:.8rem; flex:1; min-width:140px; background:transparent; padding:.1rem 0;">
+        </div>
+      </div>
     </div>
   </div>
   <div style="display:flex; gap:.625rem;">
@@ -30,4 +45,82 @@
     <a href="{% url 'accounts:admin_service_type_list' %}" class="a-btn a-btn-ghost">Annuler</a>
   </div>
 </form>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+(function () {
+  const hidden = document.getElementById('kw-hidden');
+  const container = document.getElementById('kw-container');
+  const input = document.getElementById('kw-input');
+
+  function getTags() {
+    return hidden.value ? hidden.value.split(',').map(t => t.trim()).filter(Boolean) : [];
+  }
+
+  function saveTags(tags) {
+    hidden.value = tags.join(', ');
+  }
+
+  function renderTags(tags) {
+    container.querySelectorAll('.kw-tag').forEach(el => el.remove());
+    tags.forEach(function (tag) {
+      const span = document.createElement('span');
+      span.className = 'kw-tag';
+      span.style.cssText = 'display:inline-flex; align-items:center; gap:.3rem; padding:.2rem .55rem; background:rgba(181,68,26,.1); border:1px solid rgba(181,68,26,.2); border-radius:2px; font-size:.68rem; font-weight:600; color:var(--terra); white-space:nowrap;';
+
+      const txt = document.createTextNode(tag);
+      span.appendChild(txt);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = '×';
+      btn.dataset.tag = tag;
+      btn.style.cssText = 'background:none; border:none; cursor:pointer; color:var(--muted); font-size:.85rem; padding:0; line-height:1; margin-left:.1rem;';
+      btn.addEventListener('click', function () {
+        const updated = getTags().filter(t => t !== this.dataset.tag);
+        saveTags(updated);
+        renderTags(updated);
+      });
+      span.appendChild(btn);
+      container.insertBefore(span, input);
+    });
+  }
+
+  function addTag(val) {
+    val = val.trim().toLowerCase().replace(/,/g, '');
+    if (!val) return;
+    const tags = getTags();
+    if (!tags.includes(val)) {
+      const updated = [...tags, val];
+      saveTags(updated);
+      renderTags(updated);
+    }
+    input.value = '';
+  }
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addTag(input.value);
+    } else if (e.key === ',') {
+      e.preventDefault();
+      addTag(input.value);
+    } else if (e.key === 'Backspace' && !input.value) {
+      const tags = getTags();
+      if (tags.length) {
+        const updated = tags.slice(0, -1);
+        saveTags(updated);
+        renderTags(updated);
+      }
+    }
+  });
+
+  input.addEventListener('blur', function () {
+    if (input.value.trim()) addTag(input.value);
+  });
+
+  renderTags(getTags());
+})();
+</script>
 {% endblock %}
