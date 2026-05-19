@@ -6,7 +6,6 @@ services:
     volumes:
       - static:/app/staticfiles
       - media:/app/media
-      - hf_cache:/root/.cache/huggingface
     expose:
       - "8000"
 
@@ -56,7 +55,6 @@ services:
 volumes:
   static:
   media:
-  hf_cache:
   caddy_data:
   caddy_config:
   umami_db_data:

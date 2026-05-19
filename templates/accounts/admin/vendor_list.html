@@ -9,15 +9,7 @@
     <p class="a-page-sub">{{ vendors.paginator.count }} professionnel{{ vendors.paginator.count|pluralize }}</p>
   </div>
   <div style="display:flex; gap:.5rem; align-items:center;">
-    {% if non_vectorized_count > 0 %}
-    <form method="post" action="{% url 'accounts:admin_vendor_vectorize_all' %}">
-      {% csrf_token %}
-      <button type="submit" class="a-btn a-btn-ghost" style="font-size:.72rem; white-space:nowrap;">
-        ↺ Vectoriser ({{ non_vectorized_count }}/{{ total_vendors_count }})
-      </button>
-    </form>
-    {% endif %}
-    <a href="{% url 'accounts:admin_vendor_create' %}" class="a-btn a-btn-primary">
+<a href="{% url 'accounts:admin_vendor_create' %}" class="a-btn a-btn-primary">
       <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
       </svg>

@@ -56,8 +56,6 @@ urlpatterns = [
     # Gestion des prestataires
     path('admin/vendors/', admin_views.vendor_list, name='admin_vendor_list'),
     path('admin/vendors/create/', admin_views.vendor_create, name='admin_vendor_create'),
-    path('admin/vendors/vectorize-all/', admin_views.vectorize_all_vendors_view, name='admin_vendor_vectorize_all'),
-    path('admin/vendors/<int:pk>/vectorize/', admin_views.vectorize_single_vendor_view, name='admin_vendor_vectorize'),
     path('admin/vendors/<int:pk>/', admin_views.vendor_detail, name='admin_vendor_detail'),
     path('admin/vendors/<int:pk>/edit/', admin_views.vendor_edit, name='admin_vendor_edit'),
     path('admin/vendors/<int:pk>/toggle-active/', admin_views.vendor_toggle_active, name='admin_vendor_toggle_active'),
