@@ -1,5 +1,5 @@
 from django.db.models import Q
-from .embedding import embed_text, EmbedError
+from .embedding import embed_query, EmbedError
 from .models import VendorProfile
 
 
@@ -26,7 +26,7 @@ def semantic_search(query, limit=20):
     Retourne une liste de VendorProfile (pas un QuerySet).
     """
     try:
-        query_vec = embed_text(query)
+        query_vec = embed_query(query)
     except EmbedError:
         query_vec = None
 
@@ -46,7 +46,7 @@ def semantic_search(query, limit=20):
     scored = []
     for vendor in candidates:
         score = cosine_similarity(query_vec, vendor.embedding)
-        if score >= 0.30:
+        if score >= 0.50:
             scored.append((score, vendor))
 
     scored.sort(key=lambda x: x[0], reverse=True)

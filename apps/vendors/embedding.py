@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-EMBEDDING_MODEL = 'paraphrase-multilingual-MiniLM-L12-v2'
+EMBEDDING_MODEL = 'intfloat/multilingual-e5-small'
 
 _model = None
 
@@ -31,12 +31,21 @@ def build_vendor_text(vendor):
 
 
 def embed_text(text):
-    """Génère un vecteur d'embedding pour un texte. Retourne une liste de floats.
-    Lève EmbedError si le modèle ne peut pas être chargé ou si l'encodage échoue.
-    """
+    """Vectorise un texte prestataire (préfixe 'passage:'). Retourne une liste de floats."""
     try:
         model = _get_model()
-        return model.encode(text).tolist()
+        return model.encode(f'passage: {text}').tolist()
+    except EmbedError:
+        raise
+    except Exception as e:
+        raise EmbedError(str(e)) from e
+
+
+def embed_query(text):
+    """Vectorise une requête de recherche (préfixe 'query:'). Retourne une liste de floats."""
+    try:
+        model = _get_model()
+        return model.encode(f'query: {text}').tolist()
     except EmbedError:
         raise
     except Exception as e:
