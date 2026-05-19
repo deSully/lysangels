@@ -206,7 +206,11 @@ def vendor_signup(request):
                 application.cities.set(city_ids)
                 if email:
                     send_application_confirmation(name, email)
-                return render(request, 'vendors/vendor_signup_success.html', {'name': name})
+                return render(request, 'vendors/vendor_signup_success.html', {
+                    'name': name,
+                    'has_email': bool(email),
+                    'has_whatsapp': bool(whatsapp),
+                })
 
     return render(request, 'vendors/vendor_signup.html', {
         'service_types': service_types,

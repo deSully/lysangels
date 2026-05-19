@@ -11,13 +11,19 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <h1 class="text-2xl font-bold text-lily-dark mb-3">Demande envoyée !</h1>
-            <p class="text-gray-600 mb-2">
-                Merci <strong>{{ name }}</strong>, ta demande a bien été reçue.
+            <h1 class="text-2xl font-bold text-lily-dark mb-3">C'est dans la boîte !</h1>
+            <p class="text-gray-600 mb-4">
+                Merci <strong>{{ name }}</strong>, on est contents de te compter parmi nous.
             </p>
-            <p class="text-gray-500 text-sm mb-8">
-                Notre équipe va étudier ton dossier et te contactera prochainement pour finaliser ton inscription.
-            </p>
+            <div class="text-sm text-gray-500 mb-8" style="line-height:1.8;">
+                {% if has_email and has_whatsapp %}
+                <p>Un email de confirmation vient de partir. Notre équipe te contactera sur ton WhatsApp sous <strong>2 à 5 jours ouvrés</strong> pour finaliser ton profil.</p>
+                {% elif has_email %}
+                <p>Un email de confirmation vient de partir. Notre équipe te recontactera par email sous <strong>2 à 5 jours ouvrés</strong> pour finaliser ton profil.</p>
+                {% elif has_whatsapp %}
+                <p>Notre équipe va étudier ton dossier et te contactera sur ton <strong>WhatsApp</strong> sous <strong>2 à 5 jours ouvrés</strong> pour finaliser ton profil.</p>
+                {% endif %}
+            </div>
             <a href="{% url 'core:home' %}" class="inline-block text-white px-8 py-3 rounded-xl font-medium transition" style="background:var(--terra,#B5441A);" onmouseover="this.style.background='var(--terra-dark,#8E3313)'" onmouseout="this.style.background='var(--terra,#B5441A)'">
                 Retour à l'accueil
             </a>
