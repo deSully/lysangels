@@ -36,6 +36,15 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = 'same-origin'
 
 
+# Cache — FileBasedCache partagé entre tous les workers Gunicorn
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/tmp/lysangels_cache',
+    }
+}
+
+
 # Static files — servis par Caddy
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
