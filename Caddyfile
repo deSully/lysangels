@@ -16,6 +16,9 @@ lysangels.com, www.lysangels.com {
     }
 
     handle {
+        request_body {
+            max_size 30MB
+        }
         reverse_proxy web:8000 {
             header_up X-Forwarded-Proto {scheme}
             header_up X-Real-IP {remote_host}
