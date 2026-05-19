@@ -180,7 +180,33 @@
 
 </div>
 
-<!-- Modale confirmation -->
+<!-- Bouton suppression -->
+<div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid rgba(0,0,0,.07); text-align:right;">
+  <button type="button" onclick="document.getElementById('delete-modal').showModal()"
+          class="a-btn" style="color:#c0392b; border-color:rgba(192,57,43,.25); background:#fff;">
+    Supprimer cette demande
+  </button>
+</div>
+
+<!-- Modale confirmation suppression -->
+<dialog id="delete-modal"
+        style="border:1px solid rgba(0,0,0,.1); border-radius:3px; padding:1.75rem; width:100%; max-width:360px; box-shadow:0 16px 48px rgba(0,0,0,.12);"
+        onclick="if(event.target===this)this.close()">
+  <p style="font-size:.825rem; font-weight:600; color:var(--night); margin-bottom:.5rem;">Supprimer cette demande ?</p>
+  <p style="font-size:.8rem; color:var(--muted); margin-bottom:1.25rem; line-height:1.65;">
+    La demande de <strong>{{ project.contact_name }}</strong> et tous ses comptes rendus seront définitivement supprimés.
+  </p>
+  <div style="display:flex; gap:.625rem; justify-content:flex-end;">
+    <button type="button" onclick="document.getElementById('delete-modal').close()"
+            class="a-btn a-btn-ghost">Annuler</button>
+    <form method="post" action="{% url 'accounts:admin_project_delete' project.pk %}" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="a-btn" style="background:#c0392b; color:#fff; border-color:#c0392b;">Supprimer</button>
+    </form>
+  </div>
+</dialog>
+
+<!-- Modale confirmation note -->
 <dialog id="confirm-modal"
         style="border:1px solid rgba(0,0,0,.1); border-radius:3px; padding:1.75rem; width:100%; max-width:360px; box-shadow:0 16px 48px rgba(0,0,0,.12);"
         onclick="if(event.target===this)this.close()">

@@ -537,6 +537,17 @@ def project_add_note(request, pk):
     return redirect('accounts:admin_project_detail', pk=pk)
 
 
+@require_POST
+@admin_required
+def project_delete(request, pk):
+    """Supprime une demande client et ses notes"""
+    project = get_object_or_404(Project, pk=pk)
+    name = project.contact_name
+    project.delete()
+    messages.success(request, f'Demande de {name} supprimée.')
+    return redirect('accounts:admin_project_list')
+
+
 # ========== GESTION DES PRESTATAIRES ==========
 
 @admin_required

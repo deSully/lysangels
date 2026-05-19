@@ -40,6 +40,7 @@ urlpatterns = [
     path('admin/projects/<int:pk>/', admin_views.project_detail, name='admin_project_detail'),
     path('admin/projects/<int:pk>/status/', admin_views.project_update_status, name='admin_project_update_status'),
     path('admin/projects/<int:pk>/notes/', admin_views.project_add_note, name='admin_project_add_note'),
+    path('admin/projects/<int:pk>/delete/', admin_views.project_delete, name='admin_project_delete'),
 
     # Gestion des candidatures prestataires
     path('admin/applications/', admin_views.application_list, name='admin_application_list'),
