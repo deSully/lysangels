@@ -3,99 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demande reçue — LysAngels</title>
-  <style>
-    body { margin:0; padding:0; background:#F0EDE6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#110D06; }
-    .wrapper { max-width:580px; margin:40px auto; background:#ffffff; border-radius:4px; overflow:hidden; box-shadow:0 2px 16px rgba(17,13,6,.1); }
-    .header { background:#110D06; padding:44px 40px 36px; text-align:center; }
-    .header-brand { color:rgba(201,151,58,.8); font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin:0 0 20px; }
-    .header-rule { width:32px; height:2px; background:#B5441A; margin:0 auto 20px; }
-    .header-title { color:#ffffff; font-size:24px; font-weight:700; margin:0 0 8px; letter-spacing:-0.3px; line-height:1.2; }
-    .header-sub { color:rgba(255,255,255,.45); font-size:13px; margin:0; letter-spacing:.04em; }
-    .content { padding:40px 40px 32px; }
-    .greeting { font-size:20px; font-weight:700; color:#110D06; margin:0 0 16px; }
-    .body-text { font-size:15px; line-height:1.8; color:#4A3F35; margin:0 0 20px; }
-    .highlight-box { background:#FAF7F0; border-left:3px solid #B5441A; padding:18px 22px; margin:28px 0; }
-    .highlight-box p { margin:0; font-size:14px; color:#6B5344; line-height:1.75; }
-    .steps { margin:24px 0; display:flex; flex-direction:column; gap:14px; }
-    .step { display:flex; align-items:flex-start; gap:14px; }
-    .step-number { background:#B5441A; color:#ffffff; font-size:11px; font-weight:800; width:26px; height:26px; line-height:26px; border-radius:50%; display:inline-block; text-align:center; flex-shrink:0; margin-top:1px; }
-    .step-text { font-size:14px; color:#4A3F35; line-height:1.65; padding-top:3px; }
-    .divider { height:1px; background:rgba(17,13,6,.08); margin:32px 0; border:none; }
-    .signature p { margin:0 0 4px; font-size:14px; color:#4A3F35; line-height:1.6; }
-    .signature .name { font-size:17px; font-weight:700; color:#110D06; margin-top:8px; }
-    .signature .role { font-size:12px; color:#7A6E63; letter-spacing:.04em; }
-    .signature a { color:#B5441A; text-decoration:none; font-size:13px; }
-    .footer { background:#110D06; padding:22px 40px; text-align:center; }
-    .footer p { margin:0 0 4px; font-size:12px; color:rgba(255,255,255,.3); line-height:1.6; }
-    .footer a { color:#C9973A; text-decoration:none; }
-    @media (max-width:600px) {
-      .wrapper { margin:0; border-radius:0; }
-      .header, .content, .footer { padding-left:24px; padding-right:24px; }
-    }
-  </style>
+  <title>Candidature reçue — LysAngels</title>
 </head>
-<body>
-  <div class="wrapper">
+<body style="margin:0; padding:0; background:#F0EDE6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; color:#110D06;">
 
-    <div class="header">
-      <p class="header-brand">LysAngels</p>
-      <div class="header-rule"></div>
-      <p class="header-title">Demande bien reçue</p>
-      <p class="header-sub">Bienvenue dans la communauté LysAngels</p>
+  <div style="max-width:580px; margin:40px auto; background:#ffffff; border-radius:6px; overflow:hidden; box-shadow:0 2px 20px rgba(17,13,6,.12);">
+
+    <!-- En-tête -->
+    <div style="background:#110D06; padding:48px 44px 40px; text-align:center;">
+      <p style="margin:0 0 18px; color:#C9973A; font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase;">LysAngels</p>
+      <div style="width:36px; height:1px; background:#B5441A; margin:0 auto 20px;"></div>
+      <p style="margin:0 0 10px; color:#ffffff; font-size:26px; font-weight:700; letter-spacing:-0.5px; line-height:1.2;">Candidature reçue</p>
+      <p style="margin:0; color:rgba(255,255,255,.4); font-size:13px; letter-spacing:.05em;">Nous sommes ravis de vous lire</p>
     </div>
 
-    <div class="content">
-      <p class="greeting">Bonjour {{ name }},</p>
+    <!-- Corps -->
+    <div style="padding:44px 44px 36px;">
 
-      <p class="body-text">
-        Votre demande pour rejoindre LysAngels a bien été enregistrée.
-        Nous sommes ravis de l'intérêt que vous portez à notre plateforme.
+      <p style="margin:0 0 20px; font-size:19px; font-weight:700; color:#110D06;">Bonjour {{ name }},</p>
+
+      <p style="margin:0 0 16px; font-size:15px; line-height:1.85; color:#4A3F35;">
+        Votre candidature pour rejoindre LysAngels a bien été enregistrée.
+        Merci de la confiance que vous nous témoignez.
       </p>
 
-      <div class="highlight-box">
-        <p>
-          Votre dossier est bien enregistré. Notre équipe va l'étudier avec attention
-          et vous contactera prochainement pour finaliser votre profil.
+      <!-- Encart -->
+      <div style="background:#FAF7F0; border-left:3px solid #B5441A; padding:18px 22px; margin:28px 0; border-radius:0 4px 4px 0;">
+        <p style="margin:0; font-size:14px; color:#5C4A3A; line-height:1.8;">
+          Notre équipe va étudier votre dossier avec soin et vous contactera
+          prochainement — généralement sous <strong>2 à 5 jours ouvrés</strong>.
         </p>
       </div>
 
-      <p class="body-text">Voici comment les choses vont se passer :</p>
+      <p style="margin:0 0 20px; font-size:14px; color:#6B5344; line-height:1.7;">Voici ce qui vous attend :</p>
 
-      <div class="steps">
-        <div class="step">
-          <span class="step-number">1</span>
-          <span class="step-text">Notre équipe examine votre dossier et votre activité.</span>
-        </div>
-        <div class="step">
-          <span class="step-number">2</span>
-          <span class="step-text">Nous vous contactons par WhatsApp ou par email pour valider les détails de votre profil.</span>
-        </div>
-        <div class="step">
-          <span class="step-number">3</span>
-          <span class="step-text">Votre profil est mis en ligne et vous commencez à recevoir des demandes clients.</span>
-        </div>
-      </div>
+      <!-- Étapes -->
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+        <tr>
+          <td valign="top" style="padding-bottom:16px;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" style="padding-right:14px; padding-top:1px;">
+                  <div style="width:28px; height:28px; background:#B5441A; border-radius:50%; text-align:center; font-size:12px; font-weight:800; color:#ffffff; line-height:28px; display:block;">1</div>
+                </td>
+                <td valign="middle" style="font-size:14px; color:#4A3F35; line-height:1.7; padding-top:4px;">
+                  Notre équipe examine votre dossier et votre activité.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" style="padding-bottom:16px;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" style="padding-right:14px; padding-top:1px;">
+                  <div style="width:28px; height:28px; background:#B5441A; border-radius:50%; text-align:center; font-size:12px; font-weight:800; color:#ffffff; line-height:28px; display:block;">2</div>
+                </td>
+                <td valign="middle" style="font-size:14px; color:#4A3F35; line-height:1.7; padding-top:4px;">
+                  Nous vous contactons par WhatsApp ou email pour valider ensemble les détails de votre profil.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" style="padding-right:14px; padding-top:1px;">
+                  <div style="width:28px; height:28px; background:#B5441A; border-radius:50%; text-align:center; font-size:12px; font-weight:800; color:#ffffff; line-height:28px; display:block;">3</div>
+                </td>
+                <td valign="middle" style="font-size:14px; color:#4A3F35; line-height:1.7; padding-top:4px;">
+                  Votre profil est mis en ligne et vous commencez à recevoir des demandes de clients.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
 
-      <p class="body-text">
-        En attendant, si vous avez la moindre question, n'hésitez pas à nous écrire directement.
+      <p style="margin:0 0 28px; font-size:14px; line-height:1.8; color:#4A3F35;">
+        En attendant, si vous avez la moindre question, vous pouvez nous écrire directement
+        à <a href="mailto:susy@lysangels.com" style="color:#B5441A; text-decoration:none; font-weight:600;">susy@lysangels.com</a>.
       </p>
 
-      <hr class="divider">
+      <div style="height:1px; background:rgba(17,13,6,.08); margin:0 0 28px;"></div>
 
-      <div class="signature">
-        <p>À très bientôt,</p>
-        <p class="name">Susy</p>
-        <p class="role">Fondatrice — LysAngels</p>
-        <p style="margin-top:6px;"><a href="mailto:susy@lysangels.com">susy@lysangels.com</a></p>
-      </div>
+      <!-- Signature -->
+      <p style="margin:0 0 4px; font-size:14px; color:#4A3F35;">À très bientôt,</p>
+      <p style="margin:0 0 2px; font-size:17px; font-weight:700; color:#110D06;">Susy</p>
+      <p style="margin:0 0 6px; font-size:12px; color:#7A6E63; letter-spacing:.04em;">Fondatrice — LysAngels</p>
+      <a href="mailto:susy@lysangels.com" style="color:#B5441A; text-decoration:none; font-size:13px;">susy@lysangels.com</a>
+
     </div>
 
-    <div class="footer">
-      <p>© 2025 LysAngels</p>
-      <p><a href="https://lysangels.com">lysangels.com</a></p>
+    <!-- Pied de page -->
+    <div style="background:#110D06; padding:22px 44px; text-align:center;">
+      <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,.3);">© 2025 LysAngels</p>
+      <p style="margin:0;"><a href="https://lysangels.com" style="color:#C9973A; text-decoration:none; font-size:12px;">lysangels.com</a></p>
     </div>
 
   </div>
+
 </body>
 </html>
