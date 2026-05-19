@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.utils.http import url_has_allowed_host_and_scheme
 from .models import User
 from .forms import LoginForm
 
@@ -19,7 +20,7 @@ def user_login(request):
                 request.session.set_expiry(0)
             login(request, user)
             next_url = request.GET.get('next')
-            if next_url:
+            if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
             if user.is_admin_event:
                 return redirect('accounts:admin_dashboard')
