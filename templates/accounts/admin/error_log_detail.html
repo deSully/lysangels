@@ -1,0 +1,70 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}{{ log.error_type }} — Admin{% endblock %}
+
+{% block admin_content %}
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title" style="color:#c0392b;">{{ log.error_type }}</h1>
+    <p class="a-page-sub">{{ log.occurred_at|date:"d/m/Y à H:i" }} — {{ log.method }} {{ log.url }}</p>
+  </div>
+  <a href="{% url 'accounts:admin_error_log_list' %}" class="a-btn a-btn-ghost">← Retour</a>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 220px; gap:1.25rem; align-items:start;">
+
+  <div style="display:flex; flex-direction:column; gap:1rem;">
+
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Message</span></div>
+      <div class="a-card-body">
+        <p style="font-size:.875rem; color:#c0392b; font-weight:600; margin:0;">{{ log.error_message }}</p>
+      </div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Traceback</span></div>
+      <div class="a-card-body">
+        <pre style="font-size:.72rem; line-height:1.6; color:var(--night); background:#FAF7F0; padding:1rem; border-radius:3px; overflow-x:auto; white-space:pre-wrap; word-break:break-all; margin:0;">{{ log.traceback }}</pre>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:.75rem;">
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Contexte</span></div>
+      <div class="a-card-body" style="display:flex; flex-direction:column; gap:.625rem;">
+        <div class="a-field">
+          <span class="a-field-label">IP</span>
+          <span class="a-field-value-mono">{{ log.ip_address|default:"—" }}</span>
+        </div>
+        <div class="a-field">
+          <span class="a-field-label">Navigateur</span>
+          <span class="a-field-value" style="font-size:.7rem; word-break:break-all;">{{ log.user_agent|default:"—" }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-card-head"><span class="a-card-label">Statut</span></div>
+      <div class="a-card-body">
+        <p style="font-size:.8rem; margin:0 0 .75rem;">
+          {% if log.is_resolved %}
+          <span class="a-badge a-badge-active">Résolu</span>
+          {% else %}
+          <span class="a-badge a-badge-inactive">En attente</span>
+          {% endif %}
+        </p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="a-btn a-btn-ghost" style="width:100%; justify-content:center; font-size:.78rem;">
+            {% if log.is_resolved %}Marquer non résolu{% else %}Marquer résolu{% endif %}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

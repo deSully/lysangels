@@ -66,6 +66,10 @@ urlpatterns = [
     path('admin/vendors/<int:vendor_id>/add-image/', admin_views.vendor_add_image, name='admin_vendor_add_image'),
     path('admin/vendors/<int:vendor_id>/set-cover-image/<int:image_id>/', admin_views.vendor_set_cover_image, name='admin_vendor_set_cover_image'),
 
+    # Journal d'erreurs
+    path('admin/errors/', admin_views.error_log_list, name='admin_error_log_list'),
+    path('admin/errors/<int:pk>/', admin_views.error_log_detail, name='admin_error_log_detail'),
+
     # Publicités
     path('admin/ads/', admin_views.ad_list, name='admin_ad_list'),
     path('admin/ads/create/', admin_views.ad_create, name='admin_ad_create'),

@@ -34,6 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.core.middleware.ErrorLoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'lysangels.urls'
@@ -51,6 +52,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
                 'apps.core.context_processors.analytics',
+                'apps.core.context_processors.unresolved_errors',
                 'apps.ads.context_processors.ads',
             ],
         },

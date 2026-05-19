@@ -28,11 +28,7 @@ sitemaps = {
     'vendors': VendorSitemap,
 }
 
-def trigger_sentry_error(request):
-    division_by_zero = 1 / 0
-
 urlpatterns = [
-    path('sentry-debug/', trigger_sentry_error),
     path('admin/', admin.site.urls),
     path('', include('apps.core.urls')),
     path('accounts/', include('apps.accounts.urls')),

@@ -1,0 +1,69 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}Journal d'erreurs — Admin{% endblock %}
+
+{% block admin_content %}
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Journal d'erreurs</h1>
+    <p class="a-page-sub">
+      {% if unresolved_count > 0 %}
+        <span style="color:#c0392b; font-weight:600;">{{ unresolved_count }} non résolue{{ unresolved_count|pluralize }}</span>
+      {% else %}
+        Aucune erreur en attente
+      {% endif %}
+    </p>
+  </div>
+  <div style="display:flex; gap:.5rem;">
+    {% if filter_unresolved %}
+    <a href="{% url 'accounts:admin_error_log_list' %}" class="a-btn a-btn-ghost">Tout afficher</a>
+    {% else %}
+    <a href="?unresolved=1" class="a-btn a-btn-ghost">Non résolues seulement</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="a-card">
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>URL</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr onclick="location.href='{% url 'accounts:admin_error_log_detail' log.pk %}'" style="cursor:pointer;">
+        <td class="a-td-mono" style="white-space:nowrap;">{{ log.occurred_at|date:"d/m/Y H:i" }}</td>
+        <td style="font-weight:600; color:#c0392b;">{{ log.error_type }}</td>
+        <td class="a-td-muted">{{ log.method }} {{ log.url }}</td>
+        <td>
+          {% if log.is_resolved %}
+          <span class="a-badge a-badge-active">Résolu</span>
+          {% else %}
+          <span class="a-badge a-badge-inactive">En attente</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4" class="a-table-empty">Aucune erreur enregistrée</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if logs.has_other_pages %}
+<div style="display:flex; justify-content:center; gap:.5rem; margin-top:1rem;">
+  {% if logs.has_previous %}
+  <a href="?page={{ logs.previous_page_number }}{% if filter_unresolved %}&unresolved=1{% endif %}" class="a-btn a-btn-ghost">←</a>
+  {% endif %}
+  <span style="padding:.5rem .75rem; font-size:.8rem; color:var(--muted);">{{ logs.number }} / {{ logs.paginator.num_pages }}</span>
+  {% if logs.has_next %}
+  <a href="?page={{ logs.next_page_number }}{% if filter_unresolved %}&unresolved=1{% endif %}" class="a-btn a-btn-ghost">→</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

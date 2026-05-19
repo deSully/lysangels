@@ -423,6 +423,15 @@ body {
       Publicités
     </a>
 
+    <a href="{% url 'accounts:admin_error_log_list' %}"
+       class="a-nav-item {% if 'error_log' in request.resolver_match.url_name %}active{% endif %}">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      </svg>
+      Erreurs
+      {% with count=unresolved_errors_count %}{% if count %}<span style="margin-left:auto; background:#c0392b; color:#fff; font-size:.6rem; font-weight:700; padding:.1rem .4rem; border-radius:10px;">{{ count }}</span>{% endif %}{% endwith %}
+    </a>
+
     <div class="a-nav-sep"></div>
     <span class="a-nav-section">Référentiels</span>
 

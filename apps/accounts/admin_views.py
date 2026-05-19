@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
-from apps.core.models import City, Country, ContactMessage
+from apps.core.models import City, Country, ContactMessage, ErrorLog
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication, ContactView
 from apps.projects.models import EventType, Project, ProjectNote
 from apps.ads.models import Advertisement
@@ -956,6 +956,33 @@ def vendor_set_cover_image(request, vendor_id, image_id):
     VendorImage.objects.filter(vendor=vendor).update(is_cover=False)
     VendorImage.objects.filter(pk=image_id).update(is_cover=True)
     return JsonResponse({'success': True})
+
+
+# ========== JOURNAL D'ERREURS ==========
+
+@admin_required
+def error_log_list(request):
+    logs = ErrorLog.objects.all()
+    if request.GET.get('unresolved'):
+        logs = logs.filter(is_resolved=False)
+    paginator = Paginator(logs, 30)
+    logs = paginator.get_page(request.GET.get('page'))
+    unresolved_count = ErrorLog.objects.filter(is_resolved=False).count()
+    return render(request, 'accounts/admin/error_log_list.html', {
+        'logs': logs,
+        'unresolved_count': unresolved_count,
+        'filter_unresolved': bool(request.GET.get('unresolved')),
+    })
+
+
+@admin_required
+def error_log_detail(request, pk):
+    log = get_object_or_404(ErrorLog, pk=pk)
+    if request.method == 'POST':
+        log.is_resolved = not log.is_resolved
+        log.save(update_fields=['is_resolved'])
+        return redirect('accounts:admin_error_log_detail', pk=pk)
+    return render(request, 'accounts/admin/error_log_detail.html', {'log': log})
 
 
 # ========== MESSAGES DE CONTACT ==========

@@ -113,3 +113,24 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.get_subject_display()} ({self.created_at.strftime('%d/%m/%Y')})"
+
+
+class ErrorLog(models.Model):
+    """Erreurs applicatives capturées en production"""
+    occurred_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    url = models.CharField(max_length=500)
+    method = models.CharField(max_length=10)
+    error_type = models.CharField(max_length=200, db_index=True)
+    error_message = models.TextField()
+    traceback = models.TextField()
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True)
+    is_resolved = models.BooleanField(default=False, db_index=True)
+
+    class Meta:
+        verbose_name = 'Erreur'
+        verbose_name_plural = 'Erreurs'
+        ordering = ['-occurred_at']
+
+    def __str__(self):
+        return f"{self.error_type} — {self.url} ({self.occurred_at:%d/%m/%Y %H:%M})"
