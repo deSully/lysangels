@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 from apps.core.models import City, Country, ContactMessage
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication
@@ -540,11 +541,15 @@ def vendor_list(request):
     vendors = paginator.get_page(request.GET.get('page'))
     service_types = ServiceType.objects.all().order_by('name')
     cities = City.objects.filter(is_active=True).order_by('name')
+    total_vendors_count = VendorProfile.objects.count()
+    non_vectorized_count = VendorProfile.objects.filter(embedding__isnull=True).count()
     return render(request, 'accounts/admin/vendor_list.html', {
         'vendors': vendors,
         'selected_is_active': is_active,
         'service_types': service_types,
         'cities': cities,
+        'total_vendors_count': total_vendors_count,
+        'non_vectorized_count': non_vectorized_count,
     })
 
 
@@ -891,6 +896,32 @@ def vendor_set_cover_image(request, vendor_id, image_id):
     VendorImage.objects.filter(vendor=vendor).update(is_cover=False)
     VendorImage.objects.filter(pk=image_id).update(is_cover=True)
     return JsonResponse({'success': True})
+
+
+@require_POST
+@admin_required
+def vectorize_all_vendors_view(request):
+    """Vectorise tous les profils sans embedding."""
+    from apps.vendors.embedding import vectorize_pending_vendors
+    count = vectorize_pending_vendors()
+    if count > 0:
+        messages.success(request, f'{count} profil{"s" if count != 1 else ""} vectorisé{"s" if count != 1 else ""}.')
+    else:
+        messages.info(request, 'Aucun profil à vectoriser (tous déjà vectorisés ou clé GROQ_API_KEY absente).')
+    return redirect('accounts:admin_vendor_list')
+
+
+@require_POST
+@admin_required
+def vectorize_single_vendor_view(request, pk):
+    """Vectorise un profil prestataire spécifique."""
+    from apps.vendors.embedding import vectorize_vendor
+    success = vectorize_vendor(pk)
+    if success:
+        messages.success(request, 'Profil vectorisé avec succès.')
+    else:
+        messages.error(request, 'Vectorisation échouée. Vérifiez que GROQ_API_KEY est configurée.')
+    return redirect('accounts:admin_vendor_detail', pk=pk)
 
 
 # ========== MESSAGES DE CONTACT ==========
