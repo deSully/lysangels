@@ -729,6 +729,26 @@ def vendor_toggle_active(request, pk):
 
 # ========== GESTION DES CANDIDATURES PRESTATAIRES ==========
 
+
+@require_POST
+@admin_required
+def application_delete(request, pk):
+    """Supprime une candidature et ses images du disque"""
+    import os
+    application = get_object_or_404(VendorApplication, pk=pk)
+    name = application.name
+    for i in range(1, 6):
+        img = getattr(application, f'image_{i}')
+        if img:
+            try:
+                if os.path.isfile(img.path):
+                    os.remove(img.path)
+            except Exception:
+                pass
+    application.delete()
+    messages.success(request, f'Candidature de {name} supprimée.')
+    return redirect('accounts:admin_application_list')
+
 @admin_required
 def application_list(request):
     """Liste des candidatures prestataires"""
