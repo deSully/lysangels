@@ -454,7 +454,7 @@
                             </label>
                             {% endfor %}
                         </div>
-                        <p class="inline-error" id="err-service_types">Veuillez sélectionner au moins un type.</p>
+                        <p class="inline-error" id="err-service_types">Sélectionnez au moins un type ou précisez votre activité dans le champ ci-dessous.</p>
                     </div>
 
                     <div class="form-group">
@@ -634,8 +634,9 @@
         }
         if (n === 2) {
             var checked = document.querySelectorAll('input[name="service_types"]:checked').length;
+            var otherService = document.getElementById('id_other_service').value.trim();
             var stErr = document.getElementById('err-service_types');
-            if (checked === 0) { stErr.classList.add('visible'); valid = false; }
+            if (checked === 0 && !otherService) { stErr.classList.add('visible'); valid = false; }
             else { stErr.classList.remove('visible'); }
 
             var desc = document.getElementById('id_description');
