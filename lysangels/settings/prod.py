@@ -6,6 +6,16 @@ import dj_database_url
 import os
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
+# Sentry — error tracking
+import sentry_sdk
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        send_default_pii=False,
+        traces_sample_rate=0.1,
+    )
 UMAMI_WEBSITE_ID = os.environ.get('UMAMI_WEBSITE_ID', '')
 DEBUG = False
 ALLOWED_HOSTS = ["lysangels.com", "www.lysangels.com"]
