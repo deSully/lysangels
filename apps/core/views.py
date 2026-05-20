@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.db import connection
 from django.conf import settings
 from apps.vendors.models import VendorProfile
 from apps.core.models import TermsOfService, ContactMessage
@@ -6,6 +8,16 @@ from apps.core.cache_utils import get_cached_service_types
 from apps.core.forms import ContactForm
 from apps.core.turnstile import verify_turnstile
 from django.contrib import messages
+
+
+def health(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT 1')
+        return JsonResponse({'status': 'ok'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'detail': str(e)}, status=503)
+
 
 
 def home(request):
