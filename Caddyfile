@@ -17,7 +17,7 @@ lysangels.com, www.lysangels.com {
 
     handle {
         request_body {
-            max_size 30MB
+            max_size 8MB
         }
         reverse_proxy web:8000 {
             header_up X-Forwarded-Proto {scheme}
