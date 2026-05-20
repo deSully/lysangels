@@ -9,6 +9,7 @@
 {% block og_image %}{% if vendor.images.first %}{{ request.scheme }}://{{ request.get_host }}{{ vendor.images.first.image.url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
 {% block twitter_title %}{{ vendor.business_name }} — LysAngels{% endblock %}
 {% block twitter_description %}{{ vendor.business_name }} — {{ vendor.service_types.all|join:", " }}. Contactez-les sur LysAngels.{% endblock %}
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'vendors:vendor_detail' vendor.pk %}{% endblock %}
 
 {% block extra_css %}
 <style>
