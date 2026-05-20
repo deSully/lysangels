@@ -3,6 +3,12 @@
 {% load thumbnail_tags %}
 
 {% block title %}{{ vendor.business_name }} — LysAngels{% endblock %}
+{% block meta_description %}{{ vendor.business_name }} — {{ vendor.service_types.all|join:", " }}. Contactez-les directement sur LysAngels.{% endblock %}
+{% block og_title %}{{ vendor.business_name }} — LysAngels{% endblock %}
+{% block og_description %}{{ vendor.business_name }} — {{ vendor.service_types.all|join:", " }}. Contactez-les directement sur LysAngels.{% endblock %}
+{% block og_image %}{% if vendor.images.first %}{{ request.scheme }}://{{ request.get_host }}{{ vendor.images.first.image.url }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block twitter_title %}{{ vendor.business_name }} — LysAngels{% endblock %}
+{% block twitter_description %}{{ vendor.business_name }} — {{ vendor.service_types.all|join:", " }}. Contactez-les sur LysAngels.{% endblock %}
 
 {% block extra_css %}
 <style>
