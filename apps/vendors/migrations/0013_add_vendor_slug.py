@@ -29,12 +29,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # 1. Add the field without unique constraint so existing rows get empty string without conflict
+        # 1. Add column without any index (db_index=False prevents the _like index on PostgreSQL)
         migrations.AddField(
             model_name="vendorprofile",
             name="slug",
             field=models.SlugField(
                 blank=True,
+                db_index=False,
                 help_text="Généré automatiquement depuis le nom de l'entreprise",
                 max_length=200,
                 verbose_name="Slug URL",
@@ -42,7 +43,12 @@ class Migration(migrations.Migration):
         ),
         # 2. Populate slugs for existing rows
         migrations.RunPython(populate_slugs, reverse_slugs),
-        # 3. Now enforce the unique constraint
+        # 3. Drop the _like index if it exists from a previous failed run (PostgreSQL safety net)
+        migrations.RunSQL(
+            sql="DROP INDEX IF EXISTS vendors_vendorprofile_slug_39ea6fd7_like;",
+            reverse_sql=migrations.RunSQL.noop,
+        ),
+        # 4. Now enforce the unique constraint (creates both the unique B-tree and _like indexes)
         migrations.AlterField(
             model_name="vendorprofile",
             name="slug",
