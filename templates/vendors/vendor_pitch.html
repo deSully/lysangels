@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Devenir prestataire — LysAngels{% endblock %}
+{% block meta_description %}Rejoignez LysAngels et développez votre activité événementielle au Togo. Profil gratuit, contact direct, zéro commission.{% endblock %}
+
+{% block content %}
+<div style="background:var(--ivory); min-height:100svh;">
+
+  <!-- Hero -->
+  <section style="background:var(--night); padding:6rem 1.5rem 5rem; text-align:center; position:relative; overflow:hidden;">
+    <div style="position:absolute; inset:0; opacity:.04; background-image:url('{% static "images/heroes/hero-bg.jpg" %}'); background-size:cover; background-position:center;"></div>
+    <div style="position:relative; z-index:1; max-width:640px; margin:0 auto;">
+      <span style="display:inline-block; font-size:.65rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1.25rem;">Rejoignez LysAngels</span>
+      <h1 style="font-size:clamp(2.25rem,6vw,4rem); font-weight:600; line-height:1.05; letter-spacing:-.02em; color:#fff; margin-bottom:1.25rem; font-family:'Playfair Display',Georgia,serif;">
+        Développez votre activité<br><em style="font-style:italic; color:var(--gold);">avec LysAngels</em>
+      </h1>
+      <p style="font-size:1rem; color:rgba(255,255,255,.55); line-height:1.75; max-width:44ch; margin:0 auto 2.5rem;">
+        Des clients qui cherchent exactement ce que vous faites.<br>Chaque jour.
+      </p>
+      <a href="{% url 'vendors:vendor_signup' %}" style="display:inline-flex; align-items:center; gap:.5rem; padding:.875rem 2.25rem; background:var(--terra); color:#fff; font-size:.875rem; font-weight:700; border-radius:.3rem; text-decoration:none; box-shadow:0 4px 18px rgba(181,68,26,.4); transition:background .2s, transform .15s;">
+        Déposer ma candidature
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Arguments -->
+  <section style="max-width:960px; margin:0 auto; padding:5rem 1.5rem;">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:2rem;">
+
+      <div style="background:#fff; border-radius:.5rem; padding:2rem; border:1px solid rgba(0,0,0,.07);">
+        <div style="width:2.5rem; height:2.5rem; border-radius:.35rem; background:rgba(181,68,26,.08); display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem;">
+          <svg width="20" height="20" fill="none" stroke="var(--terra)" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        </div>
+        <h2 style="font-size:1.1rem; font-weight:700; color:var(--night); margin-bottom:.625rem;">Visibilité immédiate</h2>
+        <p style="font-size:.875rem; color:var(--muted); line-height:1.7;">Votre profil est référencé dès validation. Les clients vous trouvent en cherchant votre métier ou votre ville.</p>
+      </div>
+
+      <div style="background:#fff; border-radius:.5rem; padding:2rem; border:1px solid rgba(0,0,0,.07);">
+        <div style="width:2.5rem; height:2.5rem; border-radius:.35rem; background:rgba(181,68,26,.08); display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem;">
+          <svg width="20" height="20" fill="none" stroke="var(--terra)" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+        <h2 style="font-size:1.1rem; font-weight:700; color:var(--night); margin-bottom:.625rem;">Contact direct, zéro commission</h2>
+        <p style="font-size:.875rem; color:var(--muted); line-height:1.7;">Les clients vous contactent directement par WhatsApp ou email. Vous gérez vos contrats comme vous voulez — aucune commission.</p>
+      </div>
+
+      <div style="background:#fff; border-radius:.5rem; padding:2rem; border:1px solid rgba(0,0,0,.07);">
+        <div style="width:2.5rem; height:2.5rem; border-radius:.35rem; background:rgba(181,68,26,.08); display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem;">
+          <svg width="20" height="20" fill="none" stroke="var(--terra)" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        </div>
+        <h2 style="font-size:1.1rem; font-weight:700; color:var(--night); margin-bottom:.625rem;">Profil professionnel gratuit</h2>
+        <p style="font-size:.875rem; color:var(--muted); line-height:1.7;">Photos, description, services, zones d'intervention. Tout ce qu'il faut pour convaincre avant même le premier appel.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section style="background:var(--terra); padding:5rem 1.5rem; text-align:center;">
+    <h2 style="font-size:clamp(1.75rem,5vw,3rem); font-weight:600; color:#fff; margin-bottom:1rem; font-family:'Playfair Display',Georgia,serif;">Prêt à rejoindre LysAngels ?</h2>
+    <p style="font-size:.95rem; color:rgba(255,255,255,.65); margin-bottom:2rem;">Le formulaire prend moins de 5 minutes.</p>
+    <a href="{% url 'vendors:vendor_signup' %}" style="display:inline-flex; align-items:center; gap:.5rem; padding:.875rem 2.25rem; background:#fff; color:var(--terra); font-size:.875rem; font-weight:700; border-radius:.3rem; text-decoration:none; box-shadow:0 4px 20px rgba(0,0,0,.15);">
+      Déposer ma candidature
+    </a>
+  </section>
+
+</div>
+{% endblock %}

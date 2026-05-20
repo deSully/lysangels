@@ -233,3 +233,13 @@ def vendor_signup(request):
             {'title': 'Devenir prestataire'},
         ],
     })
+
+
+def vendor_pitch(request):
+    """Page de présentation pour les prestataires potentiels"""
+    return render(request, 'vendors/vendor_pitch.html', {
+        'breadcrumbs': [
+            {'title': 'Accueil', 'url': 'core:home'},
+            {'title': 'Devenir prestataire'},
+        ],
+    })
