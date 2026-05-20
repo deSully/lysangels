@@ -13,4 +13,6 @@ urlpatterns = [
     path('privacy/', views.privacy_policy, name='privacy'),
     path('legal/', views.legal_notice, name='legal'),
     path('health/', views.health, name='health'),
+    path('sw.js', views.service_worker, name='service_worker'),
+    path('offline/', views.offline, name='offline'),
 ]

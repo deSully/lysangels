@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.views.decorators.cache import never_cache
 from django.db import connection
 from django.conf import settings
 from apps.vendors.models import VendorProfile
@@ -71,3 +72,12 @@ def privacy_policy(request):
 
 def legal_notice(request):
     return render(request, 'core/legal.html')
+
+
+@never_cache
+def service_worker(request):
+    return render(request, 'sw.js', {}, content_type='application/javascript')
+
+
+def offline(request):
+    return render(request, 'core/offline.html', status=200)

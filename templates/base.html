@@ -41,6 +41,7 @@
     <meta name="msapplication-TileColor" content="#B5441A">
     <meta name="msapplication-navbutton-color" content="#B5441A">
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/icons/icon-192.png' %}">
     <link rel="manifest" href="{% static 'manifest.json' %}">
 
     <!-- Additional SEO -->
@@ -49,11 +50,21 @@
     <!-- Tailwind CSS (build statique) -->
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
 
-    <!-- Service Worker — désactivé, désinscription automatique des anciens SW -->
+    <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-                registrations.forEach(r => r.unregister());
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    // Nouveau SW disponible → active immédiatement (skipWaiting côté SW)
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
+                        });
+                    });
+                });
             });
         }
     </script>
