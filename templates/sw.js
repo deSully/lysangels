@@ -1,7 +1,7 @@
 {% load static %}
 'use strict';
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const STATIC_CACHE = `lysangels-static-${CACHE_VERSION}`;
 const HTML_CACHE   = `lysangels-html-${CACHE_VERSION}`;
 const HTML_TTL     = 10 * 60 * 1000; // 10 minutes en ms
@@ -77,7 +77,8 @@ async function networkFirstHtml(request) {
   try {
     const response = await fetch(request);
     if (response.ok) {
-      // Stocke la page avec horodatage pour le TTL offline
+      // Clone avant de consommer le body — on retourne l'original au browser
+      const toServe = response.clone();
       const body = await response.arrayBuffer();
       const headers = new Headers(response.headers);
       headers.set('x-sw-cached-at', String(Date.now()));
@@ -88,6 +89,7 @@ async function networkFirstHtml(request) {
       });
       const cache = await caches.open(HTML_CACHE);
       cache.put(request, toCache);
+      return toServe;
     }
     return response;
   } catch {
