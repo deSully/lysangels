@@ -75,4 +75,7 @@ urlpatterns = [
     path('admin/ads/create/', admin_views.ad_create, name='admin_ad_create'),
     path('admin/ads/<int:pk>/edit/', admin_views.ad_edit, name='admin_ad_edit'),
     path('admin/ads/<int:pk>/delete/', admin_views.ad_delete, name='admin_ad_delete'),
+
+    # Paramètres du site
+    path('admin/settings/', admin_views.site_settings, name='admin_site_settings'),
 ]

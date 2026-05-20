@@ -134,3 +134,25 @@ class ErrorLog(models.Model):
 
     def __str__(self):
         return f"{self.error_type} — {self.url} ({self.occurred_at:%d/%m/%Y %H:%M})"
+
+
+class SiteSettings(models.Model):
+    """Paramètres globaux du site — singleton (une seule ligne, pk=1)."""
+    admin_notify_email = models.EmailField(
+        blank=True,
+        default='',
+        verbose_name='Email de notification admin',
+        help_text='Reçoit les alertes pour chaque nouveau projet et candidature. Laisser vide pour désactiver.',
+    )
+
+    class Meta:
+        verbose_name = 'Paramètres du site'
+        verbose_name_plural = 'Paramètres du site'
+
+    def __str__(self):
+        return 'Paramètres du site'
+
+    @classmethod
+    def get(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj

@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
-from apps.core.models import City, Country, ContactMessage, ErrorLog
+from apps.core.models import City, Country, ContactMessage, ErrorLog, SiteSettings
 from apps.vendors.models import ServiceType, VendorProfile, VendorImage, VendorApplication, ContactView
 from apps.projects.models import EventType, Project, ProjectNote
 from apps.ads.models import Advertisement
@@ -1148,3 +1148,19 @@ def ad_delete(request, pk):
         messages.success(request, 'Publicité supprimée.')
         return redirect('accounts:admin_ad_list')
     return render(request, 'accounts/admin/ad_list.html', {'ads': Advertisement.objects.all()})
+
+
+# ── PARAMÈTRES DU SITE ────────────────────────────────────────
+
+@admin_required
+def site_settings(request):
+    settings_obj = SiteSettings.get()
+    if request.method == 'POST':
+        email = request.POST.get('admin_notify_email', '').strip()
+        settings_obj.admin_notify_email = email
+        settings_obj.save()
+        messages.success(request, 'Paramètres enregistrés.')
+        return redirect('accounts:admin_site_settings')
+    return render(request, 'accounts/admin/site_settings.html', {
+        'settings': settings_obj,
+    })
