@@ -46,7 +46,7 @@ CLAUDE.md
 docs
 
 # Scripts locaux (seed, utilitaires non commitables)
-scripts/
+scripts/*.py
 
 # Node
 node_modules/
