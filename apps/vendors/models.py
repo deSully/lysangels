@@ -95,6 +95,13 @@ class VendorProfile(models.Model):
 
     is_active = models.BooleanField(default=False, verbose_name='Profil actif', db_index=True)
     is_featured = models.BooleanField(default=False, verbose_name='Prestataire mis en avant', db_index=True)
+    slug = models.SlugField(
+        max_length=200,
+        unique=True,
+        blank=True,
+        verbose_name='Slug URL',
+        help_text="Généré automatiquement depuis le nom de l'entreprise",
+    )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -105,6 +112,18 @@ class VendorProfile(models.Model):
 
     def __str__(self):
         return self.business_name
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.business_name:
+            from django.utils.text import slugify
+            base = slugify(self.business_name) or 'prestataire'
+            slug = base
+            n = 1
+            while VendorProfile.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
 
 
 class VendorImage(models.Model):

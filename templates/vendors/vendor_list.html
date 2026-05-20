@@ -338,7 +338,7 @@
         {% if search_results %}
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-14">
             {% for vendor in search_results %}
-            <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="vcard">
+            <a href="{% url 'vendors:vendor_detail' vendor.slug %}" class="vcard">
                 {% if vendor.logo %}
                     <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
                 {% elif vendor.images.first %}
@@ -433,7 +433,7 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     {% for vendor in category.vendors %}
-                    <a href="{% url 'vendors:vendor_detail' vendor.id %}" class="vcard rv rv-{% cycle '1' '2' '3' %}">
+                    <a href="{% url 'vendors:vendor_detail' vendor.slug %}" class="vcard rv rv-{% cycle '1' '2' '3' %}">
                         {% if vendor.logo %}
                             <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}" loading="lazy" decoding="async">
                         {% elif vendor.images.first %}

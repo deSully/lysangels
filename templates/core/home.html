@@ -469,7 +469,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for vendor in featured_vendors %}
-            <a href="{% url 'vendors:vendor_detail' vendor.pk %}" class="vcard rv rv-{% cycle '1' '2' '3' %}">
+            <a href="{% url 'vendors:vendor_detail' vendor.slug %}" class="vcard rv rv-{% cycle '1' '2' '3' %}">
                 {% with cover=vendor.images.all|first %}
                     {% if cover %}
                         <img src="{{ cover.image.url }}" alt="{{ vendor.business_name }}" loading="lazy">

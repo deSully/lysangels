@@ -34,4 +34,4 @@ class VendorSitemap(Sitemap):
         return obj.updated_at
 
     def location(self, obj):
-        return reverse('vendors:vendor_detail', args=[obj.pk])
+        return reverse('vendors:vendor_detail', args=[obj.slug])

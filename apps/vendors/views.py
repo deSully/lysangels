@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -84,13 +84,13 @@ def vendor_list(request):
     })
 
 
-def vendor_detail(request, pk):
+def vendor_detail(request, slug):
     """Détails publics d'un prestataire"""
     vendor = get_object_or_404(
         VendorProfile.objects.prefetch_related(
             'cities', 'service_types', 'countries', 'images'
         ),
-        pk=pk,
+        slug=slug,
         is_active=True
     )
     context = {
@@ -104,13 +104,19 @@ def vendor_detail(request, pk):
     return render(request, 'vendors/vendor_detail.html', context)
 
 
+def vendor_detail_by_pk(request, pk):
+    """Redirect legacy pk-based URLs to the slug-based URL (301 permanent)"""
+    vendor = get_object_or_404(VendorProfile, pk=pk, is_active=True)
+    return redirect('vendors:vendor_detail', slug=vendor.slug, permanent=True)
+
+
 @require_POST
-def reveal_contact(request, pk):
+def reveal_contact(request, slug):
     """Retourne le numéro WhatsApp et trace le clic en base"""
     from django.utils import timezone
     from datetime import timedelta
 
-    vendor = get_object_or_404(VendorProfile, pk=pk, is_active=True)
+    vendor = get_object_or_404(VendorProfile, slug=slug, is_active=True)
 
     if not vendor.whatsapp:
         return JsonResponse({'error': 'Aucun numéro disponible'}, status=404)
