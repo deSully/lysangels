@@ -25,11 +25,10 @@ Django 6.0.1, Python 3.12, TailwindCSS, SQLite/PostgreSQL
 ```
 apps/
 ├── accounts/   - Users, authentication, admin
-├── core/       - Base models (Country, City, Quartier)
+├── core/       - Base models (Country, City)
 ├── vendors/    - Service providers
 ├── projects/   - Client projects
-├── proposals/  - Quotes and proposals
-└── messaging/  - Messaging system
+└── ads/        - Advertisements
 ```
 
 ## Settings
