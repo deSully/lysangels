@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from apps.core.sitemaps import StaticViewsSitemap, VendorSitemap
 from apps.core.robots import robots_txt
+from decouple import config as env
 
 # Configuration des sitemaps
 sitemaps = {
@@ -28,8 +29,10 @@ sitemaps = {
     'vendors': VendorSitemap,
 }
 
+_admin_url = env('DJANGO_ADMIN_URL', default='admin') + '/'
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(_admin_url, admin.site.urls),
     path('', include('apps.core.urls')),
     path('accounts/', include('apps.accounts.urls')),
     path('vendors/', include('apps.vendors.urls')),
