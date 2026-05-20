@@ -29,7 +29,7 @@ clean-build:
 	rm -rf dist/
 	rm -rf .eggs/
 	find . -name '*.egg-info' -exec rm -rf {} +
-	find . -name '*.egg' -exec rm -f {} +
+	find . -name '*.egg' -exec rm -rf {} +
 	@echo "✓ Fichiers de build supprimés"
 
 clean-test:
