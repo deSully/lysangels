@@ -2,7 +2,7 @@
 {% load thumbnail_tags %}
 
 {% block title %}Nos prestataires — LysAngels{% endblock %}
-{% block meta_description %}Découvrez notre sélection de prestataires événementiels vérifiés : photographes, musiciens, DJ, traiteurs, décorateurs.{% endblock %}
+{% block meta_description %}{% if selected_service_types and service_types %}Prestataires {{ service_types|dictsort:"id"|first }} au Togo — LysAngels{% else %}Découvrez notre sélection de prestataires événementiels vérifiés au Togo : photographes, DJ, traiteurs, décorateurs.{% endif %}{% endblock %}
 
 {% block extra_css %}
 <style>
