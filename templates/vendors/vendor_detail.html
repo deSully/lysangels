@@ -825,4 +825,24 @@ if (heroImg) heroImg.addEventListener('load', () => heroImg.classList.add('loade
 </div>
 {% endif %}
 
+{% block extra_js %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "{{ vendor.business_name|escapejs }}",
+  "description": "{{ vendor.description|truncatechars:200|escapejs }}",
+  "url": "{{ request.build_absolute_uri }}"{% if vendor.images.first %},
+  "image": "{{ request.scheme }}://{{ request.get_host }}{{ vendor.images.first.image.url }}"{% endif %},
+  "address": {
+    "@type": "PostalAddress"{% if vendor.cities.first %},
+    "addressLocality": "{{ vendor.cities.first.name|escapejs }}"{% endif %},
+    "addressCountry": "TG"
+  }{% if vendor.whatsapp %},
+  "telephone": "{{ vendor.whatsapp|escapejs }}"{% endif %}{% if vendor.min_budget %},
+  "priceRange": "À partir de {{ vendor.min_budget|floatformat:0 }} FCFA"{% endif %}
+}
+</script>
+{% endblock %}
+
 {% endblock %}
