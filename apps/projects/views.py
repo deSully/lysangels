@@ -6,7 +6,7 @@ from .forms import ProjectCreateForm
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.models import City
 from apps.core.turnstile import verify_turnstile
-from .tasks import send_project_confirmation
+from .tasks import send_project_confirmation, notify_admin_new_project
 
 
 def project_create(request):
@@ -31,6 +31,14 @@ def project_create(request):
                 form.save_m2m()
                 if project.contact_email:
                     send_project_confirmation(project.contact_name, project.contact_email)
+                notify_admin_new_project(
+                    contact_name=project.contact_name,
+                    contact_email=project.contact_email,
+                    contact_phone=project.contact_phone,
+                    event_description=project.description,
+                    event_date=str(project.event_date) if project.event_date else '',
+                    budget=f"{project.budget_min or '—'} – {project.budget_max or '—'} FCFA",
+                )
                 return render(request, 'projects/project_create_success.html', {
                     'contact_name': project.contact_name,
                 })

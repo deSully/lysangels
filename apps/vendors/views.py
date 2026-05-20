@@ -8,7 +8,7 @@ from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.models import City, Country
 from apps.core.turnstile import verify_turnstile
-from .tasks import send_application_confirmation
+from .tasks import send_application_confirmation, notify_admin_new_application
 
 
 def _build_cities_json():
@@ -206,6 +206,16 @@ def vendor_signup(request):
                 application.cities.set(city_ids)
                 if email:
                     send_application_confirmation(name, email)
+                service_names = ', '.join(
+                    ServiceType.objects.filter(id__in=service_type_ids).values_list('name', flat=True)
+                )
+                notify_admin_new_application(
+                    name=name,
+                    business_name=business_name,
+                    service_types_str=service_names or other_service,
+                    email=email,
+                    whatsapp=whatsapp,
+                )
                 return render(request, 'vendors/vendor_signup_success.html', {
                     'name': name,
                     'has_email': bool(email),

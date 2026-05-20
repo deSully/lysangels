@@ -18,3 +18,31 @@ def send_application_confirmation(name, email):
     thread = threading.Thread(target=_send)
     thread.daemon = True
     thread.start()
+
+
+def notify_admin_new_application(name, business_name, service_types_str, email, whatsapp):
+    from apps.core.models import SiteSettings
+    admin_email = SiteSettings.get().admin_notify_email
+    if not admin_email:
+        return
+
+    def _send():
+        lines = [
+            f"Nom : {name}",
+            f"Entreprise : {business_name or '—'}",
+            f"Métiers : {service_types_str or '—'}",
+            f"Email : {email or '—'}",
+            f"WhatsApp : {whatsapp or '—'}",
+        ]
+        body = "Nouvelle candidature prestataire reçue sur LysAngels.\n\n" + "\n".join(lines)
+        msg = EmailMultiAlternatives(
+            subject=f"Nouvelle candidature — {name}",
+            body=body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[admin_email],
+        )
+        msg.send()
+
+    thread = threading.Thread(target=_send)
+    thread.daemon = True
+    thread.start()
