@@ -52,3 +52,4 @@ scripts/
 node_modules/
 package-lock.json
 .superpowers
+.cache/

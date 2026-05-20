@@ -36,11 +36,11 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = 'same-origin'
 
 
-# Cache — FileBasedCache partagé entre tous les workers Gunicorn
+# Cache — répertoire persistant dans le projet (survit aux redémarrages)
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/lysangels_cache',
+        'LOCATION': str(BASE_DIR / '.cache'),
     }
 }
 

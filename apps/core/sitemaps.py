@@ -15,7 +15,7 @@ class StaticViewsSitemap(Sitemap):
             'core:about',
             'core:contact',
             'vendors:vendor_list',
-            'accounts:login',
+            'vendors:vendor_pitch',
         ]
 
     def location(self, item):
