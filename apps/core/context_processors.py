@@ -15,3 +15,12 @@ def unresolved_errors(request):
         return {'unresolved_errors_count': ErrorLog.objects.filter(is_resolved=False).count()}
     except Exception:
         return {}
+
+
+def global_stats(request):
+    try:
+        from apps.vendors.models import VendorProfile
+        count = VendorProfile.objects.filter(is_active=True).count()
+    except Exception:
+        count = 0
+    return {'vendor_count': count}

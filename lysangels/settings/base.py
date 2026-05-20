@@ -54,6 +54,7 @@ TEMPLATES = [
                 'apps.core.context_processors.analytics',
                 'apps.core.context_processors.unresolved_errors',
                 'apps.ads.context_processors.ads',
+                'apps.core.context_processors.global_stats',
             ],
         },
     },

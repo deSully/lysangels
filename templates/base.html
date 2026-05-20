@@ -17,7 +17,7 @@
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:title" content="{% block og_title %}LysAngels - Plateforme Événementielle Premium{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Trouvez les meilleurs prestataires pour vos événements. Plus de 250 professionnels qualifiés à votre service.{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Trouvez les meilleurs prestataires pour vos événements au Togo. {{ vendor_count }} professionnel{{ vendor_count|pluralize }}s vérifié{{ vendor_count|pluralize }}s disponible{{ vendor_count|pluralize }}s.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-image.jpg' %}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
