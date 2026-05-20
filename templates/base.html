@@ -70,6 +70,16 @@
 
     <!-- CSS Global — v3.0 : Inter partout SAUF Playfair Display protégé -->
     <style>
+        /* Skip-to-content link — accessibilité clavier */
+        .skip-link {
+            position: absolute; top: -100%; left: 1rem;
+            background: var(--terra); color: #fff;
+            padding: .5rem 1rem; font-size: .8rem; font-weight: 600;
+            border-radius: 0 0 .25rem .25rem; text-decoration: none;
+            z-index: 9999; transition: top .15s;
+        }
+        .skip-link:focus { top: 0; }
+
         /* Typographie — Inter par défaut, Playfair Display sur les éléments display */
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -152,7 +162,8 @@
             cursor: pointer;
             padding-right: 2.25rem !important;
         }
-        select:focus { outline: none !important; }
+        select:focus { outline: 2px solid var(--terra); outline-offset: 2px; }
+        :focus-visible { outline: 2px solid var(--terra); outline-offset: 2px; }
 
         /* User menu button hover */
         .nav-user-btn:hover { color: var(--terra) !important; }
@@ -304,6 +315,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body class="h-full bg-lily-white text-lily-dark">
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
     <!-- Pull to Refresh Indicator -->
     <div id="pull-refresh-indicator" class="fixed top-0 left-0 right-0 z-50 flex items-center justify-center bg-lily-purple text-white py-2 opacity-0 transition-all duration-200" style="transform: translateY(-100%);">
         <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -445,7 +457,7 @@
     {% endif %}
 
     <!-- Contenu principal -->
-    <main>
+    <main id="main-content">
         {% block content %}{% endblock %}
     </main>
 
@@ -513,7 +525,7 @@
 
         <!-- Barre copyright -->
         <div class="footer-bar">
-            <span class="footer-copyright">&copy; 2025 LysAngels</span>
+            <span class="footer-copyright">&copy; {% now "Y" %} LysAngels</span>
             <div class="footer-legal">
                 <a href="{% url 'core:terms' %}">CGU</a>
                 <a href="{% url 'core:privacy' %}">Confidentialité</a>
