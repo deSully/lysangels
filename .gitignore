@@ -53,3 +53,6 @@ node_modules/
 package-lock.json
 .superpowers
 .cache/
+
+.agents
+skills-lock.json
