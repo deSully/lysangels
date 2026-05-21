@@ -180,37 +180,6 @@ document.querySelectorAll('img[data-src], img[data-lazy-src]').forEach(img => {
 });
 
 // ============================================
-// 7. ONLINE/OFFLINE STATUS
-// ============================================
-function updateOnlineStatus() {
-    const statusIndicator = document.getElementById('online-status');
-    
-    if (navigator.onLine) {
-        if (statusIndicator) {
-            statusIndicator.className = 'hidden';
-        }
-    } else {
-        if (statusIndicator) {
-            statusIndicator.className = 'fixed bottom-4 left-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50 text-center font-medium';
-            statusIndicator.textContent = '⚠️ Vous êtes hors ligne';
-        } else {
-            // Créer l'indicateur s'il n'existe pas
-            const indicator = document.createElement('div');
-            indicator.id = 'online-status';
-            indicator.className = 'fixed bottom-4 left-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50 text-center font-medium';
-            indicator.textContent = '⚠️ Vous êtes hors ligne';
-            document.body.appendChild(indicator);
-        }
-    }
-}
-
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-
-// Vérifier le statut au chargement
-updateOnlineStatus();
-
-// ============================================
 // 8. SWIPE GESTURES
 // ============================================
 class SwipeDetector {
