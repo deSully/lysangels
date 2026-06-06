@@ -521,7 +521,8 @@
                             font-size:.75rem; color:var(--muted); text-align:center;
                             transition: border-color .15s, background .15s;
                             background: rgba(255,255,255,.6);
-                        " onmouseover="this.style.borderColor='rgba(181,68,26,.4)'; this.style.background='rgba(181,68,26,.03)'"
+                        " id="images-dropzone"
+                           onmouseover="this.style.borderColor='rgba(181,68,26,.4)'; this.style.background='rgba(181,68,26,.03)'"
                            onmouseout="this.style.borderColor='rgba(0,0,0,.15)'; this.style.background='rgba(255,255,255,.6)'">
                             <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             <span id="images-label">Cliquez pour sélectionner vos photos</span>
@@ -529,6 +530,7 @@
                                    multiple style="display:none;" id="input-images"
                                    onchange="updateImagesLabel(this)">
                         </label>
+                        <p class="inline-error" id="err-images" style="margin-top:.4rem;">Maximum 5 photos autorisées. Veuillez en sélectionner 5 ou moins.</p>
                     </div>
 
                     <div style="margin: 1.25rem 0;">
@@ -652,20 +654,46 @@
 
     function goNext(n) { if (validateStep(n)) goTo(n + 1); }
 
+    var MAX_IMAGES = 5;
+
     function updateImagesLabel(input) {
         var label = document.getElementById('images-label');
+        var errEl = document.getElementById('err-images');
+        var dropzone = document.getElementById('images-dropzone');
         var count = input.files ? input.files.length : 0;
-        if (count === 0) {
-            label.textContent = 'Cliquez pour sélectionner vos photos';
-            label.style.color = '';
-        } else if (count === 1) {
-            label.textContent = '1 photo sélectionnée';
-            label.style.color = 'var(--terra)';
+
+        if (count > MAX_IMAGES) {
+            // Trop de photos — afficher l'erreur et vider la sélection
+            errEl.classList.add('visible');
+            dropzone.style.borderColor = '#DC2626';
+            label.textContent = count + ' photos sélectionnées — limite dépassée !';
+            label.style.color = '#DC2626';
+            input.value = '';  // réinitialise la sélection
         } else {
-            label.textContent = count + ' photos sélectionnées';
-            label.style.color = 'var(--terra)';
+            errEl.classList.remove('visible');
+            dropzone.style.borderColor = '';
+            if (count === 0) {
+                label.textContent = 'Cliquez pour sélectionner vos photos';
+                label.style.color = '';
+            } else if (count === 1) {
+                label.textContent = '1 photo sélectionnée';
+                label.style.color = 'var(--terra)';
+            } else {
+                label.textContent = count + ' photos sélectionnées';
+                label.style.color = 'var(--terra)';
+            }
         }
     }
+
+    // Bloquer la soumission si l'erreur images est visible
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        var errImages = document.getElementById('err-images');
+        if (errImages.classList.contains('visible')) {
+            e.preventDefault();
+            document.getElementById('step-3').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
 </script>
 <script>
 (function() {

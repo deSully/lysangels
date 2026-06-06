@@ -186,6 +186,8 @@ def vendor_signup(request):
                 errors.append("La description de l'activité est requise.")
             if not service_type_ids and not other_service:
                 errors.append('Veuillez sélectionner au moins un type de prestation ou préciser votre activité.')
+            if len(request.FILES.getlist('images')) > 5:
+                errors.append('Vous avez sélectionné trop de photos. Maximum 5 photos autorisées.')
 
             if errors:
                 for error in errors:
