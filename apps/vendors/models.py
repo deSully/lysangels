@@ -73,6 +73,7 @@ class VendorProfile(models.Model):
         blank=True,
     )
 
+    email = models.EmailField(blank=True, verbose_name='Email')
     website = models.URLField(blank=True, verbose_name='Site web')
     whatsapp = models.CharField(max_length=20, blank=True, verbose_name='WhatsApp')
     facebook = models.URLField(blank=True, verbose_name='Page Facebook')
@@ -298,7 +299,19 @@ class VendorMessage(models.Model):
         on_delete=models.CASCADE,
         related_name='messages',
         verbose_name='Candidature',
+        null=True,
+        blank=True,
     )
+    vendor_profile = models.ForeignKey(
+        'VendorProfile',
+        on_delete=models.CASCADE,
+        related_name='messages',
+        verbose_name='Prestataire',
+        null=True,
+        blank=True,
+    )
+    recipient_email = models.EmailField(blank=True, verbose_name='Email destinataire')
+    recipient_name = models.CharField(max_length=200, blank=True, verbose_name='Nom destinataire')
     subject = models.CharField(max_length=200, verbose_name='Objet')
     body = models.TextField(verbose_name='Message')
     reply_body = models.TextField(blank=True, verbose_name='Réponse du prestataire')
@@ -328,8 +341,15 @@ class VendorMessage(models.Model):
         verbose_name_plural = 'Messages prestataires'
         ordering = ['-created_at']
 
+    def get_recipient_display(self):
+        if self.application:
+            return self.application.business_name or self.application.name
+        if self.vendor_profile:
+            return self.vendor_profile.business_name
+        return self.recipient_name or '—'
+
     def __str__(self):
-        return f"[{self.get_status_display()}] {self.subject} → {self.application.name}"
+        return f"[{self.get_status_display()}] {self.subject} → {self.get_recipient_display()}"
 
 
 class ContactView(models.Model):

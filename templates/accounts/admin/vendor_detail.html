@@ -172,6 +172,113 @@
   </div>
 
 </div>
+
+<!-- ══ SECTION MESSAGES ══ -->
+<div style="margin-top:1.5rem;">
+  <input type="hidden" id="vendor-csrf" value="{{ csrf_token }}">
+
+  <!-- Formulaire d'envoi -->
+  <div class="a-card">
+    <div class="a-card-head">
+      <span class="a-card-label">Envoyer un message</span>
+      {% if not vendor.email %}
+      <span style="font-size:.7rem; color:#c0392b; font-weight:600;">⚠ Pas d'email renseigné — modifiez le profil</span>
+      {% endif %}
+    </div>
+    <div class="a-card-body">
+      {% if vendor.email %}
+      <form method="post" action="{% url 'accounts:admin_vendor_send_message' pk=vendor.pk %}">
+        {% csrf_token %}
+        <div style="display:flex; flex-direction:column; gap:.625rem;">
+          <div>
+            <label class="a-field-label">Objet <span style="color:var(--terra);">*</span></label>
+            <input type="text" name="subject" class="a-input" placeholder="Ex : Mise à jour de votre profil" required>
+          </div>
+          <div>
+            <label class="a-field-label">Message <span style="color:var(--terra);">*</span></label>
+            <textarea name="body" rows="4" class="a-textarea" placeholder="Bonjour, nous souhaiterions…" required></textarea>
+          </div>
+          <button type="submit" class="a-btn a-btn-primary" style="align-self:flex-end;">
+            Envoyer →
+          </button>
+        </div>
+      </form>
+      {% else %}
+      <p style="font-size:.8rem; color:var(--muted); line-height:1.65;">
+        Ajoutez une adresse email à ce prestataire pour pouvoir lui envoyer un message.
+        <a href="{% url 'accounts:admin_vendor_edit' pk=vendor.pk %}" class="a-td-link" style="margin-left:.375rem;">Modifier le profil →</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Historique des messages -->
+  {% with msgs=vendor.messages.all %}
+  {% if msgs %}
+  <div class="a-card" style="margin-top:.75rem;">
+    <div class="a-card-head">
+      <span class="a-card-label">Historique des messages</span>
+      <span style="font-size:.7rem; color:var(--muted);">{{ msgs.count }} message{{ msgs.count|pluralize }}</span>
+    </div>
+    <div class="a-card-body" style="display:flex; flex-direction:column; gap:1rem;">
+      {% for msg in msgs %}
+      <div style="border:1px solid rgba(0,0,0,.07); border-radius:.35rem; overflow:hidden;" id="msg-{{ msg.pk }}">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:.625rem .875rem; background:rgba(0,0,0,.02); border-bottom:1px solid rgba(0,0,0,.06);">
+          <div style="display:flex; align-items:center; gap:.625rem; min-width:0;">
+            <span style="font-size:.78rem; font-weight:700; color:var(--night);">{{ msg.subject }}</span>
+            <span style="font-size:.65rem; color:var(--muted);">{{ msg.created_at|date:"d/m/Y H:i" }}</span>
+          </div>
+          <div style="flex-shrink:0;">
+            {% if msg.status == 'sent' %}
+            <span style="padding:.15rem .5rem; background:rgba(201,151,58,.1); border:1px solid rgba(201,151,58,.25); border-radius:2px; font-size:.62rem; font-weight:700; text-transform:uppercase; color:#9a7018;">Envoyé</span>
+            {% elif msg.status == 'replied' %}
+            <span style="padding:.15rem .5rem; background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.25); border-radius:2px; font-size:.62rem; font-weight:700; text-transform:uppercase; color:#3B82F6;">Répondu</span>
+            {% elif msg.status == 'read' %}
+            <span style="padding:.15rem .5rem; background:rgba(0,0,0,.05); border:1px solid rgba(0,0,0,.1); border-radius:2px; font-size:.62rem; font-weight:700; text-transform:uppercase; color:var(--muted);">Lu</span>
+            {% elif msg.status == 'processed' %}
+            <span style="padding:.15rem .5rem; background:rgba(22,163,74,.08); border:1px solid rgba(22,163,74,.2); border-radius:2px; font-size:.62rem; font-weight:700; text-transform:uppercase; color:#16a34a;">✓ Traité</span>
+            {% endif %}
+          </div>
+        </div>
+        <div style="padding:.75rem .875rem; border-bottom:1px solid rgba(0,0,0,.05);">
+          <p style="font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.375rem;">Message envoyé</p>
+          <p style="font-size:.825rem; color:#4A3F35; line-height:1.7; white-space:pre-line; margin:0;">{{ msg.body }}</p>
+        </div>
+        {% if msg.reply_body %}
+        <div style="padding:.75rem .875rem; background:rgba(181,68,26,.02);">
+          <p style="font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--terra); margin-bottom:.375rem;">Réponse — {{ msg.replied_at|date:"d/m/Y H:i" }}</p>
+          <p style="font-size:.825rem; color:#4A3F35; line-height:1.7; white-space:pre-line; margin:0 0 .625rem;">{{ msg.reply_body }}</p>
+          {% if msg.reply_image_1 or msg.reply_image_2 or msg.reply_image_3 %}
+          <div style="display:flex; gap:.375rem; flex-wrap:wrap; margin-top:.5rem;">
+            {% if msg.reply_image_1 %}<a href="{{ msg.reply_image_1.url }}" target="_blank"><img src="{{ msg.reply_image_1.url }}" style="width:80px; height:80px; object-fit:cover; border-radius:.25rem; border:1px solid rgba(0,0,0,.08);"></a>{% endif %}
+            {% if msg.reply_image_2 %}<a href="{{ msg.reply_image_2.url }}" target="_blank"><img src="{{ msg.reply_image_2.url }}" style="width:80px; height:80px; object-fit:cover; border-radius:.25rem; border:1px solid rgba(0,0,0,.08);"></a>{% endif %}
+            {% if msg.reply_image_3 %}<a href="{{ msg.reply_image_3.url }}" target="_blank"><img src="{{ msg.reply_image_3.url }}" style="width:80px; height:80px; object-fit:cover; border-radius:.25rem; border:1px solid rgba(0,0,0,.08);"></a>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+        {% if msg.status != 'processed' %}
+        <div style="padding:.5rem .875rem; display:flex; gap:.5rem; justify-content:flex-end; border-top:1px solid rgba(0,0,0,.05);">
+          {% if msg.status == 'replied' %}
+          <button type="button" onclick="markVendorMsgRead({{ vendor.pk }}, {{ msg.pk }})"
+                  style="padding:.25rem .75rem; background:transparent; border:1px solid rgba(0,0,0,.12); border-radius:.25rem; font-size:.72rem; font-weight:600; color:var(--muted); cursor:pointer;">
+            Marquer comme lu
+          </button>
+          {% endif %}
+          <button type="button" onclick="markVendorMsgProcessed({{ vendor.pk }}, {{ msg.pk }})"
+                  style="padding:.25rem .75rem; background:rgba(22,163,74,.08); border:1px solid rgba(22,163,74,.2); border-radius:.25rem; font-size:.72rem; font-weight:600; color:#16a34a; cursor:pointer;">
+            ✓ Marquer traité
+          </button>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
+
 {% endblock %}
 
 {% block admin_js %}
@@ -184,6 +291,28 @@ function deleteImage(vendorId, imageId) {
   }).then(r => r.json()).then(data => {
     if (data.success) location.reload();
     else alert('Erreur lors de la suppression.');
+  });
+}
+
+function getVendorCsrf() {
+  return document.getElementById('vendor-csrf').value;
+}
+
+function markVendorMsgRead(vendorPk, msgPk) {
+  fetch('/accounts/admin/vendors/' + vendorPk + '/messages/' + msgPk + '/mark-read/', {
+    method: 'POST',
+    headers: {'X-CSRFToken': getVendorCsrf()}
+  }).then(r => r.json()).then(data => {
+    if (data.success) location.reload();
+  });
+}
+
+function markVendorMsgProcessed(vendorPk, msgPk) {
+  fetch('/accounts/admin/vendors/' + vendorPk + '/messages/' + msgPk + '/mark-processed/', {
+    method: 'POST',
+    headers: {'X-CSRFToken': getVendorCsrf()}
+  }).then(r => r.json()).then(data => {
+    if (data.success) location.reload();
   });
 }
 </script>

@@ -55,6 +55,9 @@ urlpatterns = [
     path('admin/applications/<int:pk>/messages/<int:msg_pk>/mark-read/', admin_views.application_message_mark_read, name='admin_application_message_mark_read'),
     path('admin/applications/<int:pk>/messages/<int:msg_pk>/mark-processed/', admin_views.application_message_mark_processed, name='admin_application_message_mark_processed'),
 
+    # Messages prestataires
+    path('admin/vendor-messages/', admin_views.vendor_message_list, name='admin_vendor_message_list'),
+
     # Messages de contact
     path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),
     path('admin/contact-messages/<int:pk>/', admin_views.contact_message_detail, name='admin_contact_message_detail'),
@@ -68,6 +71,9 @@ urlpatterns = [
     path('admin/vendors/<int:vendor_id>/delete-image/<int:image_id>/', admin_views.vendor_delete_image, name='admin_vendor_delete_image'),
     path('admin/vendors/<int:vendor_id>/add-image/', admin_views.vendor_add_image, name='admin_vendor_add_image'),
     path('admin/vendors/<int:vendor_id>/set-cover-image/<int:image_id>/', admin_views.vendor_set_cover_image, name='admin_vendor_set_cover_image'),
+    path('admin/vendors/<int:pk>/send-message/', admin_views.vendor_send_message, name='admin_vendor_send_message'),
+    path('admin/vendors/<int:pk>/messages/<int:msg_pk>/mark-read/', admin_views.vendor_message_mark_read, name='admin_vendor_message_mark_read'),
+    path('admin/vendors/<int:pk>/messages/<int:msg_pk>/mark-processed/', admin_views.vendor_message_mark_processed, name='admin_vendor_message_mark_processed'),
 
     # Journal d'erreurs
     path('admin/errors/', admin_views.error_log_list, name='admin_error_log_list'),

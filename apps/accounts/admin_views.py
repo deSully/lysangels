@@ -1057,6 +1057,108 @@ def error_log_detail(request, pk):
     return render(request, 'accounts/admin/error_log_detail.html', {'log': log})
 
 
+# ========== MESSAGES PRESTATAIRES ==========
+
+@require_POST
+@admin_required
+def vendor_send_message(request, pk):
+    """Envoie un message à un prestataire actif depuis sa fiche"""
+    from apps.vendors.models import VendorMessage
+    from apps.vendors.tasks import send_vendor_message
+    import secrets
+
+    vendor = get_object_or_404(VendorProfile, pk=pk)
+
+    subject = request.POST.get('subject', '').strip()
+    body = request.POST.get('body', '').strip()
+
+    if not subject or not body:
+        messages.error(request, 'L\'objet et le message sont requis.')
+        return redirect('accounts:admin_vendor_detail', pk=pk)
+
+    if not vendor.email:
+        messages.error(request, 'Ce prestataire n\'a pas d\'adresse email renseignée.')
+        return redirect('accounts:admin_vendor_detail', pk=pk)
+
+    token = secrets.token_urlsafe(32)
+
+    VendorMessage.objects.create(
+        vendor_profile=vendor,
+        subject=subject,
+        body=body,
+        token=token,
+        recipient_email=vendor.email,
+        recipient_name=vendor.business_name,
+    )
+
+    reply_url = request.build_absolute_uri(
+        f'/vendors/messages/repondre/{token}/'
+    )
+
+    send_vendor_message(
+        vendor_name=vendor.business_name,
+        vendor_email=vendor.email,
+        subject=subject,
+        body=body,
+        reply_url=reply_url,
+    )
+
+    messages.success(request, f'Message envoyé à {vendor.email}.')
+    return redirect('accounts:admin_vendor_detail', pk=pk)
+
+
+@require_POST
+@admin_required
+def vendor_message_mark_read(request, pk, msg_pk):
+    """Marque un message prestataire comme lu"""
+    from apps.vendors.models import VendorMessage
+    msg = get_object_or_404(VendorMessage, pk=msg_pk, vendor_profile_id=pk)
+    if msg.status == 'replied':
+        msg.status = 'read'
+        msg.save(update_fields=['status'])
+    return JsonResponse({'success': True})
+
+
+@require_POST
+@admin_required
+def vendor_message_mark_processed(request, pk, msg_pk):
+    """Marque un message prestataire comme traité"""
+    from apps.vendors.models import VendorMessage
+    msg = get_object_or_404(VendorMessage, pk=msg_pk, vendor_profile_id=pk)
+    msg.status = 'processed'
+    msg.save(update_fields=['status'])
+    return JsonResponse({'success': True})
+
+
+@admin_required
+def vendor_message_list(request):
+    """Liste de toutes les conversations avec les prestataires"""
+    from apps.vendors.models import VendorMessage
+    msgs = VendorMessage.objects.select_related(
+        'application', 'vendor_profile'
+    ).order_by('-created_at')
+
+    status = request.GET.get('status')
+    if status:
+        msgs = msgs.filter(status=status)
+
+    paginator = Paginator(msgs, 25)
+    msgs = paginator.get_page(request.GET.get('page'))
+    replied_count = VendorMessage.objects.filter(status='replied').count()
+
+    return render(request, 'accounts/admin/vendor_message_list.html', {
+        'msgs': msgs,
+        'selected_status': status,
+        'status_choices': [
+            ('sent', 'Envoyé'),
+            ('replied', 'Répondu'),
+            ('read', 'Lu'),
+            ('processed', 'Traité'),
+        ],
+        'replied_count': replied_count,
+    })
+
+
 # ========== MESSAGES DE CONTACT ==========
 
 @admin_required

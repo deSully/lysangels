@@ -415,6 +415,14 @@ body {
       Messages de contact
     </a>
 
+    <a href="{% url 'accounts:admin_vendor_message_list' %}"
+       class="a-nav-item {% if 'vendor_message' in request.resolver_match.url_name %}active{% endif %}">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+      </svg>
+      Messages prestataires
+    </a>
+
     <a href="{% url 'accounts:admin_ad_list' %}"
        class="a-nav-item {% if 'admin_ad' in request.resolver_match.url_name %}active{% endif %}">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
