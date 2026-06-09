@@ -46,7 +46,7 @@
           <div style="font-weight:600; font-size:.825rem;">{{ msg.get_recipient_display }}</div>
           <div class="a-td-muted" style="font-size:.72rem;">
             {% if msg.application %}Candidature{% elif msg.vendor_profile %}Prestataire{% endif %}
-            · {{ msg.recipient_email|default:msg.application.email|default:msg.vendor_profile.email|default:'—' }}
+            · {% if msg.recipient_email %}{{ msg.recipient_email }}{% elif msg.application and msg.application.email %}{{ msg.application.email }}{% elif msg.vendor_profile and msg.vendor_profile.email %}{{ msg.vendor_profile.email }}{% else %}—{% endif %}
           </div>
         </td>
         <td style="max-width:280px;">
