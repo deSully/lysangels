@@ -16,90 +16,93 @@
 
     /* ── HERO ── */
     .detail-hero {
-        position: relative;
-        height: 70vh; min-height: 480px; max-height: 680px;
-        overflow: hidden;
-    }
-    .detail-hero-img {
-        position: absolute; inset: 0;
-        object-fit: cover; width: 100%; height: 100%;
-        transform: scale(1.05);
-        transition: transform 7s cubic-bezier(.25,.46,.45,.94);
-    }
-    .detail-hero-img.loaded { transform: scale(1); }
-    .detail-hero-veil {
-        position: absolute; inset: 0;
-        background: linear-gradient(
-            160deg,
-            rgba(17,13,6,.08) 0%,
-            rgba(17,13,6,.35) 40%,
-            rgba(17,13,6,.9) 100%
-        );
-    }
-    .detail-hero-body {
-        position: absolute; bottom: 0; left: 0; right: 0;
-        padding: 3rem 0 2.5rem; z-index: 10;
+        background: var(--ivory);
+        border-bottom: 1px solid var(--border);
+        padding: 2.5rem 0 2rem;
     }
     .detail-hero-inner {
         max-width: 1280px; margin: 0 auto;
         padding: 0 1.5rem;
-        display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1.5rem; flex-wrap: wrap;
     }
+    .detail-hero-left {
+        display: flex; align-items: center; gap: 1.25rem;
+        flex: 1; min-width: 0;
+    }
+
+    /* ── AVATAR / LOGO ── */
+    .vendor-avatar {
+        width: 72px; height: 72px; border-radius: 50%;
+        flex-shrink: 0; overflow: hidden;
+        border: 2px solid rgba(0,0,0,.07);
+        background: var(--night);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .vendor-avatar img {
+        width: 100%; height: 100%; object-fit: cover;
+    }
+    .vendor-avatar-initials {
+        font-size: 1.375rem; font-weight: 700; letter-spacing: -.02em;
+        color: var(--gold); font-family: 'Playfair Display', Georgia, serif;
+        line-height: 1; user-select: none;
+    }
+
+    /* ── INFOS ── */
     .detail-hero-eyebrow {
-        display: inline-flex; align-items: center; gap: .5rem;
-        font-size: .62rem; font-weight: 700; letter-spacing: .2em;
-        text-transform: uppercase; color: var(--gold);
-        margin-bottom: .875rem;
+        display: inline-flex; align-items: center; gap: .4rem;
+        font-size: .6rem; font-weight: 700; letter-spacing: .18em;
+        text-transform: uppercase; color: var(--terra);
+        margin-bottom: .375rem;
     }
-    .detail-hero-eyebrow::before { content: ''; display: block; width: 18px; height: 1.5px; background: var(--gold); }
+    .detail-hero-eyebrow::before { content: ''; display: block; width: 14px; height: 1.5px; background: var(--terra); }
     .detail-hero-name {
-        font-size: clamp(2rem, 5vw, 4rem);
-        font-weight: 600; line-height: 1.05; letter-spacing: -0.02em;
-        color: #fff; margin-bottom: .875rem;
+        font-size: clamp(1.375rem, 3vw, 2rem);
+        font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+        color: var(--night); margin-bottom: .5rem;
     }
     .detail-hero-meta {
-        display: flex; flex-wrap: wrap; align-items: center; gap: .75rem;
-        margin-bottom: .875rem;
+        display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
     }
     .detail-hero-city {
-        display: inline-flex; align-items: center; gap: .35rem;
-        font-size: .8rem; color: rgba(255,255,255,.55);
+        display: inline-flex; align-items: center; gap: .3rem;
+        font-size: .78rem; color: var(--muted);
     }
     .badge-verified {
-        display: inline-flex; align-items: center; gap: .35rem;
-        padding: .25rem .75rem;
-        background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3);
+        display: inline-flex; align-items: center; gap: .3rem;
+        padding: .2rem .625rem;
+        background: rgba(22,163,74,.08); border: 1px solid rgba(22,163,74,.2);
         border-radius: 9999px;
-        font-size: .68rem; font-weight: 700; letter-spacing: .08em;
-        text-transform: uppercase; color: #4ade80;
+        font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+        text-transform: uppercase; color: #16a34a;
     }
     .badge-featured {
-        display: inline-flex; align-items: center; gap: .35rem;
-        padding: .25rem .75rem;
-        background: rgba(201,151,58,.15); border: 1px solid rgba(201,151,58,.3);
+        display: inline-flex; align-items: center; gap: .3rem;
+        padding: .2rem .625rem;
+        background: rgba(201,151,58,.1); border: 1px solid rgba(201,151,58,.25);
         border-radius: 9999px;
-        font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+        font-size: .65rem; font-weight: 700; letter-spacing: .08em;
         text-transform: uppercase; color: var(--gold);
     }
-    .detail-hero-tags { display: flex; flex-wrap: wrap; gap: .375rem; }
+    .detail-hero-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
     .hero-tag {
-        display: inline-block; padding: .2rem .625rem;
-        background: rgba(255,255,255,.1); backdrop-filter: blur(6px);
-        border: 1px solid rgba(255,255,255,.18);
+        display: inline-block; padding: .2rem .6rem;
+        background: rgba(0,0,0,.05);
+        border: 1px solid rgba(0,0,0,.08);
         border-radius: 9999px;
-        font-size: .68rem; font-weight: 600; letter-spacing: .06em;
-        text-transform: uppercase; color: rgba(255,255,255,.75);
+        font-size: .65rem; font-weight: 600; letter-spacing: .06em;
+        text-transform: uppercase; color: var(--muted);
     }
     .hero-wa-btn {
         display: inline-flex; align-items: center; gap: .5rem;
-        padding: .7rem 1.5rem;
+        padding: .7rem 1.375rem;
         background: #16a34a; color: #fff;
         font-size: .8rem; font-weight: 600;
         border-radius: .35rem; border: none; cursor: pointer;
-        transition: background .2s; white-space: nowrap;
-        flex-shrink: 0;
+        transition: background .2s, transform .15s; white-space: nowrap;
+        flex-shrink: 0; box-shadow: 0 2px 10px rgba(22,163,74,.25);
     }
-    .hero-wa-btn:hover { background: #15803d; }
+    .hero-wa-btn:hover { background: #15803d; transform: translateY(-1px); }
 
     /* ── BACK LINK ── */
     .back-bar {
@@ -319,29 +322,20 @@
      HERO
 ══════════════════════════ -->
 <div class="detail-hero">
-    {% if vendor.logo %}
-        <img src="{{ vendor.logo.url }}"
-             alt="{{ vendor.business_name }}"
-             class="detail-hero-img" id="heroImg"
-             loading="eager" decoding="async">
-    {% elif vendor.images.first %}
-        <img src="{% thumbnail_url vendor.images.first.image 'hero' %}"
-             srcset="{% responsive_srcset vendor.images.first.image 'medium' 'large' 'hero' %}"
-             sizes="100vw"
-             alt="{{ vendor.business_name }}"
-             class="detail-hero-img" id="heroImg"
-             loading="eager" decoding="async">
-    {% else %}
-        <div class="detail-hero-img" style="background:linear-gradient(135deg,#1e1408,#2d1e0a); display:flex; align-items:center; justify-content:center;">
-            <span class="text-6xl sm:text-8xl lg:text-9xl font-display" style="color:rgba(201,151,58,.18);">{{ vendor.business_name|first }}</span>
-        </div>
-    {% endif %}
+    <div class="detail-hero-inner">
 
-    <div class="detail-hero-veil"></div>
+        <div class="detail-hero-left">
+            <!-- Avatar : logo ou acronyme -->
+            <div class="vendor-avatar">
+                {% if vendor.logo %}
+                    <img src="{{ vendor.logo.url }}" alt="{{ vendor.business_name }}">
+                {% else %}
+                    <span class="vendor-avatar-initials">{{ vendor.business_name|slice:":2"|upper }}</span>
+                {% endif %}
+            </div>
 
-    <div class="detail-hero-body">
-        <div class="detail-hero-inner">
-            <div class="flex-1 min-w-0">
+            <!-- Infos -->
+            <div style="min-width:0;">
                 <div class="detail-hero-eyebrow">
                     {% for service in vendor.service_types.all|slice:":1" %}{{ service.name }}{% endfor %}
                 </div>
@@ -349,7 +343,7 @@
                 <div class="detail-hero-meta">
                     {% if vendor.cities.exists %}
                     <span class="detail-hero-city">
-                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
@@ -358,7 +352,7 @@
                     {% endif %}
                     {% if vendor.is_active %}
                     <span class="badge-verified">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <svg width="10" height="10" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                         Vérifié
@@ -366,7 +360,7 @@
                     {% endif %}
                     {% if vendor.is_featured %}
                     <span class="badge-featured">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <svg width="10" height="10" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                         </svg>
                         Vedette
@@ -382,18 +376,17 @@
                     {% endif %}
                 </div>
             </div>
-
-            {% if vendor.whatsapp %}
-            <div class="hidden sm:block flex-shrink-0">
-                <button type="button" onclick="revealContact('{{ vendor.slug }}')" id="hero-reveal-btn" class="hero-wa-btn">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
-                    Voir le numéro
-                </button>
-            </div>
-            {% endif %}
         </div>
+
+        {% if vendor.whatsapp %}
+        <button type="button" onclick="revealContact('{{ vendor.slug }}')" class="hero-wa-btn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Contacter
+        </button>
+        {% endif %}
+
     </div>
 </div>
 
@@ -800,10 +793,6 @@ function closeContactModal() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContactModal(); });
-
-// Hero image zoom
-const heroImg = document.getElementById('heroImg');
-if (heroImg) heroImg.addEventListener('load', () => heroImg.classList.add('loaded'));
 </script>
 
 {% if ads.vendor_detail %}
