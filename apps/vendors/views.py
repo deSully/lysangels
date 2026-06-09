@@ -9,7 +9,7 @@ from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.models import City, Country
 from apps.core.turnstile import verify_turnstile
-from .tasks import send_application_confirmation, notify_admin_new_application
+from .tasks import send_application_confirmation, notify_admin_new_application, send_vendor_message
 
 
 def _build_cities_json():
@@ -285,6 +285,54 @@ def vendor_signup_success_final(request, token):
         'name': application.name,
         'has_email': bool(application.email),
         'has_whatsapp': bool(application.whatsapp),
+    })
+
+
+def vendor_message_reply(request, token):
+    """Page publique de réponse à un message admin (lien unique)"""
+    from .models import VendorMessage
+    from django.utils import timezone
+
+    message = get_object_or_404(VendorMessage, token=token)
+
+    # Lien déjà utilisé
+    if message.token_used:
+        return render(request, 'vendors/vendor_message_reply.html', {
+            'already_used': True,
+            'message': message,
+        })
+
+    if request.method == 'POST':
+        reply_body = request.POST.get('reply_body', '').strip()
+        images = request.FILES.getlist('images')
+
+        if not reply_body:
+            return render(request, 'vendors/vendor_message_reply.html', {
+                'message': message,
+                'error_msg': 'Veuillez écrire votre réponse avant d\'envoyer.',
+            })
+
+        if len(images) > 3:
+            return render(request, 'vendors/vendor_message_reply.html', {
+                'message': message,
+                'error_msg': 'Maximum 3 photos autorisées.',
+            })
+
+        message.reply_body = reply_body
+        for i, img in enumerate(images[:3], start=1):
+            setattr(message, f'reply_image_{i}', img)
+        message.token_used = True
+        message.status = 'replied'
+        message.replied_at = timezone.now()
+        message.save()
+
+        return render(request, 'vendors/vendor_message_reply.html', {
+            'replied': True,
+            'message': message,
+        })
+
+    return render(request, 'vendors/vendor_message_reply.html', {
+        'message': message,
     })
 
 

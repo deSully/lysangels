@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ subject }} — LysAngels</title>
+</head>
+<body style="margin:0; padding:0; background:#F0EDE6; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; color:#110D06;">
+
+  <div style="max-width:580px; margin:40px auto; background:#ffffff; border-radius:6px; overflow:hidden; box-shadow:0 2px 20px rgba(17,13,6,.12);">
+
+    <!-- En-tête -->
+    <div style="background:#110D06; padding:48px 44px 40px; text-align:center;">
+      <p style="margin:0 0 18px; color:#C9973A; font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase;">LysAngels</p>
+      <div style="width:36px; height:1px; background:#B5441A; margin:0 auto 20px;"></div>
+      <p style="margin:0 0 10px; color:#ffffff; font-size:26px; font-weight:700; letter-spacing:-0.5px; line-height:1.2;">{{ subject }}</p>
+      <p style="margin:0; color:rgba(255,255,255,.4); font-size:13px; letter-spacing:.05em;">Message de Susy ✦</p>
+    </div>
+
+    <!-- Corps -->
+    <div style="padding:44px 44px 36px;">
+
+      <p style="margin:0 0 20px; font-size:19px; font-weight:700; color:#110D06;">Bonjour {{ vendor_name }},</p>
+
+      <!-- Message de l'admin -->
+      <div style="background:#FAF7F0; border-left:3px solid #B5441A; padding:18px 22px; margin:0 0 28px; border-radius:0 4px 4px 0;">
+        <p style="margin:0; font-size:14px; color:#5C4A3A; line-height:1.85; white-space:pre-line;">{{ message_body }}</p>
+      </div>
+
+      {% if reply_url %}
+      <!-- CTA réponse -->
+      <p style="margin:0 0 20px; font-size:14px; color:#4A3F35; line-height:1.7;">
+        Vous pouvez répondre directement en cliquant sur le bouton ci-dessous. Ce lien est personnel et valable <strong>7 jours</strong>.
+      </p>
+
+      <div style="text-align:center; margin:28px 0;">
+        <a href="{{ reply_url }}"
+           style="display:inline-block; padding:14px 32px; background:#B5441A; color:#ffffff; font-size:14px; font-weight:700; text-decoration:none; border-radius:4px; letter-spacing:.03em;">
+          Répondre à Susy →
+        </a>
+      </div>
+
+      <p style="margin:0 0 20px; font-size:12px; color:#9A8E83; line-height:1.7; text-align:center;">
+        Ou copiez ce lien dans votre navigateur :<br>
+        <a href="{{ reply_url }}" style="color:#B5441A; text-decoration:none; word-break:break-all;">{{ reply_url }}</a>
+      </p>
+      {% endif %}
+
+      <div style="height:1px; background:rgba(17,13,6,.08); margin:0 0 28px;"></div>
+
+      <!-- Signature -->
+      <p style="margin:0 0 4px; font-size:14px; color:#4A3F35;">À très bientôt,</p>
+      <p style="margin:0 0 2px; font-size:17px; font-weight:700; color:#110D06;">Susy</p>
+      <p style="margin:0 0 6px; font-size:12px; color:#7A6E63; letter-spacing:.04em;">Fondatrice — LysAngels</p>
+      <a href="mailto:susy@lysangels.com" style="color:#B5441A; text-decoration:none; font-size:13px;">susy@lysangels.com</a>
+
+    </div>
+
+    <!-- Pied de page -->
+    <div style="background:#110D06; padding:22px 44px; text-align:center;">
+      <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,.3);">© 2025 LysAngels</p>
+      <p style="margin:0;"><a href="https://lysangels.com" style="color:#C9973A; text-decoration:none; font-size:12px;">lysangels.com</a></p>
+    </div>
+
+  </div>
+
+</body>
+</html>

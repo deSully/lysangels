@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+
+{% block title %}Message de Susy — LysAngels{% endblock %}
+{% block meta_description %}Répondez au message de l'équipe LysAngels.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .reply-page {
+        min-height: 100svh;
+        background: var(--ivory);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+    }
+    .reply-card {
+        background: #fff;
+        border-radius: .75rem;
+        border: 1px solid rgba(0,0,0,.07);
+        padding: 2.5rem 2rem;
+        max-width: 580px;
+        width: 100%;
+        box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+    @media (min-width: 640px) { .reply-card { padding: 3rem 2.5rem; } }
+
+    .reply-eyebrow {
+        font-size: .6rem; font-weight: 700; letter-spacing: .2em;
+        text-transform: uppercase; color: var(--terra);
+        display: flex; align-items: center; gap: .4rem;
+        margin-bottom: .5rem;
+    }
+    .reply-eyebrow::before { content: ''; display: block; width: 14px; height: 1.5px; background: var(--terra); }
+
+    .reply-subject {
+        font-size: 1.5rem; font-weight: 600; line-height: 1.15;
+        letter-spacing: -0.02em; color: var(--night);
+        margin-bottom: .375rem;
+    }
+    .reply-from {
+        font-size: .8rem; color: var(--muted); margin-bottom: 1.75rem;
+    }
+
+    /* Message de l'admin */
+    .message-box {
+        background: #FAF7F0;
+        border-left: 3px solid var(--terra);
+        border-radius: 0 .35rem .35rem 0;
+        padding: 1rem 1.25rem;
+        margin-bottom: 2rem;
+        font-size: .875rem; color: #5C4A3A; line-height: 1.8;
+        white-space: pre-line;
+    }
+
+    /* Formulaire */
+    .reply-label {
+        display: block; font-size: .65rem; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase;
+        color: var(--muted); margin-bottom: .5rem;
+    }
+    .reply-textarea {
+        width: 100%; padding: .75rem 1rem;
+        background: #fff; color: var(--night);
+        border: 1.5px solid rgba(0,0,0,.1);
+        border-radius: .35rem; font-size: .9rem;
+        resize: vertical; min-height: 140px;
+        transition: border-color .2s, box-shadow .2s;
+        outline: none; font-family: inherit;
+    }
+    .reply-textarea:focus {
+        border-color: var(--terra);
+        box-shadow: 0 0 0 3px rgba(181,68,26,.08);
+    }
+
+    /* Dropzone photos */
+    .photos-dropzone {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        border: 1.5px dashed rgba(0,0,0,.13); border-radius: .5rem;
+        padding: 1.5rem 1rem; cursor: pointer; gap: .5rem;
+        text-align: center; transition: border-color .15s, background .15s;
+        background: rgba(255,255,255,.7); margin-top: 1.25rem;
+    }
+    .photos-dropzone:hover { border-color: rgba(181,68,26,.4); background: rgba(181,68,26,.03); }
+    .photos-main { font-size: .82rem; font-weight: 600; color: var(--night); }
+    .photos-hint { font-size: .7rem; color: var(--muted); }
+
+    /* Preview */
+    .preview-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        gap: .375rem; margin-top: .75rem;
+    }
+    .preview-thumb {
+        aspect-ratio: 1; border-radius: .3rem; overflow: hidden;
+        background: rgba(0,0,0,.05);
+    }
+    .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Error */
+    .reply-error {
+        background: rgba(220,38,38,.06); color: #991B1B;
+        border: 1px solid rgba(220,38,38,.15); border-radius: .35rem;
+        padding: .625rem .875rem; font-size: .8rem; margin-bottom: 1rem;
+    }
+
+    /* Submit */
+    .btn-reply {
+        display: flex; align-items: center; justify-content: center; gap: .5rem;
+        width: 100%; padding: .875rem;
+        background: var(--terra); color: #fff;
+        font-size: .875rem; font-weight: 700;
+        border-radius: .35rem; border: none; cursor: pointer;
+        box-shadow: 0 4px 14px rgba(181,68,26,.3);
+        transition: background .2s, transform .15s; margin-top: 1.5rem;
+    }
+    .btn-reply:hover { background: var(--terra-dark); transform: translateY(-1px); }
+
+    /* Succès */
+    .success-box {
+        text-align: center; padding: 2rem 1rem;
+    }
+    .success-icon {
+        width: 3.5rem; height: 3.5rem; border-radius: 50%;
+        background: rgba(22,163,74,.1);
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 1.25rem;
+    }
+    .success-title {
+        font-size: 1.25rem; font-weight: 700; color: var(--night); margin-bottom: .5rem;
+    }
+    .success-sub { font-size: .875rem; color: var(--muted); line-height: 1.65; }
+
+    /* Token expiré */
+    .expired-box {
+        text-align: center; padding: 2rem 1rem;
+    }
+    .expired-icon {
+        width: 3.5rem; height: 3.5rem; border-radius: 50%;
+        background: rgba(181,68,26,.08);
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 1.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reply-page">
+    <div class="reply-card">
+
+        {% if already_used %}
+        <!-- Lien déjà utilisé -->
+        <div class="expired-box">
+            <div class="expired-icon">
+                <svg width="22" height="22" fill="none" stroke="var(--terra)" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+            </div>
+            <p style="font-size:1.1rem; font-weight:700; color:var(--night); margin-bottom:.5rem;">Ce lien a déjà été utilisé</p>
+            <p style="font-size:.875rem; color:var(--muted); line-height:1.65;">
+                Votre réponse a bien été enregistrée. Si vous avez besoin de nous contacter à nouveau, écrivez-nous à
+                <a href="mailto:susy@lysangels.com" style="color:var(--terra); text-decoration:none; font-weight:600;">susy@lysangels.com</a>.
+            </p>
+        </div>
+
+        {% elif replied %}
+        <!-- Réponse envoyée avec succès -->
+        <div class="success-box">
+            <div class="success-icon">
+                <svg width="22" height="22" fill="none" stroke="#16a34a" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <p class="success-title">Réponse envoyée !</p>
+            <p class="success-sub">
+                Merci {{ message.application.name }}, on a bien reçu votre réponse.<br>
+                Susy vous recontactera prochainement.
+            </p>
+        </div>
+
+        {% else %}
+        <!-- Formulaire de réponse -->
+        <div class="reply-eyebrow">Message de Susy</div>
+        <h1 class="reply-subject font-display">{{ message.subject }}</h1>
+        <p class="reply-from">
+            De <strong>Susy</strong> — LysAngels ·
+            <span style="color:var(--muted);">{{ message.created_at|date:"d/m/Y" }}</span>
+        </p>
+
+        <div class="message-box">{{ message.body }}</div>
+
+        {% if error_msg %}
+        <div class="reply-error">{{ error_msg }}</div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" id="replyForm">
+            {% csrf_token %}
+
+            <div style="margin-bottom:1.25rem;">
+                <label class="reply-label">Votre réponse<span style="color:var(--terra); margin-left:.2rem;">*</span></label>
+                <textarea name="reply_body" class="reply-textarea" id="id_reply_body"
+                          placeholder="Écrivez votre réponse ici…" required>{{ request.POST.reply_body|default:'' }}</textarea>
+            </div>
+
+            <div>
+                <label class="reply-label">
+                    Photos jointes
+                    <span style="font-weight:400; text-transform:none; letter-spacing:0; font-size:.7rem;">(optionnel — jusqu'à 3 photos)</span>
+                </label>
+                <label class="photos-dropzone" id="photos-dropzone"
+                       onmouseover="this.style.borderColor='rgba(181,68,26,.4)'; this.style.background='rgba(181,68,26,.03)'"
+                       onmouseout="if(!window._hasPhotos){this.style.borderColor='rgba(0,0,0,.13)'; this.style.background='rgba(255,255,255,.7)'}">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity:.35;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="photos-main" id="photos-main">Cliquez pour ajouter des photos</span>
+                    <span class="photos-hint">JPEG, PNG ou WebP · 5 Mo max · jusqu'à 3 photos</span>
+                    <input type="file" name="images" accept="image/jpeg,image/png,image/webp"
+                           multiple style="display:none;" id="input-photos"
+                           onchange="handlePhotos(this)">
+                </label>
+                <div class="preview-grid" id="preview-grid" style="display:none;"></div>
+                <p style="color:#DC2626; font-size:.78rem; margin-top:.35rem; display:none;" id="err-photos">
+                    Maximum 3 photos autorisées.
+                </p>
+            </div>
+
+            <button type="submit" class="btn-reply">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                </svg>
+                Envoyer ma réponse
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    window._hasPhotos = false;
+
+    function handlePhotos(input) {
+        var errEl = document.getElementById('err-photos');
+        var mainEl = document.getElementById('photos-main');
+        var previewGrid = document.getElementById('preview-grid');
+        var dropzone = document.getElementById('photos-dropzone');
+        var count = input.files ? input.files.length : 0;
+
+        errEl.style.display = 'none';
+        previewGrid.innerHTML = '';
+        previewGrid.style.display = 'none';
+
+        if (count === 0) {
+            window._hasPhotos = false;
+            mainEl.textContent = 'Cliquez pour ajouter des photos';
+            mainEl.style.color = '';
+            dropzone.style.borderColor = 'rgba(0,0,0,.13)';
+            dropzone.style.background = 'rgba(255,255,255,.7)';
+            return;
+        }
+
+        if (count > 3) {
+            errEl.style.display = 'block';
+            input.value = '';
+            window._hasPhotos = false;
+            mainEl.textContent = 'Cliquez pour ajouter des photos';
+            mainEl.style.color = '';
+            return;
+        }
+
+        window._hasPhotos = true;
+        dropzone.style.borderColor = 'rgba(181,68,26,.4)';
+        dropzone.style.background = 'rgba(181,68,26,.03)';
+        mainEl.textContent = count === 1 ? '1 photo sélectionnée' : count + ' photos sélectionnées';
+        mainEl.style.color = 'var(--terra)';
+
+        previewGrid.style.display = 'grid';
+        Array.from(input.files).forEach(function(file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var thumb = document.createElement('div');
+                thumb.className = 'preview-thumb';
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = file.name;
+                thumb.appendChild(img);
+                previewGrid.appendChild(thumb);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+</script>
+{% endblock %}

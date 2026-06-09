@@ -285,6 +285,53 @@ class VendorApplication(models.Model):
         return f"{self.name} ({self.get_status_display()})"
 
 
+class VendorMessage(models.Model):
+    """Message envoyé par l'admin à un prestataire (candidature), avec lien de réponse unique"""
+    STATUS_CHOICES = [
+        ('sent', 'Envoyé'),
+        ('replied', 'Répondu'),
+        ('read', 'Lu'),
+        ('processed', 'Traité'),
+    ]
+    application = models.ForeignKey(
+        'VendorApplication',
+        on_delete=models.CASCADE,
+        related_name='messages',
+        verbose_name='Candidature',
+    )
+    subject = models.CharField(max_length=200, verbose_name='Objet')
+    body = models.TextField(verbose_name='Message')
+    reply_body = models.TextField(blank=True, verbose_name='Réponse du prestataire')
+    reply_image_1 = models.ImageField(
+        upload_to='vendor_messages/', blank=True, null=True,
+        validators=[validate_image_file], verbose_name='Photo jointe 1',
+    )
+    reply_image_2 = models.ImageField(
+        upload_to='vendor_messages/', blank=True, null=True,
+        validators=[validate_image_file], verbose_name='Photo jointe 2',
+    )
+    reply_image_3 = models.ImageField(
+        upload_to='vendor_messages/', blank=True, null=True,
+        validators=[validate_image_file], verbose_name='Photo jointe 3',
+    )
+    token = models.CharField(max_length=200, unique=True, verbose_name='Token de réponse')
+    token_used = models.BooleanField(default=False, verbose_name='Lien utilisé')
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default='sent',
+        verbose_name='Statut', db_index=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    replied_at = models.DateTimeField(null=True, blank=True, verbose_name='Date de réponse')
+
+    class Meta:
+        verbose_name = 'Message prestataire'
+        verbose_name_plural = 'Messages prestataires'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.get_status_display()}] {self.subject} → {self.application.name}"
+
+
 class ContactView(models.Model):
     """Trace chaque fois qu'un visiteur demande à voir les coordonnées d'un prestataire"""
     vendor = models.ForeignKey(

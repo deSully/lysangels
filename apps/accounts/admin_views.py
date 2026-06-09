@@ -732,6 +732,78 @@ def vendor_toggle_active(request, pk):
 
 @require_POST
 @admin_required
+def application_send_message(request, pk):
+    """Envoie un message à un prestataire depuis la fiche candidature"""
+    from apps.vendors.models import VendorMessage
+    from apps.vendors.tasks import send_vendor_message
+    import secrets
+
+    application = get_object_or_404(VendorApplication, pk=pk)
+
+    subject = request.POST.get('subject', '').strip()
+    body = request.POST.get('body', '').strip()
+
+    if not subject or not body:
+        messages.error(request, 'L\'objet et le message sont requis.')
+        return redirect('accounts:admin_application_detail', pk=pk)
+
+    if not application.email:
+        messages.error(request, 'Ce prestataire n\'a pas d\'adresse email renseignée.')
+        return redirect('accounts:admin_application_detail', pk=pk)
+
+    # Générer un token unique
+    token = secrets.token_urlsafe(32)
+
+    vendor_msg = VendorMessage.objects.create(
+        application=application,
+        subject=subject,
+        body=body,
+        token=token,
+    )
+
+    # Construire l'URL de réponse
+    reply_url = request.build_absolute_uri(
+        f'/prestataires/messages/repondre/{token}/'
+    )
+
+    vendor_name = application.business_name or application.name
+    send_vendor_message(
+        vendor_name=vendor_name,
+        vendor_email=application.email,
+        subject=subject,
+        body=body,
+        reply_url=reply_url,
+    )
+
+    messages.success(request, f'Message envoyé à {application.email}.')
+    return redirect('accounts:admin_application_detail', pk=pk)
+
+
+@require_POST
+@admin_required
+def application_message_mark_processed(request, pk, msg_pk):
+    """Marque un message comme traité"""
+    from apps.vendors.models import VendorMessage
+    msg = get_object_or_404(VendorMessage, pk=msg_pk, application_id=pk)
+    msg.status = 'processed'
+    msg.save(update_fields=['status'])
+    return JsonResponse({'success': True})
+
+
+@require_POST
+@admin_required
+def application_message_mark_read(request, pk, msg_pk):
+    """Marque un message comme lu (réponse lue par l'admin)"""
+    from apps.vendors.models import VendorMessage
+    msg = get_object_or_404(VendorMessage, pk=msg_pk, application_id=pk)
+    if msg.status == 'replied':
+        msg.status = 'read'
+        msg.save(update_fields=['status'])
+    return JsonResponse({'success': True})
+
+
+@require_POST
+@admin_required
 def application_resize_images(request, pk):
     """Redimensionne les images portfolio d'une candidature"""
     application = get_object_or_404(VendorApplication, pk=pk)

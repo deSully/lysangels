@@ -51,6 +51,9 @@ urlpatterns = [
     path('admin/applications/<int:pk>/add-image/', admin_views.application_add_image, name='admin_application_add_image'),
     path('admin/applications/<int:pk>/resize-images/', admin_views.application_resize_images, name='admin_application_resize_images'),
     path('admin/applications/<int:pk>/delete/', admin_views.application_delete, name='admin_application_delete'),
+    path('admin/applications/<int:pk>/send-message/', admin_views.application_send_message, name='admin_application_send_message'),
+    path('admin/applications/<int:pk>/messages/<int:msg_pk>/mark-read/', admin_views.application_message_mark_read, name='admin_application_message_mark_read'),
+    path('admin/applications/<int:pk>/messages/<int:msg_pk>/mark-processed/', admin_views.application_message_mark_processed, name='admin_application_message_mark_processed'),
 
     # Messages de contact
     path('admin/contact-messages/', admin_views.contact_message_list, name='admin_contact_message_list'),
