@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+
+{% block title %}Vos réalisations — LysAngels{% endblock %}
+{% block meta_description %}Partagez vos plus belles réalisations pour que les clients découvrent votre talent.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .portfolio-page {
+        min-height: 100svh;
+        background: var(--ivory);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+    }
+
+    .portfolio-card {
+        background: #fff;
+        border-radius: .75rem;
+        border: 1px solid rgba(0,0,0,.07);
+        padding: 2.5rem 2rem;
+        max-width: 560px;
+        width: 100%;
+        box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    }
+    @media (min-width: 640px) {
+        .portfolio-card { padding: 3rem 2.5rem; }
+    }
+
+    /* ── BADGE SUCCÈS ── */
+    .success-badge {
+        display: flex;
+        align-items: center;
+        gap: .625rem;
+        background: rgba(22,163,74,.07);
+        border: 1px solid rgba(22,163,74,.18);
+        border-radius: .5rem;
+        padding: .75rem 1rem;
+        margin-bottom: 2rem;
+    }
+    .success-badge-icon {
+        width: 1.75rem; height: 1.75rem;
+        border-radius: 50%;
+        background: rgba(22,163,74,.12);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .success-badge-text {
+        font-size: .8rem;
+        color: #166534;
+        line-height: 1.5;
+    }
+    .success-badge-text strong { font-weight: 700; }
+
+    /* ── HEADING ── */
+    .portfolio-eyebrow {
+        font-size: .62rem; font-weight: 700; letter-spacing: .2em;
+        text-transform: uppercase; color: var(--terra);
+        display: flex; align-items: center; gap: .5rem;
+        margin-bottom: .625rem;
+    }
+    .portfolio-eyebrow::before {
+        content: ''; display: block;
+        width: 18px; height: 1.5px; background: var(--terra);
+    }
+    .portfolio-title {
+        font-size: 1.5rem; font-weight: 600; line-height: 1.15;
+        letter-spacing: -0.02em; color: var(--night);
+        margin-bottom: .5rem;
+    }
+    .portfolio-sub {
+        font-size: .85rem; color: var(--muted);
+        line-height: 1.65; margin-bottom: 2rem;
+    }
+
+    /* ── CONSEILS ── */
+    .tips-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .625rem;
+        margin-bottom: 1.75rem;
+    }
+    .tip-item {
+        display: flex; align-items: flex-start; gap: .5rem;
+        font-size: .75rem; line-height: 1.5;
+        padding: .625rem .75rem;
+        border-radius: .35rem;
+    }
+    .tip-item.tip-ok {
+        background: rgba(22,163,74,.05);
+        border: 1px solid rgba(22,163,74,.12);
+        color: #166534;
+    }
+    .tip-item.tip-nok {
+        background: rgba(220,38,38,.04);
+        border: 1px solid rgba(220,38,38,.1);
+        color: #991B1B;
+    }
+    .tip-icon { flex-shrink: 0; margin-top: .1rem; font-size: .85rem; }
+
+    /* ── DROPZONE ── */
+    .dropzone-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed rgba(0,0,0,.13);
+        border-radius: .5rem;
+        padding: 2rem 1rem;
+        cursor: pointer;
+        gap: .625rem;
+        text-align: center;
+        transition: border-color .15s, background .15s;
+        background: rgba(255,255,255,.7);
+        margin-bottom: .5rem;
+    }
+    .dropzone-label:hover {
+        border-color: rgba(181,68,26,.4);
+        background: rgba(181,68,26,.03);
+    }
+    .dropzone-icon { opacity: .35; }
+    .dropzone-main {
+        font-size: .85rem; font-weight: 600; color: var(--night);
+    }
+    .dropzone-hint {
+        font-size: .72rem; color: var(--muted);
+    }
+    .dropzone-count {
+        font-size: .72rem; font-weight: 700;
+        color: var(--terra);
+        background: rgba(181,68,26,.08);
+        border-radius: 2rem;
+        padding: .2rem .625rem;
+        display: none;
+    }
+
+    /* ── PREVIEW GRID ── */
+    .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: .375rem;
+        margin-bottom: 1rem;
+    }
+    .preview-thumb {
+        aspect-ratio: 1;
+        border-radius: .3rem;
+        overflow: hidden;
+        background: rgba(0,0,0,.05);
+        position: relative;
+    }
+    .preview-thumb img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+    }
+
+    /* ── ERROR ── */
+    .upload-error {
+        background: rgba(220,38,38,.06);
+        color: #991B1B;
+        border: 1px solid rgba(220,38,38,.15);
+        border-radius: .35rem;
+        padding: .625rem .875rem;
+        font-size: .8rem;
+        margin-bottom: 1rem;
+        display: none;
+    }
+    .upload-error.visible { display: block; }
+
+    /* ── BUTTONS ── */
+    .btn-upload {
+        display: inline-flex; align-items: center; gap: .5rem;
+        padding: .85rem 2rem;
+        background: var(--terra); color: #fff;
+        font-size: .875rem; font-weight: 700;
+        border-radius: .35rem; border: none; cursor: pointer;
+        box-shadow: 0 4px 14px rgba(181,68,26,.3);
+        transition: background .2s, transform .15s;
+        width: 100%; justify-content: center;
+    }
+    .btn-upload:hover { background: var(--terra-dark); transform: translateY(-1px); }
+    .btn-upload:disabled {
+        opacity: .5; cursor: not-allowed; transform: none;
+        box-shadow: none;
+    }
+
+    .btn-skip {
+        display: block;
+        text-align: center;
+        font-size: .78rem;
+        color: var(--muted);
+        text-decoration: none;
+        margin-top: 1rem;
+        padding: .5rem;
+        transition: color .2s;
+    }
+    .btn-skip:hover { color: var(--night); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portfolio-page">
+    <div class="portfolio-card">
+
+        <!-- Badge succès -->
+        <div class="success-badge">
+            <div class="success-badge-icon">
+                <svg width="14" height="14" fill="none" stroke="#16a34a" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <div class="success-badge-text">
+                <strong>Votre candidature est enregistrée !</strong>
+                {% if application.email %}
+                    Un email de confirmation vous a été envoyé à <strong>{{ application.email }}</strong>.
+                {% elif application.whatsapp %}
+                    Notre équipe vous contactera sur votre WhatsApp sous 48h.
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <div class="portfolio-eyebrow">Portfolio</div>
+        <h1 class="portfolio-title font-display">
+            Faites découvrir vos réalisations
+        </h1>
+        <p class="portfolio-sub">
+            Ajoutez jusqu'à <strong>5 photos</strong> de vos plus belles réalisations.
+            Les clients les verront sur votre profil — c'est votre vitrine !
+        </p>
+
+        <!-- Conseils -->
+        <div class="tips-grid">
+            <div class="tip-item tip-ok">
+                <span class="tip-icon">✅</span>
+                <span>Photos de vos événements, décors, plats, portraits…</span>
+            </div>
+            <div class="tip-item tip-ok">
+                <span class="tip-icon">✅</span>
+                <span>Bonne luminosité, image nette et bien cadrée</span>
+            </div>
+            <div class="tip-item tip-nok">
+                <span class="tip-icon">❌</span>
+                <span>Affiches publicitaires, flyers ou logos seuls</span>
+            </div>
+            <div class="tip-item tip-nok">
+                <span class="tip-icon">❌</span>
+                <span>Photos floues, sombres ou de mauvaise qualité</span>
+            </div>
+        </div>
+
+        <!-- Formulaire upload -->
+        <form method="post" enctype="multipart/form-data" id="portfolioForm">
+            {% csrf_token %}
+
+            {% if error_msg %}
+            <div class="upload-error visible">{{ error_msg }}</div>
+            {% endif %}
+            <div class="upload-error" id="err-images"></div>
+
+            <!-- Dropzone -->
+            <label class="dropzone-label" id="dropzone"
+                   onmouseover="this.style.borderColor='rgba(181,68,26,.4)'; this.style.background='rgba(181,68,26,.03)'"
+                   onmouseout="if(!window._hasFiles){this.style.borderColor='rgba(0,0,0,.13)'; this.style.background='rgba(255,255,255,.7)'}">
+                <svg class="dropzone-icon" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span class="dropzone-main" id="dropzone-main">Cliquez pour sélectionner vos photos</span>
+                <span class="dropzone-hint">JPEG, PNG ou WebP · 5 Mo max par photo · jusqu'à 5 photos</span>
+                <span class="dropzone-count" id="dropzone-count"></span>
+                <input type="file" name="images" accept="image/jpeg,image/png,image/webp"
+                       multiple style="display:none;" id="input-images"
+                       onchange="handleImages(this)">
+            </label>
+
+            <!-- Prévisualisation -->
+            <div class="preview-grid" id="preview-grid" style="display:none;"></div>
+
+            <button type="submit" class="btn-upload" id="btn-upload" disabled>
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                Publier mes photos
+            </button>
+        </form>
+
+        <a href="{% url 'vendors:vendor_signup_success_final' token=token %}" class="btn-skip">
+            Passer cette étape →
+        </a>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    var MAX = 5;
+    window._hasFiles = false;
+
+    function handleImages(input) {
+        var errEl = document.getElementById('err-images');
+        var countEl = document.getElementById('dropzone-count');
+        var mainEl = document.getElementById('dropzone-main');
+        var previewGrid = document.getElementById('preview-grid');
+        var btnUpload = document.getElementById('btn-upload');
+        var dropzone = document.getElementById('dropzone');
+        var count = input.files ? input.files.length : 0;
+
+        // Reset
+        errEl.classList.remove('visible');
+        previewGrid.innerHTML = '';
+        previewGrid.style.display = 'none';
+
+        if (count === 0) {
+            window._hasFiles = false;
+            countEl.style.display = 'none';
+            mainEl.textContent = 'Cliquez pour sélectionner vos photos';
+            mainEl.style.color = '';
+            dropzone.style.borderColor = 'rgba(0,0,0,.13)';
+            dropzone.style.background = 'rgba(255,255,255,.7)';
+            btnUpload.disabled = true;
+            return;
+        }
+
+        if (count > MAX) {
+            errEl.textContent = 'Maximum ' + MAX + ' photos autorisées. Vous en avez sélectionné ' + count + '.';
+            errEl.classList.add('visible');
+            input.value = '';
+            window._hasFiles = false;
+            countEl.style.display = 'none';
+            mainEl.textContent = 'Cliquez pour sélectionner vos photos';
+            mainEl.style.color = '';
+            btnUpload.disabled = true;
+            return;
+        }
+
+        // OK
+        window._hasFiles = true;
+        dropzone.style.borderColor = 'rgba(181,68,26,.4)';
+        dropzone.style.background = 'rgba(181,68,26,.03)';
+        mainEl.textContent = count === 1 ? '1 photo sélectionnée' : count + ' photos sélectionnées';
+        mainEl.style.color = 'var(--terra)';
+        countEl.textContent = count + ' / ' + MAX;
+        countEl.style.display = 'inline-block';
+        btnUpload.disabled = false;
+
+        // Prévisualisation
+        previewGrid.style.display = 'grid';
+        Array.from(input.files).forEach(function(file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var thumb = document.createElement('div');
+                thumb.className = 'preview-thumb';
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = file.name;
+                thumb.appendChild(img);
+                previewGrid.appendChild(thumb);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+</script>
+{% endblock %}

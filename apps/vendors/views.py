@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
+from django.core import signing
 from .models import VendorProfile, ContactView, VendorApplication, ServiceType
 from apps.core.cache_utils import get_cached_service_types
 from apps.core.models import City, Country
@@ -144,7 +145,7 @@ def reveal_contact(request, slug):
 
 
 def vendor_signup(request):
-    """Formulaire public de candidature prestataire"""
+    """Formulaire public de candidature prestataire (étape 1 : infos + logo)"""
     service_types = ServiceType.objects.all().order_by('name')
     cities_json = _build_cities_json()
     countries_list_json = _build_countries_list_json()
@@ -152,7 +153,7 @@ def vendor_signup(request):
     locations_json_val = '[]'
 
     if request.method == 'POST':
-        locations_json_val = request.POST.get('locations_json', '[]')  # lu avant le check pour le re-render
+        locations_json_val = request.POST.get('locations_json', '[]')
         token = request.POST.get('cf-turnstile-response', '')
         if not verify_turnstile(token):
             messages.error(request, "Veuillez confirmer que vous n'êtes pas un robot.")
@@ -186,8 +187,6 @@ def vendor_signup(request):
                 errors.append("La description de l'activité est requise.")
             if not service_type_ids and not other_service:
                 errors.append('Veuillez sélectionner au moins un type de prestation ou préciser votre activité.')
-            if len(request.FILES.getlist('images')) > 5:
-                errors.append('Vous avez sélectionné trop de photos. Maximum 5 photos autorisées.')
 
             if errors:
                 for error in errors:
@@ -204,8 +203,8 @@ def vendor_signup(request):
                     instagram=instagram,
                     facebook=facebook,
                 )
-                for i, img in enumerate(request.FILES.getlist('images')[:5], start=1):
-                    create_kwargs[f'image_{i}'] = img
+                if 'logo' in request.FILES:
+                    create_kwargs['logo'] = request.FILES['logo']
                 application = VendorApplication.objects.create(**create_kwargs)
                 application.service_types.set(service_type_ids)
                 country_ids = [g['country_id'] for g in groups if g.get('country_id')]
@@ -224,11 +223,9 @@ def vendor_signup(request):
                     email=email,
                     whatsapp=whatsapp,
                 )
-                return render(request, 'vendors/vendor_signup_success.html', {
-                    'name': name,
-                    'has_email': bool(email),
-                    'has_whatsapp': bool(whatsapp),
-                })
+                # Générer un token signé pour la page portfolio
+                portfolio_token = signing.dumps(application.pk, salt='vendor-portfolio')
+                return redirect('vendors:vendor_signup_portfolio', token=portfolio_token)
 
     return render(request, 'vendors/vendor_signup.html', {
         'service_types': service_types,
@@ -240,6 +237,54 @@ def vendor_signup(request):
             {'title': 'Accueil', 'url': 'core:home'},
             {'title': 'Devenir prestataire'},
         ],
+    })
+
+
+def vendor_signup_portfolio(request, token):
+    """Étape 2 : upload des photos de portfolio (optionnel) après création de la candidature"""
+    try:
+        application_pk = signing.loads(token, salt='vendor-portfolio', max_age=3600 * 24)
+        application = get_object_or_404(VendorApplication, pk=application_pk)
+    except signing.BadSignature:
+        return redirect('vendors:vendor_signup')
+
+    uploaded = False
+    error_msg = None
+
+    if request.method == 'POST':
+        images = request.FILES.getlist('images')
+        if len(images) > 5:
+            error_msg = 'Maximum 5 photos autorisées. Veuillez en sélectionner 5 ou moins.'
+        else:
+            for i, img in enumerate(images[:5], start=1):
+                setattr(application, f'image_{i}', img)
+            application.save()
+            uploaded = True
+            return redirect('vendors:vendor_signup_success_final', token=token)
+
+    return render(request, 'vendors/vendor_signup_portfolio.html', {
+        'application': application,
+        'token': token,
+        'error_msg': error_msg,
+        'breadcrumbs': [
+            {'title': 'Accueil', 'url': 'core:home'},
+            {'title': 'Devenir prestataire'},
+        ],
+    })
+
+
+def vendor_signup_success_final(request, token):
+    """Page de succès finale après upload portfolio (ou skip)"""
+    try:
+        application_pk = signing.loads(token, salt='vendor-portfolio', max_age=3600 * 24)
+        application = get_object_or_404(VendorApplication, pk=application_pk)
+    except signing.BadSignature:
+        return redirect('vendors:vendor_signup')
+
+    return render(request, 'vendors/vendor_signup_success.html', {
+        'name': application.name,
+        'has_email': bool(application.email),
+        'has_whatsapp': bool(application.whatsapp),
     })
 
 

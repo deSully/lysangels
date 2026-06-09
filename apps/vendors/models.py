@@ -233,6 +233,13 @@ class VendorApplication(models.Model):
         related_name='source_application',
         verbose_name='Profil créé',
     )
+    logo = models.ImageField(
+        upload_to='applications/logos/',
+        blank=True,
+        null=True,
+        validators=[validate_image_file],
+        verbose_name='Logo / photo de profil',
+    )
     image_1 = models.ImageField(
         upload_to='applications/', blank=True, null=True,
         validators=[validate_image_file],
