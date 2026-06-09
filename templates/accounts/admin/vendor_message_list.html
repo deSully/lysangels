@@ -1,0 +1,107 @@
+{% extends 'accounts/admin/base_admin.html' %}
+
+{% block title %}Messages prestataires — Admin{% endblock %}
+
+{% block admin_content %}
+<div class="a-page-hd">
+  <div>
+    <h1 class="a-page-title">Messages prestataires</h1>
+    <p class="a-page-sub">
+      Toutes les conversations envoyées aux prestataires
+      {% if replied_count %} · <span style="color:var(--terra); font-weight:600;">{{ replied_count }} réponse{{ replied_count|pluralize }} non lue{{ replied_count|pluralize }}</span>{% endif %}
+    </p>
+  </div>
+</div>
+
+<!-- Filtres -->
+<div class="a-chips">
+  <a href="{% url 'accounts:admin_vendor_message_list' %}"
+     class="a-chip {% if not selected_status %}a-chip-active{% endif %}">
+    Tous
+  </a>
+  {% for value, label in status_choices %}
+  <a href="?status={{ value }}"
+     class="a-chip {% if selected_status == value %}a-chip-active{% endif %}">
+    {{ label }}
+  </a>
+  {% endfor %}
+</div>
+
+<div class="a-card">
+  <table class="a-table">
+    <thead>
+      <tr>
+        <th>Destinataire</th>
+        <th>Objet</th>
+        <th>Statut</th>
+        <th>Envoyé le</th>
+        <th>Répondu le</th>
+        <th style="text-align:right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for msg in msgs %}
+      <tr onclick="window.location='{% if msg.application %}{% url 'accounts:admin_application_detail' pk=msg.application.pk %}{% elif msg.vendor_profile %}{% url 'accounts:admin_vendor_detail' pk=msg.vendor_profile.pk %}{% else %}#{% endif %}#msg-{{ msg.pk }}'">
+        <td>
+          <div style="font-weight:600; font-size:.825rem;">{{ msg.get_recipient_display }}</div>
+          <div class="a-td-muted" style="font-size:.72rem;">
+            {% if msg.application %}Candidature{% elif msg.vendor_profile %}Prestataire{% endif %}
+            · {{ msg.recipient_email|default:msg.application.email|default:msg.vendor_profile.email|default:'—' }}
+          </div>
+        </td>
+        <td style="max-width:280px;">
+          <div style="font-size:.825rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ msg.subject }}</div>
+          {% if msg.reply_body %}
+          <div class="a-td-muted" style="font-size:.72rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:260px;">
+            ↩ {{ msg.reply_body|truncatechars:60 }}
+          </div>
+          {% endif %}
+        </td>
+        <td>
+          {% if msg.status == 'sent' %}
+          <span class="a-badge" style="background:rgba(201,151,58,.1); color:#9a7018;">Envoyé</span>
+          {% elif msg.status == 'replied' %}
+          <span class="a-badge" style="background:rgba(59,130,246,.1); color:#3B82F6;">Répondu</span>
+          {% elif msg.status == 'read' %}
+          <span class="a-badge" style="background:rgba(0,0,0,.05); color:var(--muted);">Lu</span>
+          {% elif msg.status == 'processed' %}
+          <span class="a-badge" style="background:rgba(22,163,74,.08); color:#16a34a;">✓ Traité</span>
+          {% endif %}
+        </td>
+        <td class="a-td-mono">{{ msg.created_at|date:"d/m/Y H:i" }}</td>
+        <td class="a-td-mono">
+          {% if msg.replied_at %}{{ msg.replied_at|date:"d/m/Y H:i" }}{% else %}<span style="color:var(--muted);">—</span>{% endif %}
+        </td>
+        <td class="a-td-right" onclick="event.stopPropagation()">
+          {% if msg.application %}
+          <a href="{% url 'accounts:admin_application_detail' pk=msg.application.pk %}#msg-{{ msg.pk }}"
+             class="a-td-link">Voir →</a>
+          {% elif msg.vendor_profile %}
+          <a href="{% url 'accounts:admin_vendor_detail' pk=msg.vendor_profile.pk %}#msg-{{ msg.pk }}"
+             class="a-td-link">Voir →</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="a-table-empty">Aucun message pour le moment.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if msgs.has_other_pages %}
+  <div class="a-pager">
+    <span class="a-pager-info">Page {{ msgs.number }} / {{ msgs.paginator.num_pages }}</span>
+    <div class="a-pager-btns">
+      {% if msgs.has_previous %}
+      <a href="?page={{ msgs.previous_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" class="a-btn a-btn-ghost a-btn-sm">←</a>
+      {% endif %}
+      {% if msgs.has_next %}
+      <a href="?page={{ msgs.next_page_number }}{% if selected_status %}&status={{ selected_status }}{% endif %}" class="a-btn a-btn-ghost a-btn-sm">→</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
