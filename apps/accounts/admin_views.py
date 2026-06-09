@@ -763,7 +763,7 @@ def application_send_message(request, pk):
 
     # Construire l'URL de réponse
     reply_url = request.build_absolute_uri(
-        f'/prestataires/messages/repondre/{token}/'
+        f'/vendors/messages/repondre/{token}/'
     )
 
     vendor_name = application.business_name or application.name
