@@ -232,8 +232,8 @@ function initSmoothScroll() {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
 
-            // Ignorer si c'est juste "#"
-            if (href === '#') return;
+            // Ignorer si ce n'est plus une ancre valide (ex: href changé dynamiquement en URL externe)
+            if (!href || href === '#' || !href.startsWith('#')) return;
 
             const target = document.querySelector(href);
             if (target) {
