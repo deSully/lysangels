@@ -90,7 +90,7 @@ def vendor_detail(request, slug):
     vendor = get_object_or_404(
         VendorProfile.objects.prefetch_related(
             'cities', 'service_types', 'countries', 'images'
-        ),
+        ).select_related('source_application'),
         slug=slug,
         is_active=True
     )
@@ -119,7 +119,14 @@ def reveal_contact(request, slug):
 
     vendor = get_object_or_404(VendorProfile, slug=slug, is_active=True)
 
-    if not vendor.whatsapp:
+    whatsapp = vendor.whatsapp
+    if not whatsapp:
+        try:
+            whatsapp = vendor.source_application.whatsapp
+        except Exception:
+            whatsapp = None
+
+    if not whatsapp:
         return JsonResponse({'error': 'Aucun numéro disponible'}, status=404)
 
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -138,8 +145,8 @@ def reveal_contact(request, slug):
     )
 
     return JsonResponse({
-        'whatsapp': vendor.whatsapp,
-        'whatsapp_url': f"https://wa.me/{vendor.whatsapp.replace(' ', '').replace('+', '')}",
+        'whatsapp': whatsapp,
+        'whatsapp_url': f"https://wa.me/{whatsapp.replace(' ', '').replace('+', '')}",
         'vendor_name': vendor.business_name,
     })
 
