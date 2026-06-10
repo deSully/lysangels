@@ -52,3 +52,23 @@ def is_google_maps_embeddable(url):
         return True
 
     return False
+
+
+@register.filter(name='instagram_url')
+def instagram_url(value):
+    """
+    Normalise un handle/URL Instagram en URL complète.
+    Accepte : 'moncompte', '@moncompte', 'https://instagram.com/moncompte', etc.
+    Retourne : 'https://instagram.com/moncompte'
+    """
+    if not value:
+        return ''
+    value = value.strip()
+    # Si c'est déjà une URL complète, extraire le handle
+    match = re.search(r'instagram\.com/([^/?#\s]+)', value)
+    if match:
+        handle = match.group(1).lstrip('@')
+        return f'https://instagram.com/{handle}'
+    # Sinon, nettoyer le @ et construire l'URL
+    handle = value.lstrip('@')
+    return f'https://instagram.com/{handle}'
