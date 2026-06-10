@@ -134,7 +134,7 @@ def reveal_contact(request, slug):
 
     # Rate limit : 10 révélations par IP par heure
     one_hour_ago = timezone.now() - timedelta(hours=1)
-    if ContactView.objects.filter(ip_address=ip, viewed_at__gte=one_hour_ago).count() >= 10:
+    if ContactView.objects.filter(ip_address=ip, viewed_at__gte=one_hour_ago).count() >= 100:
         return JsonResponse({'error': 'Limite atteinte, réessayez dans une heure.'}, status=429)
 
     ContactView.objects.create(
