@@ -742,7 +742,7 @@ document.getElementById('lightbox').addEventListener('click', (e) => { if (e.tar
 <script>
 function revealContact(vendorSlug) {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || '{{ csrf_token }}';
-    fetch(`/prestataires/${vendorSlug}/contact/`, {
+    fetch(`{% url 'vendors:reveal_contact' slug='__SLUG__' %}`.replace('__SLUG__', vendorSlug), {
         method: 'POST',
         headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' },
     })
