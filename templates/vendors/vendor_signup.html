@@ -652,6 +652,74 @@
 
     function goNext(n) { if (validateStep(n)) goTo(n + 1); }
 
+    // ── PERSISTANCE sessionStorage ──
+    var STORAGE_KEY = 'vendor_signup_draft';
+
+    function saveDraft() {
+        var draft = { step: current, fields: {} };
+        document.querySelectorAll('#signupForm input[type="text"], #signupForm input[type="email"], #signupForm textarea').forEach(function(el) {
+            if (el.name) draft.fields[el.name] = el.value;
+        });
+        // Checkboxes service_types
+        var checked = [];
+        document.querySelectorAll('input[name="service_types"]:checked').forEach(function(cb) { checked.push(cb.value); });
+        draft.service_types = checked;
+        // locations_json
+        var locEl = document.getElementById('id_locations_json');
+        if (locEl) draft.locations_json = locEl.value;
+        try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(draft)); } catch(e) {}
+    }
+
+    function clearDraft() {
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    }
+
+    function restoreDraft() {
+        var raw;
+        try { raw = sessionStorage.getItem(STORAGE_KEY); } catch(e) { return; }
+        if (!raw) return;
+        var draft;
+        try { draft = JSON.parse(raw); } catch(e) { return; }
+
+        // Restaurer les champs texte/email/textarea
+        if (draft.fields) {
+            Object.keys(draft.fields).forEach(function(name) {
+                var el = document.querySelector('#signupForm [name="' + name + '"]');
+                if (el && (el.type === 'text' || el.type === 'email' || el.tagName === 'TEXTAREA')) {
+                    el.value = draft.fields[name];
+                }
+            });
+        }
+
+        // Restaurer les checkboxes service_types
+        if (draft.service_types && draft.service_types.length) {
+            document.querySelectorAll('input[name="service_types"]').forEach(function(cb) {
+                cb.checked = draft.service_types.indexOf(cb.value) !== -1;
+            });
+        }
+
+        // Restaurer locations_json (les groupes pays/villes sont déjà rendus par le script inline)
+        // On met à jour le champ hidden — le script de location relit locations_json au init
+        if (draft.locations_json) {
+            var locEl = document.getElementById('id_locations_json');
+            if (locEl) locEl.value = draft.locations_json;
+        }
+
+        // Restaurer l'étape (après que tout soit en place)
+        if (draft.step && draft.step > 1) {
+            goTo(draft.step);
+        }
+    }
+
+    // Écouter les changements pour sauvegarder
+    document.getElementById('signupForm').addEventListener('input', saveDraft);
+    document.getElementById('signupForm').addEventListener('change', saveDraft);
+
+    // Nettoyer le draft au submit
+    document.getElementById('signupForm').addEventListener('submit', function() {
+        clearDraft();
+    });
+
     function updateLogoLabel(input) {
         var label = document.getElementById('logo-label');
         var dropzone = document.getElementById('logo-dropzone');
@@ -741,9 +809,24 @@
         e.preventDefault(); addGroup(null, []);
     });
 
+    // Lire le draft sessionStorage en priorité pour les locations
     var initial = {{ locations_json|default:"[]"|safe }};
+    try {
+        var _draftRaw = sessionStorage.getItem('vendor_signup_draft');
+        if (_draftRaw) {
+            var _draft = JSON.parse(_draftRaw);
+            if (_draft.locations_json) {
+                var _parsed = JSON.parse(_draft.locations_json);
+                if (_parsed && _parsed.length) initial = _parsed;
+            }
+        }
+    } catch(e) {}
+
     initial.forEach(function(g) { addGroup(g.country_id, g.city_ids); });
     if (!initial.length) addGroup(null, []);
+
+    // Restaurer les autres champs + étape après init des locations
+    restoreDraft();
 })();
 </script>
 {% endblock %}
