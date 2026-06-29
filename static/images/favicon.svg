@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#110D06"/>
-  <text x="16" y="22" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#B5441A" text-anchor="middle" letter-spacing="-0.5">LA</text>
+  <rect width="32" height="32" rx="6" fill="#B5441A"/>
+  <rect x="5" y="9" width="13" height="13" rx="3" fill="none" stroke="white" stroke-width="2.2"/>
+  <rect x="14" y="10" width="13" height="13" rx="3" fill="#B5441A" stroke="white" stroke-width="2.2"/>
+  <path d="M24 9 L24.5 10.5 L26 11 L24.5 11.5 L24 13 L23.5 11.5 L22 11 L23.5 10.5 Z" fill="white"/>
 </svg>

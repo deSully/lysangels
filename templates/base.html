@@ -18,7 +18,7 @@
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:title" content="{% block og_title %}LysAngels - Plateforme Événementielle Premium{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Trouvez les meilleurs prestataires pour vos événements au Togo. {{ vendor_count }} professionnel{{ vendor_count|pluralize }}s vérifié{{ vendor_count|pluralize }}s disponible{{ vendor_count|pluralize }}s.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-image.jpg' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/lysangels_logo_fond_orange.jpg' %}{% endblock %}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LysAngels">
@@ -333,10 +333,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center gap-2">
-                    <a href="{% url 'core:home' %}" class="flex items-center gap-2" style="text-decoration:none;">
-                        <span style="width:.5rem;height:.5rem;border-radius:50%;background:var(--terra);display:inline-block;flex-shrink:0;"></span>
-                        <span class="font-display text-lily-dark" style="font-size:1.2rem;font-weight:700;">LysAngels</span>
+                <div class="flex items-center">
+                    <a href="{% url 'core:home' %}" style="text-decoration:none;display:inline-flex;align-items:center;">
+                        <img src="{% static 'images/lysangels_logo_orange.png' %}" alt="Lysangels" style="height:36px;width:auto;">
                     </a>
                 </div>
 
@@ -468,8 +467,7 @@
             <!-- Colonne marque -->
             <div>
                 <a href="{% url 'core:home' %}" class="footer-brand-mark">
-                    <span class="footer-brand-dot"></span>
-                    <span class="footer-brand-name">LysAngels</span>
+                    <img src="{% static 'images/lysangels_logo_blanc.png' %}" alt="Lysangels" style="height:32px;width:auto;">
                 </a>
                 <p class="footer-tagline">La plateforme événementielle de référence.</p>
                 <div class="footer-social">
