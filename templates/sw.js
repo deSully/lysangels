@@ -1,7 +1,7 @@
 {% load static %}
 'use strict';
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const STATIC_CACHE = `lysangels-static-${CACHE_VERSION}`;
 const HTML_CACHE   = `lysangels-html-${CACHE_VERSION}`;
 const HTML_TTL     = 10 * 60 * 1000; // 10 minutes en ms
