@@ -360,6 +360,14 @@ class ContactView(models.Model):
         related_name='contact_views',
         verbose_name='Prestataire'
     )
+    event_type = models.ForeignKey(
+        'projects.EventType',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='contact_views',
+        verbose_name="Type d'événement",
+    )
     ip_address = models.GenericIPAddressField(null=True, blank=True, verbose_name='Adresse IP')
     user_agent = models.TextField(blank=True, verbose_name='User-Agent')
     viewed_at = models.DateTimeField(auto_now_add=True, verbose_name='Date du clic')

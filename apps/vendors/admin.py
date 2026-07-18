@@ -30,10 +30,10 @@ class VendorImageAdmin(admin.ModelAdmin):
 
 @admin.register(ContactView)
 class ContactViewAdmin(admin.ModelAdmin):
-    list_display = ['vendor', 'ip_address', 'viewed_at', 'session_key']
-    list_filter = ['vendor', 'viewed_at']
+    list_display = ['vendor', 'event_type', 'ip_address', 'viewed_at', 'session_key']
+    list_filter = ['vendor', 'event_type', 'viewed_at']
     search_fields = ['vendor__business_name', 'ip_address']
-    readonly_fields = ['vendor', 'ip_address', 'user_agent', 'viewed_at', 'session_key']
+    readonly_fields = ['vendor', 'event_type', 'ip_address', 'user_agent', 'viewed_at', 'session_key']
     ordering = ['-viewed_at']
 
     def has_add_permission(self, request):
