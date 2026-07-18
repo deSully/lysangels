@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.core import signing
 from .models import VendorProfile, ContactView, VendorApplication, ServiceType
-from apps.core.cache_utils import get_cached_service_types
+from apps.core.cache_utils import get_cached_service_types, get_cached_event_types
 from apps.core.models import City, Country
 from apps.core.turnstile import verify_turnstile
 from .tasks import send_application_confirmation, notify_admin_new_application, send_vendor_message
@@ -96,6 +96,7 @@ def vendor_detail(request, slug):
     )
     context = {
         'vendor': vendor,
+        'event_types': get_cached_event_types(),
         'breadcrumbs': [
             {'title': 'Accueil', 'url': 'core:home'},
             {'title': 'Prestataires', 'url': 'vendors:vendor_list'},
@@ -113,9 +114,10 @@ def vendor_detail_by_pk(request, pk):
 
 @require_POST
 def reveal_contact(request, slug):
-    """Retourne le numéro WhatsApp et trace le clic en base"""
+    """Trace le clic en base et retourne le numéro WhatsApp"""
     from django.utils import timezone
     from datetime import timedelta
+    from apps.projects.models import EventType
 
     vendor = get_object_or_404(VendorProfile, slug=slug, is_active=True)
 
@@ -132,23 +134,26 @@ def reveal_contact(request, slug):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     ip = x_forwarded_for.split(',')[0].strip() if x_forwarded_for else request.META.get('REMOTE_ADDR')
 
-    # Rate limit : 10 révélations par IP par heure
+    # Rate limit : 100 révélations par IP par heure
     one_hour_ago = timezone.now() - timedelta(hours=1)
     if ContactView.objects.filter(ip_address=ip, viewed_at__gte=one_hour_ago).count() >= 100:
         return JsonResponse({'error': 'Limite atteinte, réessayez dans une heure.'}, status=429)
 
+    try:
+        body = json.loads(request.body or b'{}')
+    except ValueError:
+        body = {}
+    event_type = EventType.objects.filter(pk=body.get('event_type_id')).first()
+
     ContactView.objects.create(
         vendor=vendor,
+        event_type=event_type,
         ip_address=ip,
         user_agent=request.META.get('HTTP_USER_AGENT', '')[:500],
         session_key=request.session.session_key or '',
     )
 
-    return JsonResponse({
-        'whatsapp': whatsapp,
-        'whatsapp_url': f"https://wa.me/{whatsapp.replace(' ', '').replace('+', '')}",
-        'vendor_name': vendor.business_name,
-    })
+    return JsonResponse({'whatsapp': whatsapp})
 
 
 def vendor_signup(request):
