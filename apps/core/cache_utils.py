@@ -4,6 +4,7 @@ Les types de services et événements changent rarement, on peut les mettre en c
 """
 from django.core.cache import cache
 from apps.vendors.models import ServiceType
+from apps.projects.models import EventType
 
 
 def get_cached_service_types(ordered=True):
@@ -26,5 +27,19 @@ def get_cached_service_types(ordered=True):
     return service_types
 
 
+def get_cached_event_types():
+    """
+    Récupère les types d'événements depuis le cache (durée: 1 heure)
+    Si pas en cache, requête DB et mise en cache
+    """
+    event_types = cache.get('event_types')
+
+    if event_types is None:
+        event_types = list(EventType.objects.all().order_by('name'))
+        cache.set('event_types', event_types, 3600)
+
+    return event_types
+
+
 def clear_reference_cache():
-    cache.delete_many(['service_types_ordered', 'service_types'])
+    cache.delete_many(['service_types_ordered', 'service_types', 'event_types'])
